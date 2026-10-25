@@ -72,6 +72,12 @@ describe("no-path notes", () => {
     expect(plan(rules, person)).toBeNull();
     expect(noPathNotes(rules, person)).toEqual(["needWitnesses"]);
   });
+
+  it("no Social Security number is what's blocking", () => {
+    const person = { facts: { born: "la_county", age: 30, unhoused: true, hasWitnesses: true }, have: ["birth_cert_ca"] };
+    expect(plan(rules, person)).toBeNull();
+    expect(noPathNotes(rules, person)).toEqual(["needSsn"]);
+  });
 });
 
 describe("router", () => {

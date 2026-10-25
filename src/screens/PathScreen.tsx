@@ -92,7 +92,7 @@ export function NoPath({ rules, lang, person, onBack }: { rules: RuleSet; lang: 
   const s = t[lang];
   const text: Record<NoPathNote, string> = {
     bornCA: s.noPathBornCA, bornElsewhere: s.noPathBornElsewhere,
-    allUnsure: s.noPathAllUnsure, needAddress: s.noPathNeedAddress, needWitnesses: s.noPathNeedWitnesses,
+    allUnsure: s.noPathAllUnsure, needAddress: s.noPathNeedAddress, needWitnesses: s.noPathNeedWitnesses, needSsn: s.noPathNeedSsn,
   };
   const notes = noPathNotes(rules, person);
   return (

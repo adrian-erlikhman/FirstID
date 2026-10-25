@@ -70,7 +70,7 @@ export function flipsThatMatter(rules: RuleSet, person: Person, mode: Mode, max 
 }
 
 /** Plain reasons shown on the no-path screen, for the common dead ends. */
-export type NoPathNote = "bornCA" | "bornElsewhere" | "allUnsure" | "needAddress" | "needWitnesses";
+export type NoPathNote = "bornCA" | "bornElsewhere" | "allUnsure" | "needAddress" | "needWitnesses" | "needSsn";
 
 export function noPathNotes(rules: RuleSet, person: Person, mode: Mode = "cheapest"): NoPathNote[] {
   if (plan(rules, person, mode)) return [];
@@ -82,5 +82,6 @@ export function noPathNotes(rules: RuleSet, person: Person, mode: Mode = "cheape
   if (FLIPPABLE_FACTS.every((f) => facts[f] === undefined)) notes.push("allUnsure");
   else if (plan(rules, { facts, have: [...have, "residency_doc"] }, mode)) notes.push("needAddress");
   else if (facts.hasWitnesses !== true && plan(rules, { facts: { ...facts, hasWitnesses: true }, have }, mode)) notes.push("needWitnesses");
+  else if (!have.includes("ssn_known") && plan(rules, { facts, have: [...have, "ssn_known"] }, mode)) notes.push("needSsn");
   return notes;
 }
