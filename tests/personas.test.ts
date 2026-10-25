@@ -50,6 +50,13 @@ describe("personas (hand-worked plans)", () => {
   });
 });
 
+describe("dead ends", () => {
+  it("born in Texas with a certified Texas birth certificate: the DMV takes any U.S. one, so there is a path", () => {
+    const p = plan(rules, { facts: { born: "us_state", age: 30 }, have: ["birth_cert_ca", "ssn_known", "residency_doc"] });
+    expect(p?.steps.map((s) => s.action.id)).toEqual(["dmv_original"]);
+  });
+});
+
 describe("more documents never hurts (real rules)", () => {
   it("holds for every persona", () => checkMonotone(rules, Object.values(personas)));
 });

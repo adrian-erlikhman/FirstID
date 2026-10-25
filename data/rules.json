@@ -12,8 +12,8 @@
     },
     "birth_cert_ca": {
       "label": {
-        "en": "Certified California birth certificate",
-        "es": "Acta de nacimiento certificada de California"
+        "en": "Certified U.S. birth certificate (any state)",
+        "es": "Acta de nacimiento certificada de EE. UU. (cualquier estado)"
       },
       "askAtIntake": true
     },
