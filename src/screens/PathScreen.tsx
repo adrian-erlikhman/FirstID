@@ -2,7 +2,7 @@ import { Br, Card3D, CardBack, Icon, Notice, PathCard, Pills, Solver, Unconfirme
 import type { Facts, Mode, Person, Plan, RuleSet, Step } from "../engine/types";
 import { t, type Lang } from "../i18n";
 import { href } from "../router";
-import { noPathNotes, type NoPathNote } from "../whatif";
+import { flipsThatMatter, noPathNotes, type NoPathNote } from "../whatif";
 import { useEffect, useMemo, useState } from "react";
 import { loadTicks, reminderFor, reminderIcs, saveTicks, ticksInPlan, toggleTick, type Ticks } from "../progress";
 
@@ -95,6 +95,8 @@ export function NoPath({ rules, lang, person, onBack }: { rules: RuleSet; lang: 
     allUnsure: s.noPathAllUnsure, needAddress: s.noPathNeedAddress, needWitnesses: s.noPathNeedWitnesses, needSsn: s.noPathNeedSsn,
   };
   const notes = noPathNotes(rules, person);
+  // Only offer "what if" when changing one answer would open a path; otherwise it leads to a dead end too.
+  const canOpen = flipsThatMatter(rules, person, "cheapest").length > 0;
   return (
     <section className="screen">
       <div className="split">
@@ -104,9 +106,11 @@ export function NoPath({ rules, lang, person, onBack }: { rules: RuleSet; lang: 
         </div>
         <div className="body">
           {notes.map((n) => <Notice key={n}>{text[n]}</Notice>)}
-          <div className="actions row">
-            <a className="btn primary" href={href({ name: "whatif" })}>{s.tryWhatIf} <Icon name="arrow" size={18} /></a>
-          </div>
+          {canOpen && (
+            <div className="actions row">
+              <a className="btn primary" href={href({ name: "whatif" })}>{s.tryWhatIf} <Icon name="arrow" size={18} /></a>
+            </div>
+          )}
           <h2 className="label block-label">{s.noPathWho}</h2>
           <ul className="panel link-list">
             <li><a className="link-row" href="tel:211"><span className="link-main"><strong>{s.help211}</strong><span className="row-sub">{s.help211Line}</span></span><Icon name="phone" size={18} /></a></li>
