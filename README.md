@@ -34,34 +34,19 @@ The tests ([`tests/`](tests/)) cover the planner, four invented people checked a
 
 ## What's real and what's made up
 
-- **The people are invented.** The home page walks through one made-up person, Maria, from start to finish. She and three others (DeShawn, Jayden and Luis, in [`tests/personas.ts`](tests/personas.ts)) drive the persona tests. None of them carries a real person's address, birthdate or document numbers.
-- **The rules are real but not yet verified.** Every rule points at a government page or the text of a statute, but they were drafted with AI help from research notes, and a rule only counts as verified once a teammate has opened its sources and signed it off (see [How rules get verified](#how-rules-get-verified)). Until then the app labels it "call ahead".
-- **The documents are real.** The home page and steps show LA County's blank Application for Birth Record and Certificate of Identity, with our highlights on the lines that matter, plus the state's own published samples: the DMV's sample card (2025 design), a blank birth certificate stamped SAMPLE by the California Department of Public Health, and the state's homeless affidavit for a free birth certificate. Where each one comes from is in [`src/docs/README.md`](src/docs/README.md). The DMV's DL 933 is never shown, because the DMV says it must not be shared online.
-- **The office list is a snapshot.** [`data/offices.json`](data/offices.json) holds 26 DMV field offices taken from the DMV's own field-office data, each with its source and the date it was checked. Distances use ZIP code centres from Census files ([`data/zip-centroids.json`](data/zip-centroids.json)), not your location. Call ahead for hours.
-- **The app uses no AI.** Plans come from the deterministic planner over `data/rules.json`. How we used AI to build it is in [`AI-USE.md`](AI-USE.md).
+- **The people are invented.** Maria (on the home page) and three others in [`tests/personas.ts`](tests/personas.ts) carry no real names, addresses or document numbers.
+- **The rules are real but not yet verified.** Each cites a government page or statute, but they were drafted with AI help, so each stays "call ahead" until a teammate checks it ([how](#how-rules-get-verified)).
+- **The documents and office list are real.** LA County's blank forms, the state's published samples ([sources](src/docs/README.md)), and 26 DMV field offices from the DMV's own data ([`data/offices.json`](data/offices.json)), each with its source and check date. The DMV's DL 933 is never shown, because the DMV says it must not be shared online.
+- **The app uses no AI.** Plans come from the planner. How we used AI to build it is in [`AI-USE.md`](AI-USE.md).
 
 ## Privacy
 
-- **No accounts, no server, no database.** First ID is a static site. The plan is computed in your browser, and nothing you tick or answer is sent anywhere.
-- **Your answers are gone when you close the tab.** They sit in the tab's `sessionStorage` so a phone that reloads the page doesn't lose them. The ZIP code you type for the office list stays in memory and is never saved.
-- **Two things stay on the phone until you clear them:** the steps you tick as done ("Clear my progress" removes them) and your text-size choice, both in `localStorage`. Calendar reminders are `.ics` files made in the browser. None of it is sent anywhere.
-- **Works offline after the first visit.** A service worker ([`public/sw.js`](public/sw.js)) caches the site's own files so it still opens with no signal. It stores no answers.
-- **No third-party requests.** Fonts, images and the office list are served from the site itself; there are no analytics, trackers or CDNs. The only outside pages are the sources, the DMV's office list and an office's map directions (which carry the office's address, never your ZIP), and they open only when you tap them.
-- **Enforced on the main site.** [`vercel.json`](vercel.json) sends a Content-Security-Policy that only lets the page load its own files, plus `Referrer-Policy: no-referrer`. (GitHub Pages can't send custom headers, so the mirror relies on the code alone.)
+First ID is a static site with no accounts, server or database. Your answers stay in the tab and are gone when you close it; the ZIP you type for offices is never saved. Ticked steps and your text-size choice stay on the phone until you clear them, and calendar reminders are made on the phone. There are no analytics or third-party requests, [`vercel.json`](vercel.json) enforces that with a Content-Security-Policy, and a service worker ([`public/sw.js`](public/sw.js)) keeps the site working offline without storing any answers.
 
-## English and Spanish
+## Spanish and accessibility
 
-The whole app, including the printed packet, works in English and Spanish. It starts in Spanish when the browser's language is Spanish, and the button in the top bar switches at any time. Screen text lives in [`src/i18n.ts`](src/i18n.ts); every rule in `data/rules.json` carries both languages, and the linter fails the build if a rule is missing its Spanish. Source titles that exist only in English are marked "(en inglés)". The Spanish was drafted with AI help and has not yet had a full review by a native speaker.
-
-## Accessibility
-
-- **Keyboard:** every control is a native button or link, so the whole flow works with Tab, Enter and Space, with a visible focus outline. When a new screen opens, focus moves to its heading.
-- **Text size:** a control in the top bar switches between Default, Larger and Largest. Body text is sized in rem, so the browser's own font-size setting and zoom work too, and pinch-zoom is never blocked.
-- **Reduced motion:** if your device asks for reduced motion, the animations, the scroll-pinned story, the card tilt and its sheen all switch off. The tilt never runs on touch screens.
-- **Contrast:** `npm run contrast` checks the palette against WCAG ratios (4.5:1 for text, 3:1 for control outlines).
-- **Spanish:** switching language also switches the page's `lang` attribute, so screen readers read Spanish with a Spanish voice.
-
-We have not yet done a full pass with a screen reader (VoiceOver or TalkBack).
+- The whole app, including the packet, works in English and Spanish, and the linter fails the build if a rule is missing its Spanish. The Spanish was drafted with AI help and hasn't had a full native-speaker review yet.
+- Everything works by keyboard with a visible focus ring; there's a text-size control; motion switches off for reduced-motion users; `npm run contrast` checks colour contrast. We haven't yet done a full screen-reader pass.
 
 ## Run it locally
 
