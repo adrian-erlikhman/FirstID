@@ -1,4 +1,4 @@
-import { Br, Card3D, CardBack, Formula, Icon, Notice, PathCard, Pills, Printout, Solver, Unconfirmed, money, placeOf } from "../components";
+import { Br, Card3D, CardBack, Icon, Notice, PathCard, Pills, Solver, Unconfirmed, money, placeOf } from "../components";
 import type { Facts, Mode, Person, Plan, RuleSet, Step } from "../engine/types";
 import { t, type Lang } from "../i18n";
 import { href } from "../router";
