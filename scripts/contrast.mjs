@@ -19,6 +19,11 @@ for (const [name, t] of Object.entries(P)) {
     ["primary button text", t.onInk, t.ink, 4.5], ["picked choice text", t.onInk, t.ink, 4.5],
     ["path card text (72% white on black)", mix(t.onInk, t.ink, 0.72), t.ink, 4.5],
     ["control outline on panel", t.control, t.panel, 3], ["control outline on page", t.control, t.ground, 3], ["checkbox fill vs panel", t.ink, t.panel, 3],
+    // Focus ring: #0a0a0a ring in a yellow (c1) halo. The two must part from
+    // each other, and the stronger of them from the page and a picked pill.
+    ["focus ring black vs yellow halo", "#0a0a0a", t.c1, 3],
+    ["focus ring on page", cr("#0a0a0a", t.ground) > cr(t.c1, t.ground) ? "#0a0a0a" : t.c1, t.ground, 3],
+    ["focus ring on picked pill", cr("#0a0a0a", t.ink) > cr(t.c1, t.ink) ? "#0a0a0a" : t.c1, t.ink, 3],
     ["text on yellow highlight", t.onC, t.c1, 4.5], ["text on mint", t.onC, t.c2, 4.5], ["text on sky", t.onC, t.c3, 4.5], ["text on orange", t.onC, t.c4, 4.5],
   ];
   const out = checks.map(([label, a, b, min]) => { const r = cr(a, b); if (r < min) failed++; return `${label} ${r.toFixed(2)}${r < min ? " FAIL" : ""}`; });

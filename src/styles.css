@@ -799,4 +799,19 @@ h2.display.wide { max-width: 20ch; margin-bottom: 28px; }
   position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
   overflow: hidden; clip: rect(0 0 0 0); clip-path: inset(50%); white-space: nowrap; border: 0;
 }
+/* Keyboard focus: the brand's black ring inside a yellow halo, so it shows on
+   white, on black (a picked pill, the dark theme) and on the card. The black
+   carries it on light grounds, the yellow on dark ones (npm run contrast).
+   Inside a panel, which clips, the ring and halo are drawn inward instead. */
+:root { --focus-ink: #0a0a0a; --focus-halo: var(--c1); }
+:focus-visible {
+  outline: 2px solid var(--focus-ink); outline-offset: 2px;
+  box-shadow: 0 0 0 2px var(--focus-halo), 0 0 0 6px var(--focus-halo) !important; /* wins over picked-state shadows */
+}
+.panel :focus-visible { outline-offset: -4px; box-shadow: inset 0 0 0 6px var(--focus-halo) !important; }
+.pill:focus-visible, .lang button:focus-visible, .c3d-flip:focus-visible,
+.brand:focus-visible, .back-btn:focus-visible, .nav-cta:focus-visible { position: relative; z-index: 1; }
+.brand:focus-visible { border-radius: 6px; }
+main h1:focus { box-shadow: none !important; } /* headings take focus on a new screen, quietly */
+@media (forced-colors: active) { :focus-visible { outline-color: Highlight; } }
 /* ==== end card accessibility ============================================ */
