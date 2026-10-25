@@ -1,4 +1,4 @@
-import { plan } from "./engine/planner";
+import { plan, suggestable } from "./engine/planner";
 import type { Mode, Person, Plan, RuleSet } from "./engine/types";
 
 // "What if" = change one answer and re-plan. The toggles shown are only the
@@ -41,9 +41,7 @@ export interface FlipOption {
 
 export function flipsThatMatter(rules: RuleSet, person: Person, mode: Mode, max = 4): FlipOption[] {
   const base = plan(rules, person, mode);
-  const docFlips: Flip[] = Object.keys(rules.docs)
-    .filter((d) => rules.docs[d].askAtIntake && !person.have.includes(d))
-    .map((doc) => ({ kind: "doc", doc }));
+  const docFlips: Flip[] = suggestable(rules, person, base).map((doc) => ({ kind: "doc", doc }));
   const factFlips: Flip[] = FLIPPABLE_FACTS.map((fact) => ({ kind: "fact", fact }));
 
   const score = (p: Plan | null) => (p ? [p.total.dollars, p.total.trips, p.total.days, p.total.steps] : [Infinity, Infinity, Infinity, Infinity]);

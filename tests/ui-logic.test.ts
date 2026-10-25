@@ -5,19 +5,33 @@ import { examples } from "../src/examples";
 import { parse, href } from "../src/router";
 import { applyFlips, flipsThatMatter } from "../src/whatif";
 import { withImplied } from "../src/person";
-import { plan } from "../src/engine/planner";
+import { plan, whatHelps } from "../src/engine/planner";
 import { personas } from "./personas";
 
 const rules = rulesJson as unknown as RuleSet;
 
 describe("what-if toggles", () => {
   it("for Maria, 'had an ID before' is among the biggest savings", () => {
+    // A passport saves just as much, so either can sort first.
     const opts = flipsThatMatter(rules, personas.maria, "cheapest");
     expect(opts[0].better).toBe(true);
     expect(opts[0].plan!.total.dollars).toBe(0);
     const hadId = opts.find((o) => o.flip.kind === "doc" && o.flip.doc === "dmv_record");
-    expect(hadId?.better).toBe(true);
     expect(hadId?.plan!.total.dollars).toBe(0);
+  });
+
+  it("never suggests a document the path already gets you", () => {
+    // Maria's path orders her birth certificate, so it isn't a thing to go find.
+    const docs = flipsThatMatter(rules, personas.maria, "cheapest", 99).flatMap((o) => (o.flip.kind === "doc" ? [o.flip.doc] : []));
+    expect(docs).not.toContain("birth_cert_ca");
+    expect(whatHelps(rules, personas.maria).map((h) => h.doc)).not.toContain("birth_cert_ca");
+  });
+
+  it("never suggests a U.S. birth certificate to someone born abroad", () => {
+    const person = { facts: { born: "abroad", age: 30, unhoused: true }, have: ["ssn_known"] };
+    const docs = flipsThatMatter(rules, person, "cheapest", 99).flatMap((o) => (o.flip.kind === "doc" ? [o.flip.doc] : []));
+    expect(docs).not.toContain("birth_cert_ca");
+    expect(docs).toContain("us_passport");
   });
 
   it("only shows answers that change the plan", () => {

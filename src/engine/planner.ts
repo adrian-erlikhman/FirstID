@@ -137,12 +137,23 @@ function unwind(n: Node, mode: Mode, explored: number): Plan {
  * would having it shorten the plan? This is what a caseworker asks first:
  * is it worth digging for the old ID number, or calling the hospital?
  */
+/**
+ * Documents worth suggesting to this person: ones they could go looking for
+ * (an old ID, a birth certificate), not forms only an agency can issue; that
+ * they don't hold; that their path doesn't already get them; and that can
+ * exist for them (no U.S. birth certificate for someone born abroad).
+ */
+export function suggestable(rules: RuleSet, person: Person, base: Plan | null): DocId[] {
+  const produced = new Set(base?.steps.flatMap((s) => s.action.produces) ?? []);
+  return Object.keys(rules.docs).filter((d) =>
+    rules.docs[d].askAtIntake && !person.have.includes(d) && !produced.has(d) &&
+    !(d === "birth_cert_ca" && person.facts.born === "abroad"));
+}
+
 export function whatHelps(rules: RuleSet, person: Person, mode: Mode = "cheapest") {
   const base = plan(rules, person, mode);
   if (!base) return [];
-  // Only documents a person could go looking for (an old ID, a birth
-  // certificate), not forms that only an agency can issue.
-  const candidates = Object.keys(rules.docs).filter((d) => rules.docs[d].askAtIntake && !person.have.includes(d));
+  const candidates = suggestable(rules, person, base);
   return candidates
     .map((doc) => ({ doc, plan: plan(rules, { ...person, have: [...person.have, doc] }, mode)! }))
     .filter((x) => x.plan && less(ORDER[mode](x.plan.total), ORDER[mode](base.total)))

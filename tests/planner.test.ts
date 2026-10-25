@@ -39,9 +39,9 @@ describe("planner mechanics (toy rules)", () => {
     expect(have.has(toy.goal)).toBe(true);
   });
 
-  it("what helps most: an old ID on file or a birth certificate each save $45", () => {
+  it("what helps most: an old ID on file saves $45; the certificate the path orders isn't suggested", () => {
     const helps = whatHelps(toy, { facts: { bornHere: true, hasWitnesses: true }, have: [] });
-    expect(helps.map((h) => h.doc).slice(0, 2).sort()).toEqual(["cert", "old_id"]);
+    expect(helps.map((h) => h.doc)).toEqual(["old_id"]);
     expect(helps[0].saves.dollars).toBe(45);
   });
 });
