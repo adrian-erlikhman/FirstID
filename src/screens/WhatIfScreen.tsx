@@ -5,9 +5,9 @@ import type { Mode, Person, RuleSet } from "../engine/types";
 import { t, type Lang } from "../i18n";
 import { applyFlips, flipKey, flipsThatMatter, samePlan, type Flip } from "../whatif";
 
-// OWNER: Adrian (screen) + Ryan (re-planning). Flip an answer, the planner
-// runs again, and the steps that drop out disappear. The only motion in the
-// app is here and on the brackets, because the change in the path is the point.
+// Flip an answer, the planner runs again, and the steps that drop out
+// disappear. The only motion in the app is here and on the brackets, because
+// the change in the path is the point.
 export function WhatIfScreen(props: {
   rules: RuleSet; lang: Lang; person: Person; mode: Mode; onApply: (p: Person) => void;
 }) {
