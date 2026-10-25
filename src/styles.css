@@ -29,15 +29,7 @@
   --on-c: #0a0a0a;
   color-scheme: light;
 }
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) {
-    --ground: #0a0a0a; --panel: #121212; --ink: #f5f5f5; --on-ink: #0a0a0a;
-    --text-2: #b8b8b8; --slate: #8f8f8f; --mute: #4d4d4d; --control: #737373;
-    --line: #222222; --line-strong: #2e2e2e; --wash: #1a1a1a; --pick: #1f1f1f;
-    --pw: #0a0a0a; --pb: #f5f5f5;
-    color-scheme: dark;
-  }
-}
+/* White background always, as Adrian asked; dark is opt-in only (data-theme="dark"). */
 :root[data-theme="dark"] {
   --ground: #0a0a0a; --panel: #121212; --ink: #f5f5f5; --on-ink: #0a0a0a;
   --text-2: #b8b8b8; --slate: #8f8f8f; --mute: #4d4d4d; --control: #737373;
