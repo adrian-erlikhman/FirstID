@@ -12,7 +12,13 @@ First ID is for people in LA County who need a California ID card and don't have
 - people leaving jail (there is no reentry-specific rule yet, so their path uses the general rules)
 - caseworkers, shelter staff and counselors working through the process with any of them
 
-You tick the documents you still have and answer seven short questions. First ID works out the cheapest legal way to an ID from there: each step, where to go, what to bring, what it costs after fee waivers, what to say at the counter, and the source that allows it. It prints the whole path as a one-page packet to carry to each office.
+You tick the documents you still have and answer seven short questions. First ID works out the cheapest legal way to an ID from there: each step, where to go, what to bring, what it costs after fee waivers, what to say at the counter, and the source that allows it. It prints the whole path as a one-page packet to carry to each office. On the path you can tick steps off as you finish them, and add a calendar reminder for the steps that arrive by mail.
+
+On each step you can also:
+
+- **Show the clerk:** the "say this" line full screen, in large type, to hold up at the counter.
+- **Read aloud:** the phone reads the line in English or Spanish, using its own voice.
+- **Find an office:** DMV steps link to a list of 26 LA County DMV field offices with hours and a directions link, sorted by distance from a ZIP code you type.
 
 This is not legal advice. Rules change, and the app marks every rule our team has not yet checked against its source.
 
@@ -30,39 +36,41 @@ data/rules.json ──► npm run lint:rules ──► planner (in the browser) 
  waivers, sources    rule has no source       documents you hold          to its source
 ```
 
-1. **The rules are data, not code.** [`data/rules.json`](data/rules.json) holds every rule First ID knows: what it requires, which documents it gives you, the fee, the fee waivers, how long it takes, where it happens, what to bring and say, and the official sources behind it, in English and Spanish.
+1. **The rules are data, not code.** [`data/rules.json`](data/rules.json) holds every rule First ID knows: what it requires, which documents it gives you, the fee, the fee waivers, how long it takes, where it happens, what to bring and say, and the sources behind it, in English and Spanish.
 2. **A linter guards the rules.** [`src/engine/lint.ts`](src/engine/lint.ts) fails the build if a rule has no source, names an unknown document or place, has a waiver that costs more than the fee, is missing a Spanish line, or has a requirement of the form "you must not have document X" (which would break the guarantee below).
 3. **The planner is a deterministic search.** [`src/engine/planner.ts`](src/engine/planner.ts) treats your situation as a state (the documents you hold) and each rule as a move that adds documents. Because moves only ever add documents, Dijkstra's algorithm finds the exact best sequence that ends with a California ID. "Cheapest" compares dollars, then trips, then days, then steps; the path screen can also sort by fewest trips or fastest. The same answers always give the same path.
 4. **Every step cites its source.** Each step shows the rule's sources (DMV, LA County Registrar-Recorder and Social Security pages, and the text of California statutes; some statute links still go to FindLaw, public.law or LegiScan rather than leginfo.legislature.ca.gov) with the exact sentence that supports it (or a note that we haven't copied it yet) and, once a person has verified the rule, the date they checked it. The "How we know" screen lists every rule and source.
 5. **What-if.** The app re-plans once for each answer you could change and shows only the changes that would alter your path.
-6. **When there is no path** with the rules we have, it says so and lists who can help today, instead of guessing.
+6. **When there is no path** with the rules we have, it says what is blocking it (for example, no paper with your address) and lists who can help today, instead of guessing.
 
-The tests ([`tests/`](tests/)) check the planner on toy rules, check four invented people against plans worked out by hand from the sources, and check one guarantee on the real rules: having more documents never makes your plan worse. `npm run check` runs the rules lint, the tests, the type check and the build, and nothing deploys unless it passes.
+The tests ([`tests/`](tests/)) check the planner on toy rules, check four invented people against plans worked out by hand from the sources, check one guarantee on the real rules (having more documents never makes your plan worse), and check the office list and the progress logic. `npm run check` runs the rules lint, the tests, the type check and the build, and nothing deploys unless it passes.
 
 ## What's real and what's made up
 
-- **The people in the examples are invented.** Maria, DeShawn, Jayden and Luis (in [`tests/personas.ts`](tests/personas.ts)) are made up to show different situations, and the same people drive both the app's examples and the persona tests. They carry no real person's address, birthdate or document numbers.
+- **The people are invented.** The home page walks through one made-up person, Maria, from start to finish. She and three others (DeShawn, Jayden and Luis, in [`tests/personas.ts`](tests/personas.ts)) drive the persona tests. None of them carries a real person's address, birthdate or document numbers.
 - **The rules are real but not yet verified.** Every rule points at a government page or the text of a statute, but they were drafted with AI help from research notes, and a rule only counts as verified once a teammate has opened its sources and signed it off (see [How rules get verified](#how-rules-get-verified)). Until then the app labels it "call ahead".
-- **The forms are real.** The home page and steps show LA County's blank Application for Birth Record and Certificate of Identity, with our highlights on the lines that matter.
+- **The documents are real.** The home page and steps show LA County's blank Application for Birth Record and Certificate of Identity, with our highlights on the lines that matter, plus the state's own published samples: the DMV's sample card (2025 design), a blank birth certificate stamped SAMPLE by the California Department of Public Health, and the state's homeless affidavit for a free birth certificate. Where each one comes from is in [`src/docs/README.md`](src/docs/README.md). The DMV's DL 933 is never shown, because the DMV says it must not be shared online.
+- **The office list is a snapshot.** [`data/offices.json`](data/offices.json) holds 26 DMV field offices taken from the DMV's own field-office data, each with its source and the date it was checked. Distances use ZIP code centres from Census files ([`data/zip-centroids.json`](data/zip-centroids.json)), not your location. Call ahead for hours.
 - **The app uses no AI.** Plans come from the deterministic planner over `data/rules.json`. How we used AI to build it is in [`AI-USE.md`](AI-USE.md).
 
 ## Privacy
 
 - **No accounts, no server, no database.** First ID is a static site. The plan is computed in your browser, and nothing you tick or answer is sent anywhere.
-- **Nothing is kept after you close the tab.** Your answers sit in the tab's `sessionStorage` so a phone that reloads the page doesn't lose them, and they disappear when the tab closes.
+- **Your answers are gone when you close the tab.** They sit in the tab's `sessionStorage` so a phone that reloads the page doesn't lose them. The ZIP code you type for the office list stays in memory and is never saved.
+- **Two things stay on the phone until you clear them:** the steps you tick as done ("Clear my progress" removes them) and your text-size choice, both in `localStorage`. Calendar reminders are `.ics` files made in the browser. None of it is sent anywhere.
 - **Works offline after the first visit.** A service worker ([`public/sw.js`](public/sw.js)) caches the site's own files so it still opens with no signal. It stores no answers.
-- **No third-party requests.** Fonts and images are served from the site itself; there are no analytics, trackers or CDNs. The only outside pages are the sources, which open when you tap them.
+- **No third-party requests.** Fonts, images and the office list are served from the site itself; there are no analytics, trackers or CDNs. The only outside pages are the sources, the DMV's office list and an office's map directions (which carry the office's address, never your ZIP), and they open only when you tap them.
 - **Enforced on the main site.** [`vercel.json`](vercel.json) sends a Content-Security-Policy that only lets the page load its own files, plus `Referrer-Policy: no-referrer`. (GitHub Pages can't send custom headers, so the mirror relies on the code alone.)
 
 ## English and Spanish
 
-The whole app, including the printed packet, works in English and Spanish. It starts in Spanish when the browser's language is Spanish, and the button in the top bar switches at any time. Screen text lives in [`src/i18n.ts`](src/i18n.ts); every rule in `data/rules.json` carries both languages, and the linter fails the build if a rule is missing its Spanish. The Spanish was drafted with AI help and has not yet had a full review by a native speaker.
+The whole app, including the printed packet, works in English and Spanish. It starts in Spanish when the browser's language is Spanish, and the button in the top bar switches at any time. Screen text lives in [`src/i18n.ts`](src/i18n.ts); every rule in `data/rules.json` carries both languages, and the linter fails the build if a rule is missing its Spanish. Source titles that exist only in English are marked "(en inglés)". The Spanish was drafted with AI help and has not yet had a full review by a native speaker.
 
 ## Accessibility
 
 - **Keyboard:** every control is a native button or link, so the whole flow works with Tab, Enter and Space, with a visible focus outline. When a new screen opens, focus moves to its heading.
+- **Text size:** a control in the top bar switches between Default, Larger and Largest. Body text is sized in rem, so the browser's own font-size setting and zoom work too, and pinch-zoom is never blocked.
 - **Reduced motion:** if your device asks for reduced motion, the animations, the scroll-pinned story, the card tilt and its sheen all switch off. The tilt never runs on touch screens.
-- **Text size:** body text is 17px and the smallest text on the home page is 13px. Pinch-zoom and browser zoom are not blocked. Sizes are set in pixels, so the browser's default font-size setting doesn't change them.
 - **Contrast:** `npm run contrast` checks the palette against WCAG ratios (4.5:1 for text, 3:1 for control outlines).
 - **Spanish:** switching language also switches the page's `lang` attribute, so screen readers read Spanish with a Spanish voice.
 
@@ -82,7 +90,7 @@ npm run check     # rules lint + tests + type check + production build
 
 Other scripts: `npm test` runs only the tests, `npm run lint:rules` only the rules linter, `npm run build` only the type check and build, and `npm run contrast` checks the colour contrast ratios used in `src/styles.css`.
 
-On the home page, tap one of the example people (for example Maria) to see a full path without typing anything.
+To see a full path without typing anything, tap "See Maria's path" on the home page, or open `#/example/maria`.
 
 ## Deployment
 
@@ -98,46 +106,48 @@ The rules were drafted with AI help from the research in [`docs/research/`](docs
 
 **Status today, counted from `data/rules.json`: 0 of 11 rules are verified, and 11 of the 23 sources still have a `TODO` in place of their exact quote.** The "How we know" screen shows the same count live.
 
-Found a rule that's wrong or out of date? [Report it with the rule form](https://github.com/adrian-erlikhman/FirstID/issues/new?template=wrong-rule.yml), with the official source and the date you checked it.
+Found a rule that's wrong or out of date? [Report it with the rule form](https://github.com/adrian-erlikhman/FirstID/issues/new?template=wrong-rule.yml), with the source and the date you checked it.
 
 ## Project structure
 
 ```
-data/rules.json          every rule, document, place and source, in English and Spanish
+data/
+  rules.json             every rule, document, place and source, in English and Spanish
+  offices.json           LA County DMV field offices, each with its source and check date
+  zip-centroids.json     ZIP code centres for sorting offices by distance
 src/
   engine/
     types.ts             the shared types: rules, documents, plans
     expr.ts              evaluates a rule's requirements
     planner.ts           Dijkstra search for the best path
     lint.ts              checks the rules file (run by scripts/lint-rules.ts)
-  screens/               home, what you have, questions, path, step, what-if, packet, how we know
+  screens/               home, what you have, questions, path, step, what-if, offices, packet, how we know
   App.tsx                app state, kept in sessionStorage for the tab
   router.ts              hash routes (#/path, #/step/2, #/example/maria); no personal data in URLs
   whatif.ts              re-plans for each answer that could change
-  components.tsx         shared UI pieces, including the source cards
+  examples.ts            the invented people, built from tests/personas.ts
+  offices.ts             loads the office list and sorts it by ZIP
+  progress.ts            step ticks and calendar reminders (.ics), built on the device
+  components.tsx         shared UI pieces, including the source cards and the text-size control
   i18n.ts                every screen string in English and Spanish
   styles.css, motion.ts  look and motion (motion switches off for reduced-motion users)
-  fonts/, forms/         self-hosted fonts (with their licence) and the LA County form images
-tests/                   planner, persona and UI-logic tests (Vitest)
+  fonts/                 self-hosted fonts, with their licence
+  forms/, docs/          LA County's forms and the state's sample documents, with their sources
+tests/                   planner, persona, office, progress and UI-logic tests (Vitest)
 scripts/                 rules linter and colour-contrast check
 public/                  icons, link-preview image, web app manifest, offline service worker
 docs/research/           background research from before the build (AI-compiled leads)
-docs/team/               build-week team notes
+docs/team/               build-week notes: repo setup and the task list
 .github/workflows/       check.yml (pull requests) and pages.yml (deploy to GitHub Pages)
 .github/ISSUE_TEMPLATE/  the "report a wrong or outdated rule" form
 vercel.json              Vercel build and security headers
 AI-USE.md                the AI disclosure
 ```
 
-## Team
+## Contributing
 
-Built for the 2026 Congressional App Challenge (California's 37th district) by:
-
-- **Adrian Erlikhman**: the experience: screens, design, Spanish and accessibility
-- **Michael Tarekegn**: the rules data, its sources and the hand-worked example plans
-
-How we split the work, review changes and record AI help is in [`CONTRIBUTING.md`](CONTRIBUTING.md). Our build-week notes are in [`docs/team/`](docs/team/).
+How we review changes, verify rules and record AI help is in [`CONTRIBUTING.md`](CONTRIBUTING.md).
 
 ## AI use
 
-The contest allows AI tools when all AI use is disclosed. We used Anthropic's Claude to research the rules, draft the rules file and the Spanish, write much of the code and the site's design, and review our work. Commits Claude wrote say so in the subject ("AI-generated by Claude") or end with a `Co-Authored-By: Claude` line, and our rule is never to rewrite main's history. The app itself uses no AI. Every AI contribution is logged in **[`AI-USE.md`](AI-USE.md)**, with a column for who reviewed it and what they changed.
+The Congressional App Challenge allows AI tools when all AI use is disclosed. We used Anthropic's Claude to research the rules, draft the rules file and the Spanish, write much of the code and the site's design, and review our work. Commits Claude wrote say so in the subject ("AI-generated by Claude") or end with a `Co-Authored-By: Claude` line, and our rule is never to rewrite main's history. The app itself uses no AI. Every AI contribution is logged in **[`AI-USE.md`](AI-USE.md)**, with a column for who reviewed it and what they changed.
