@@ -98,6 +98,8 @@ The rules were drafted with AI help from the research in [`docs/research/`](docs
 
 **Status today, counted from `data/rules.json`: 0 of 11 rules are verified, and 11 of the 23 sources still have a `TODO` in place of their exact quote.** The "How we know" screen shows the same count live.
 
+Found a rule that's wrong or out of date? [Report it with the rule form](https://github.com/adrian-erlikhman/FirstID/issues/new?template=wrong-rule.yml), with the official source and the date you checked it.
+
 ## Project structure
 
 ```
