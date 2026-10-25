@@ -475,8 +475,8 @@ export function Notice({ tone = "info", title, children }: { tone?: "info" | "dr
   );
 }
 
-/** Pick one answer. Pills, like Monte's tabs, with aria-pressed so screen
- *  readers announce the choice. `numbered` adds 01, 02… in mono. */
+/** Pick one answer. Pills with aria-pressed, so screen readers announce the
+ *  choice. `numbered` adds 01, 02… in mono. */
 export function Pills<V>(props: { label: string; options: readonly (readonly [V, string])[]; value: V | null; onChange: (v: V) => void; numbered?: boolean; className?: string }) {
   return (
     <div className={`pills ${props.className ?? ""}`} role="group" aria-label={props.label}>
