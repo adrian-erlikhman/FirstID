@@ -64,7 +64,9 @@ export function QuestionsScreen(props: {
           </div>
 
           <div className="actions sticky">
-            <button className="btn primary" onClick={onNext}>{s.seePath} <Icon name="arrow" size={18} /></button>
+            {/* The rules can't pick a birth certificate office without this one. */}
+            <button className="btn primary" onClick={onNext} disabled={facts.born === undefined}
+              style={facts.born === undefined ? { opacity: 0.45, cursor: "not-allowed" } : undefined}>{s.seePath} <Icon name="arrow" size={18} /></button>
           </div>
         </div>
       </div>
