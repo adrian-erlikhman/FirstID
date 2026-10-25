@@ -11,11 +11,13 @@ import { personas } from "./personas";
 const rules = rulesJson as unknown as RuleSet;
 
 describe("what-if toggles", () => {
-  it("for Maria, 'had an ID before' is the biggest saving and comes first", () => {
+  it("for Maria, 'had an ID before' is among the biggest savings", () => {
     const opts = flipsThatMatter(rules, personas.maria, "cheapest");
-    expect(opts[0].flip).toEqual({ kind: "doc", doc: "dmv_record" });
     expect(opts[0].better).toBe(true);
     expect(opts[0].plan!.total.dollars).toBe(0);
+    const hadId = opts.find((o) => o.flip.kind === "doc" && o.flip.doc === "dmv_record");
+    expect(hadId?.better).toBe(true);
+    expect(hadId?.plan!.total.dollars).toBe(0);
   });
 
   it("only shows answers that change the plan", () => {

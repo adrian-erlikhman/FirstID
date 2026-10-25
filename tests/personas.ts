@@ -7,8 +7,8 @@ import type { Person } from "../src/engine/types";
 
 export const personas: Record<string, Person & { story: string }> = {
   maria: {
-    story: "34, born in LA County, lost everything in the Eaton fire, staying in a shelter. Has her Medi-Cal card and knows her Social Security number.",
-    facts: { born: "la_county", age: 34, unhoused: true, hasWitnesses: true, fireSurvivor: true },
+    story: "34, born in LA County, lost her wallet and papers, staying in a shelter. Has her Medi-Cal card and knows her Social Security number.",
+    facts: { born: "la_county", age: 34, unhoused: true, hasWitnesses: true },
     have: ["medi_cal_card", "ssn_known"],
   },
   maria_had_id: {

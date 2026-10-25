@@ -18,14 +18,14 @@ describe("rules file", () => {
 });
 
 describe("personas (hand-worked plans)", () => {
-  it("Maria: DL 933 at the shelter, notary with two witnesses, free birth certificate by mail (fire waiver), free ID", () => {
-    expect(new Set(steps("maria"))).toEqual(new Set(["program_dl933", "notary_witnesses", "rrcc_mail", "dmv_original"]));
-    expect(total("maria")).toEqual({ dollars: 15, trips: 3, days: 49, steps: 4 });
+  it("Maria: DL 933 and the homeless affidavit at the shelter, notary with two witnesses, free birth certificate by mail, free ID", () => {
+    expect(new Set(steps("maria"))).toEqual(new Set(["program_dl933", "program_bc_affidavit", "notary_witnesses", "rrcc_mail", "dmv_original"]));
+    expect(total("maria")).toEqual({ dollars: 15, trips: 3, days: 49, steps: 5 });
   });
 
-  it("Maria without the fire waiver uses the shelter's homeless affidavit instead, still $15", () => {
-    const p = plan(rules, { ...personas.maria, facts: { ...personas.maria.facts, fireSurvivor: false } })!;
-    expect(p.steps.map((s) => s.action.id)).toContain("program_bc_affidavit");
+  it("Maria, if she had also lost papers in the fires: the fire waiver replaces the affidavit, still $15", () => {
+    const p = plan(rules, { ...personas.maria, facts: { ...personas.maria.facts, fireSurvivor: true } })!;
+    expect(p.steps.map((s) => s.action.id)).not.toContain("program_bc_affidavit");
     expect(p.total.dollars).toBe(15);
   });
 
