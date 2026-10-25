@@ -815,3 +815,28 @@ h2.display.wide { max-width: 20ch; margin-bottom: 28px; }
 main h1:focus { box-shadow: none !important; } /* headings take focus on a new screen, quietly */
 @media (forced-colors: active) { :focus-visible { outline-color: Highlight; } }
 /* ==== end card accessibility ============================================ */
+
+/* ===== Say this tools: Show the clerk + Read aloud (src/screens/SayTools.tsx) ===== */
+.say-tools { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 12px; }
+.say-tool { flex: 1 1 150px; min-height: 48px; padding: 10px 16px; font-size: 16px; }
+.btn.say-tool.is-on, .btn.say-tool.is-on:hover { background: var(--cta); color: #fff; box-shadow: none; }
+/* Full screen, black on white whatever the theme, for holding up at a counter. */
+.clerk {
+  position: fixed; inset: 0; z-index: 1000; display: flex; flex-direction: column;
+  background: #fff; color: #000; color-scheme: light;
+  padding: max(12px, env(safe-area-inset-top)) max(16px, env(safe-area-inset-right)) max(16px, env(safe-area-inset-bottom)) max(16px, env(safe-area-inset-left));
+}
+.clerk-bar { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex: none; }
+.clerk-title { margin: 0; font-size: 16px; font-weight: 600; color: #000; min-width: 0; }
+.clerk-close {
+  display: inline-flex; align-items: center; gap: 6px; flex: none;
+  min-height: 52px; padding: 10px 20px; border-radius: 980px; border: 2px solid #000;
+  background: #000; color: #fff; font-size: 18px; font-weight: 600;
+}
+.clerk-close:focus-visible { outline: 3px solid #0071e3; outline-offset: 3px; }
+.clerk-box { flex: 1; min-height: 0; overflow: auto; display: flex; align-items: center; margin-top: 12px; }
+.clerk-say {
+  margin: auto 0; width: 100%; font-size: 32px; font-weight: 700; line-height: 1.18; letter-spacing: -0.02em;
+  color: #000; overflow-wrap: normal; hyphens: manual;
+}
+/* ===== end Say this tools ===== */
