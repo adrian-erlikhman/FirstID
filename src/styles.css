@@ -287,13 +287,13 @@ h1.display .bracketed .num { color: var(--on-c); background: var(--hl); padding:
 
 /* ---------- home: hero, centred, with the card on a stage ---------- */
 .hero { text-align: center; padding: 40px 0 8px; }
-.hero-eyebrow { font-size: 0.9375rem; font-weight: 600; color: var(--text-2); margin: 0 0 14px; }
+.hero-eyebrow { font-size: 1rem; font-weight: 600; color: var(--text-2); margin: 0 0 14px; }
 .hero h1.hero-title { margin: 0 auto; max-width: 15em; text-wrap: balance; }
 .hero-a { display: block; font-size: 44px; line-height: 1.02; }
 .hero-b { display: block; font-size: 44px; line-height: 1.1; margin-top: 0.08em; }
 .hero-lede { font-size: 1.1875rem; line-height: 1.42; color: var(--text-2); max-width: 30em; margin: 20px auto 0; text-wrap: pretty; }
 .hero .actions { justify-content: center; margin-top: 26px; }
-.hero-note { font-size: 0.875rem; color: var(--text-2); margin: 28px 0 0; }
+.hero-note { font-size: 1rem; color: var(--text-2); margin: 28px 0 0; }
 .hero-stage { position: relative; max-width: 600px; margin: 36px auto 0; padding: 0 6px; perspective: 1600px; }
 .hero-stage::after { content: ""; position: absolute; left: 12%; right: 12%; bottom: 34px; height: 40px; border-radius: 50%; background: radial-gradient(closest-side, rgb(0 0 0 / .28), transparent); filter: blur(8px); z-index: -1; }
 .hero-stage > .c3d { animation: card-in 1.2s var(--ease) .15s both; }
@@ -393,7 +393,7 @@ h1.display .bracketed .num { color: var(--on-c); background: var(--hl); padding:
 .scale-label { font-size: 1.0625rem; line-height: 1.35; color: #3a3a3c; text-wrap: pretty; }
 .scale-foot { margin-top: auto; padding-top: 18px; border-top: 1px solid rgb(0 0 0 / .14); font-size: 1.0625rem; line-height: 1.4; color: var(--on-c); text-wrap: pretty; }
 .tile-rows { display: flex; flex-direction: column; margin-top: auto; padding: 6px 16px; border-radius: 16px; background: #fff; }
-.tile-row { display: grid; grid-template-columns: 18px minmax(0, 1fr) auto; gap: 8px; padding: 9px 0; font-size: 0.9063rem; line-height: 1.3; align-items: baseline; text-align: left;
+.tile-row { display: grid; grid-template-columns: 18px minmax(0, 1fr) auto; gap: 8px; padding: 10px 0; font-size: 1rem; line-height: 1.35; align-items: baseline; text-align: left;
   opacity: 0; transform: translateY(10px); transition: opacity .5s var(--ease), transform .6s var(--ease); transition-delay: calc(var(--i) * 90ms + 200ms); }
 .tile-row + .tile-row { border-top: 1px solid var(--line); }
 .bento.seen .tile-row { opacity: 1; transform: none; }
@@ -444,8 +444,8 @@ h1.display .bracketed .num { color: var(--on-c); background: var(--hl); padding:
 .papers3d .p-b .paper-sheet { transform-origin: left center; transform: rotateY(calc((1 - var(--p, 1)) * -34deg)) rotateX(calc((1 - var(--p, 1)) * 12deg)) rotate(1.6deg); }
 .papers3d .paper-sheet:hover { transform: none; }
 .papers3d .paper-zoom { opacity: calc((var(--p, 1) - .55) * 3); }
-.dark-band .paper figcaption { color: #a1a1a6; }
-.dark-band .paper figcaption strong { color: #f5f5f7; }
+.dark-band .paper figcaption { color: #a1a1a6; font-size: 1rem; }
+.dark-band .paper figcaption strong { color: #f5f5f7; font-size: 1.0625rem; }
 
 /* ---------- home: how it works, the last call ---------- */
 .how-tiles { display: grid; gap: 14px; margin-top: 36px; }
@@ -453,6 +453,8 @@ h1.display .bracketed .num { color: var(--on-c); background: var(--hl); padding:
 .how-n { font-size: 52px; font-weight: 600; letter-spacing: -0.05em; line-height: 1; margin-bottom: 8px; }
 .how-tile strong { font-size: 1.3125rem; font-weight: 600; letter-spacing: -0.025em; line-height: 1.2; }
 .how-tile .row-sub { font-size: 1rem; }
+/* On the home page nothing a person reads is smaller than 16px (1rem). */
+.home .fine, .home .photo figcaption { font-size: 1rem; }
 .home-cta { margin-top: 112px; padding: 72px 24px 64px; text-align: center; border-radius: var(--r-tile); background: var(--tile); }
 .home-cta h2.display { font-size: 40px; margin: 0 0 12px; }
 .home-cta .actions { justify-content: center; }
@@ -638,7 +640,7 @@ h2.display.wide { max-width: 20ch; margin-bottom: 28px; }
 .is-card .trail-doc img { border-radius: 3.7% / 5.9%; background: none; box-shadow: 0 0 0 1px rgb(0 0 0 / .06), 0 24px 40px -20px rgb(0 0 0 / .55); }
 .trail-hidden { display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 4px; aspect-ratio: 8.5 / 11; padding: 10px; border-radius: 3px; border: 1.5px dashed var(--control); background: #fff; text-align: center; }
 .trail-hidden b { font-size: 1.3125rem; font-weight: 600; letter-spacing: -0.03em; }
-.trail-hidden span { font-size: 0.875rem; color: var(--text-2); }
+.trail-hidden span { font-size: 1rem; color: var(--text-2); }
 .trail-text { display: flex; flex-direction: column; gap: 6px; min-width: 0; }
 .trail-meta { display: flex; align-items: center; gap: 10px; }
 .trail-n { width: 28px; height: 28px; display: grid; place-items: center; flex: none; border-radius: 50%; background: var(--ink); color: var(--on-ink); font-size: 0.875rem; font-weight: 600; }
@@ -646,7 +648,7 @@ h2.display.wide { max-width: 20ch; margin-bottom: 28px; }
 .trail-cost.free { padding: 1px 8px; border-radius: 6px; background: var(--hl); color: var(--on-c); }
 .trail-text strong { font-size: 1.0625rem; font-weight: 600; letter-spacing: -0.02em; line-height: 1.25; }
 .trail-text .row-sub { font-size: 1rem; }
-.trail-credit { font-size: 0.875rem; color: var(--text-2); }
+.trail-credit { font-size: 1rem; color: var(--text-2); }
 /* On a phone the card gets the whole width, above its words. */
 .trail-step.is-card { grid-template-columns: minmax(0, 1fr); }
 .is-card .trail-desk { width: 100%; max-width: 340px; padding: 6px 4px 0; }
