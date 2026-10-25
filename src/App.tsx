@@ -9,6 +9,7 @@ import { t, type Lang } from "./i18n";
 import { go, parse, useRoute, type Route } from "./router";
 import { HaveScreen } from "./screens/HaveScreen";
 import { HomeScreen } from "./screens/HomeScreen";
+import { OfficesScreen } from "./screens/OfficesScreen";
 import { PacketScreen } from "./screens/PacketScreen";
 import { PathScreen } from "./screens/PathScreen";
 import { QuestionsScreen } from "./screens/QuestionsScreen";
@@ -152,6 +153,10 @@ export default function App() {
     case "sources":
       top = bar(answered ? { name: "path" } : { name: "home" });
       screen = <SourcesScreen rules={rules} lang={lang} />;
+      break;
+    case "offices":
+      top = bar(route.n && result?.steps[route.n - 1] ? { name: "step", n: route.n } : answered ? { name: "path" } : { name: "home" });
+      screen = <OfficesScreen lang={lang} kind={route.kind} />;
       break;
   }
 
