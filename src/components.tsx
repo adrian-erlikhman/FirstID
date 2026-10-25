@@ -460,20 +460,6 @@ export const waiverCount = (p: Plan) => p.steps.filter((st) => st.waiver && st.d
 /** What to say at the counter: the waiver's line if one applies, else the step's own. */
 export const sayFor = (st: Step) => st.waiver?.say ?? st.action.say;
 
-/** The four numbers of a path in a ruled grid, the way Monte shows a solve. */
-export function StatGrid({ plan, lang, busy = false }: { plan: Plan; lang: Lang; busy?: boolean }) {
-  const s = t[lang];
-  const { total } = plan;
-  return (
-    <dl className="stat-grid">
-      <div><dt>{s.totalCost}</dt><dd><Br busy={busy}>{money(total.dollars)}</Br></dd></div>
-      <div><dt>{s.unitSteps(total.steps)}</dt><dd>{total.steps}</dd></div>
-      <div><dt>{s.unitTrips(total.trips)}</dt><dd>{total.trips}</dd></div>
-      <div><dt>{s.untilCard}</dt><dd>{s.timeShort(total.days)}</dd></div>
-    </dl>
-  );
-}
-
 /** "instead of $41, with 2 fee waivers", or nothing when nothing was waived. */
 export function Waived({ plan, lang }: { plan: Plan; lang: Lang }) {
   const s = t[lang];
