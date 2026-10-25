@@ -10,9 +10,9 @@ We add a row whenever an AI tool writes or substantially changes something.
 
 ## Summary
 
-- **Tools:** Anthropic Claude, the only AI tool in the log below. We used it for research, the starter scaffold, the first draft of the rules file and the Spanish, the screens and the site's redesigns, copy passes, and code review.
+- **Tools:** Anthropic Claude, the only AI tool in the log below. We used it for research, the starter scaffold, the first draft of the rules file and the Spanish, the screens and the site's redesigns, copy passes, code review, and drafts of our Congressional App Challenge answers and video script.
 - **The app itself uses no AI.** Plans come from a deterministic planner over the rules file. The same inputs always give the same plan.
-- **Rules and AI:** Claude drafted the rules in `data/rules.json` from its research notes. A rule only counts as verified when a teammate has checked it against the primary source linked next to it; until then the app shows it as "call ahead". As of this update, 0 of the 11 rules are marked verified.
+- **Rules and AI:** Claude drafted the rules in `data/rules.json` from its research notes. A rule only counts as verified when a teammate has checked it against every source linked next to it; until then the app shows it as "call ahead". As of this update, 0 of the 11 rules are marked verified.
 
 ## Log
 
@@ -55,4 +55,5 @@ We add a row whenever an AI tool writes or substantially changes something.
 | 2026-10-25 | Code cleanup and QA for judges reading the repo: internal team notes removed from comments, 6 unused components and their CSS deleted, unused imports and strings removed; end-to-end check of every screen at phone and laptop width in EN/ES, fixing 4 bugs (offline first visit, a cut-off Spanish heading, a 43px button, an untranslated packet label); a no-path note for a missing Social Security number (`src/`, `public/sw.js`, `tests/ui-logic.test.ts`) | Claude | [Michael: what you changed] |
 | 2026-10-25 | Spanish pass over every screen string (consistent terms, agreement, "su fuente" instead of "fuente oficial"), CONTRIBUTING listing the team by name, and the README condensed (`src/i18n.ts`, `CONTRIBUTING.md`, `README.md`) | Claude | [Michael: what you changed; Spanish still needs a native speaker] |
 | 2026-10-25 | Team notes brought up to date: the CAC portal check says every teammate rather than "all three", `npm run check` shows 81 tests (run tonight), the home button is "See Maria's path", and Maria's answers no longer include the fire (`docs/team/START-HERE.md`) | Claude | [Adrian: what you changed] |
+| 2026-10-25 | Drafts of the Congressional App Challenge portal answers (questions 5 to 11) and the video's slides and narration script, kept outside the repo. The team edits them and writes the bracketed parts (inspiration, each person's own work, what we learned) in their own words | Claude | [Adrian: what you changed] |
 | | | | |
