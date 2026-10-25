@@ -57,15 +57,21 @@ The tests ([`tests/`](tests/)) check the planner on toy rules, check four invent
 
 The whole app, including the printed packet, works in English and Spanish. It starts in Spanish when the browser's language is Spanish, and the button in the top bar switches at any time. Screen text lives in [`src/i18n.ts`](src/i18n.ts); every rule in `data/rules.json` carries both languages, and the linter fails the build if a rule is missing its Spanish. The Spanish was drafted with AI help and has not yet had a full review by a native speaker.
 
-**New to the repo? Read `docs/team/START-HERE.md` first.**
+## Run it locally
 
-## Run it
+You need Node.js (CI uses version 22) and npm.
 
 ```bash
+git clone https://github.com/adrian-erlikhman/FirstID.git
+cd FirstID
 npm install
-npm run dev     # local site
-npm run check   # rules lint + tests + build (CI runs this on pull requests and on every push to main)
+npm run dev       # start the local site and open the URL it prints
+npm run check     # rules lint + tests + type check + production build
 ```
+
+Other scripts: `npm test` runs only the tests, `npm run lint:rules` only the rules linter, `npm run build` only the type check and build, and `npm run contrast` checks the colour contrast ratios used in `src/styles.css`.
+
+On the home page, tap one of the example people (for example Maria) to see a full path without typing anything.
 
 ## Team
 
