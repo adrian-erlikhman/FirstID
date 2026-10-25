@@ -460,14 +460,6 @@ export const waiverCount = (p: Plan) => p.steps.filter((st) => st.waiver && st.d
 /** What to say at the counter: the waiver's line if one applies, else the step's own. */
 export const sayFor = (st: Step) => st.waiver?.say ?? st.action.say;
 
-/** "instead of $41, with 2 fee waivers", or nothing when nothing was waived. */
-export function Waived({ plan, lang }: { plan: Plan; lang: Lang }) {
-  const s = t[lang];
-  const full = fullPrice(plan);
-  if (full <= plan.total.dollars) return null;
-  return <p className="waived">{s.waivedLine(full, waiverCount(plan))}</p>;
-}
-
 /** The planner's sum, written out: $0 + $15 + $0 = [$15]. */
 export function Formula({ plan }: { plan: Plan }) {
   if (plan.steps.length < 2) return null;
