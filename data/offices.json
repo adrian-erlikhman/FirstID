@@ -1,0 +1,558 @@
+{
+ "note": "Snapshot of official office data, filtered to Los Angeles County. Fields missing from the source are left out. Rebuild by re-fetching the sources below.",
+ "sources": {
+  "dmv": {
+   "name": "California DMV",
+   "url": "https://www.dmv.ca.gov/portal/wp-json/wp/v2/dmv_field-office?per_page=100",
+   "page": "https://www.dmv.ca.gov/portal/locations/"
+  }
+ },
+ "offices": [
+  {
+   "id": "dmv-arleta",
+   "kind": "dmv",
+   "name": "Arleta",
+   "address": "14400 Van Nuys Blvd",
+   "city": "Arleta",
+   "zip": "91331",
+   "lat": 34.249224,
+   "lon": -118.445215,
+   "hours": {
+    "mon": "8:00 am–5:00 pm",
+    "tue": "8:00 am–5:00 pm",
+    "wed": "9:00 am–5:00 pm",
+    "thu": "8:00 am–5:00 pm",
+    "fri": "8:00 am–5:00 pm",
+    "sat": "closed",
+    "sun": "closed"
+   },
+   "source": "https://www.dmv.ca.gov/portal/field-office/arleta/",
+   "lastChecked": "2026-10-25"
+  },
+  {
+   "id": "dmv-bell-gardens",
+   "kind": "dmv",
+   "name": "Bell Gardens",
+   "address": "6801 South Garfield",
+   "city": "Bell Gardens",
+   "zip": "90201",
+   "lat": 33.9701,
+   "lon": -118.1491,
+   "hours": {
+    "mon": "8:00 am–5:00 pm",
+    "tue": "8:00 am–5:00 pm",
+    "wed": "9:00 am–5:00 pm",
+    "thu": "8:00 am–5:00 pm",
+    "fri": "8:00 am–5:00 pm",
+    "sat": "closed",
+    "sun": "closed"
+   },
+   "source": "https://www.dmv.ca.gov/portal/field-office/bell-gardens/",
+   "lastChecked": "2026-10-25"
+  },
+  {
+   "id": "dmv-bellflower",
+   "kind": "dmv",
+   "name": "Bellflower",
+   "address": "9520 Artesia Blvd",
+   "city": "Bellflower",
+   "zip": "90706",
+   "lat": 33.873631,
+   "lon": -118.131195,
+   "hours": {
+    "mon": "8:00 am–5:00 pm",
+    "tue": "8:00 am–5:00 pm",
+    "wed": "9:00 am–5:00 pm",
+    "thu": "8:00 am–5:00 pm",
+    "fri": "8:00 am–5:00 pm",
+    "sat": "closed",
+    "sun": "closed"
+   },
+   "source": "https://www.dmv.ca.gov/portal/field-office/bellflower/",
+   "lastChecked": "2026-10-25"
+  },
+  {
+   "id": "dmv-compton",
+   "kind": "dmv",
+   "name": "Compton",
+   "address": "2111 South Santa Fe Avenue",
+   "city": "Compton",
+   "zip": "90221",
+   "lat": 33.8765,
+   "lon": -118.2154,
+   "hours": {
+    "mon": "8:00 am–5:00 pm",
+    "tue": "8:00 am–5:00 pm",
+    "wed": "9:00 am–5:00 pm",
+    "thu": "8:00 am–5:00 pm",
+    "fri": "8:00 am–5:00 pm",
+    "sat": "closed",
+    "sun": "closed"
+   },
+   "source": "https://www.dmv.ca.gov/portal/field-office/compton/",
+   "lastChecked": "2026-10-25"
+  },
+  {
+   "id": "dmv-culver-city",
+   "kind": "dmv",
+   "name": "Culver City",
+   "address": "11400 W Washington Blvd",
+   "city": "Culver City",
+   "zip": "90066",
+   "lat": 34.002309,
+   "lon": -118.415368,
+   "hours": {
+    "mon": "8:00 am–5:00 pm",
+    "tue": "8:00 am–5:00 pm",
+    "wed": "9:00 am–5:00 pm",
+    "thu": "8:00 am–5:00 pm",
+    "fri": "8:00 am–5:00 pm",
+    "sat": "closed",
+    "sun": "closed"
+   },
+   "source": "https://www.dmv.ca.gov/portal/field-office/culver-city/",
+   "lastChecked": "2026-10-25"
+  },
+  {
+   "id": "dmv-el-monte",
+   "kind": "dmv",
+   "name": "El Monte",
+   "address": "4000 Arden Drive",
+   "city": "El Monte",
+   "zip": "91731",
+   "lat": 34.080477,
+   "lon": -118.044722,
+   "hours": {
+    "mon": "8:00 am–5:00 pm",
+    "tue": "8:00 am–5:00 pm",
+    "wed": "9:00 am–5:00 pm",
+    "thu": "8:00 am–5:00 pm",
+    "fri": "8:00 am–5:00 pm",
+    "sat": "closed",
+    "sun": "closed"
+   },
+   "source": "https://www.dmv.ca.gov/portal/field-office/el-monte/",
+   "lastChecked": "2026-10-25"
+  },
+  {
+   "id": "dmv-glendale",
+   "kind": "dmv",
+   "name": "Glendale",
+   "address": "1335 W Glenoaks Boulevard",
+   "city": "Glendale",
+   "zip": "91201",
+   "lat": 34.1667,
+   "lon": -118.2833,
+   "hours": {
+    "mon": "8:00 am–5:00 pm",
+    "tue": "8:00 am–5:00 pm",
+    "wed": "9:00 am–5:00 pm",
+    "thu": "8:00 am–5:00 pm",
+    "fri": "8:00 am–5:00 pm",
+    "sat": "closed",
+    "sun": "closed"
+   },
+   "source": "https://www.dmv.ca.gov/portal/field-office/glendale/",
+   "lastChecked": "2026-10-25"
+  },
+  {
+   "id": "dmv-hawthorne",
+   "kind": "dmv",
+   "name": "Hawthorne",
+   "address": "3700 W El Segundo Boulevard",
+   "city": "Hawthorne",
+   "zip": "90250",
+   "lat": 33.9164,
+   "lon": -118.3373,
+   "hours": {
+    "mon": "8:00 am–5:00 pm",
+    "tue": "8:00 am–5:00 pm",
+    "wed": "9:00 am–5:00 pm",
+    "thu": "8:00 am–5:00 pm",
+    "fri": "8:00 am–5:00 pm",
+    "sat": "closed",
+    "sun": "closed"
+   },
+   "source": "https://www.dmv.ca.gov/portal/field-office/hawthorne/",
+   "lastChecked": "2026-10-25"
+  },
+  {
+   "id": "dmv-hollywood",
+   "kind": "dmv",
+   "name": "Hollywood",
+   "address": "803 Cole Avenue",
+   "city": "Hollywood",
+   "zip": "90038",
+   "lat": 34.0853,
+   "lon": -118.3299,
+   "hours": {
+    "mon": "8:00 am–5:00 pm",
+    "tue": "8:00 am–5:00 pm",
+    "wed": "9:00 am–5:00 pm",
+    "thu": "8:00 am–5:00 pm",
+    "fri": "8:00 am–5:00 pm",
+    "sat": "closed",
+    "sun": "closed"
+   },
+   "source": "https://www.dmv.ca.gov/portal/field-office/hollywood/",
+   "lastChecked": "2026-10-25"
+  },
+  {
+   "id": "dmv-inglewood",
+   "kind": "dmv",
+   "name": "Inglewood",
+   "address": "621 N La Brea Ave",
+   "city": "Inglewood",
+   "zip": "90302",
+   "lat": 33.970142,
+   "lon": -118.357099,
+   "hours": {
+    "mon": "closed",
+    "tue": "closed",
+    "wed": "closed",
+    "thu": "closed",
+    "fri": "closed",
+    "sat": "closed",
+    "sun": "closed"
+   },
+   "source": "https://www.dmv.ca.gov/portal/field-office/inglewood/",
+   "lastChecked": "2026-10-25"
+  },
+  {
+   "id": "dmv-lancaster",
+   "kind": "dmv",
+   "name": "Lancaster",
+   "address": "721 W Ave L6",
+   "city": "Lancaster",
+   "zip": "93535",
+   "lat": 34.654836,
+   "lon": -118.146912,
+   "hours": {
+    "mon": "8:00 am–5:00 pm",
+    "tue": "8:00 am–5:00 pm",
+    "wed": "9:00 am–5:00 pm",
+    "thu": "8:00 am–5:00 pm",
+    "fri": "8:00 am–5:00 pm",
+    "sat": "closed",
+    "sun": "closed"
+   },
+   "source": "https://www.dmv.ca.gov/portal/field-office/lancaster/",
+   "lastChecked": "2026-10-25"
+  },
+  {
+   "id": "dmv-long-beach",
+   "kind": "dmv",
+   "name": "Long Beach",
+   "address": "3700 East Willow Street",
+   "city": "Long Beach",
+   "zip": "90815",
+   "lat": 33.8037,
+   "lon": -118.1494,
+   "hours": {
+    "mon": "8:00 am–5:00 pm",
+    "tue": "8:00 am–5:00 pm",
+    "wed": "9:00 am–5:00 pm",
+    "thu": "8:00 am–5:00 pm",
+    "fri": "8:00 am–5:00 pm",
+    "sat": "closed",
+    "sun": "closed"
+   },
+   "source": "https://www.dmv.ca.gov/portal/field-office/long-beach/",
+   "lastChecked": "2026-10-25"
+  },
+  {
+   "id": "dmv-lincoln-park",
+   "kind": "dmv",
+   "name": "Lincoln Park",
+   "address": "3529 N Mission Road",
+   "city": "Los Angeles",
+   "zip": "90031",
+   "lat": 34.0673,
+   "lon": -118.2035,
+   "hours": {
+    "mon": "8:00 am–5:00 pm",
+    "tue": "8:00 am–5:00 pm",
+    "wed": "9:00 am–5:00 pm",
+    "thu": "8:00 am–5:00 pm",
+    "fri": "8:00 am–5:00 pm",
+    "sat": "closed",
+    "sun": "closed"
+   },
+   "source": "https://www.dmv.ca.gov/portal/field-office/lincoln-park/",
+   "lastChecked": "2026-10-25"
+  },
+  {
+   "id": "dmv-los-angeles",
+   "kind": "dmv",
+   "name": "Los Angeles",
+   "address": "3615 S Hope Street",
+   "city": "Los Angeles",
+   "zip": "90007",
+   "lat": 34.0182,
+   "lon": -118.2787,
+   "hours": {
+    "mon": "8:00 am–5:00 pm",
+    "tue": "8:00 am–5:00 pm",
+    "wed": "9:00 am–5:00 pm",
+    "thu": "8:00 am–5:00 pm",
+    "fri": "8:00 am–5:00 pm",
+    "sat": "closed",
+    "sun": "closed"
+   },
+   "source": "https://www.dmv.ca.gov/portal/field-office/los-angeles/",
+   "lastChecked": "2026-10-25"
+  },
+  {
+   "id": "dmv-montebello",
+   "kind": "dmv",
+   "name": "Montebello",
+   "address": "424 N Wilcox Avenue",
+   "city": "Montebello",
+   "zip": "90640",
+   "lat": 34.0194,
+   "lon": -118.1227,
+   "hours": {
+    "mon": "8:00 am–5:00 pm",
+    "tue": "8:00 am–5:00 pm",
+    "wed": "9:00 am–5:00 pm",
+    "thu": "8:00 am–5:00 pm",
+    "fri": "8:00 am–5:00 pm",
+    "sat": "closed",
+    "sun": "closed"
+   },
+   "source": "https://www.dmv.ca.gov/portal/field-office/montebello/",
+   "lastChecked": "2026-10-25"
+  },
+  {
+   "id": "dmv-newhall",
+   "kind": "dmv",
+   "name": "Newhall",
+   "address": "24427 Newhall Avenue",
+   "city": "Newhall",
+   "zip": "91321",
+   "lat": 34.3795,
+   "lon": -118.5325,
+   "hours": {
+    "mon": "8:00 am–5:00 pm",
+    "tue": "8:00 am–5:00 pm",
+    "wed": "9:00 am–5:00 pm",
+    "thu": "8:00 am–5:00 pm",
+    "fri": "8:00 am–5:00 pm",
+    "sat": "closed",
+    "sun": "closed"
+   },
+   "source": "https://www.dmv.ca.gov/portal/field-office/newhall/",
+   "lastChecked": "2026-10-25"
+  },
+  {
+   "id": "dmv-pasadena",
+   "kind": "dmv",
+   "name": "Pasadena",
+   "address": "49 S Rosemead Boulevard",
+   "city": "Pasadena",
+   "zip": "91107",
+   "lat": 34.1452,
+   "lon": -118.0742,
+   "hours": {
+    "mon": "8:00 am–5:00 pm",
+    "tue": "8:00 am–5:00 pm",
+    "wed": "9:00 am–5:00 pm",
+    "thu": "8:00 am–5:00 pm",
+    "fri": "8:00 am–5:00 pm",
+    "sat": "closed",
+    "sun": "closed"
+   },
+   "source": "https://www.dmv.ca.gov/portal/field-office/pasadena/",
+   "lastChecked": "2026-10-25"
+  },
+  {
+   "id": "dmv-pomona",
+   "kind": "dmv",
+   "name": "Pomona",
+   "address": "1600 S Garey Avenue",
+   "city": "Pomona",
+   "zip": "91766",
+   "lat": 34.0424,
+   "lon": -117.7495,
+   "hours": {
+    "mon": "8:00 am–5:00 pm",
+    "tue": "8:00 am–5:00 pm",
+    "wed": "9:00 am–5:00 pm",
+    "thu": "8:00 am–5:00 pm",
+    "fri": "8:00 am–5:00 pm",
+    "sat": "closed",
+    "sun": "closed"
+   },
+   "source": "https://www.dmv.ca.gov/portal/field-office/pomona/",
+   "lastChecked": "2026-10-25"
+  },
+  {
+   "id": "dmv-san-pedro",
+   "kind": "dmv",
+   "name": "San Pedro",
+   "address": "1511 N Gaffey Street",
+   "city": "San Pedro",
+   "zip": "90731",
+   "lat": 33.7588,
+   "lon": -118.2926,
+   "hours": {
+    "mon": "8:00 am–5:00 pm",
+    "tue": "8:00 am–5:00 pm",
+    "wed": "9:00 am–5:00 pm",
+    "thu": "8:00 am–5:00 pm",
+    "fri": "8:00 am–5:00 pm",
+    "sat": "closed",
+    "sun": "closed"
+   },
+   "source": "https://www.dmv.ca.gov/portal/field-office/san-pedro/",
+   "lastChecked": "2026-10-25"
+  },
+  {
+   "id": "dmv-santa-monica",
+   "kind": "dmv",
+   "name": "Santa Monica",
+   "address": "2235 Colorado Avenue",
+   "city": "Santa Monica",
+   "zip": "90404",
+   "lat": 34.028,
+   "lon": -118.4745,
+   "hours": {
+    "mon": "8:00 am–5:00 pm",
+    "tue": "8:00 am–5:00 pm",
+    "wed": "9:00 am–5:00 pm",
+    "thu": "8:00 am–5:00 pm",
+    "fri": "8:00 am–5:00 pm",
+    "sat": "closed",
+    "sun": "closed"
+   },
+   "source": "https://www.dmv.ca.gov/portal/field-office/santa-monica/",
+   "lastChecked": "2026-10-25"
+  },
+  {
+   "id": "dmv-torrance",
+   "kind": "dmv",
+   "name": "Torrance",
+   "address": "1785 W 220th Street",
+   "city": "Torrance",
+   "zip": "90501",
+   "lat": 33.8279,
+   "lon": -118.3113,
+   "hours": {
+    "mon": "8:00 am–5:00 pm",
+    "tue": "8:00 am–5:00 pm",
+    "wed": "9:00 am–5:00 pm",
+    "thu": "8:00 am–5:00 pm",
+    "fri": "8:00 am–5:00 pm",
+    "sat": "closed",
+    "sun": "closed"
+   },
+   "source": "https://www.dmv.ca.gov/portal/field-office/torrance/",
+   "lastChecked": "2026-10-25"
+  },
+  {
+   "id": "dmv-van-nuys",
+   "kind": "dmv",
+   "name": "Van Nuys",
+   "address": "14920 Vanowen Street",
+   "city": "Van Nuys",
+   "zip": "91405",
+   "lat": 34.1939,
+   "lon": -118.4582,
+   "hours": {
+    "mon": "8:00 am–5:00 pm",
+    "tue": "8:00 am–5:00 pm",
+    "wed": "9:00 am–5:00 pm",
+    "thu": "8:00 am–5:00 pm",
+    "fri": "8:00 am–5:00 pm",
+    "sat": "closed",
+    "sun": "closed"
+   },
+   "source": "https://www.dmv.ca.gov/portal/field-office/van-nuys/",
+   "lastChecked": "2026-10-25"
+  },
+  {
+   "id": "dmv-west-covina",
+   "kind": "dmv",
+   "name": "West Covina",
+   "address": "800 So Glendora Avenue",
+   "city": "West Covina",
+   "zip": "91790",
+   "lat": 34.061,
+   "lon": -117.9316,
+   "hours": {
+    "mon": "8:00 am–5:00 pm",
+    "tue": "8:00 am–5:00 pm",
+    "wed": "9:00 am–5:00 pm",
+    "thu": "8:00 am–5:00 pm",
+    "fri": "8:00 am–5:00 pm",
+    "sat": "closed",
+    "sun": "closed"
+   },
+   "source": "https://www.dmv.ca.gov/portal/field-office/west-covina/",
+   "lastChecked": "2026-10-25"
+  },
+  {
+   "id": "dmv-west-hollywood",
+   "kind": "dmv",
+   "name": "West Hollywood",
+   "address": "936 N Formosa Ave",
+   "city": "West Hollywood",
+   "zip": "90046",
+   "lat": 34.088257,
+   "lon": -118.345865,
+   "hours": {
+    "mon": "8:00 am–5:00 pm",
+    "tue": "8:00 am–5:00 pm",
+    "wed": "9:00 am–5:00 pm",
+    "thu": "8:00 am–5:00 pm",
+    "fri": "8:00 am–5:00 pm",
+    "sat": "closed",
+    "sun": "closed"
+   },
+   "source": "https://www.dmv.ca.gov/portal/field-office/west-hollywood/",
+   "lastChecked": "2026-10-25"
+  },
+  {
+   "id": "dmv-whittier",
+   "kind": "dmv",
+   "name": "Whittier",
+   "address": "9338 S Painter Avenue",
+   "city": "Whittier",
+   "zip": "90605",
+   "lat": 33.9528,
+   "lon": -118.0432,
+   "hours": {
+    "mon": "8:00 am–5:00 pm",
+    "tue": "8:00 am–5:00 pm",
+    "wed": "9:00 am–5:00 pm",
+    "thu": "8:00 am–5:00 pm",
+    "fri": "8:00 am–5:00 pm",
+    "sat": "closed",
+    "sun": "closed"
+   },
+   "source": "https://www.dmv.ca.gov/portal/field-office/whittier/",
+   "lastChecked": "2026-10-25"
+  },
+  {
+   "id": "dmv-winnetka",
+   "kind": "dmv",
+   "name": "Winnetka",
+   "address": "20725 Sherman Way",
+   "city": "Winnetka",
+   "zip": "91306",
+   "lat": 34.201,
+   "lon": -118.5846,
+   "hours": {
+    "mon": "8:00 am–5:00 pm",
+    "tue": "8:00 am–5:00 pm",
+    "wed": "9:00 am–5:00 pm",
+    "thu": "8:00 am–5:00 pm",
+    "fri": "8:00 am–5:00 pm",
+    "sat": "closed",
+    "sun": "closed"
+   },
+   "source": "https://www.dmv.ca.gov/portal/field-office/winnetka/",
+   "lastChecked": "2026-10-25"
+  }
+ ]
+}
