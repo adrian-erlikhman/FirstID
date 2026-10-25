@@ -353,6 +353,17 @@ const en = {
   officesDirections: "Directions",
   officesTo: (name: string) => `to ${name} (opens maps)`,
   officesFrom: ["Office details from ", ", checked Oct 25, 2026. Call ahead."] as [string, string],
+  // Progress ticks and calendar reminders (src/progress.ts, PathScreen)
+  progressDone: (n: number, total: number) => `${n} of ${total} done`,
+  progressNote: "Saved on this phone only.",
+  clearProgress: "Clear my progress",
+  markDone: (n: number) => `Mark step ${n} done`,
+  doneShort: "Done",
+  addReminder: "Add a reminder to my calendar",
+  forStep: (n: number) => `, step ${n}`,
+  remindWhat: { birth_cert_ca: "birth certificate", ssn_card: "Social Security card", ca_id: "California ID card" } as Record<string, string>,
+  remindSummary: (what: string) => `Check your mail for your ${what}`,
+  remindDescription: (n: number, step: string, days: number) => `First ID, step ${n}: ${step}. This step usually takes about ${days} days.`,
 };
 
 export type Strings = typeof en;
@@ -692,6 +703,17 @@ const es: Strings = {
   officesDirections: "Cómo llegar",
   officesTo: (name) => `a ${name} (abre el mapa)`,
   officesFrom: ["Datos de la oficina: ", ", revisados el 25 de octubre de 2026. Llama antes de ir."],
+  // Progreso y recordatorios (src/progress.ts, PathScreen)
+  progressDone: (n, total) => `${n} de ${total} hechos`,
+  progressNote: "Se guarda solo en este teléfono.",
+  clearProgress: "Borrar mi progreso",
+  markDone: (n) => `Marcar el paso ${n} como hecho`,
+  doneShort: "Hecho",
+  addReminder: "Agregar un recordatorio a mi calendario",
+  forStep: (n) => `, paso ${n}`,
+  remindWhat: { birth_cert_ca: "acta de nacimiento", ssn_card: "tarjeta de Seguro Social", ca_id: "identificación de California" },
+  remindSummary: (what) => `Revisa si llegó por correo tu ${what}`,
+  remindDescription: (n, step, days) => `First ID, paso ${n}: ${step}. Este paso suele tardar unos ${days} días.`,
 };
 
 export const t: Record<Lang, Strings> = { en, es };
