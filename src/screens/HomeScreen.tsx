@@ -1,5 +1,5 @@
 import { useMemo } from "react";
-import { Br, FORM_PDF, FormPaper, HandNote, Icon, Loop, PathCard, Photo, Portrait, Printout, Solver, fullPrice, money, photoUrl } from "../components";
+import { Br, FORM_PDF, FormPaper, Icon, Loop, PathCard, Photo, Portrait, money, photoUrl } from "../components";
 import { plan } from "../engine/planner";
 import type { RuleSet } from "../engine/types";
 import { examples } from "../examples";
@@ -13,8 +13,6 @@ export function HomeScreen({ rules, lang, onStart, onExample }: {
   rules: RuleSet; lang: Lang; onStart: () => void; onExample: (id: string) => void;
 }) {
   const s = t[lang];
-  const nSources = Object.keys(rules.sources).length;
-  const nWaivers = rules.actions.reduce((n, a) => n + (a.waivers?.length ?? 0), 0);
   // The example cards show each person's real computed path, not typed numbers.
   const exPlans = useMemo(() => examples.map((e) => plan(rules, { ...e.person, have: withImplied(e.person.have) }, "cheapest")), [rules]);
   const maria = exPlans[examples.findIndex((e) => e.id === "maria")];
@@ -56,13 +54,6 @@ export function HomeScreen({ rules, lang, onStart, onExample }: {
         )}
       </div>
 
-      <dl className="stats">
-        {maria && <div><dd className="num">{money(maria.total.dollars)}</dd><dt>{s.statsMaria(fullPrice(maria))}</dt></div>}
-        <div><dd className="num">{nWaivers}</dd><dt>{s.statsWaivers}</dt></div>
-        <div><dd className="num">{rules.actions.length}</dd><dt>{s.statsRules}</dt></div>
-        <div><dd className="num">0</dd><dt>{s.statsPrivate}</dt></div>
-      </dl>
-
       {band.length > 0 && (
         <div className={`photo-band n${band.length}`}>
           {band.map((n) => <Photo key={n} name={n} alt={s.photos[n][0]} caption={s.photos[n][1]} />)}
@@ -70,24 +61,17 @@ export function HomeScreen({ rules, lang, onStart, onExample }: {
       )}
 
       <section className="home-sec">
-        <Printout index="01" kicker={s.secLoop} readout={`2 ${lang === "es" ? "documentos" : "documents"} · 1 ${lang === "es" ? "círculo" : "loop"}`} />
         <div className="split">
           <div className="head">
             <h2 className="display h2">{s.loopTitleA} <span className="second">{s.loopTitleB}</span></h2>
             <p className="lede">{s.homeLede}</p>
             <p className="body-text">{s.homeWayOut}</p>
           </div>
-          <div className="body">
-            <Solver title={s.secLoop} readout={`${nWaivers} ${lang === "es" ? "exenciones" : "fee waivers"}`}>
-              <div className="loop-wrap"><Loop lang={lang} /></div>
-            </Solver>
-            <HandNote className="loop-note">{s.loopNote}</HandNote>
-          </div>
+          <div className="body loop-wrap"><Loop lang={lang} /></div>
         </div>
       </section>
 
       <section className="home-sec">
-        <Printout index="02" kicker={s.secForms} readout={s.formsReadout} />
         <div className="split">
           <div className="head">
             <h2 className="display h2">{s.formsTitleA} <span className="second">{s.formsTitleB}</span></h2>
@@ -102,7 +86,6 @@ export function HomeScreen({ rules, lang, onStart, onExample }: {
       </section>
 
       <section className="home-sec">
-        <Printout index="03" kicker={s.secHow} readout={s.howReadout} />
         <div className="split">
           <div className="head">
             <h2 className="display h2">{s.howTitleA} <span className="second">{s.howTitleB}</span></h2>
@@ -126,7 +109,6 @@ export function HomeScreen({ rules, lang, onStart, onExample }: {
       </section>
 
       <section className="home-sec">
-        <Printout index="04" kicker={s.secGet} readout={`${rules.actions.length} ${s.statRules} · ${nSources} ${s.statSources} · EN/ES`} />
         <h2 className="display h2 wide">{s.getTitleA} <span className="second">{s.getTitleB}</span></h2>
         <ul className="features">
           {s.features.map(([title, text], i) => (
@@ -140,7 +122,6 @@ export function HomeScreen({ rules, lang, onStart, onExample }: {
       </section>
 
       <section className="home-sec">
-        <Printout index="05" kicker={s.secTry} readout={s.people(examples.length)} />
         <h2 className="display h2 wide">{s.tryTitleA} <span className="second">{s.tryTitleB}</span></h2>
         <ul className="people">
           {examples.map((e, i) => {
