@@ -20,7 +20,6 @@ export function LoopStory({ lang }: { lang: Lang }) {
         <div className="story-text">
           {s.story.map(([h, sub], i) => (
             <div key={h} className={`story-line${i === stage ? " on" : ""}`}>
-              <span className="story-n">{i + 1}/3</span>
               <h2 className="display">{h}</h2>
               <p>{sub}</p>
             </div>
@@ -51,7 +50,7 @@ function Tile({ className = "", children }: { className?: string; children: Reac
   return <li ref={ref} className={`tile ${className}`}>{children}</li>;
 }
 
-/** Six tiles of real numbers, in a grid. The numbers count up the first
+/** Five tiles of real numbers, in a grid. The numbers count up the first
  *  time the grid scrolls into view. */
 export function Bento({ rules, lang, maria }: { rules: RuleSet; lang: Lang; maria: Plan | null }) {
   const s = t[lang];
@@ -79,7 +78,6 @@ export function Bento({ rules, lang, maria }: { rules: RuleSet; lang: Lang; mari
       )}
       <Tile className="t-yellow"><span className="tile-big num">{waivers}</span><span className="tile-sub">{s.statsWaivers}</span></Tile>
       <Tile className="t-rules"><span className="tile-big num">{nRules}</span><span className="tile-sub">{s.statsRules}</span></Tile>
-      <Tile className="t-dark"><span className="tile-big num">0</span><span className="tile-sub">{s.statsPrivate}</span></Tile>
       <Tile className="t-lang"><span className="tile-big">{s.tileLangs[0]}</span><span className="tile-sub">{s.tileLangs[1]}</span></Tile>
       <Tile className="t-packet">
         <span className="tile-big">{s.tilePacket[0]}</span><span className="tile-sub">{s.tilePacket[1]}</span>
@@ -117,7 +115,7 @@ function PersonCard({ e, p, lang, onOpen }: { e: Example; p: Plan | null; lang: 
         </span>
         <span className="pc-foot">
           {p
-            ? <><Br>{money(p.total.dollars)}</Br><span>{p.total.steps} {s.unitSteps(p.total.steps)} · {s.timeShort(p.total.days)}</span></>
+            ? <><Br>{money(p.total.dollars)}</Br><span>{p.total.steps} {s.unitSteps(p.total.steps)}, {s.timeShort(p.total.days)}</span></>
             : <span>{s.noPathShort}</span>}
           <Icon name="arrow" size={16} />
         </span>

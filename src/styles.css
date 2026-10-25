@@ -121,7 +121,13 @@ h1.display .bracketed .num { color: var(--on-c); background: var(--hl); padding:
 .back-btn, .nav-cta, .lang button { position: relative; }
 .back-btn::after, .nav-cta::after, .lang button::after { content: ""; position: absolute; inset: -7px 0; }
 .back-btn::after { inset: -4px; }
-.nav-cta { min-height: 30px !important; padding: 4px 13px !important; font-size: 13px !important; }
+.nav-cta { min-height: 30px !important; padding: 4px 13px !important; font-size: 13px !important; white-space: nowrap; }
+.lockup-word { white-space: nowrap; }
+/* Phones: the bar holds the mark, the button and EN/ES on one line. Where
+   "Buscar mi camino" can't fit, the button steps aside; the hero has the same one. */
+@media (max-width: 400px) { .top-inner { gap: 6px; } .nav-cta { padding: 4px 10px !important; } }
+@media (max-width: 389px) { :root[lang="es"] .nav-cta { display: none; } }
+@media (max-width: 349px) { .nav-cta { display: none; } }
 .lang { display: inline-flex; gap: 2px; padding: 2px; border-radius: 980px; background: var(--tile); }
 .lang button { min-width: 44px; min-height: 30px; border: 0; border-radius: 980px; background: transparent; font-size: 13px; font-weight: 500; color: var(--text-2); }
 .lang button[aria-checked="true"] { background: var(--panel); color: var(--ink); box-shadow: 0 1px 3px rgb(0 0 0 / .12); }
@@ -300,7 +306,6 @@ h1.display .bracketed .num { color: var(--on-c); background: var(--hl); padding:
 .story-text { position: relative; width: 100%; max-width: 640px; min-height: 190px; text-align: center; }
 .story-line { position: absolute; inset: 0; opacity: 0; transform: translateY(28px); transition: opacity .6s var(--ease), transform .7s var(--ease); }
 .story-line.on { opacity: 1; transform: none; }
-.story-n { display: inline-block; font-size: 14px; font-weight: 600; color: var(--text-2); margin-bottom: 10px; font-variant-numeric: tabular-nums; }
 .story-line h2 { font-size: 32px; margin: 0 0 12px; text-wrap: balance; }
 .story-line p { font-size: 18px; color: var(--text-2); margin: 0 auto; max-width: 30em; text-wrap: pretty; }
 /* Narrow enough on a phone that the two documents, which ride on the ring, never get clipped at the screen edge. */
@@ -421,7 +426,7 @@ h1.display .bracketed .num { color: var(--on-c); background: var(--hl); padding:
 .home-cta h2.display { font-size: 40px; margin: 0 0 12px; }
 .home-cta .actions { justify-content: center; }
 .center { text-align: center; margin-left: auto; margin-right: auto; }
-h2.display.h2.center { max-width: 20ch; }
+h2.display.h2.center { max-width: 20ch; margin-left: auto; margin-right: auto; }
 
 /* ---------- home: sections ---------- */
 .home-sec { margin-top: 72px; }
@@ -654,9 +659,9 @@ h2.display.wide { max-width: 20ch; margin-bottom: 28px; }
   .bento { grid-template-columns: repeat(6, minmax(0, 1fr)); }
   .t-maria { grid-column: span 3; grid-row: span 2; }
   .t-yellow, .t-rules { grid-column: span 3; }
-  .t-dark, .t-lang, .t-packet { grid-column: span 2; }
+  .t-lang, .t-packet { grid-column: span 3; }
   .tile-big { font-size: 80px; }
-  .t-lang .tile-big, .t-packet .tile-big, .t-dark .tile-big { font-size: 60px; }
+  .t-lang .tile-big, .t-packet .tile-big { font-size: 60px; }
   .rail { grid-auto-columns: calc((100% - 48px) / 4); }
   .rail-nav { display: none; }
   .home-sec { margin-top: 128px; }

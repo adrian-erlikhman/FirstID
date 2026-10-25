@@ -1,5 +1,5 @@
 import { useMemo } from "react";
-import { Card3D, CardBack, FORM_PDF, Icon, PathCard, Photo, Printout, photoUrl } from "../components";
+import { Card3D, CardBack, FORM_PDF, Icon, PathCard, Photo, photoUrl } from "../components";
 import { plan } from "../engine/planner";
 import type { RuleSet } from "../engine/types";
 import { examples } from "../examples";
@@ -15,7 +15,6 @@ export function HomeScreen({ rules, lang, onStart, onExample }: {
   rules: RuleSet; lang: Lang; onStart: () => void; onExample: (id: string) => void;
 }) {
   const s = t[lang];
-  const nSources = Object.keys(rules.sources).length;
   // The example cards show each person's real computed path, not typed numbers.
   const exPlans = useMemo(() => examples.map((e) => plan(rules, { ...e.person, have: withImplied(e.person.have) }, "cheapest")), [rules]);
   const maria = exPlans[examples.findIndex((e) => e.id === "maria")];
@@ -53,7 +52,6 @@ export function HomeScreen({ rules, lang, onStart, onExample }: {
       )}
 
       <section className="home-sec">
-        <Printout index="01" kicker={s.secGet} readout={`${rules.actions.length} ${s.statRules} · ${nSources} ${s.statSources} · EN/ES`} />
         <h2 className="display h2 center">{s.getTitleA} <span className="second">{s.getTitleB}</span></h2>
         <Bento rules={rules} lang={lang} maria={maria} />
       </section>
@@ -61,8 +59,7 @@ export function HomeScreen({ rules, lang, onStart, onExample }: {
       <section className="home-sec dark-band">
         <PaperStage lang={lang}>
           <div className="paper-head">
-            <Printout index="02" kicker={s.secForms} readout={s.formsReadout} />
-            <h2 className="display h2 center">{s.formsTitleA} <span className="second">{s.formsTitleB}</span></h2>
+            <h2 className="display h2 center">{s.formsTitle}</h2>
             <p className="lede center">{s.formsBody}</p>
             <p className="fine center">{s.formsNote} <a href={FORM_PDF} target="_blank" rel="noreferrer">{s.openForm} <Icon name="external" size={13} /></a></p>
           </div>
@@ -70,8 +67,7 @@ export function HomeScreen({ rules, lang, onStart, onExample }: {
       </section>
 
       <section className="home-sec">
-        <Printout index="03" kicker={s.secHow} readout={s.howReadout} />
-        <h2 className="display h2 center">{s.howTitleA} <span className="second">{s.howTitleB}</span></h2>
+        <h2 className="display h2 center">{s.howTitle}</h2>
         <p className="lede center">{s.homeFor}</p>
         <ol className="how-tiles">
           {s.how.map(([title, text], i) => (
@@ -86,8 +82,7 @@ export function HomeScreen({ rules, lang, onStart, onExample }: {
       </section>
 
       <section className="home-sec">
-        <Printout index="04" kicker={s.secTry} readout={s.people(examples.length)} />
-        <h2 className="display h2 center">{s.tryTitleA} <span className="second">{s.tryTitleB}</span></h2>
+        <h2 className="display h2 center">{s.tryTitle}</h2>
         <PeopleRail people={examples} plans={exPlans} lang={lang} onExample={onExample} />
         <p className="body-text people-note center">{s.examplesNote}</p>
       </section>
