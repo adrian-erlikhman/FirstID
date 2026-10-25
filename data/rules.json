@@ -27,7 +27,7 @@
     "immigration_doc": {
       "label": {
         "en": "Green card, naturalization or citizenship certificate",
-        "es": "Green card, certificado de naturalización o ciudadanía"
+        "es": "Tarjeta de residente (green card), certificado de naturalización o ciudadanía"
       },
       "askAtIntake": true
     },
@@ -97,14 +97,14 @@
     "bc_waiver_homeless": {
       "label": {
         "en": "Homeless affidavit for a free birth certificate",
-        "es": "Declaración de persona sin hogar para acta gratuita"
+        "es": "Declaración jurada de persona sin hogar para acta gratuita"
       },
       "askAtIntake": false
     },
     "bc_waiver_foster": {
       "label": {
         "en": "Foster-youth affidavit for a free birth certificate",
-        "es": "Declaración de joven en cuidado de crianza para acta gratuita"
+        "es": "Declaración jurada de joven en cuidado de crianza para acta gratuita"
       },
       "askAtIntake": false
     },
@@ -375,7 +375,7 @@
       "id": "program_bc_affidavit",
       "label": {
         "en": "Sign the homeless affidavit for a free birth certificate, with program staff",
-        "es": "Firma con el personal del programa la declaración para un acta gratuita"
+        "es": "Firma con el personal del programa la declaración jurada para un acta gratuita"
       },
       "place": "program",
       "requires": {
@@ -388,11 +388,11 @@
       "days": 0,
       "why": {
         "en": "California law makes a certified birth certificate free for people experiencing homelessness. You sign an affidavit, and a homeless services provider signs it too.",
-        "es": "La ley de California hace gratuita el acta de nacimiento certificada para personas sin hogar. Tú firmas una declaración y un proveedor de servicios para personas sin hogar también la firma."
+        "es": "La ley de California hace gratuita el acta de nacimiento certificada para personas sin hogar. Tú firmas una declaración jurada y un proveedor de servicios para personas sin hogar también la firma."
       },
       "say": {
         "en": "Can you sign the homeless affidavit so I can get a free birth certificate?",
-        "es": "¿Me puede firmar la declaración de persona sin hogar para obtener mi acta de nacimiento gratis?"
+        "es": "¿Me puede firmar la declaración jurada de persona sin hogar para obtener mi acta de nacimiento gratis?"
       },
       "sources": [
         "ab1733",
@@ -404,7 +404,7 @@
       "id": "dcfs_bc_affidavit",
       "label": {
         "en": "Sign the foster-youth affidavit for a free birth certificate, with your social worker",
-        "es": "Firma con tu trabajador social la declaración para un acta gratuita"
+        "es": "Firma con tu trabajador social la declaración jurada para un acta gratuita"
       },
       "place": "dcfs",
       "requires": {
@@ -417,11 +417,11 @@
       "days": 0,
       "why": {
         "en": "California law also makes a certified birth certificate free for youth in foster care, with a signed affidavit.",
-        "es": "La ley de California también hace gratuita el acta de nacimiento certificada para jóvenes en cuidado de crianza, con una declaración firmada."
+        "es": "La ley de California también hace gratuita el acta de nacimiento certificada para jóvenes en cuidado de crianza, con una declaración jurada firmada."
       },
       "say": {
         "en": "Can you help me sign the foster-youth affidavit for a free birth certificate?",
-        "es": "¿Me ayuda a firmar la declaración de joven en cuidado de crianza para obtener mi acta gratis?"
+        "es": "¿Me ayuda a firmar la declaración jurada de joven en cuidado de crianza para obtener mi acta gratis?"
       },
       "sources": [
         "hsc103578"
@@ -499,7 +499,7 @@
       "id": "notary_witnesses",
       "label": {
         "en": "Get the Certificate of Identity notarized, with two credible witnesses",
-        "es": "Certifica el Certificado de Identidad ante notario, con dos testigos"
+        "es": "Lleva el Certificado de Identidad a un notario público, con dos testigos"
       },
       "place": "notary",
       "requires": {
@@ -538,7 +538,7 @@
       },
       "say": {
         "en": "I don't have an ID. These two people will identify me as credible witnesses under Civil Code 1185.",
-        "es": "No tengo identificación. Estas dos personas me identificarán como testigos creíbles según el Código Civil 1185."
+        "es": "No tengo identificación. Estas dos personas me identificarán como testigos fidedignos (credible witnesses) según el Código Civil 1185."
       },
       "sources": [
         "civ1185",
@@ -551,7 +551,7 @@
       "id": "notary_own_id",
       "label": {
         "en": "Get the Certificate of Identity notarized with your old ID",
-        "es": "Certifica el Certificado de Identidad ante notario con tu identificación anterior"
+        "es": "Lleva el Certificado de Identidad a un notario público, con tu identificación anterior"
       },
       "place": "notary",
       "requires": {
@@ -593,7 +593,7 @@
       },
       "say": {
         "en": "I'd like this Certificate of Identity notarized. Here is my ID.",
-        "es": "Quisiera notarizar este Certificado de Identidad. Aquí está mi identificación."
+        "es": "Quisiera que me notarice este Certificado de Identidad. Aquí está mi identificación."
       },
       "sources": [
         "civ1185",
@@ -627,7 +627,7 @@
           "dollars": 0,
           "label": {
             "en": "free with the homeless affidavit",
-            "es": "gratis con la declaración"
+            "es": "gratis con la declaración jurada de persona sin hogar"
           },
           "sources": [
             "ab1733",
@@ -641,7 +641,7 @@
           "dollars": 0,
           "label": {
             "en": "free with the foster-youth affidavit",
-            "es": "gratis con la declaración"
+            "es": "gratis con la declaración jurada de joven en cuidado de crianza"
           },
           "sources": [
             "hsc103578"
@@ -670,7 +670,7 @@
         },
         {
           "en": "The signed affidavit, if you have one, instead of a check",
-          "es": "La declaración firmada, si la tienes, en vez de un cheque"
+          "es": "La declaración jurada firmada, si la tienes, en vez de un cheque"
         },
         {
           "en": "Tick “I am requesting an AUTHORIZED copy” on the form",
@@ -726,12 +726,12 @@
       "bring": [
         {
           "en": "Your Medi-Cal card or school record. A birth certificate alone doesn't prove identity to SSA.",
-          "es": "Tu tarjeta de Medi-Cal o registro escolar. El acta de nacimiento sola no comprueba identidad ante el SSA."
+          "es": "Tu tarjeta de Medi-Cal o tu certificado de estudios. El acta de nacimiento sola no comprueba tu identidad ante el Seguro Social."
         }
       ],
       "why": {
         "en": "A replacement Social Security card is free. Without a photo ID, Social Security can accept other records, like a Medi-Cal card or a school record, to prove who you are.",
-        "es": "El reemplazo de la tarjeta de Seguro Social es gratis. Sin identificación con foto, el Seguro Social puede aceptar otros documentos, como la tarjeta de Medi-Cal o un registro escolar, para comprobar quién eres."
+        "es": "El reemplazo de la tarjeta de Seguro Social es gratis. Sin identificación con foto, el Seguro Social puede aceptar otros documentos, como la tarjeta de Medi-Cal o un certificado de estudios, para comprobar quién eres."
       },
       "say": {
         "en": "I need a replacement Social Security card. I don't have a photo ID, so here's what I do have.",
