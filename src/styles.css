@@ -200,13 +200,13 @@ h1.display .bracketed .num { color: var(--on-c); background: var(--hl); padding:
 
 /* ---------- panel with a small header ---------- */
 .solver-head {
-  display: flex; justify-content: space-between; align-items: baseline; gap: 12px;
+  display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: 2px 12px;
   padding: 12px 18px; border-bottom: 1px solid var(--line);
   font-size: 0.8438rem; color: var(--text-2);
 }
 .solver-cmd { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-weight: 600; color: var(--ink); }
 .solver-cmd::first-letter { text-transform: uppercase; }
-.solver-readout { flex: none; font-variant-numeric: tabular-nums; }
+.solver-readout { flex: 0 1 auto; min-width: 0; font-variant-numeric: tabular-nums; }
 .solver-tabs { padding: 14px 18px; border-bottom: 1px solid var(--line); }
 .mode-hint { font-size: 0.875rem; color: var(--text-2); margin: 10px 0 0; }
 
