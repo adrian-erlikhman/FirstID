@@ -491,7 +491,7 @@ const es: Strings = {
   timeVisit: "Una visita",
   timeMail: "Por correo",
   bring: "Lleva",
-  bringMail: "Pon en el sobre",
+  bringMail: "Pon esto en el sobre",
   sayThis: "Di esto",
   whyWorks: "Por qué funciona",
   formsTitle: "Estos son los formularios reales.",
@@ -501,7 +501,7 @@ const es: Strings = {
   stepForm: "El formulario",
   forms: {
     application: ["Solicitud de acta de nacimiento", "Los pedidos por correo necesitan un Certificado de Identidad notariado.", "Página 1 de la solicitud de acta de nacimiento del condado de Los Ángeles. Marcado: los pedidos por correo de copias autorizadas deben incluir un Certificado de Identidad notariado."],
-    certificate: ["Certificado de Identidad", "Se firma ante un notario, que puede aceptar a dos testigos fidedignos.", "Certificado de Identidad y declaración jurada del condado de Los Ángeles. Marcado: debe firmarse ante un notario, que confirma la identidad con evidencia satisfactoria."],
+    certificate: ["Certificado de Identidad", "Se firma ante un notario público, que puede basarse en dos testigos fidedignos.", "Certificado de Identidad y declaración jurada del condado de Los Ángeles. Marcado: debe firmarse ante un notario público, que confirma la identidad con base en evidencia satisfactoria."],
   },
   whyFree: "Por qué cuesta menos",
   inEnglish: " (en inglés)",
