@@ -336,6 +336,23 @@ const en = {
   textSizeDefault: "Default",
   textSizeLarger: "Larger",
   textSizeLargest: "Largest",
+  // Offices (src/screens/OfficesScreen.tsx)
+  officesLink: (kind: string): string => (kind === "dmv" ? "See DMV offices" : kind === "ssa" ? "See Social Security offices" : "See offices"),
+  officesKicker: "Offices in LA County",
+  officesTitle: (kind: string): string => (kind === "dmv" ? "DMV offices" : kind === "ssa" ? "Social Security offices" : "Offices"),
+  officesLede: "Every office in Los Angeles County. Hours change, so call or check the office page before you go.",
+  officesZip: "Your ZIP code, to sort by distance",
+  officesZipNote: "Stays on this phone. Without a ZIP, offices are sorted by city.",
+  officesZipUnknown: "We don't have that ZIP in LA County, so offices are sorted by city.",
+  officesSortedNear: (zip: string) => `Nearest to ${zip} first, as the crow flies.`,
+  officesMiles: (mi: number) => `${mi < 10 ? mi.toFixed(1) : Math.round(mi)} mi`,
+  officesHours: "Hours",
+  officesDay: { mon: "Mon", tue: "Tue", wed: "Wed", thu: "Thu", fri: "Fri", sat: "Sat", sun: "Sun" } as Record<string, string>,
+  officesClosed: "Closed",
+  officesCall: (phone: string) => `Call ${phone}`,
+  officesDirections: "Directions",
+  officesTo: (name: string) => `to ${name} (opens maps)`,
+  officesFrom: ["Office details from ", ", checked Oct 25, 2026. Call ahead."] as [string, string],
 };
 
 export type Strings = typeof en;
@@ -658,6 +675,23 @@ const es: Strings = {
   textSizeDefault: "Normal",
   textSizeLarger: "Grande",
   textSizeLargest: "Más grande",
+  // Oficinas (src/screens/OfficesScreen.tsx)
+  officesLink: (kind) => (kind === "dmv" ? "Ver oficinas del DMV" : kind === "ssa" ? "Ver oficinas del Seguro Social" : "Ver oficinas"),
+  officesKicker: "Oficinas en el condado de LA",
+  officesTitle: (kind) => (kind === "dmv" ? "Oficinas del DMV" : kind === "ssa" ? "Oficinas del Seguro Social" : "Oficinas"),
+  officesLede: "Todas las oficinas del condado de Los Ángeles. Los horarios cambian: llama o revisa la página de la oficina antes de ir.",
+  officesZip: "Tu código postal, para ordenar por distancia",
+  officesZipNote: "Se queda en este teléfono. Sin código postal, las oficinas se ordenan por ciudad.",
+  officesZipUnknown: "No tenemos ese código postal en el condado de LA, así que las oficinas se ordenan por ciudad.",
+  officesSortedNear: (zip) => `Primero las más cercanas a ${zip}, en línea recta.`,
+  officesMiles: (mi) => `${mi < 10 ? mi.toFixed(1) : Math.round(mi)} mi`,
+  officesHours: "Horario",
+  officesDay: { mon: "lun", tue: "mar", wed: "mié", thu: "jue", fri: "vie", sat: "sáb", sun: "dom" },
+  officesClosed: "Cerrado",
+  officesCall: (phone) => `Llamar al ${phone}`,
+  officesDirections: "Cómo llegar",
+  officesTo: (name) => `a ${name} (abre el mapa)`,
+  officesFrom: ["Datos de la oficina: ", ", revisados el 25 de octubre de 2026. Llama antes de ir."],
 };
 
 export const t: Record<Lang, Strings> = { en, es };
