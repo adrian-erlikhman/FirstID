@@ -362,7 +362,7 @@ const es: Strings = {
   story: [
     ["Para sacar una identificación, necesitas un acta de nacimiento.", "El DMV pide un comprobante de identidad."],
     ["Para sacar un acta de nacimiento, necesitas una identificación.", "El condado también pide un comprobante de identidad."],
-    ["First ID encuentra la salida legal.", "Dos testigos ante un notario público, actas gratis para personas sin hogar y formularios de identificación sin costo."],
+    ["First ID encuentra la salida legal.", "Dos testigos ante un notario público, actas de nacimiento gratis para personas sin hogar y formularios de identificación sin costo."],
   ],
   storyId: "Identificación", storyBc: "Acta de nacimiento",
   ctaTitle: "Empieza con lo que tienes.",
@@ -376,7 +376,7 @@ const es: Strings = {
   statsReach: "Cada pantalla en inglés y en español, y un paquete de una página para imprimir y llevar.",
   photos: {
     office: ["La entrada de una oficina del DMV en Los Ángeles", "El DMV pide un acta de nacimiento."],
-    papers: ["Manos con una solicitud de acta de nacimiento", "El condado pide una identificación."],
+    papers: ["Unas manos con una solicitud de acta de nacimiento", "El condado pide una identificación."],
     counter: ["Una trabajadora social ayuda a alguien en un escritorio", "Los trabajadores sociales conocen estas reglas. Mucha gente no tiene uno."],
     phone: ["Alguien usa First ID en su teléfono", "First ID te muestra los mismos pasos en tu teléfono."],
   },
@@ -385,13 +385,13 @@ const es: Strings = {
   getTitleB: "calculado a partir de tus siete respuestas.",
   // María, de principio a fin (inicio, MariaTrail.tsx)
   trailTitle: "El camino de María, de principio a fin.",
-  trailWho: "María tiene 34 años y nació en el condado de Los Ángeles. Perdió sus papeles y vive en un albergue. Todavía tiene su tarjeta de Medi-Cal, sabe su número de Seguro Social y tiene dos personas que la conocen y pueden dar fe de quién es.",
+  trailWho: "María tiene 34 años y nació en el condado de Los Ángeles. Perdió sus papeles y se está quedando en un albergue. Todavía tiene su tarjeta de Medi-Cal, sabe su número de Seguro Social y tiene dos personas que la conocen y pueden dar fe de quién es.",
   trailGets: (docs) => `Después tiene: ${docs}`,
   trailHiddenShort: "No se muestra",
   trailHidden: "El DMV pide que este formulario no se comparta en internet, así que no lo mostramos.",
   trailTotal: (n, full) => `por ${n === 1 ? "un paso" : `los ${n} pasos`}${full ? `, en vez de $${full}` : ""}.`,
-  trailNote: "María es inventada. Las reglas, los formularios y las muestras son reales.",
-  trailAltCoi: "El formulario Certificado de Identidad del condado de Los Ángeles",
+  trailNote: "María es un personaje inventado. Las reglas, los formularios y las muestras son reales.",
+  trailAltCoi: "El formulario de Certificado de Identidad del condado de Los Ángeles",
   trailAltBc: "Un acta de nacimiento de California en blanco, con el sello SAMPLE (muestra) del estado",
   trailAltId: "La tarjeta de muestra del DMV de California, diseño 2025",
   trailCreditCoi: "Formulario: Registro del condado de Los Ángeles",
@@ -411,7 +411,7 @@ const es: Strings = {
   how: [
     ["Marca lo que tienes", "Incluso una sola tarjeta o un número que recuerdes puede cambiar el camino."],
     ["Contesta 7 preguntas rápidas", "Dónde naciste, dónde te quedas, tu edad y unas cuantas más."],
-    ["Ve tu camino", "Cada paso: a dónde ir, qué llevar, cuánto cuesta y la regla que lo respalda."],
+    ["Mira tu camino", "Cada paso: a dónde ir, qué llevar, cuánto cuesta y la regla que lo respalda."],
   ],
   homeFine: "No es asesoría legal. Los pasos marcados \u201cllama antes\u201d todavía no se han revisado con sus fuentes.",
 
