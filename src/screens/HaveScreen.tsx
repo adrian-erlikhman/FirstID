@@ -2,7 +2,7 @@ import { Icon } from "../components";
 import type { RuleSet } from "../engine/types";
 import { t, type Lang } from "../i18n";
 
-// OWNER: Adrian. A plain checklist, like a paper form: big rows, one tap each,
+// A plain checklist, like a paper form: big rows, one tap each,
 // readable on a cracked screen. "I know my SSN" is its own group because it
 // isn't a paper, and it's the thing people most often don't realise is enough.
 export function HaveScreen(props: {
