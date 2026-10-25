@@ -74,7 +74,7 @@ const en = {
   getTitleB: "worked out from your seven answers.",
   // Maria, start to finish (home, MariaTrail.tsx)
   trailTitle: "Maria's path, start to finish.",
-  trailWho: "Maria is 34 and was born in LA County. She lost her papers in the Eaton fire and is staying in a shelter. She still has her Medi-Cal card, knows her Social Security number, and has two people who know her and can vouch for her.",
+  trailWho: "Maria is 34 and was born in LA County. She lost her papers and is staying in a shelter. She still has her Medi-Cal card, knows her Social Security number, and has two people who know her and can vouch for her.",
   trailGets: (docs: string) => `Then she has: ${docs}`,
   trailHiddenShort: "Not shown",
   trailHidden: "The DMV asks that this form not be shared online, so we don't show it.",
@@ -161,7 +161,7 @@ const en = {
     total === 1 ? "This step isn't confirmed yet. Call ahead before you go." : n === total ? `None of these ${total} steps are confirmed yet. Call ahead before each one.` : `${n} of ${total} steps aren't confirmed yet. Call ahead before those.`,
   allVerified: "Every step's rule has been checked against its sources.",
   helpsTitle: "What would help most",
-  helpsResult: (steps: number, dollars: number) => `If this is true for you, your path drops to ${steps} ${plural(steps, "step", "steps")} and ${dollars === 0 ? "$0" : `$${dollars}`}.`,
+  helpsResult: (steps: number, dollars: number) => `If you have this document, your path drops to ${steps} ${plural(steps, "step", "steps")} and ${dollars === 0 ? "$0" : `$${dollars}`}.`,
   seeThatPath: "Try it",
   howWeKnow: "How we know",
   printPacket: "Print packet",
@@ -246,7 +246,7 @@ const en = {
 
   // 7. How we know
   sourcesTitle: "Every step comes from a rule you can read.",
-  sourcesIntro: "We drafted these rules with help from AI. A rule only counts as verified once a person on our team has opened its sources and copied the exact sentence. Until then it shows “call ahead”.",
+  sourcesIntro: "We drafted these rules with help from AI. A rule only counts as verified once someone on our team has checked it against every source it cites and copied the exact sentence that supports it. Until then it shows “call ahead”.",
   verifiedSoFar: (n: number, total: number) => `So far ${n} of ${total} rules are verified.`,
   verified: "Verified",
   howPlanTitle: "How your path is worked out",
@@ -385,7 +385,7 @@ const es: Strings = {
   getTitleB: "calculado a partir de tus siete respuestas.",
   // María, de principio a fin (inicio, MariaTrail.tsx)
   trailTitle: "El camino de María, de principio a fin.",
-  trailWho: "María tiene 34 años y nació en el condado de Los Ángeles. Perdió sus papeles en el incendio Eaton y vive en un albergue. Todavía tiene su tarjeta de Medi-Cal, sabe su número de Seguro Social y tiene dos personas que la conocen y pueden dar fe de quién es.",
+  trailWho: "María tiene 34 años y nació en el condado de Los Ángeles. Perdió sus papeles y vive en un albergue. Todavía tiene su tarjeta de Medi-Cal, sabe su número de Seguro Social y tiene dos personas que la conocen y pueden dar fe de quién es.",
   trailGets: (docs) => `Después tiene: ${docs}`,
   trailHiddenShort: "No se muestra",
   trailHidden: "El DMV pide que este formulario no se comparta en internet, así que no lo mostramos.",
@@ -467,7 +467,7 @@ const es: Strings = {
     total === 1 ? "Este paso no está confirmado todavía. Llama antes de ir." : n === total ? `Ninguno de estos ${total} pasos está confirmado todavía. Llama antes de cada uno.` : `${n} de ${total} pasos no están confirmados todavía. Llama antes de esos.`,
   allVerified: "La regla de cada paso ya se revisó con sus fuentes.",
   helpsTitle: "Lo que más ayudaría",
-  helpsResult: (steps, dollars) => `Si este es tu caso, tu camino baja a ${steps} ${plural(steps, "paso", "pasos")} y ${dollars === 0 ? "$0" : `$${dollars}`}.`,
+  helpsResult: (steps, dollars) => `Si tienes este documento, tu camino baja a ${steps} ${plural(steps, "paso", "pasos")} y ${dollars === 0 ? "$0" : `$${dollars}`}.`,
   seeThatPath: "Pruébalo",
   howWeKnow: "Cómo lo sabemos",
   printPacket: "Imprimir paquete",
@@ -548,7 +548,7 @@ const es: Strings = {
   packetFoot: (url) => `No es asesoría legal. Las reglas cambian. Cada regla y sus fuentes: ${url}`,
 
   sourcesTitle: "Cada paso viene de una regla que puedes leer.",
-  sourcesIntro: "Redactamos estas reglas con ayuda de IA. Una regla solo cuenta como verificada cuando una persona de nuestro equipo abre sus fuentes y copia la frase exacta. Mientras tanto aparece como “llama antes”.",
+  sourcesIntro: "Redactamos estas reglas con ayuda de IA. Una regla solo cuenta como verificada cuando alguien de nuestro equipo la revisa con cada fuente que cita y copia la frase exacta que la respalda. Mientras tanto aparece como “llama antes”.",
   verifiedSoFar: (n, total) => `Por ahora ${n} de ${total} reglas están verificadas.`,
   verified: "Verificada",
   howPlanTitle: "Cómo se calcula tu camino",
