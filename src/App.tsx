@@ -106,52 +106,50 @@ export default function App() {
     return () => document.removeEventListener("click", onClick);
   }, []);
 
-  const bar = (label?: string, back?: Route, progress?: [number, number]) => (
-    <TopBar lang={lang} onLang={() => setLang(lang === "en" ? "es" : "en")} label={label} progress={progress}
-      onBack={back ? () => go(back) : undefined} onHome={() => go({ name: "home" })} />
+  const bar = (back?: Route) => (
+    <TopBar lang={lang} onLang={setLang} onBack={back ? () => go(back) : undefined} onHome={() => go({ name: "home" })} />
   );
 
   let screen: JSX.Element | null = null;
   let top = bar();
   switch (route.name) {
     case "home":
-      screen = <HomeScreen lang={lang} onStart={() => go({ name: "have" })} onExample={(id) => go({ name: "example", id })} />;
+      screen = <HomeScreen rules={rules} lang={lang} onStart={() => go({ name: "have" })} onExample={(id) => go({ name: "example", id })} />;
       break;
     case "have":
-      top = bar(s.stepOf(1, 3), { name: "home" }, [1, 3]);
+      top = bar({ name: "home" });
       screen = <HaveScreen rules={rules} lang={lang} have={have} onChange={setHave}
         onNext={() => go({ name: "questions" })}
         onStartOver={answered || have.length ? reset : undefined} />;
       break;
     case "questions":
-      top = bar(s.stepOf(2, 3), { name: "have" }, [2, 3]);
+      top = bar({ name: "have" });
       screen = <QuestionsScreen lang={lang} facts={facts} unsure={unsure}
         onChange={(f, u) => { setFacts(f); setUnsure(u); }}
         onNext={() => { setAnswered(true); go({ name: "path" }); }} />;
       break;
     case "path":
-      top = bar(s.stepOf(3, 3), { name: "questions" }, [3, 3]);
-      screen = answered ? <PathScreen rules={rules} lang={lang} result={result} mode={mode} onMode={setMode} ms={ms}
+      top = bar({ name: "questions" });
+      screen = answered ? <PathScreen rules={rules} lang={lang} result={result} mode={mode} onMode={setMode} ms={ms} person={person}
         help={help} facts={facts} onChangeAnswers={() => go({ name: "questions" })} /> : null;
       break;
     case "step":
       if (result?.steps[route.n - 1]) {
-        const st = result.steps[route.n - 1];
-        top = bar(s.stepHeader(route.n, result.steps.length, rules.places[st.action.place].label[lang]), { name: "path" });
+        top = bar({ name: "path" });
         screen = <StepScreen rules={rules} lang={lang} plan={result} n={route.n} />;
       }
       break;
     case "whatif":
-      top = bar(s.whatIfLabel, { name: "path" });
+      top = bar({ name: "path" });
       screen = answered ? <WhatIfScreen rules={rules} lang={lang} person={person} mode={mode}
         onApply={(p) => { load(p); go({ name: "path" }); }} /> : null;
       break;
     case "packet":
-      top = bar(s.printPacket, { name: "path" });
+      top = bar({ name: "path" });
       screen = result ? <PacketScreen rules={rules} lang={lang} result={result} /> : null;
       break;
     case "sources":
-      top = bar(s.sourcesLabel, answered ? { name: "path" } : { name: "home" });
+      top = bar(answered ? { name: "path" } : { name: "home" });
       screen = <SourcesScreen rules={rules} lang={lang} />;
       break;
   }

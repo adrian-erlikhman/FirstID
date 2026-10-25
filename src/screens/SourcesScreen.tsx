@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Icon, SourceCard } from "../components";
+import { Block, Icon, Printout, SourceCard } from "../components";
 import type { RuleSet } from "../engine/types";
 import { t, type Lang } from "../i18n";
 
@@ -12,51 +12,63 @@ export function SourcesScreen({ rules, lang }: { rules: RuleSet; lang: Lang }) {
   const s = t[lang];
   const [open, setOpen] = useState<string | null>(null);
   const verified = rules.actions.filter((a) => a.verified).length;
+  const nSources = Object.keys(rules.sources).length;
 
   return (
     <section className="screen">
-      <h1 tabIndex={-1}>{s.sourcesTitle}</h1>
-      <p className="lede">{s.sourcesIntro}</p>
+      <Printout index="06" kicker={s.secSources} readout={`${verified}/${rules.actions.length} ${s.statVerified} · ${nSources} ${s.statSources}`} />
+      <div className="split">
+        <div className="head">
+          <h1 tabIndex={-1} className="display">{s.sourcesTitleA} <span className="second">{s.sourcesTitleB}</span></h1>
+          <p className="lede">{s.sourcesIntro}</p>
+        </div>
 
-      <dl className="stats3 tiles3">
-        <div><dt>{s.statRules}</dt><dd>{rules.actions.length}</dd></div>
-        <div><dt>{s.statSources}</dt><dd>{Object.keys(rules.sources).length}</dd></div>
-        <div><dt>{s.statVerified}</dt><dd>{verified}/{rules.actions.length}</dd></div>
-      </dl>
+        <div className="body">
+          <dl className="panel stat-grid three">
+            <div><dt>{s.statRules}</dt><dd>{rules.actions.length}</dd></div>
+            <div><dt>{s.statSources}</dt><dd>{nSources}</dd></div>
+            <div><dt>{s.statVerified}</dt><dd>{verified}/{rules.actions.length}</dd></div>
+          </dl>
 
-      <ul className="rule-list">
-        {rules.actions.map((a) => {
-          const isOpen = open === a.id;
-          return (
-            <li key={a.id} className="rule">
-              <button className="rule-head" aria-expanded={isOpen} onClick={() => setOpen(isOpen ? null : a.id)}>
-                <span className="rule-name">{a.label[lang]}</span>
-                <span className={`status-tag ${a.verified ? "ok" : "warn"}`}>{a.verified ? s.verified : s.callAhead}</span>
-                <span className="rule-src">{a.sources.map((id) => rules.sources[id].title.split(" (")[0]).join(" · ")}</span>
-              </button>
-              {isOpen && (
-                <div className="rule-body sources">
-                  {a.why && <p className="muted">{a.why[lang]}</p>}
-                  {a.sources.map((id) => <SourceCard key={id} src={rules.sources[id]} lang={lang} verified={a.verified} />)}
-                </div>
-              )}
-            </li>
-          );
-        })}
-      </ul>
+          <ul className="panel rule-list">
+            {rules.actions.map((a, i) => {
+              const isOpen = open === a.id;
+              return (
+                <li key={a.id} className="rule">
+                  <button className="rule-head" aria-expanded={isOpen} onClick={() => setOpen(isOpen ? null : a.id)}>
+                    <span className="row-num" aria-hidden="true">{String(i + 1).padStart(2, "0")}</span>
+                    <span className="rule-name">{a.label[lang]}</span>
+                    <span className={`tag ${a.verified ? "ok" : "draft"}`}>{a.verified ? s.verified : s.callAhead}</span>
+                    <span className="rule-src">{a.sources.map((id) => rules.sources[id].title.split(" (")[0]).join(" · ")}</span>
+                  </button>
+                  {isOpen && (
+                    <div className="rule-body sources">
+                      {a.why && <p className="row-sub">{a.why[lang]}</p>}
+                      {a.sources.map((id) => <SourceCard key={id} src={rules.sources[id]} lang={lang} verified={a.verified} />)}
+                    </div>
+                  )}
+                </li>
+              );
+            })}
+          </ul>
 
-      <section className="block">
-        <h2 className="section-title">{s.howPlanTitle}</h2>
-        <ol className="plain-ol">{s.howPlan.map((x) => <li key={x}>{x}</li>)}</ol>
-      </section>
+          <Block label={s.howPlanTitle}>
+            <ol className="panel how">
+              {s.howPlan.map((x, i) => (
+                <li key={x}><span className="row-num" aria-hidden="true">{String(i + 1).padStart(2, "0")}</span><span>{x}</span></li>
+              ))}
+            </ol>
+          </Block>
 
-      <section className="block honesty">
-        <div><h3>{s.realTitle}</h3><ul>{s.realItems.map((x) => <li key={x}>{x}</li>)}</ul></div>
-        <div><h3>{s.madeUpTitle}</h3><ul>{s.madeUpItems.map((x) => <li key={x}>{x}</li>)}</ul></div>
-        <div><h3>{s.notYetTitle}</h3><ul>{s.notYetItems.map((x) => <li key={x}>{x}</li>)}</ul></div>
-      </section>
+          <div className="honesty">
+            <div className="panel"><h2 className="label">{s.realTitle}</h2><ul>{s.realItems.map((x) => <li key={x}>{x}</li>)}</ul></div>
+            <div className="panel"><h2 className="label">{s.madeUpTitle}</h2><ul>{s.madeUpItems.map((x) => <li key={x}>{x}</li>)}</ul></div>
+            <div className="panel"><h2 className="label">{s.notYetTitle}</h2><ul>{s.notYetItems.map((x) => <li key={x}>{x}</li>)}</ul></div>
+          </div>
 
-      <p className="fine">{s.reportWrong} <a href={REPO_ISSUES} target="_blank" rel="noreferrer">{s.reportLink} <Icon name="external" size={14} /></a></p>
+          <p className="fine">{s.reportWrong} <a href={REPO_ISSUES} target="_blank" rel="noreferrer">{s.reportLink} <Icon name="external" size={13} /></a></p>
+        </div>
+      </div>
     </section>
   );
 }

@@ -1,4 +1,4 @@
-import { Icon } from "../components";
+import { Icon, Printout } from "../components";
 import type { RuleSet } from "../engine/types";
 import { t, type Lang } from "../i18n";
 
@@ -19,8 +19,8 @@ export function HaveScreen(props: {
     return (
       <li key={id}>
         <button className="check-row" role="checkbox" aria-checked={on} onClick={() => toggle(id)}>
-          <span className="box" aria-hidden="true">{on && <Icon name="check" size={16} stroke={3} />}</span>
-          <span className="check-text">{label}{hint && <span className="hint">{hint}</span>}</span>
+          <span className="box" aria-hidden="true">{on && <Icon name="check" size={15} stroke={3} />}</span>
+          <span className="check-text">{label}{hint && <span className="row-sub">{hint}</span>}</span>
         </button>
       </li>
     );
@@ -28,22 +28,27 @@ export function HaveScreen(props: {
 
   return (
     <section className="screen">
-      <h1 tabIndex={-1}>{s.haveTitle}</h1>
-      <p className="lede">{s.haveHint}</p>
+      <Printout index="01" kicker={s.secHave} readout={`1 / 3 · ${s.checkedCount(have.length)}`} />
+      <div className="split">
+        <div className="head">
+          <h1 tabIndex={-1} className="display">{s.haveTitle} <span className="second">{s.haveSecond}</span></h1>
+          <p className="lede">{s.haveHint}</p>
+        </div>
+        <div className="body">
+          <ul className="panel check-list" aria-label={s.haveTitle}>
+            {docs.map(([id, d]) => row(id, d.label[lang]))}
+          </ul>
+          {rules.docs.ssn_known && (
+            <ul className="panel check-list single">{row("ssn_known", rules.docs.ssn_known.label[lang], s.ssnHint)}</ul>
+          )}
 
-      <ul className="check-list" aria-label={s.haveTitle}>
-        {docs.map(([id, d]) => row(id, d.label[lang]))}
-      </ul>
-      {rules.docs.ssn_known && (
-        <ul className="check-list single">{row("ssn_known", rules.docs.ssn_known.label[lang], s.ssnHint)}</ul>
-      )}
-
-      <div className="actions stack">
-        <button className="primary" onClick={onNext}>{s.toQuestions}</button>
-        <button className="text-btn" onClick={() => { onChange([]); onNext(); }}>{s.noneOfThese}</button>
-        {onStartOver && <button className="text-btn" onClick={onStartOver}>{s.startOver}</button>}
+          <div className="actions row">
+            <button className="btn primary" onClick={onNext}>{s.toQuestions} <Icon name="arrow" size={18} /></button>
+            <button className="btn text" onClick={() => { onChange([]); onNext(); }}>{s.noneOfThese}</button>
+            {onStartOver && <button className="btn text" onClick={onStartOver}>{s.startOver}</button>}
+          </div>
+        </div>
       </div>
-
     </section>
   );
 }

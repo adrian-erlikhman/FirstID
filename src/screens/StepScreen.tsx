@@ -1,4 +1,4 @@
-import { Icon, Notice, Section, SourceCard, money, placeOf, sayFor } from "../components";
+import { Block, HandNote, Icon, Notice, Printout, SourceCard, money, placeOf, sayFor } from "../components";
 import type { Plan, RuleSet } from "../engine/types";
 import { t, type Lang } from "../i18n";
 import { href } from "../router";
@@ -16,58 +16,69 @@ export function StepScreen({ rules, lang, plan, n }: { rules: RuleSet; lang: Lan
   const was = st.dollars < a.dollars ? a.dollars : null;
   const waiverSources = was !== null ? st.waiver?.sources ?? [] : [];
   const total = plan.steps.length;
+  const cost = st.dollars === 0 ? s.free : money(st.dollars);
 
   const time = a.days > 0 ? s.readyIn(a.days) : !st.newTrip && n > 1 ? s.sameVisit(n - 1) : (place.inPerson ? s.timeVisit : s.timeMail);
+  const Time = time.charAt(0).toUpperCase() + time.slice(1);
 
   return (
     <section className="screen">
-      <h1 tabIndex={-1}>{a.label[lang]}</h1>
-      {a.why && <p className="lede">{a.why[lang]}</p>}
-
-      <dl className="facts">
-        <div><dt>{s.where}</dt><dd>{place.label[lang]}</dd></div>
-        <div>
-          <dt>{s.cost}</dt>
-          <dd>
-            <strong>{st.dollars === 0 ? s.free : money(st.dollars)}</strong>
-            {was !== null && <> <s className="muted">{money(was)}</s><span className="muted"> · {st.waiver!.label[lang]}</span></>}
-          </dd>
+      <Printout index={`03.${n}`} kicker={s.stepKicker(n, total)} readout={`${cost} · ${time}`} />
+      <div className="split">
+        <div className="head">
+          <span className="label head-place">{place.label[lang]}</span>
+          <h1 tabIndex={-1} className="display">{a.label[lang]}</h1>
+          {a.why && <p className="lede">{a.why[lang]}</p>}
         </div>
-        <div><dt>{s.time}</dt><dd>{time.charAt(0).toUpperCase() + time.slice(1)}</dd></div>
-      </dl>
 
-      {!a.verified && <Notice tone="warn" title={s.callAhead}>{s.callAheadLong}</Notice>}
+        <div className="body">
+          <dl className="panel facts">
+            <div><dt>{s.where}</dt><dd>{place.label[lang]}</dd></div>
+            <div>
+              <dt>{s.cost}</dt>
+              <dd>
+                <span className="num strong">{cost}</span>
+                {was !== null && <> <s className="num">{money(was)}</s><span className="row-sub"> {st.waiver!.label[lang]}</span></>}
+              </dd>
+            </div>
+            <div><dt>{s.time}</dt><dd>{Time}</dd></div>
+          </dl>
 
-      {a.bring?.length ? (
-        <Section title={s.bring}>
-          <ul className="bring">{a.bring.map((b) => <li key={b.en}>{b[lang]}</li>)}</ul>
-        </Section>
-      ) : null}
+          {!a.verified && <Notice tone="draft" title={s.callAhead}>{s.callAheadLong}</Notice>}
 
-      {say && (
-        <Section title={s.sayThis}>
-          <blockquote className="say">“{say[lang]}”</blockquote>
-        </Section>
-      )}
+          {a.bring?.length ? (
+            <Block label={s.bring}>
+              <ul className="panel bring">{a.bring.map((b) => <li key={b.en}><span className="box" aria-hidden="true" />{b[lang]}</li>)}</ul>
+            </Block>
+          ) : null}
 
-      <Section title={s.whyWorks}>
-        <div className="sources">{a.sources.map((id) => <SourceCard key={id} src={rules.sources[id]} lang={lang} verified={a.verified} />)}</div>
-      </Section>
+          {say && (
+            <Block label={s.sayThis} className="say-block">
+              <blockquote className="say">“{say[lang]}”</blockquote>
+              <HandNote dir="up" className="say-note">{s.sayNote}</HandNote>
+            </Block>
+          )}
 
-      {waiverSources.length > 0 && (
-        <Section title={s.whyFree}>
-          <div className="sources">{waiverSources.map((id) => <SourceCard key={id} src={rules.sources[id]} lang={lang} verified={a.verified} />)}</div>
-        </Section>
-      )}
+          <Block label={s.whyWorks}>
+            <div className="sources">{a.sources.map((id) => <SourceCard key={id} src={rules.sources[id]} lang={lang} verified={a.verified} />)}</div>
+          </Block>
 
-      <nav className="actions pair" aria-label={s.backToPath}>
-        {n > 1
-          ? <a className="secondary" href={href({ name: "step", n: n - 1 })}><Icon name="back" size={18} /> {s.prevStep}</a>
-          : <a className="secondary" href={href({ name: "path" })}><Icon name="back" size={18} /> {s.yourPathShort}</a>}
-        {n < total
-          ? <a className="primary" href={href({ name: "step", n: n + 1 })}>{s.nextStep} <Icon name="arrow" size={18} /></a>
-          : <a className="primary" href={href({ name: "packet" })}><Icon name="print" size={18} /> {s.printPacket}</a>}
-      </nav>
+          {waiverSources.length > 0 && (
+            <Block label={s.whyFree}>
+              <div className="sources">{waiverSources.map((id) => <SourceCard key={id} src={rules.sources[id]} lang={lang} verified={a.verified} />)}</div>
+            </Block>
+          )}
+
+          <nav className="actions pair" aria-label={s.backToPath}>
+            {n > 1
+              ? <a className="btn ghost" href={href({ name: "step", n: n - 1 })}><Icon name="back" size={16} /> {s.prevStep}</a>
+              : <a className="btn ghost" href={href({ name: "path" })}><Icon name="back" size={16} /> {s.yourPathShort}</a>}
+            {n < total
+              ? <a className="btn primary" href={href({ name: "step", n: n + 1 })}>{s.nextStep} <Icon name="arrow" size={16} /></a>
+              : <a className="btn primary" href={href({ name: "packet" })}><Icon name="print" size={16} /> {s.printPacket}</a>}
+          </nav>
+        </div>
+      </div>
     </section>
   );
 }

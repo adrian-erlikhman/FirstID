@@ -52,7 +52,7 @@ All seven screens now exist as an AI-drafted first build (logged in `AI-USE.md`)
 
 **Thursday**
 - [ ] Read every file in `src/screens/` plus `App.tsx`, `router.ts` and `components.tsx` until you can explain them. Change anything you'd do differently.
-- [ ] **Fonts:** self-host Atkinson Hyperlegible, Bricolage Grotesque and IBM Plex Mono (for example with `@fontsource`), then delete the Google Fonts link in `index.html`. Until then, "no tracking" isn't fully true.
+- [x] **Fonts:** self-hosted in `src/fonts/` (Google Sans Flex, Geist Mono, Shantell Sans; licence in `src/fonts/OFL.txt`). The app makes no third-party requests.
 - [ ] **Packet QR code:** add a QR code on the printed page that opens the live site's How-we-know screen, so a clerk can check a rule on the spot.
 
 **Friday**

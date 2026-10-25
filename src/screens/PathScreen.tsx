@@ -1,10 +1,11 @@
-import { Icon, Notice, Segmented, Summary, Unconfirmed, money, placeOf } from "../components";
-import type { Facts, Mode, Plan, RuleSet, Step } from "../engine/types";
+import { Br, Formula, HandNote, Icon, Notice, Pills, Printout, Solver, StatGrid, Unconfirmed, Waived, fullPrice, money, placeOf } from "../components";
+import type { Facts, Mode, Person, Plan, RuleSet, Step } from "../engine/types";
 import { t, type Lang } from "../i18n";
 import { href } from "../router";
 
-// OWNER: Adrian. The hero screen: the total first, then the steps in order.
-// Each step is one tappable row that opens its detail screen with the proof.
+// OWNER: Adrian. The hero screen: the total first, in brackets because the
+// planner computed it, then the steps in a solver panel. Each step is one
+// tappable row that opens its detail screen with the proof.
 
 export function whenLine(rules: RuleSet, steps: Step[], i: number, lang: Lang): string {
   const s = t[lang];
@@ -16,6 +17,16 @@ export function whenLine(rules: RuleSet, steps: Step[], i: number, lang: Lang): 
   return st.action.days === 0 ? `${start} · ${visit}` : `${start} · ${visit} · ${s.readyIn(st.action.days)}`;
 }
 
+const FLAG: Record<Mode, string> = { cheapest: "--cheapest", fewestTrips: "--fewest-trips", fastest: "--fastest" };
+
+/** The planner's inputs, written as the command that would run it. */
+export function commandFor(person: Person, mode: Mode, extra = "") {
+  const have = person.have.length ? ` --have ${person.have.join(",")}` : "";
+  const born = typeof person.facts.born === "string" ? ` --born ${person.facts.born}` : "";
+  const yes = Object.entries(person.facts).filter(([, v]) => v === true).map(([k]) => ` --${k.replace(/[A-Z]/g, (c) => "-" + c.toLowerCase())}`).join("");
+  return `first-id plan ${FLAG[mode]}${extra}${born}${have}${yes}`;
+}
+
 export function StepList({ rules, lang, plan }: { rules: RuleSet; lang: Lang; plan: Plan }) {
   const s = t[lang];
   return (
@@ -24,20 +35,21 @@ export function StepList({ rules, lang, plan }: { rules: RuleSet; lang: Lang; pl
         const a = st.action;
         const was = st.dollars < a.dollars ? a.dollars : null;
         return (
-          <li key={a.id} className={a.verified ? "" : "unverified"}>
+          <li key={a.id}>
             <a className="step-row" href={href({ name: "step", n: i + 1 })}>
-              <span className="step-num" aria-hidden="true">{i + 1}</span>
+              <span className="row-num" aria-hidden="true">{String(i + 1).padStart(2, "0")}</span>
               <span className="step-main">
-                <span className="step-place">{placeOf(rules, st).label[lang]}</span>
+                <span className="label step-place">{placeOf(rules, st).label[lang]}</span>
                 <span className="step-title">{a.label[lang]}</span>
-                <span className="step-meta">
-                  <strong className="step-cost">{st.dollars === 0 ? s.free : money(st.dollars)}</strong>
-                  {was !== null && <> <s>{money(was)}</s> · {st.waiver!.label[lang]}</>}
-                </span>
+                {was !== null && <span className="step-waiver">{st.waiver!.label[lang]}</span>}
                 <span className="step-when">{whenLine(rules, plan.steps, i, lang)}</span>
                 {!a.verified && <Unconfirmed lang={lang} />}
               </span>
-              <Icon name="chevron" size={18} />
+              <span className="step-cost">
+                <span className="num">{st.dollars === 0 ? s.free : money(st.dollars)}</span>
+                {was !== null && <s className="num">{money(was)}</s>}
+              </span>
+              <Icon name="chevron" size={16} />
             </a>
           </li>
         );
@@ -51,61 +63,93 @@ export function NoPath({ lang, facts, onBack }: { lang: Lang; facts: Facts; onBa
   const elsewhere = facts.born === "us_state" || facts.born === "abroad";
   return (
     <section className="screen">
-      <h1 tabIndex={-1}>{s.noPathTitle}</h1>
-      <p className="lede">{s.noPathBody}</p>
-      {elsewhere && <Notice>{s.noPathBornElsewhere}</Notice>}
-      <p><a href={href({ name: "whatif" })}>{s.tryWhatIf}</a></p>
-      <h2 className="section-title">{s.noPathWho}</h2>
-      <ul className="link-list">
-        <li><a className="link-row" href="tel:211"><span><strong>{s.help211}</strong><span className="muted">{s.help211Line}</span></span><Icon name="phone" size={18} /></a></li>
-        <li><a className="link-row" href="tel:+12132413552"><span><strong>{s.helpLausd}</strong><span className="muted">{s.helpLausdLine}</span></span><Icon name="phone" size={18} /></a></li>
-      </ul>
-      <div className="actions">
-        <button className="secondary" onClick={onBack}>{s.changeAnswers}</button>
+      <Printout index="03" kicker={s.secPath} readout="3 / 3" />
+      <div className="split">
+        <div className="head">
+          <h1 tabIndex={-1} className="display">{s.noPathTitleA} <span className="second">{s.noPathTitleB}</span></h1>
+          <p className="lede">{s.noPathBody}</p>
+        </div>
+        <div className="body">
+          {elsewhere && <Notice>{s.noPathBornElsewhere}</Notice>}
+          <div className="actions row">
+            <a className="btn primary" href={href({ name: "whatif" })}>{s.tryWhatIf} <Icon name="arrow" size={18} /></a>
+          </div>
+          <h2 className="label block-label">{s.noPathWho}</h2>
+          <ul className="panel link-list">
+            <li><a className="link-row" href="tel:211"><span className="link-main"><strong>{s.help211}</strong><span className="row-sub">{s.help211Line}</span></span><Icon name="phone" size={18} /></a></li>
+            <li><a className="link-row" href="tel:+12132413552"><span className="link-main"><strong>{s.helpLausd}</strong><span className="row-sub">{s.helpLausdLine}</span></span><Icon name="phone" size={18} /></a></li>
+          </ul>
+          <div className="actions row">
+            <button className="btn ghost" onClick={onBack}>{s.changeAnswers}</button>
+          </div>
+        </div>
       </div>
     </section>
   );
 }
 
 export function PathScreen(props: {
-  rules: RuleSet; lang: Lang; result: Plan | null; mode: Mode; onMode: (m: Mode) => void;
+  rules: RuleSet; lang: Lang; result: Plan | null; mode: Mode; onMode: (m: Mode) => void; person: Person;
   help: { doc: string; plan: Plan } | null; facts: Facts; onChangeAnswers: () => void; ms: number;
 }) {
-  const { rules, lang, result, mode, onMode, help, facts, ms } = props;
+  const { rules, lang, result, mode, onMode, help, facts, ms, person } = props;
   const s = t[lang];
   if (!result) return <NoPath lang={lang} facts={facts} onBack={props.onChangeAnswers} />;
 
   const unverified = result.steps.filter((st) => !st.action.verified).length;
+  const full = fullPrice(result);
   return (
     <section className="screen">
-      <h1 tabIndex={-1}>{s.pathTitle}</h1>
-      <Summary plan={result} lang={lang} />
+      <Printout index="03" kicker={s.secPath} readout={`3 / 3 · ${result.total.steps} ${s.unitSteps(result.total.steps)}`} />
+      <div className="split path-split">
+        <div className="head">
+          <h1 tabIndex={-1} className="display">
+            {s.pathHeadPre} <Br>{money(result.total.dollars)}</Br>{s.pathHeadPost}{" "}
+            <span className="second">{s.pathSecond[mode]}</span>
+          </h1>
+          {full > result.total.dollars && <HandNote dir="up" className="was-note">{s.wasNote(full)}</HandNote>}
+          <Waived plan={result} lang={lang} />
+          <div className="actions stack head-actions">
+            <a className="btn primary" href={href({ name: "packet" })}><Icon name="print" size={18} /> {s.printPacket}</a>
+            <a className="btn ghost" href={href({ name: "whatif" })}>{s.whatIfLink}</a>
+            <a className="btn ghost" href={href({ name: "sources" })}>{s.howWeKnow}</a>
+          </div>
+        </div>
 
-      <Segmented label={s.modesLabel} value={mode} onChange={onMode}
-        options={[["cheapest", s.modeCheapest], ["fewestTrips", s.modeTrips], ["fastest", s.modeFastest]] as const} />
-      <p className="mode-hint">{s.modeHint[mode]}</p>
+        <div className="body">
+          <Solver command={commandFor(person, mode)} readout={result.explored !== undefined ? s.solvedIn(result.explored, ms) : undefined}>
+            <div className="solver-tabs">
+              <Pills numbered label={s.modesLabel} value={mode} onChange={onMode}
+                options={[["cheapest", s.modeCheapest], ["fewestTrips", s.modeTrips], ["fastest", s.modeFastest]] as const} />
+              <p className="mode-hint">{s.modeHint[mode]}</p>
+            </div>
+            <StepList rules={rules} lang={lang} plan={result} />
+            <StatGrid plan={result} lang={lang} />
+          </Solver>
+          <Formula plan={result} />
 
-      <StepList rules={rules} lang={lang} plan={result} />
+          {unverified > 0
+            ? <Notice tone="draft" title={s.callAhead}>{s.unverifiedNote(unverified, result.steps.length)}</Notice>
+            : <Notice tone="accent">{s.allVerified}</Notice>}
 
-      {unverified > 0
-        ? <Notice tone="warn">{s.unverifiedNote(unverified, result.steps.length)}</Notice>
-        : <Notice tone="accent">{s.allVerified}</Notice>}
+          {help && (
+            <div className="panel help">
+              <span className="label">{s.helpsTitle}</span>
+              <strong className="help-doc">{rules.docs[help.doc].label[lang]}</strong>
+              <p>{s.helpsResult(help.plan.total.steps, help.plan.total.dollars)}</p>
+              <a className="btn ghost small" href={href({ name: "whatif" })}>{s.seeThatPath} <Icon name="arrow" size={16} /></a>
+            </div>
+          )}
 
-      {help && (
-        <Notice tone="accent" title={s.helpsTitle}>
-          <p><strong>{rules.docs[help.doc].label[lang]}</strong></p>
-          <p>{s.helpsResult(help.plan.total.steps, help.plan.total.dollars)}</p>
-          <a href={href({ name: "whatif" })}>{s.seeThatPath}</a>
-        </Notice>
-      )}
-
-      <div className="actions stack">
-        <a className="primary" href={href({ name: "packet" })}><Icon name="print" size={20} /> {s.printPacket}</a>
-        <a className="secondary" href={href({ name: "whatif" })}>{s.whatIfLink}</a>
-        <a className="secondary" href={href({ name: "sources" })}>{s.howWeKnow}</a>
+          <div className="actions stack body-actions">
+            <a className="btn primary" href={href({ name: "packet" })}><Icon name="print" size={18} /> {s.printPacket}</a>
+            <a className="btn ghost" href={href({ name: "whatif" })}>{s.whatIfLink}</a>
+            <a className="btn ghost" href={href({ name: "sources" })}>{s.howWeKnow}</a>
+          </div>
+          {result.explored !== undefined && <p className="fine">{s.foundBy(result.explored, ms)}</p>}
+          <p className="fine">{s.pathFoot}</p>
+        </div>
       </div>
-      {result.explored !== undefined && <p className="fine">{s.foundBy(result.explored, ms)}</p>}
-      <p className="fine">{s.pathFoot}</p>
     </section>
   );
 }
