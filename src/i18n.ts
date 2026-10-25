@@ -522,10 +522,10 @@ const es: Strings = {
   whatIfLink: "¿Y si cambiara una respuesta?",
   factLabels: {
     unhoused: "Me quedo en un albergue o no tengo casa",
-    fireSurvivor: "Perdí documentos en los incendios de 2025",
-    hasWitnesses: "Dos adultos con identificación pueden confirmar quién soy",
+    fireSurvivor: "Perdí documentos en los incendios de 2025 en Los Ángeles",
+    hasWitnesses: "Dos adultos con identificación pueden dar fe de quién soy",
     publicAssistance: "Recibo CalFresh, CalWORKs, General Relief, CAPI, SSI/SSP o CFAP",
-    fosterYouth: "Estoy en cuidado de crianza, incluido el extendido",
+    fosterYouth: "Estoy en cuidado de crianza, incluido el cuidado extendido",
   },
   nowLabel: "Ahora",
   withChange: "Con tus cambios",
