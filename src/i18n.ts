@@ -331,6 +331,11 @@ const en = {
   close: "Close",
   readAloud: "Read aloud",
   stopReading: "Stop",
+  // Text size menu in the top bar (src/components.tsx)
+  textSizeLabel: "Text size",
+  textSizeDefault: "Default",
+  textSizeLarger: "Larger",
+  textSizeLargest: "Largest",
 };
 
 export type Strings = typeof en;
@@ -648,6 +653,11 @@ const es: Strings = {
   close: "Cerrar",
   readAloud: "Leer en voz alta",
   stopReading: "Parar",
+  // Menú de tamaño del texto en la barra de arriba (src/components.tsx)
+  textSizeLabel: "Tamaño del texto",
+  textSizeDefault: "Normal",
+  textSizeLarger: "Grande",
+  textSizeLargest: "Más grande",
 };
 
 export const t: Record<Lang, Strings> = { en, es };

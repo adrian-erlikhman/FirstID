@@ -380,8 +380,74 @@ export function TopBar(props: { lang: Lang; onLang: (l: Lang) => void; onHome: (
               onClick={() => props.onLang(l)}>{l.toUpperCase()}</button>
           ))}
         </div>
+        <TextSizeMenu lang={props.lang} />
       </div>
     </header>
+  );
+}
+
+/* ---------- text size ----------
+ * Three sizes, set as data-text-size on <html>, which scales the root font
+ * size (styles.css, "Text size" block). Remembered on this device only, in
+ * localStorage; nothing is sent anywhere. */
+type TextSize = "default" | "larger" | "largest";
+const TEXT_SIZES: TextSize[] = ["default", "larger", "largest"];
+const TEXT_SIZE_KEY = "firstid-text-size";
+
+function applyTextSize(size: TextSize) {
+  if (size === "default") delete document.documentElement.dataset.textSize;
+  else document.documentElement.dataset.textSize = size;
+}
+function savedTextSize(): TextSize {
+  try {
+    const v = localStorage.getItem(TEXT_SIZE_KEY) as TextSize | null;
+    return v && TEXT_SIZES.includes(v) ? v : "default";
+  } catch { return "default"; }
+}
+// Before the first paint, so a saved size doesn't flash at the default.
+if (typeof document !== "undefined") applyTextSize(savedTextSize());
+
+/** "Aa" in the top bar; opens a small menu with the three sizes. */
+function TextSizeMenu({ lang }: { lang: Lang }) {
+  const s = t[lang];
+  const [size, setSize] = useState<TextSize>(savedTextSize);
+  const [open, setOpen] = useState(false);
+  const wrap = useRef<HTMLDivElement>(null);
+  const toggle = useRef<HTMLButtonElement>(null);
+  const id = useId();
+
+  const pick = (v: TextSize) => {
+    setSize(v);
+    applyTextSize(v);
+    try { localStorage.setItem(TEXT_SIZE_KEY, v); } catch { /* private mode: just this visit */ }
+  };
+
+  useEffect(() => {
+    if (!open) return;
+    const onDown = (e: PointerEvent) => { if (!wrap.current?.contains(e.target as Node)) setOpen(false); };
+    const onKey = (e: KeyboardEvent) => { if (e.key === "Escape") { setOpen(false); toggle.current?.focus(); } };
+    document.addEventListener("pointerdown", onDown);
+    document.addEventListener("keydown", onKey);
+    return () => { document.removeEventListener("pointerdown", onDown); document.removeEventListener("keydown", onKey); };
+  }, [open]);
+
+  const names: Record<TextSize, string> = { default: s.textSizeDefault, larger: s.textSizeLarger, largest: s.textSizeLargest };
+  return (
+    <div className="ts" ref={wrap}>
+      <button ref={toggle} className="ts-toggle" aria-expanded={open} aria-controls={`${id}-menu`} aria-label={s.textSizeLabel}
+        onClick={() => setOpen((o) => !o)}><span aria-hidden="true">A<span className="ts-big">A</span></span></button>
+      <div id={`${id}-menu`} className="ts-menu" hidden={!open}>
+        <p className="ts-title" aria-hidden="true">{s.textSizeLabel}</p>
+        <div className="ts-options" role="group" aria-label={s.textSizeLabel}>
+          {TEXT_SIZES.map((v, i) => (
+            <button key={v} className="ts-option" aria-pressed={size === v} onClick={() => pick(v)}>
+              <span className={`ts-a ts-a${i}`} aria-hidden="true">A</span>
+              <span className="ts-name">{names[v]}</span>
+            </button>
+          ))}
+        </div>
+      </div>
+    </div>
   );
 }
 

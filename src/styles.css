@@ -850,3 +850,48 @@ main h1:focus { box-shadow: none !important; } /* headings take focus on a new s
   color: #000; overflow-wrap: normal; hyphens: manual;
 }
 /* ===== end Say this tools ===== */
+
+/* ===== Text size: the "Aa" menu in the top bar (TextSizeMenu, src/components.tsx) =====
+   data-text-size on <html> scales the root font size; body text is in rem, so
+   it follows. The top bar, the ID card (it scales with its own width) and the
+   big display headings stay in px. Print ignores the setting, so the packet
+   stays one page. */
+:root[data-text-size="larger"] { font-size: 115%; }
+:root[data-text-size="largest"] { font-size: 130%; }
+@media print { :root[data-text-size] { font-size: 100%; } }
+
+.ts { position: relative; flex: none; }
+.ts-toggle {
+  position: relative; display: grid; place-items: center; min-width: 40px; height: 30px; padding: 0 8px;
+  border: 0; border-radius: 980px; background: var(--tile); color: var(--ink);
+  font-family: var(--font); font-size: 13px; font-weight: 600; line-height: 1; letter-spacing: -0.02em;
+}
+.ts-toggle::after { content: ""; position: absolute; inset: -7px -4px; } /* 44px to tap */
+/* Phones: the bar gets 4px tighter per gap so "Aa" fits next to EN/ES at 375px.
+   Narrower than that, the home page's Start pill gives way (the hero has one). */
+@media (max-width: 400px) {
+  .top-inner { gap: 4px; }
+  .brand { padding-right: 0; }
+  .ts-toggle { min-width: 36px; padding: 0 6px; }
+}
+@media (max-width: 374px) { .nav-cta { display: none; } }
+.ts-toggle .ts-big { font-size: 17px; }
+.ts-toggle[aria-expanded="true"] { background: var(--ink); color: var(--on-ink); }
+.ts-menu {
+  position: absolute; top: calc(100% + 10px); right: 0; z-index: 30; width: max-content; max-width: calc(100vw - 2 * var(--gutter));
+  padding: 12px; border-radius: var(--r-sm); background: var(--panel); box-shadow: 0 0 0 1px var(--line), 0 12px 30px -12px rgb(0 0 0 / .3);
+}
+.ts-menu[hidden] { display: none; }
+.ts-title { margin: 0 0 8px; font-size: 13.5px; font-weight: 600; color: var(--text-2); }
+.ts-options { display: flex; gap: 6px; }
+.ts-option {
+  display: flex; flex-direction: column; align-items: center; justify-content: flex-end; gap: 2px;
+  min-width: 76px; min-height: 64px; padding: 8px 10px; border: 0; border-radius: 10px;
+  background: var(--tile); color: var(--ink); font-family: var(--font); line-height: 1.1;
+}
+.ts-option[aria-pressed="true"] { background: var(--ink); color: var(--on-ink); }
+.ts-a { font-weight: 600; line-height: 1; }
+.ts-a0 { font-size: 16px; } .ts-a1 { font-size: 20px; } .ts-a2 { font-size: 25px; }
+.ts-name { font-size: 13px; font-weight: 500; white-space: nowrap; }
+.ts-toggle:focus-visible, .ts-option:focus-visible { position: relative; z-index: 1; }
+/* ===== end Text size ===== */
