@@ -2,6 +2,7 @@ import { Block, FormPaper, Icon, Notice, SourceCard, formFor, money, placeOf, sa
 import type { Plan, RuleSet } from "../engine/types";
 import { t, type Lang } from "../i18n";
 import { href } from "../router";
+import { SayTools } from "./SayTools";
 
 // OWNER: Adrian. One step, with the proof: where to go, what to bring, what to
 // say, and the official sentence that makes it legal. This is the screen a
@@ -54,6 +55,7 @@ export function StepScreen({ rules, lang, plan, n }: { rules: RuleSet; lang: Lan
           {say && (
             <Block label={s.sayThis} className="say-block">
               <blockquote className="say">“{say[lang]}”</blockquote>
+              <SayTools lang={lang} name={a.label[lang]} where={place.label[lang]} bring={a.bring?.map((b) => b[lang]) ?? []} say={say[lang]} />
             </Block>
           )}
 
