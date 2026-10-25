@@ -24,14 +24,13 @@ data/rules.json ──► npm run lint:rules ──► planner (in the browser) 
  waivers, sources    rule has no source       documents you hold          to its source
 ```
 
-1. **The rules are data, not code.** [`data/rules.json`](data/rules.json) holds every rule First ID knows: what it requires, which documents it gives you, the fee, the fee waivers, how long it takes, where it happens, what to bring and say, and the sources behind it, in English and Spanish.
-2. **A linter guards the rules.** [`src/engine/lint.ts`](src/engine/lint.ts) fails the build if a rule has no source, names an unknown document or place, has a waiver that costs more than the fee, is missing a Spanish line, or has a requirement of the form "you must not have document X" (which would break the guarantee below).
-3. **The planner is a deterministic search.** [`src/engine/planner.ts`](src/engine/planner.ts) treats your situation as a state (the documents you hold, and the office you're at) and each rule as a move that adds documents. No move costs less than zero dollars, trips or days, so Dijkstra's algorithm finds the exact best sequence that ends with a California ID. Because moves only ever add documents, having more documents can never make your plan worse. "Cheapest" compares dollars, then trips, then days, then steps; the path screen can also sort by fewest trips or fastest. The same answers always give the same path.
-4. **Every step cites its source.** Each step shows the rule's sources (DMV, LA County Registrar-Recorder and Social Security pages, and the text of California statutes; some statute links still go to FindLaw, public.law or LegiScan rather than leginfo.legislature.ca.gov) with the exact sentence that supports it (or a note that we haven't copied it yet) and, once a person has verified the rule, the date they checked it. The "How we know" screen lists every rule and source.
-5. **What-if.** The app re-plans once for each answer you could change and shows only the changes that would alter your path.
-6. **When there is no path** with the rules we have, it says what is blocking it (for example, no paper with your address) and lists who can help today, instead of guessing.
+1. **Rules are data.** [`data/rules.json`](data/rules.json) holds each rule's requirements, the documents it gives you, fees, fee waivers, time, place, what to bring and say, and its sources, in English and Spanish.
+2. **A linter guards them.** [`src/engine/lint.ts`](src/engine/lint.ts) fails the build if a rule has no source, names an unknown document or place, or is missing its Spanish.
+3. **The planner is exact.** [`src/engine/planner.ts`](src/engine/planner.ts) runs Dijkstra's algorithm over the set of documents you hold, so it finds the best order of steps by cost, then trips, then days. Rules only ever add documents, so having more can never make your plan worse, and the same answers always give the same path.
+4. **Every step cites its source**, with the exact supporting sentence once we've copied it. The "How we know" screen lists them all.
+5. **What-if and dead ends.** The app shows which answers would change your path, and when there's no path it says what's blocking it and who can help.
 
-The tests ([`tests/`](tests/)) check the planner on toy rules, check four invented people against plans worked out by hand from the sources, check one guarantee on the real rules (having more documents never makes your plan worse), and check the office list and the progress logic. `npm run check` runs the rules lint, the tests, the type check and the build, and nothing deploys unless it passes.
+The tests ([`tests/`](tests/)) cover the planner, four invented people checked against hand-worked plans, the "more documents never hurts" guarantee, the office list and the progress logic. `npm run check` runs all of it plus the build, and nothing deploys unless it passes.
 
 ## What's real and what's made up
 
