@@ -584,7 +584,7 @@ const es: Strings = {
   showClerkTitle: "Por favor, lea esto",
   close: "Cerrar",
   readAloud: "Leer en voz alta",
-  stopReading: "Parar",
+  stopReading: "Detener",
   // Menú de tamaño del texto en la barra de arriba (src/components.tsx)
   textSizeLabel: "Tamaño del texto",
   textSizeDefault: "Normal",
