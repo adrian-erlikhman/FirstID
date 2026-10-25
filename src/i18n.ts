@@ -310,6 +310,12 @@ const en = {
     `${o.steps} ${plural(o.steps, "step", "steps")}, ${o.trips} ${plural(o.trips, "trip", "trips")}, ` +
     (o.days === 0 ? "the card today." : o.days < 7 ? `about ${o.days} ${plural(o.days, "day", "days")} until the card.`
       : `about ${weeksOf(o.days)} ${plural(weeksOf(o.days), "week", "weeks")} until the card.`),
+  // Say this tools (src/screens/SayTools.tsx)
+  showClerk: "Show the clerk",
+  showClerkTitle: "Please read this",
+  close: "Close",
+  readAloud: "Read aloud",
+  stopReading: "Stop",
 };
 
 export type Strings = typeof en;
@@ -606,6 +612,12 @@ const es: Strings = {
     `${o.steps} ${plural(o.steps, "paso", "pasos")}, ${o.trips} ${plural(o.trips, "viaje", "viajes")}, ` +
     (o.days === 0 ? "la tarjeta hoy mismo." : o.days < 7 ? `unos ${o.days} ${plural(o.days, "día", "días")} hasta la tarjeta.`
       : `unas ${weeksOf(o.days)} ${plural(weeksOf(o.days), "semana", "semanas")} hasta la tarjeta.`),
+  // Herramientas de "Di esto" (src/screens/SayTools.tsx)
+  showClerk: "Mostrar al empleado",
+  showClerkTitle: "Por favor, lea esto",
+  close: "Cerrar",
+  readAloud: "Leer en voz alta",
+  stopReading: "Parar",
 };
 
 export const t: Record<Lang, Strings> = { en, es };
