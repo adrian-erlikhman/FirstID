@@ -14,7 +14,7 @@ The Congressional App Challenge requires every teammate to make "significant ind
 ## Rules
 
 1. Commit under your own GitHub account. Never commit for someone else.
-2. Branch per change (`ryan/planner-trips`, `michael/rules-dl933`). Open a PR, and a teammate reviews it before merging.
+2. Branch per change (`yourname/short-description`). Open a PR, and a teammate reviews it before merging.
 3. `npm run check` must pass before merging: rules lint, tests and build.
 4. If an AI tool wrote or substantially rewrote code, say so in the commit message (`AI-assisted: Claude drafted, I reviewed and changed X`), and add a line to `AI-USE.md`.
 5. Never rewrite history. The log should match what we tell the judges.
