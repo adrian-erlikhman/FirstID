@@ -1,5 +1,5 @@
 import { useMemo, useState } from "react";
-import { Card3D, CardBack, PathCard, Printout, Solver, money, useRecompute } from "../components";
+import { Card3D, CardBack, PathCard, Solver, money, useRecompute } from "../components";
 import { plan } from "../engine/planner";
 import type { Mode, Person, RuleSet } from "../engine/types";
 import { t, type Lang } from "../i18n";
