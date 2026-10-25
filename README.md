@@ -75,11 +75,11 @@ On the home page, tap one of the example people (for example Maria) to see a ful
 
 ## Deployment
 
-- **Vercel** (https://first-id.vercel.app/) builds every push to `main` with `npm run check`, using the settings and security headers in [`vercel.json`](vercel.json).
+- **Vercel** (https://first-id.vercel.app/) hosts the main site. It installs with `npm ci` and builds with `npm run check`, using the settings and security headers in [`vercel.json`](vercel.json).
 - **GitHub Pages** (https://adrian-erlikhman.github.io/FirstID/) is a mirror: [`.github/workflows/pages.yml`](.github/workflows/pages.yml) runs `npm run check` on every push to `main` and publishes `dist/` to the `gh-pages` branch.
 - **Pull requests** run the same `npm run check` in [`.github/workflows/check.yml`](.github/workflows/check.yml).
 
-A broken rule, a failing test or a type error stops both deploys.
+A broken rule, a failing test or a type error stops a deploy on either host.
 
 ## How rules get verified
 
