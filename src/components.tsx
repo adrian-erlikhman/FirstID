@@ -74,6 +74,36 @@ export function Portrait({ className = "" }: { className?: string }) {
   );
 }
 
+// A head and shoulders on an 80 x 100 photo, drawn as one outline: crown,
+// jaw, neck, then the slope of the shoulders out to the edges of the frame.
+const SILHOUETTE =
+  "M40 21C48.5 21 54.5 28 54.5 38.5C54.5 46 51.5 51.5 47.5 54.5L47.5 60C47.5 62 49 63.2 51.5 64C64 67.5 73 74 75 86L76 100L4 100L5 86C7 74 16 67.5 28.5 64C31 63.2 32.5 62 32.5 60L32.5 54.5C28.5 51.5 25.5 46 25.5 38.5C25.5 28 31.5 21 40 21Z";
+
+/** The photo on the ID card: a studio-lit backdrop in the card's yellow and a
+ *  person's silhouette with a little light on the head and shoulders. Colours
+ *  come from --pw (backdrop) and --pb (person). */
+export function IdPortrait({ className = "" }: { className?: string }) {
+  const id = "p" + useId().replace(/[^a-zA-Z0-9]/g, "");
+  return (
+    <svg viewBox="0 0 80 100" className={`portrait id-portrait ${className}`} aria-hidden="true" focusable="false" preserveAspectRatio="xMidYMid slice">
+      <defs>
+        <radialGradient id={`${id}b`} cx="50%" cy="34%" r="70%">
+          <stop offset="0" stopColor="#fff" stopOpacity=".38" />
+          <stop offset="1" stopColor="#fff" stopOpacity="0" />
+        </radialGradient>
+        <linearGradient id={`${id}s`} x1="0" y1="0" x2=".35" y2="1">
+          <stop offset="0" stopColor="#fff" stopOpacity=".16" />
+          <stop offset=".55" stopColor="#fff" stopOpacity="0" />
+        </linearGradient>
+      </defs>
+      <rect width="80" height="100" fill="var(--pw)" />
+      <rect width="80" height="100" fill={`url(#${id}b)`} />
+      <path d={SILHOUETTE} fill="var(--pb)" />
+      <path d={SILHOUETTE} fill={`url(#${id}s)`} />
+    </svg>
+  );
+}
+
 /** The mark, then the name. */
 export function Lockup() {
   return (
@@ -112,7 +142,7 @@ export function PathCard({ plan, lang, mode, name, busy = false, className = "" 
       </div>
       <div className="idc-mid">
         <div className="idc-holder">
-          <Portrait className="idc-photo" />
+          <IdPortrait className="idc-photo" />
           {name && <span className="idc-name">{name}</span>}
         </div>
         <div className="idc-total">

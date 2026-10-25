@@ -237,7 +237,7 @@ h1.display .bracketed .num { color: var(--on-c); background: var(--hl); padding:
 .idc-mid { display: grid; grid-template-columns: 19cqw minmax(0, 1fr); gap: 4.6cqw; align-items: end; }
 .idc-holder { display: flex; flex-direction: column; gap: 4px; min-width: 0; }
 .idc-name { font-size: 12px; font-size: clamp(12px, 3.9cqw, 17px); font-weight: 600; overflow-wrap: anywhere; }
-.idc-photo { display: block; width: 100%; height: auto; aspect-ratio: 4 / 5; border-radius: 3px; border-radius: 1.2cqw; background: var(--pb); }
+.idc-photo { display: block; width: 100%; height: auto; aspect-ratio: 4 / 5; border-radius: 3px; border-radius: 1.2cqw; }
 .idc-total { display: flex; flex-direction: column; gap: 1px; min-width: 0; }
 /* Two separate labels, not one string with a dot: what the number is, and which way it was planned. */
 .idc-key { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 8px; font-size: 12px; font-size: clamp(12px, 3.8cqw, 16px); }
