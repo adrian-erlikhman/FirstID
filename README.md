@@ -118,10 +118,11 @@ src/
   fonts/, forms/         self-hosted fonts (with their licence) and the LA County form images
 tests/                   planner, persona and UI-logic tests (Vitest)
 scripts/                 rules linter and colour-contrast check
-public/                  icons and the link-preview image
+public/                  icons, link-preview image, web app manifest, offline service worker
 docs/research/           background research from before the build (AI-compiled leads)
 docs/team/               build-week team notes
 .github/workflows/       check.yml (pull requests) and pages.yml (deploy to GitHub Pages)
+.github/ISSUE_TEMPLATE/  the "report a wrong or outdated rule" form
 vercel.json              Vercel build and security headers
 AI-USE.md                the AI disclosure
 ```
