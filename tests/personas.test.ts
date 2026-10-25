@@ -1,6 +1,6 @@
-// OWNER: Michael. Each expected plan below was worked out BY HAND from the
-// sources before it was written here. If the planner disagrees, either the
-// rules file or the planner is wrong, and CI stops the deploy until we know which.
+// Each expected plan below was worked out BY HAND from the sources before it
+// was written here. If the planner disagrees, either the rules file or the
+// planner is wrong, and CI stops the deploy until we know which.
 import { describe, expect, it } from "vitest";
 import rulesJson from "../data/rules.json";
 import { lint } from "../src/engine/lint";
