@@ -2,6 +2,7 @@ import { Block, FormPaper, Icon, Notice, SourceCard, formFor, money, placeOf, sa
 import type { Plan, RuleSet } from "../engine/types";
 import { t, type Lang } from "../i18n";
 import { href } from "../router";
+import { OfficesLink } from "./OfficesScreen";
 import { SayTools } from "./SayTools";
 
 // OWNER: Adrian. One step, with the proof: where to go, what to bring, what to
@@ -33,7 +34,7 @@ export function StepScreen({ rules, lang, plan, n }: { rules: RuleSet; lang: Lan
 
         <div className="body">
           <dl className="panel facts">
-            <div><dt>{s.where}</dt><dd>{place.label[lang]}</dd></div>
+            <div><dt>{s.where}</dt><dd>{place.label[lang]}<OfficesLink place={a.place} n={n} lang={lang} /></dd></div>
             <div>
               <dt>{s.cost}</dt>
               <dd>
