@@ -476,7 +476,7 @@ h2.display.wide { max-width: 20ch; margin-bottom: 28px; }
 .q .row-num { width: 22px; flex: none; }
 
 /* ---------- path ---------- */
-.steps > li + li { border-top: 1px solid var(--line); }
+.steps > li + li .slide-body { border-top: 1px solid var(--line); }
 .step-row {
   display: grid; grid-template-columns: 24px minmax(0, 1fr) auto 14px; gap: 12px; align-items: start;
   padding: 16px; color: var(--ink); text-decoration: none;
@@ -532,6 +532,11 @@ h2.display.wide { max-width: 20ch; margin-bottom: 28px; }
 .collapse.open { grid-template-rows: 1fr; opacity: 1; pointer-events: auto; }
 .collapse-in { min-height: 0; overflow: hidden; }
 .collapse.settled > .collapse-in { overflow: visible; }
+/* A list row that slides shut or open (see useListPresence). */
+.slide-row { display: grid; grid-template-rows: 1fr; transition: grid-template-rows .45s var(--ease), opacity .35s var(--ease); }
+.slide-row.enter, .slide-row.leave { grid-template-rows: 0fr; opacity: 0; }
+.slide-row.leave { pointer-events: none; }
+.slide-clip { min-height: 0; overflow: hidden; }
 .swap { display: inline-block; animation: swap-in .4s var(--ease) both; }
 @keyframes swap-in { from { opacity: 0; transform: translateY(0.25em); } to { opacity: 1; transform: none; } }
 
