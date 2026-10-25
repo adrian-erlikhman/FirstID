@@ -66,12 +66,12 @@ export function StepScreen({ rules, lang, plan, n }: { rules: RuleSet; lang: Lan
           )}
 
           <Block label={s.whyWorks}>
-            <div className="sources">{a.sources.map((id) => <SourceCard key={id} src={rules.sources[id]} lang={lang} verified={a.verified} />)}</div>
+            <div className="sources">{a.sources.map((id) => <SourceCard key={id} src={{ ...rules.sources[id], title: rules.sources[id].title + s.inEnglish }} lang={lang} verified={a.verified} />)}</div>
           </Block>
 
           {waiverSources.length > 0 && (
             <Block label={s.whyFree}>
-              <div className="sources">{waiverSources.map((id) => <SourceCard key={id} src={rules.sources[id]} lang={lang} verified={a.verified} />)}</div>
+              <div className="sources">{waiverSources.map((id) => <SourceCard key={id} src={{ ...rules.sources[id], title: rules.sources[id].title + s.inEnglish }} lang={lang} verified={a.verified} />)}</div>
             </Block>
           )}
 

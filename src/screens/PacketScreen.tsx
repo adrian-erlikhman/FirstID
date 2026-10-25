@@ -58,7 +58,7 @@ export function PacketScreen({ rules, lang, result }: { rules: RuleSet; lang: La
                 <span role="cell"><strong>{i + 1}. {a.label[lang]}</strong><br /><span className="sheet-where">{placeOf(rules, st).label[lang]}{!a.verified && ` · ${s.callAhead.toUpperCase()}`}</span></span>
                 <span role="cell" className="sheet-small">{a.bring?.map((b) => <span key={b.en} className="bring-line">{b[lang]}</span>)}</span>
                 <span role="cell"><strong>{st.dollars === 0 ? s.free : money(st.dollars)}</strong>{was !== null && <><br /><s>{money(was)}</s></>}</span>
-                <span role="cell" className="sheet-small">{ruleIds.map((id) => rules.sources[id].title).join("; ")}</span>
+                <span role="cell" className="sheet-small">{ruleIds.map((id) => rules.sources[id].title + s.inEnglish).join("; ")}</span>
               </div>
             );
           })}
