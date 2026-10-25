@@ -68,3 +68,15 @@ export function flipsThatMatter(rules: RuleSet, person: Person, mode: Mode, max 
   }
   return out;
 }
+
+/** Plain reasons shown on the no-path screen, for the common dead ends. */
+export type NoPathNote = "bornCA" | "bornElsewhere";
+
+export function noPathNotes(rules: RuleSet, person: Person, mode: Mode = "cheapest"): NoPathNote[] {
+  if (plan(rules, person, mode)) return [];
+  const notes: NoPathNote[] = [];
+  const born = person.facts.born;
+  if (born === "california") notes.push("bornCA");
+  if (born === "us_state" || born === "abroad") notes.push("bornElsewhere");
+  return notes;
+}

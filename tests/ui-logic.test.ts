@@ -3,7 +3,7 @@ import rulesJson from "../data/rules.json";
 import type { RuleSet } from "../src/engine/types";
 import { examples } from "../src/examples";
 import { parse, href } from "../src/router";
-import { applyFlips, flipsThatMatter } from "../src/whatif";
+import { applyFlips, flipsThatMatter, noPathNotes } from "../src/whatif";
 import { withImplied } from "../src/person";
 import { plan, whatHelps } from "../src/engine/planner";
 import { personas } from "./personas";
@@ -44,6 +44,16 @@ describe("what-if toggles", () => {
     const p = applyFlips({ facts: { unhoused: true }, have: [] }, [{ kind: "fact", fact: "unhoused" }, { kind: "fact", fact: "fireSurvivor" }]);
     expect(p.facts).toEqual({ unhoused: false, fireSurvivor: true });
   });
+});
+
+describe("no-path notes", () => {
+  it("born elsewhere in California: no path, and the note says why", () => {
+    const person = { facts: { born: "california", age: 30, unhoused: true, hasWitnesses: true }, have: ["ssn_known"] };
+    expect(plan(rules, person)).toBeNull();
+    expect(noPathNotes(rules, person)).toContain("bornCA");
+  });
+
+  it("no notes when there is a path", () => expect(noPathNotes(rules, personas.maria)).toEqual([]));
 });
 
 describe("router", () => {

@@ -2,6 +2,7 @@ import { Br, Card3D, CardBack, Formula, Icon, Notice, PathCard, Pills, Printout,
 import type { Facts, Mode, Person, Plan, RuleSet, Step } from "../engine/types";
 import { t, type Lang } from "../i18n";
 import { href } from "../router";
+import { noPathNotes, type NoPathNote } from "../whatif";
 
 // OWNER: Adrian. The hero screen: the total first, in brackets because the
 // planner computed it, then the steps in a solver panel. Each step is one
@@ -48,9 +49,10 @@ export function StepList({ rules, lang, plan }: { rules: RuleSet; lang: Lang; pl
   );
 }
 
-export function NoPath({ lang, facts, onBack }: { lang: Lang; facts: Facts; onBack: () => void }) {
+export function NoPath({ rules, lang, person, onBack }: { rules: RuleSet; lang: Lang; person: Person; onBack: () => void }) {
   const s = t[lang];
-  const elsewhere = facts.born === "us_state" || facts.born === "abroad";
+  const text: Record<NoPathNote, string> = { bornCA: s.noPathBornCA, bornElsewhere: s.noPathBornElsewhere };
+  const notes = noPathNotes(rules, person);
   return (
     <section className="screen">
       <div className="split">
@@ -59,7 +61,7 @@ export function NoPath({ lang, facts, onBack }: { lang: Lang; facts: Facts; onBa
           <p className="lede">{s.noPathBody}</p>
         </div>
         <div className="body">
-          {elsewhere && <Notice>{s.noPathBornElsewhere}</Notice>}
+          {notes.map((n) => <Notice key={n}>{text[n]}</Notice>)}
           <div className="actions row">
             <a className="btn primary" href={href({ name: "whatif" })}>{s.tryWhatIf} <Icon name="arrow" size={18} /></a>
           </div>
@@ -83,7 +85,7 @@ export function PathScreen(props: {
 }) {
   const { rules, lang, result, mode, onMode, help, facts, ms } = props;
   const s = t[lang];
-  if (!result) return <NoPath lang={lang} facts={facts} onBack={props.onChangeAnswers} />;
+  if (!result) return <NoPath rules={rules} lang={lang} person={props.person} onBack={props.onChangeAnswers} />;
 
   const unverified = result.steps.filter((st) => !st.action.verified).length;
   return (
