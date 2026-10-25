@@ -85,7 +85,6 @@ const en = {
   loopNote: "the way out is legal, just hard to find",
   getTitleA: "What a caseworker would look up,",
   getTitleB: "worked out from your seven answers.",
-  tryTitle: "Just looking? Try an example.",
   // Maria, start to finish (home, MariaTrail.tsx)
   trailTitle: "Maria's path, start to finish.",
   trailWho: "Maria is 34 and was born in LA County. She lost her papers in the Eaton fire and is staying in a shelter. She still has her Medi-Cal card, knows her Social Security number, and has two people who know her and can vouch for her.",
@@ -155,7 +154,6 @@ const en = {
   startOver: "Start over",
   toQuestions: "Next: questions",
   examplesTitle: "Just looking? Try a made-up person",
-  examplesNote: "Made-up people, real rules.",
 
   // 2. Questions
   questionsTitle: "A few quick questions.",
@@ -413,7 +411,6 @@ const es: Strings = {
   loopNote: "la salida es legal, pero cuesta encontrarla",
   getTitleA: "Lo que buscaría un trabajador social,",
   getTitleB: "calculado a partir de tus siete respuestas.",
-  tryTitle: "¿Solo estás viendo? Prueba con un ejemplo.",
   // María, de principio a fin (inicio, MariaTrail.tsx)
   trailTitle: "El camino de María, de principio a fin.",
   trailWho: "María tiene 34 años y nació en el condado de Los Ángeles. Perdió sus papeles en el incendio Eaton y vive en un albergue. Todavía tiene su tarjeta de Medi-Cal, sabe su número de Seguro Social y tiene dos personas que la conocen y pueden dar fe de quién es.",
@@ -480,7 +477,6 @@ const es: Strings = {
   startOver: "Empezar de nuevo",
   toQuestions: "Siguiente",
   examplesTitle: "¿Solo estás viendo? Prueba con una persona inventada",
-  examplesNote: "Personas inventadas, reglas reales.",
 
   questionsTitle: "Unas preguntas rápidas.",
   questionsHint: "Si no sabes una respuesta, toca “No sé”. Tu camino no dependerá de ella.",
