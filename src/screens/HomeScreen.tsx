@@ -1,5 +1,5 @@
 import { useMemo } from "react";
-import { Card3D, CardBack, FORM_PDF, Icon, PathCard, Photo, photoUrl } from "../components";
+import { FORM_PDF, Icon, PathCard, Photo, photoUrl } from "../components";
 import { plan } from "../engine/planner";
 import type { RuleSet } from "../engine/types";
 import { examples } from "../examples";
@@ -36,9 +36,7 @@ export function HomeScreen({ rules, lang, onStart, onExample }: {
         </div>
         {maria && (
           <div className="hero-stage">
-            <Card3D lang={lang} className="hero-c3d"
-              front={<PathCard plan={maria} lang={lang} mode="cheapest" name={s.mariaName} />}
-              back={<CardBack plan={maria} rules={rules} lang={lang} />} />
+            <PathCard plan={maria} lang={lang} mode="cheapest" name={s.mariaName} />
           </div>
         )}
         <p className="hero-note">{s.heroNote}</p>

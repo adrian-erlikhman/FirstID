@@ -1,4 +1,4 @@
-import { Br, Card3D, CardBack, Collapse, Icon, Notice, PathCard, Pills, Solver, Swap, Tween, Unconfirmed, money, placeOf } from "../components";
+import { Br, Collapse, Icon, Notice, PathCard, Pills, Solver, Swap, Tween, Unconfirmed, money, placeOf } from "../components";
 import { useListPresence } from "../motion";
 import type { Facts, Mode, Person, Plan, RuleSet, Step } from "../engine/types";
 import { t, type Lang } from "../i18n";
@@ -167,7 +167,7 @@ export function PathScreen(props: {
         </div>
 
         <div className="body">
-          <Card3D lang={lang} className="path-card" front={<PathCard plan={result} lang={lang} mode={mode} />} back={<CardBack plan={result} rules={rules} lang={lang} />} />
+          <PathCard plan={result} lang={lang} mode={mode} className="path-card" />
           <Solver title={s.cardLabel} readout={result.explored !== undefined ? s.solvedIn(result.explored, ms) : undefined}>
             <div className="solver-tabs">
               <Pills label={s.modesLabel} value={mode} onChange={onMode}

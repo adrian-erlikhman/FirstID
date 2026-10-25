@@ -1,5 +1,5 @@
 import { useMemo, useState } from "react";
-import { Card3D, CardBack, Collapse, PathCard, Solver, Swap, money } from "../components";
+import { Collapse, PathCard, Solver, Swap, money } from "../components";
 import { plan } from "../engine/planner";
 import type { Mode, Person, RuleSet } from "../engine/types";
 import { useListPresence } from "../motion";
@@ -54,7 +54,7 @@ export function WhatIfScreen(props: {
 
           <div className="whatif-result" aria-live="polite">
             <Collapse show={!!result}>
-              {result && <Card3D lang={lang} className="path-card" front={<PathCard plan={result} lang={lang} mode={mode} />} back={<CardBack plan={result} rules={rules} lang={lang} />} />}
+              {result && <PathCard plan={result} lang={lang} mode={mode} className="path-card" />}
             </Collapse>
             <Solver title={s.secWhatIf} readout={<Swap text={on.length ? s.withChange : s.nowLabel} />}>
               <ol className="mini-steps">
