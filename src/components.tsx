@@ -450,16 +450,6 @@ export const waiverCount = (p: Plan) => p.steps.filter((st) => st.waiver && st.d
 /** What to say at the counter: the waiver's line if one applies, else the step's own. */
 export const sayFor = (st: Step) => st.waiver?.say ?? st.action.say;
 
-/** The planner's sum, written out: $0 + $15 + $0 = [$15]. */
-export function Formula({ plan }: { plan: Plan }) {
-  if (plan.steps.length < 2) return null;
-  return (
-    <p className="formula" aria-hidden="true">
-      {plan.steps.map((st) => money(st.dollars)).join(" + ")} = <Br>{money(plan.total.dollars)}</Br>
-    </p>
-  );
-}
-
 /** One "not confirmed" tag. Dashed, because the rule is still a draft. */
 export function Unconfirmed({ lang }: { lang: Lang }) {
   const s = t[lang];
