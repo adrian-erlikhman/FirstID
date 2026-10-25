@@ -8,7 +8,7 @@ import { t, type Lang } from "../i18n";
 import { Bento, LoopStory, PaperStage } from "./HomeParts";
 import { MariaTrail } from "./MariaTrail";
 
-// OWNER: Adrian. The first thing anyone sees, laid out like a product page:
+// The first thing anyone sees, laid out like a product page:
 // one big line and the product itself (Maria's real computed path, as an ID
 // card you can tilt and flip), then the problem told as a scroll story, the
 // numbers, the real forms, how it works, and Maria's path on real paper.
