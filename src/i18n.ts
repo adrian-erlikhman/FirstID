@@ -94,7 +94,6 @@ const en = {
 
   // 0. Home
   homeFor: "For people without housing, fire survivors, youth in foster care, anyone else who has lost their papers, and the caseworkers who help them.",
-  loopId: "California ID", loopBc: "Birth certificate", loopNeeds: "needs", loopOut: "First ID finds the way out",
   start: "Find my path",
   howTitle: "Three steps, about two minutes.",
   howNote: "Some steps need a shelter, program or caseworker to sign a form.",
@@ -402,7 +401,6 @@ const es: Strings = {
   pathHeadPost: ".",
 
   homeFor: "Para personas sin hogar, sobrevivientes de incendios, jóvenes en cuidado de crianza, cualquier otra persona que haya perdido sus papeles y los trabajadores sociales que las ayudan.",
-  loopId: "Identificación", loopBc: "Acta de nacimiento", loopNeeds: "necesita", loopOut: "First ID encuentra la salida",
   start: "Buscar mi camino",
   howTitle: "Tres pasos, unos dos minutos.",
   howNote: "Algunos pasos necesitan que un albergue, programa o trabajador social firme un formulario.",
