@@ -180,8 +180,10 @@ h1.display .bracketed .num { color: var(--on-c); background: var(--hl); padding:
   display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 44px; min-width: 44px; padding: 9px 15px;
   border: 0; border-radius: 980px; background: var(--panel); color: var(--ink);
   box-shadow: inset 0 0 0 1px var(--control); font-size: 0.9688rem; font-weight: 500; line-height: 1.25; text-align: left;
-  transition: background-color .2s, color .2s, box-shadow .2s;
+  transition: background-color .3s var(--ease), color .3s var(--ease), box-shadow .3s var(--ease), transform .2s var(--ease);
+  -webkit-tap-highlight-color: transparent;
 }
+.pill:active { transform: scale(.96); }
 .pill:hover { background: var(--wash); }
 .pill[aria-pressed="true"] { background: var(--ink); color: var(--on-ink); box-shadow: inset 0 0 0 1px var(--ink); }
 .pill-num { font-size: 0.7813rem; font-weight: 500; opacity: .6; font-variant-numeric: tabular-nums; }
