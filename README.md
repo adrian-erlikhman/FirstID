@@ -109,4 +109,9 @@ AI-USE.md                the AI disclosure
 
 ## Team
 
-See `CONTRIBUTING.md` for who owns what and `docs/team/TASKS.md` for this week's work. Research leads are in `docs/research/`.
+Built for the 2026 Congressional App Challenge (California's 37th district) by:
+
+- **Adrian Erlikhman**: the experience: screens, design, Spanish and accessibility
+- **Michael Tarekegn**: the rules data, its sources and the hand-worked example plans
+
+How we split the work, review changes and record AI help is in [`CONTRIBUTING.md`](CONTRIBUTING.md). Our build-week notes are in [`docs/team/`](docs/team/).
