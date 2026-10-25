@@ -456,8 +456,6 @@ h2.display.wide { max-width: 20ch; margin-bottom: 28px; }
 .link-row:hover { background: var(--wash); }
 .link-main strong { display: block; font-weight: 600; font-size: 1.0625rem; }
 .link-row > .icon { color: var(--text-2); }
-.link-readout { display: flex; flex-direction: column; align-items: flex-end; gap: 2px; font-size: 0.8125rem; color: var(--text-2); }
-.link-readout .bracketed { font-size: 1.0625rem; color: var(--ink); font-weight: 600; }
 
 /* ---------- what you have ---------- */
 .check-row {
