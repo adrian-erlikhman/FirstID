@@ -167,6 +167,12 @@ export function PathCard({ plan, lang, mode, name, className = "" }: {
   const { total } = plan;
   const modeLabel = { cheapest: s.modeCheapest, fewestTrips: s.modeTrips, fastest: s.modeFastest }[mode];
   const full = fullPrice(plan);
+  // "Instead of $89" slides open and shut rather than popping, and keeps its
+  // last wording while it closes.
+  const was = full > total.dollars;
+  const last = useRef({ full, waivers: waiverCount(plan) });
+  if (was) last.current = { full, waivers: waiverCount(plan) };
+  const fullShown = useTween(last.current.full);
   return (
     <section className={`id-card ${className}`} aria-label={s.cardLabel}>
       <p className="sr-only">{s.cardSummary({ name, total: total.dollars, full, steps: total.steps, trips: total.trips, days: total.days })}</p>
@@ -183,9 +189,9 @@ export function PathCard({ plan, lang, mode, name, className = "" }: {
         <div className="idc-total">
           <span className="idc-key"><span>{s.totalCost}</span><span className="idc-mode">{modeLabel}</span></span>
           <span className="idc-big"><Br><Tween value={total.dollars} format={money} /></Br></span>
-          {full > total.dollars && (
-            <span className="idc-was"><span>{s.insteadOf(full)}</span><span>{s.withWaivers(waiverCount(plan))}</span></span>
-          )}
+          <span className={`idc-was-wrap${was ? " open" : ""}`}>
+            <span className="idc-was"><span>{s.insteadOf(Math.round(fullShown))}</span><span>{s.withWaivers(last.current.waivers)}</span></span>
+          </span>
         </div>
       </div>
       <dl className="idc-fields" aria-hidden="true">
