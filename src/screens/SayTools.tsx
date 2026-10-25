@@ -2,7 +2,7 @@ import { useCallback, useEffect, useLayoutEffect, useRef, useState, type Keyboar
 import { createPortal } from "react-dom";
 import { t, type Lang } from "../i18n";
 
-// OWNER: Michael. Two helpers for the "Say this" line on a step:
+// Two helpers for the "Say this" line on a step:
 // "Show the clerk" puts the line full screen in huge type, for holding the
 // phone up at a counter, and "Read aloud" speaks the step with the phone's own
 // voice (speechSynthesis runs on the device; nothing is sent anywhere).
