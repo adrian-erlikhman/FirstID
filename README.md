@@ -57,6 +57,16 @@ The tests ([`tests/`](tests/)) check the planner on toy rules, check four invent
 
 The whole app, including the printed packet, works in English and Spanish. It starts in Spanish when the browser's language is Spanish, and the button in the top bar switches at any time. Screen text lives in [`src/i18n.ts`](src/i18n.ts); every rule in `data/rules.json` carries both languages, and the linter fails the build if a rule is missing its Spanish. The Spanish was drafted with AI help and has not yet had a full review by a native speaker.
 
+## Accessibility
+
+- **Keyboard:** every control is a native button or link, so the whole flow works with Tab, Enter and Space, with a visible focus outline. When a new screen opens, focus moves to its heading.
+- **Reduced motion:** if your device asks for reduced motion, the animations, the scroll-pinned story, the card tilt and its sheen all switch off. The tilt never runs on touch screens.
+- **Text size:** body text is 17px and the smallest text on the home page is 13px. Pinch-zoom and browser zoom are not blocked. Sizes are set in pixels, so the browser's default font-size setting doesn't change them.
+- **Contrast:** `npm run contrast` checks the palette against WCAG ratios (4.5:1 for text, 3:1 for control outlines).
+- **Spanish:** switching language also switches the page's `lang` attribute, so screen readers read Spanish with a Spanish voice.
+
+We have not yet done a full pass with a screen reader (VoiceOver or TalkBack).
+
 ## Run it locally
 
 You need Node.js (CI uses version 22) and npm.
