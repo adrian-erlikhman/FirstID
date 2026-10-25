@@ -19,7 +19,7 @@ export function HaveScreen(props: {
     return (
       <li key={id}>
         <button className="check-row" role="checkbox" aria-checked={on} onClick={() => toggle(id)}>
-          <span className="box" aria-hidden="true">{on && <Icon name="check" size={15} stroke={3} />}</span>
+          <span className="box" aria-hidden="true"><Icon name="check" size={15} stroke={3} /></span>
           <span className="check-text">{label}{hint && <span className="row-sub">{hint}</span>}</span>
         </button>
       </li>
