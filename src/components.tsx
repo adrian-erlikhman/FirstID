@@ -114,15 +114,9 @@ export function Lockup() {
   );
 }
 
-/** A number the planner computed. While it re-plans, it shows three dots. */
-export function Br({ children, busy = false, className = "" }: { children: ReactNode; busy?: boolean; className?: string }) {
-  return (
-    <span className={`bracketed ${className}`}>
-      {busy
-        ? <span className="sampler" role="status" aria-label="…"><i>·</i><i>·</i><i>·</i></span>
-        : <span className="num">{children}</span>}
-    </span>
-  );
+/** A number the planner computed. */
+export function Br({ children, className = "" }: { children: ReactNode; className?: string }) {
+  return <span className={`bracketed ${className}`}><span className="num">{children}</span></span>;
 }
 
 // The fine-line security print behind the card, on an 856 x 540 grid (ID-1 at
@@ -166,8 +160,8 @@ export function Tween({ value, format = String }: { value: number; format?: (n: 
 
 /** The path you get, shown as the thing it gets you: an ID card. Total up
  *  top, then steps, trips and time along the bottom, like the fields on a card. */
-export function PathCard({ plan, lang, mode, name, busy = false, className = "" }: {
-  plan: Plan; lang: Lang; mode: Mode; name?: string; busy?: boolean; className?: string;
+export function PathCard({ plan, lang, mode, name, className = "" }: {
+  plan: Plan; lang: Lang; mode: Mode; name?: string; className?: string;
 }) {
   const s = t[lang];
   const { total } = plan;
@@ -188,7 +182,7 @@ export function PathCard({ plan, lang, mode, name, busy = false, className = "" 
         </div>
         <div className="idc-total">
           <span className="idc-key"><span>{s.totalCost}</span><span className="idc-mode">{modeLabel}</span></span>
-          <span className="idc-big"><Br busy={busy}><Tween value={total.dollars} format={money} /></Br></span>
+          <span className="idc-big"><Br><Tween value={total.dollars} format={money} /></Br></span>
           {full > total.dollars && (
             <span className="idc-was"><span>{s.insteadOf(full)}</span><span>{s.withWaivers(waiverCount(plan))}</span></span>
           )}
@@ -316,19 +310,6 @@ export function Photo({ name, alt, caption, className = "" }: { name: string; al
       {caption && <figcaption>{caption}</figcaption>}
     </figure>
   );
-}
-
-/** Shows [···] for a moment whenever `key` changes, so a person sees the
- *  planner run again. The answer itself is instant. */
-export function useRecompute(key: string, ms = 320) {
-  const [busy, setBusy] = useState(false);
-  useEffect(() => {
-    if (window.matchMedia?.("(prefers-reduced-motion: reduce)").matches) return;
-    setBusy(true);
-    const id = setTimeout(() => setBusy(false), ms);
-    return () => clearTimeout(id);
-  }, [key, ms]);
-  return busy;
 }
 
 /** A white panel with a small header: what it is, and what the planner found. */
