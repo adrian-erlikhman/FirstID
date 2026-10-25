@@ -125,6 +125,40 @@ export function Br({ children, busy = false, className = "" }: { children: React
   );
 }
 
+// The fine-line security print behind the card, on an 856 x 540 grid (ID-1 at
+// ten units a millimetre): a field of gentle waves, and a guilloche rosette
+// of interlaced loops on the right. Built once, as two path strings.
+const GUILLOCHE = (() => {
+  const f = (n: number) => n.toFixed(1);
+  let waves = "";
+  for (let i = 0; i < 20; i++) {
+    const y = 14 + i * 27, a = 5 + (i % 3), half = 34;
+    waves += `M${-half} ${f(y)}Q${f(-half / 2)} ${f(y - a * 2 * (i % 2 ? 1 : -1))} 0 ${f(y)}`;
+    for (let x = half; x <= 856 + half; x += half) waves += `T${x} ${f(y)}`;
+  }
+  let rosette = "";
+  const cx = 650, cy = 250, loops = 12, steps = 288;
+  for (let j = 0; j < loops; j++) {
+    const phase = (j / loops) * Math.PI * 2;
+    for (let k = 0; k <= steps; k++) {
+      const t = (k / steps) * Math.PI * 2;
+      const r = 150 + 38 * Math.sin(9 * t + phase) + 12 * Math.sin(27 * t - phase);
+      rosette += `${k ? "L" : "M"}${f(cx + r * Math.cos(t))} ${f(cy + r * Math.sin(t))}`;
+    }
+  }
+  return { waves, rosette };
+})();
+
+/** Security print for a card face. Decoration only: hidden from screen readers. */
+function Guilloche() {
+  return (
+    <svg className="idc-guilloche" viewBox="0 0 856 540" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false">
+      <path d={GUILLOCHE.waves} />
+      <path d={GUILLOCHE.rosette} />
+    </svg>
+  );
+}
+
 /** The path you get, shown as the thing it gets you: an ID card. Total up
  *  top, then steps, trips and time along the bottom, like the fields on a card. */
 export function PathCard({ plan, lang, mode, name, busy = false, className = "" }: {
@@ -136,6 +170,7 @@ export function PathCard({ plan, lang, mode, name, busy = false, className = "" 
   const full = fullPrice(plan);
   return (
     <section className={`id-card ${className}`} aria-label={s.cardLabel}>
+      <Guilloche />
       <div className="idc-top">
         <span className="idc-brand"><Mark size={14} tilt={0} />First ID</span>
         <span className="idc-doc">{s.cardLabel}</span>
@@ -168,6 +203,7 @@ export function CardBack({ plan, rules, lang }: { plan: Plan; rules: RuleSet; la
   const s = t[lang];
   return (
     <section className="id-card idc-back" aria-label={s.cardBackTitle}>
+      <Guilloche />
       <span className="idc-stripe" aria-hidden="true" />
       <strong className="idc-back-title">{s.cardBackTitle}</strong>
       <ol className="idc-back-list">
