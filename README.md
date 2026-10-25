@@ -16,6 +16,12 @@ You tick the documents you still have and answer seven short questions. First ID
 
 This is not legal advice. Rules change, and the app marks every rule our team has not yet checked against its source.
 
+## The problem: the ID loop
+
+To get a California ID, the DMV wants proof of identity, usually a birth certificate. To order a certified birth certificate from LA County by mail, you need a notarized Certificate of Identity. To get something notarized, the notary needs to see your ID. Someone who has lost everything can go around that circle for weeks.
+
+There are legal ways out, and several are free, but each one lives with a different office: a shelter or nonprofit that can sign the DMV's no-fee form (DL 933), a social worker who can sign a free birth certificate affidavit, two credible witnesses who can vouch for you in front of a notary (California Civil Code 1185), the Social Security office, the county recorder and the DMV. First ID puts those rules in one place and works out which ones apply to you, in what order.
+
 ## How it works
 
 ```
