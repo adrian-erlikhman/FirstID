@@ -53,6 +53,10 @@ The tests ([`tests/`](tests/)) check the planner on toy rules, check four invent
 - **No third-party requests.** Fonts and images are served from the site itself; there are no analytics, trackers or CDNs. The only outside pages are the official sources, which open when you tap them.
 - **Enforced on the main site.** [`vercel.json`](vercel.json) sends a Content-Security-Policy that only lets the page load its own files, plus `Referrer-Policy: no-referrer`. (GitHub Pages can't send custom headers, so the mirror relies on the code alone.)
 
+## English and Spanish
+
+The whole app, including the printed packet, works in English and Spanish. It starts in Spanish when the browser's language is Spanish, and the button in the top bar switches at any time. Screen text lives in [`src/i18n.ts`](src/i18n.ts); every rule in `data/rules.json` carries both languages, and the linter fails the build if a rule is missing its Spanish. The Spanish was drafted with AI help and has not yet had a full review by a native speaker.
+
 **New to the repo? Read `docs/team/START-HERE.md` first.**
 
 ## Run it
