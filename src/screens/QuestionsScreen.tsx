@@ -2,7 +2,6 @@ import { Icon, Pills } from "../components";
 import type { Facts } from "../engine/types";
 import { t, type Lang } from "../i18n";
 
-// OWNER: Adrian (UI) with Michael (which facts the rules need).
 // Each answer becomes a fact the rules can test. "Not sure" leaves the fact
 // unset, so the planner won't use a path that depends on it.
 
