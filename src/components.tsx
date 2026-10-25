@@ -326,17 +326,6 @@ export function useRecompute(key: string, ms = 320) {
   return busy;
 }
 
-/** A screen opens with a quiet line: its number and name on the left, a live
- *  readout on the right. */
-export function Printout({ index, kicker, readout }: { index: string; kicker: string; readout?: ReactNode }) {
-  return (
-    <div className="printout">
-      <span><b>{index}</b>{kicker}</span>
-      {readout !== undefined && <span className="readout">{readout}</span>}
-    </div>
-  );
-}
-
 /** A white panel with a small header: what it is, and what the planner found. */
 export function Solver({ title, readout, children, className = "" }: { title?: string; readout?: ReactNode; children: ReactNode; className?: string }) {
   return (
