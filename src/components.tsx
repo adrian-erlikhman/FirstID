@@ -1,4 +1,4 @@
-import { useEffect, useId, useState, type ReactNode } from "react";
+import { useEffect, useId, useRef, useState, type ReactNode } from "react";
 import { useTilt } from "./motion";
 import type { Mode, Plan, RuleSet, Source, Step } from "./engine/types";
 import { t, type Lang } from "./i18n";
@@ -238,15 +238,25 @@ export function Card3D({ front, back, lang, className = "" }: { front: ReactNode
   const s = t[lang];
   const stage = useTilt<HTMLDivElement>(9);
   const [flipped, setFlipped] = useState(false);
+  // The face turned away is out of reach: not read, not focusable. React 18
+  // has no `inert` prop, so it is set on the element directly.
+  const frontRef = useRef<HTMLDivElement>(null);
+  const backRef = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    if (frontRef.current) frontRef.current.inert = flipped;
+    if (backRef.current) backRef.current.inert = !flipped;
+  }, [flipped, back]);
   return (
     <div ref={stage} className={`c3d${flipped ? " flipped" : ""} ${className}`}>
       <div className="c3d-card">
         <div className="c3d-edge" aria-hidden="true" />
-        <div className="c3d-face c3d-front" aria-hidden={flipped || undefined}>{front}<span className="c3d-holo" aria-hidden="true" /><span className="c3d-glare" aria-hidden="true" /></div>
-        {back && <div className="c3d-face c3d-back" aria-hidden={!flipped || undefined}>{back}</div>}
+        <div ref={frontRef} className="c3d-face c3d-front" aria-hidden={flipped || undefined}>{front}<span className="c3d-holo" aria-hidden="true" /><span className="c3d-glare" aria-hidden="true" /></div>
+        {back && <div ref={backRef} className="c3d-face c3d-back" aria-hidden={!flipped || undefined}>{back}</div>}
       </div>
       {back && (
-        <button className="c3d-flip" onClick={() => setFlipped((f) => !f)} aria-pressed={flipped}>
+        // A native button, so Enter and Space work and focus stays put. The
+        // label says what pressing it does next, so there is no aria-pressed.
+        <button type="button" className="c3d-flip" onClick={() => setFlipped((f) => !f)}>
           <Icon name="flip" size={16} /> {flipped ? s.flipBack : s.flip}
         </button>
       )}
