@@ -32,7 +32,7 @@ npm run check   # rules lint + tests + build (CI runs this on pull requests and 
 
 ## Team
 
-See `CONTRIBUTING.md` for who owns what and `TASKS.md` for this week's work. Research leads are in `docs/research/`.
+See `CONTRIBUTING.md` for who owns what and `docs/team/TASKS.md` for this week's work. Research leads are in `docs/research/`.
 
 This is not legal advice. Rules change, and every rule shows whether our team has verified it yet.
 
