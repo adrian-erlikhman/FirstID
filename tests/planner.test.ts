@@ -47,7 +47,7 @@ describe("planner mechanics (toy rules)", () => {
 });
 
 /**
- * The guarantee we put in the video: having MORE documents can never make your
+ * The guarantee the app makes: having MORE documents can never make your
  * plan worse. We check it for every persona and every single document they
  * could add. If a rule ever breaks it, this test fails before a person sees it.
  */
