@@ -13,6 +13,8 @@
  */
 
 @font-face { font-family: "Instrument Sans"; src: url("./fonts/instrument-sans.woff2") format("woff2"); font-weight: 400 700; font-display: swap; }
+/* The ID card's own face: San Francisco on iPhones and Macs, Inter (self-hosted) everywhere else. */
+@font-face { font-family: "Inter"; src: url("./fonts/inter.woff2") format("woff2"); font-weight: 100 900; font-display: swap; }
 
 :root {
   --ground: #ffffff; --panel: #ffffff; --ink: #1d1d1f; --on-ink: #ffffff;
@@ -43,6 +45,7 @@
 :root {
   --font: "Instrument Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
   --mono: var(--font);
+  --card-font: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Inter", system-ui, sans-serif;
   --r: 18px; --r-sm: 12px; --r-card: 18px; --r-tile: 28px;
   --ease: cubic-bezier(0.16, 1, 0.3, 1);
   --wide: 1160px;
@@ -213,22 +216,26 @@ h1.display .bracketed .num { color: var(--on-c); background: var(--hl); padding:
   position: relative; display: flex; flex-direction: column; gap: 18px;
   background: var(--ink); color: var(--on-ink); border-radius: var(--r-card);
   padding: 18px 20px 16px; overflow: hidden;
+  /* SF/Inter tracking: normal on small labels, tighter on big numbers (set per element below). */
+  font-family: var(--card-font); letter-spacing: 0; font-variant-numeric: tabular-nums;
+  -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale;
 }
+.id-card .num { letter-spacing: inherit; }
 .idc-top { display: flex; justify-content: space-between; align-items: center; gap: 12px; font-size: 13.5px; font-weight: 500; }
 .idc-top > span:first-child { opacity: .72; }
-.idc-brand { display: inline-flex; align-items: center; gap: 6px; font-weight: 600; letter-spacing: -0.04em; font-size: 15px; }
+.idc-brand { display: inline-flex; align-items: center; gap: 6px; font-weight: 600; letter-spacing: -0.012em; font-size: 15px; }
 .idc-brand .mark { height: 14px; width: auto; }
 .idc-mid { display: grid; grid-template-columns: 64px minmax(0, 1fr); gap: 18px; align-items: end; }
 .idc-photo { display: block; width: 64px; height: 88px; border-radius: 3px; background: var(--pb); }
 .idc-total { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
 .idc-key { font-size: 13px; opacity: .72; }
-.idc-big { font-weight: 600; font-size: 56px; line-height: .95; letter-spacing: -0.05em; }
+.idc-big { font-weight: 600; font-size: 56px; line-height: .95; letter-spacing: -0.035em; }
 .idc-was { font-size: 13.5px; opacity: .72; margin-top: 6px; }
 .idc-fields { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); margin: 0; border-top: 1px solid color-mix(in srgb, var(--on-ink) 22%, transparent); padding-top: 12px; }
 .idc-fields > div + div { padding-left: 14px; border-left: 1px solid color-mix(in srgb, var(--on-ink) 22%, transparent); }
 .idc-fields > div:not(:first-child) { padding-left: 14px; }
 .idc-fields dt { font-size: 12.5px; opacity: .72; }
-.idc-fields dd { margin: 2px 0 0; font-size: 19px; font-weight: 600; letter-spacing: -0.02em; font-variant-numeric: tabular-nums; }
+.idc-fields dd { margin: 2px 0 0; font-size: 19px; font-weight: 600; letter-spacing: -0.015em; }
 .path-card { margin-bottom: 16px; }
 .route-step h1.display { overflow-wrap: anywhere; }
 
