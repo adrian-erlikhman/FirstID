@@ -493,7 +493,6 @@ h2.display.wide { max-width: 20ch; margin-bottom: 28px; }
 .step-when { font-size: 0.875rem; line-height: 1.4; color: var(--text-2); }
 .step-cost { display: flex; flex-direction: column; align-items: flex-end; gap: 1px; font-size: 1rem; font-weight: 600; padding-top: 18px; }
 .step-cost s { color: var(--text-2); font-size: 0.8438rem; font-weight: 400; }
-.was-note { margin: 2px 0 8px; }
 .help { margin-top: 16px; padding: 18px; display: flex; flex-direction: column; align-items: flex-start; gap: 6px; }
 .help-doc { font-weight: 600; font-size: 1.375rem; line-height: 1.2; letter-spacing: -0.03em; margin-top: 2px; }
 .help p { margin: 0 0 6px; color: var(--text-2); font-size: 0.9688rem; }
