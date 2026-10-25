@@ -12,7 +12,8 @@ export type Route =
   | { name: "whatif" }
   | { name: "packet" }
   | { name: "sources" }
-  | { name: "example"; id: string };
+  | { name: "example"; id: string }
+  | { name: "offices"; kind: string; n?: number };
 
 export function parse(hash: string): Route {
   const [, a, b] = hash.replace(/^#/, "").split("/");
@@ -25,6 +26,10 @@ export function parse(hash: string): Route {
     }
     case "example":
       return b ? { name: "example", id: b } : { name: "home" };
+    case "offices": { // #/offices/dmv/3: the DMV list, opened from step 3
+      const n = Number(hash.split("/")[3]);
+      return b ? { name: "offices", kind: b, ...(Number.isInteger(n) && n > 0 ? { n } : {}) } : { name: "home" };
+    }
     default:
       return { name: "home" };
   }
@@ -34,6 +39,7 @@ export function href(r: Route): string {
   if (r.name === "home") return "#/";
   if (r.name === "step") return `#/step/${r.n}`;
   if (r.name === "example") return `#/example/${r.id}`;
+  if (r.name === "offices") return `#/offices/${r.kind}${r.n ? `/${r.n}` : ""}`;
   return `#/${r.name}`;
 }
 
