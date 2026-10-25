@@ -1,5 +1,5 @@
 import { useEffect, useId, useRef, useState, type ReactNode } from "react";
-import { useTilt, useTween } from "./motion";
+import { usePresence, useTilt, useTween } from "./motion";
 import type { Mode, Plan, RuleSet, Source, Step } from "./engine/types";
 import { t, type Lang } from "./i18n";
 import applicationImg from "./forms/birth-record-application.jpg";
@@ -151,6 +151,25 @@ function Guilloche() {
       <path d={GUILLOCHE.rosette} />
     </svg>
   );
+}
+
+/** Slides its contents open and shut instead of popping them in and out.
+ *  While closing it keeps showing what it last held. */
+export function Collapse({ show, children, className = "" }: { show: boolean; children: ReactNode; className?: string }) {
+  const { mounted, open, settled } = usePresence(show);
+  const last = useRef(children);
+  if (show) last.current = children;
+  if (!mounted) return null;
+  return (
+    <div className={`collapse${open ? " open" : ""}${settled ? " settled" : ""} ${className}`} aria-hidden={show ? undefined : true}>
+      <div className="collapse-in">{show ? children : last.current}</div>
+    </div>
+  );
+}
+
+/** Text that fades in when it changes, instead of being swapped in place. */
+export function Swap({ text, className = "" }: { text: string; className?: string }) {
+  return <span key={text} className={`swap ${className}`}>{text}</span>;
 }
 
 /** A number that counts to its new value. `format` turns it into text. */
