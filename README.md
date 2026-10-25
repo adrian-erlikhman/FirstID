@@ -1,6 +1,6 @@
 # First ID
 
-**The shortest legal path to a California ID in LA County, with the official rule behind every step. In English and Spanish.**
+**The cheapest legal path to a California ID card in LA County, with the official source for each step. In English and Spanish.**
 
 **Live site: https://first-id.vercel.app/** (mirror on GitHub Pages: https://adrian-erlikhman.github.io/FirstID/)
 
