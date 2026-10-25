@@ -8,7 +8,8 @@ import { t, type Lang } from "./i18n";
 // ticks still work for the visit, they just aren't remembered.
 //
 // Reminders are .ics files built here in the browser. The only date they use is
-// today + the step's own `days` from data/rules.json; we add no other deadline.
+// the day the planner expects the step to finish (its endDay: when it can start,
+// plus its own `days` from data/rules.json); we add no other deadline.
 
 export const PROGRESS_KEY = "firstid.progress.v1";
 
@@ -100,7 +101,7 @@ export function icsFold(line: string): string {
 export interface Reminder {
   /** Step (action) id, for the UID. */
   id: string;
-  /** The step's own wait, from data/rules.json. */
+  /** Days from today until the step should be done: the planner's endDay. */
   days: number;
   summary: string;
   description: string;
@@ -178,5 +179,5 @@ export function reminderFor(rules: RuleSet, step: Step, n: number, lang: Lang): 
   const s = t[lang];
   const doc = a.produces.find((d) => d === rules.goal) ?? a.produces[0];
   const what = (doc && s.remindWhat[doc]) || (doc && rules.docs[doc]?.label[lang]) || a.label[lang];
-  return { id: a.id, days: a.days, summary: s.remindSummary(what), description: s.remindDescription(n, a.label[lang], a.days) };
+  return { id: a.id, days: step.endDay, summary: s.remindSummary(what), description: s.remindDescription(n, a.label[lang], a.days) };
 }

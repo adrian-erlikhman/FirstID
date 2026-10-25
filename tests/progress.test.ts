@@ -3,7 +3,7 @@ import rulesJson from "../data/rules.json";
 import type { RuleSet } from "../src/engine/types";
 import { plan } from "../src/engine/planner";
 import {
-  PROGRESS_KEY, addDays, icsFold, icsUnescape, loadTicks, parseIcs, reminderFor, reminderIcs, saveTicks, ticksInPlan, toggleTick,
+  PROGRESS_KEY, addDays, icsDate, icsFold, icsUnescape, loadTicks, parseIcs, reminderFor, reminderIcs, saveTicks, ticksInPlan, toggleTick,
 } from "../src/progress";
 import { personas } from "./personas";
 
@@ -70,11 +70,11 @@ describe("calendar reminders", () => {
     expect([d.getFullYear(), d.getMonth(), d.getDate()]).toEqual([2026, 10, 22]);
   });
 
-  it("offers reminders only for steps that wait, with the rules' own days", () => {
+  it("offers reminders only for steps that wait, on the day the step should finish", () => {
     const p = plan(rules, personas.maria)!;
     for (const [i, st] of p.steps.entries()) {
       const r = reminderFor(rules, st, i + 1, "en");
-      if (st.action.days > 0) expect(r?.days).toBe(st.action.days);
+      if (st.action.days > 0) expect(r?.days).toBe(st.endDay);
       else expect(r).toBeNull();
     }
     expect(p.steps.some((st) => st.action.days > 0)).toBe(true);
@@ -106,8 +106,10 @@ describe("calendar reminders", () => {
       expect(ev.props.UID.value).toBe("test-uid-rrcc_mail@first-id");
       expect(ev.props.DTSTAMP.value).toMatch(/^\d{8}T\d{6}Z$/);
       expect(ev.props.DTSTART.params).toBe("VALUE=DATE");
-      expect(ev.props.DTSTART.value).toBe("20261122"); // today + 28 days
-      expect(ev.props.DTEND.value).toBe("20261123");
+      // The step's end day in the plan, not today + its own wait.
+      const end = p.steps[i].endDay;
+      expect(ev.props.DTSTART.value).toBe(icsDate(addDays(now, end)));
+      expect(ev.props.DTEND.value).toBe(icsDate(addDays(now, end + 1)));
       expect(icsUnescape(ev.props.SUMMARY.value)).toBe(r.summary);
       expect(icsUnescape(ev.props.DESCRIPTION.value)).toBe(r.description);
       expect(icsUnescape(ev.props.DESCRIPTION.value)).toContain(p.steps[i].action.label[lang]);
