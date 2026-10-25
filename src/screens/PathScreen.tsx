@@ -125,7 +125,7 @@ export function PathScreen(props: {
   rules: RuleSet; lang: Lang; result: Plan | null; mode: Mode; onMode: (m: Mode) => void; person: Person;
   help: { doc: string; plan: Plan } | null; facts: Facts; onChangeAnswers: () => void; ms: number;
 }) {
-  const { rules, lang, result, mode, onMode, help, facts, ms } = props;
+  const { rules, lang, result, mode, onMode, help, ms } = props;
   const s = t[lang];
   // Ticks are kept by step id on this phone only; steps no longer in the plan
   // keep their stored tick but are not shown or counted.
