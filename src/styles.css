@@ -742,6 +742,13 @@ h2.display.wide { max-width: 20ch; margin-bottom: 28px; }
   .story-dots { display: none; }
   .orbit, .orb { transform: none; }
 }
+/* Light mode for slow phones or Data Saver (set by motion.ts): the same as above. */
+:root[data-motion="lite"] *, :root[data-motion="lite"] *::before, :root[data-motion="lite"] *::after { animation: none !important; transition: none !important; }
+:root[data-motion="lite"] .story { height: auto; }
+:root[data-motion="lite"] .story-pin { position: static; height: auto; }
+:root[data-motion="lite"] .story-line { position: static; opacity: 1; transform: none; margin-bottom: 28px; }
+:root[data-motion="lite"] .story-dots { display: none; }
+:root[data-motion="lite"] .orbit, :root[data-motion="lite"] .orb { transform: none; }
 
 /* ---------- packet (always black on white: it's for paper) ---------- */
 .packet-bar { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; margin: 0 0 18px; }

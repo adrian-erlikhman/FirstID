@@ -2,9 +2,31 @@ import { useEffect, useRef, useState } from "react";
 
 // OWNER: Adrian. The site's motion, in three small hooks. Everything here is
 // decoration: it switches itself off for people who ask for reduced motion,
-// and the tilt only runs with a real mouse (never on touch screens).
+// and on phones that are likely slow or saving data (light mode). The tilt
+// only runs with a real mouse (never on touch screens).
 
-const reduced = () => typeof window !== "undefined" && !!window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
+type Nav = Navigator & { connection?: { saveData?: boolean }; deviceMemory?: number };
+
+/** A device that is likely slow or saving data: Data Saver on, or 2 GB of
+ *  memory or less (deviceMemory is Chromium-only, so this means low-end
+ *  Android). Core counts are not used: Safari on iOS reports a clamped
+ *  hardwareConcurrency, which would turn every iPhone into light mode.
+ *  Browsers that don't say count as fast. */
+export function liteDevice() {
+  if (typeof navigator === "undefined") return false;
+  const n = navigator as Nav;
+  const mem = n.deviceMemory;
+  return n.connection?.saveData === true || (typeof mem === "number" && mem > 0 && mem <= 2);
+}
+
+// Light mode is one flag on <html>, so the CSS (the pinned story, the card's
+// float and sheen, every animation) switches off exactly as it does for
+// prefers-reduced-motion. Anything else that wants to know reads data-motion.
+if (typeof document !== "undefined" && liteDevice()) document.documentElement.dataset.motion = "lite";
+
+const reduced = () =>
+  (typeof window !== "undefined" && !!window.matchMedia?.("(prefers-reduced-motion: reduce)").matches) ||
+  (typeof document !== "undefined" && document.documentElement.dataset.motion === "lite");
 const finePointer = () => typeof window !== "undefined" && !!window.matchMedia?.("(hover: hover) and (pointer: fine)").matches;
 
 /** Tilts whatever is inside toward the mouse. Sets --rx and --ry (degrees)
