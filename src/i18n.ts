@@ -26,7 +26,7 @@ const en = {
   // Hero and home sections
   heroA: "No ID. No birth certificate.",
   heroB: "There's a legal way out",
-  heroLede: "The cheapest legal way to a California ID card, with the official rule for each step.",
+  heroLede: "The cheapest legal way to a California ID card, with the rule for each step and its source.",
   heroNote: "It's free, there's no account, and your answers stay on your phone.",
   heroEyebrow: "For Los Angeles County",
   flip: "Flip the card", flipBack: "Flip it back",
@@ -155,8 +155,8 @@ const en = {
   readyIn: (d: number) => (d < 7 ? `ready in about ${d} days` : `ready in about ${weeksOf(d)} ${plural(weeksOf(d), "week", "weeks")}`),
   byMail: "by mail, no trip",
   callAhead: "Call ahead",
-  callAheadLong: "We haven't confirmed this rule from an official source yet. Call before you go.",
-  callAheadLongMail: "We haven't confirmed this rule from an official source yet. Call before you send it.",
+  callAheadLong: "We haven't checked this rule against its sources yet. Call before you go.",
+  callAheadLongMail: "We haven't checked this rule against its sources yet. Call before you send it.",
   unverifiedNote: (n: number, total: number) =>
     total === 1 ? "This step isn't confirmed yet. Call ahead before you go." : n === total ? `None of these ${total} steps are confirmed yet. Call ahead before each one.` : `${n} of ${total} steps aren't confirmed yet. Call ahead before those.`,
   allVerified: "Every step's rule has been checked against its sources.",
@@ -338,7 +338,7 @@ const es: Strings = {
 
   heroA: "Sin identificación. Sin acta de nacimiento.",
   heroB: "Hay una salida legal",
-  heroLede: "La forma legal más barata de sacar una tarjeta de identificación de California, con la regla oficial de cada paso.",
+  heroLede: "La forma legal más barata de sacar una tarjeta de identificación de California, con la regla de cada paso y su fuente.",
   heroNote: "Es gratis, no necesitas cuenta y tus respuestas se quedan en tu teléfono.",
   heroEyebrow: "Para el condado de Los Ángeles",
   flip: "Voltear la tarjeta", flipBack: "Voltearla de nuevo",
@@ -461,8 +461,8 @@ const es: Strings = {
   readyIn: (d) => (d < 7 ? `en unos ${d} días` : `en unas ${weeksOf(d)} ${plural(weeksOf(d), "semana", "semanas")}`),
   byMail: "por correo, sin viaje",
   callAhead: "Llama antes",
-  callAheadLong: "Todavía no confirmamos esta regla con una fuente oficial. Llama antes de ir.",
-  callAheadLongMail: "Todavía no confirmamos esta regla con una fuente oficial. Llama antes de enviarlo.",
+  callAheadLong: "Todavía no revisamos esta regla con sus fuentes. Llama antes de ir.",
+  callAheadLongMail: "Todavía no revisamos esta regla con sus fuentes. Llama antes de enviarlo.",
   unverifiedNote: (n, total) =>
     total === 1 ? "Este paso no está confirmado todavía. Llama antes de ir." : n === total ? `Ninguno de estos ${total} pasos está confirmado todavía. Llama antes de cada uno.` : `${n} de ${total} pasos no están confirmados todavía. Llama antes de esos.`,
   allVerified: "La regla de cada paso ya se revisó con sus fuentes.",
