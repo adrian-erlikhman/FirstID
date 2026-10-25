@@ -357,8 +357,8 @@
         }
       ],
       "why": {
-        "en": "A shelter or nonprofit that serves people without homes can sign a DL 933. With it, the DMV waives the ID fee, and the form also counts as proof of your California address.",
-        "es": "Un albergue u organización sin fines de lucro que atiende a personas sin hogar puede firmar el DL 933. Con él, el DMV no te cobra la identificación, y el formulario también cuenta como comprobante de tu domicilio en California."
+        "en": "If the shelter or program is signed up with the DMV's no-fee ID program, staff can sign a DL 933. With it, the DMV waives the ID fee, and the form also counts as proof of your California address.",
+        "es": "Si el albergue o programa está inscrito en el programa de identificación sin costo del DMV, el personal puede firmar el DL 933. Con él, el DMV no te cobra la identificación, y el formulario también cuenta como comprobante de tu domicilio en California."
       },
       "say": {
         "en": "Can you sign a DL 933 so I can get a no-fee California ID?",
@@ -453,8 +453,8 @@
         "es": "Antes de que salgas del cuidado de crianza, el condado tiene que darte tus documentos, incluida una copia certificada de tu acta de nacimiento y tu tarjeta de Seguro Social."
       },
       "say": {
-        "en": "Before I leave care, I need my birth certificate and Social Security card. The county has to give them to me under Welfare and Institutions Code 391.",
-        "es": "Antes de salir del cuidado, necesito mi acta de nacimiento y mi tarjeta de Seguro Social. El condado tiene que dármelas según el Código de Bienestar e Instituciones 391."
+        "en": "Can you help me get my birth certificate and Social Security card before I leave care?",
+        "es": "¿Me puede ayudar a conseguir mi acta de nacimiento y mi tarjeta de Seguro Social antes de salir del cuidado?"
       },
       "sources": [
         "wic391"
@@ -989,8 +989,12 @@
       "days": 21,
       "bring": [
         {
-          "en": "Any ID you still have. Start the application online first; ID cards can't be replaced online.",
-          "es": "Cualquier identificación que tengas. Empieza la solicitud en línea; la identificación no se reemplaza en línea."
+          "en": "Any ID you still have",
+          "es": "Cualquier identificación que todavía tengas"
+        },
+        {
+          "en": "Fill out the ID application online first, then finish at a DMV office.",
+          "es": "Llena primero la solicitud de identificación en línea y termina el trámite en una oficina del DMV."
         },
         {
           "en": "An address where you can get mail for the next 2 months, like your shelter or program (ask them first)",
