@@ -2,16 +2,14 @@
 
 The Congressional App Challenge requires every teammate to make "significant individual contributions" and show "technical understanding", and judges can ask for the source code. So the git history has to show who built what, accurately.
 
-## Who owns what
+## Team
 
-| Area | Owner | Folders |
-|---|---|---|
-| Planner engine: search, cost model, "what helps most", property tests | Ryan | `src/engine/`, `tests/planner*.test.ts` |
-| Rules data: every rule, fee, waiver and source; personas and their hand-worked plans | Michael | `data/`, `tests/personas.test.ts` |
-| Experience: intake, path view, step cards, print packet, Spanish, accessibility | Adrian | `src/screens/`, `src/styles.css`, `src/i18n.ts` |
-| Shared contract. **Ask before changing.** | All | `src/engine/types.ts` |
+- Adrian Erlikhman
+- Michael Tarekegn
+- Ryan
+- Tsion Tarekegn
 
-Swap these if it suits you better. Whatever you choose, write it down here before anyone writes code.
+`src/engine/types.ts` is the shared contract between the rules, the planner and the screens. Ask the team before changing it.
 
 ## Rules
 
