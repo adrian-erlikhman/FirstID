@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 
-// OWNER: Adrian. The site's motion, in three small hooks. Everything here is
+// The site's motion, in three small hooks. Everything here is
 // decoration: it switches itself off for people who ask for reduced motion,
 // and on phones that are likely slow or saving data (light mode). The tilt
 // only runs with a real mouse (never on touch screens).
