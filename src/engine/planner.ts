@@ -10,10 +10,15 @@ import type { Action, Cost, DocId, Mode, Person, Plan, RuleSet, Step, Waiver } f
  * state. We want the cheapest sequence of actions that reaches the goal
  * document (a California ID card).
  *
- * That is a classical planning problem (the STRIPS model, 1971), and because
- * every action only ever ADDS documents, Dijkstra's algorithm over states finds
- * the exact optimum. Costs are compared lexicographically, so "cheapest" means
- * fewest dollars, then fewest trips, then fewest days, then fewest steps.
+ * That is a classical planning problem (the STRIPS model, 1971). No step costs
+ * less than zero, so Dijkstra's algorithm over states finds the exact optimum.
+ * Costs are compared lexicographically, so "cheapest" means fewest dollars,
+ * then fewest trips, then fewest days, then fewest steps.
+ *
+ * Because every action only ever ADDS documents, holding more documents can
+ * never make the plan worse. The "more documents never hurts" tests check that
+ * on toy rules (tests/planner.test.ts) and on the real rules
+ * (tests/personas.test.ts).
  *
  * No AI is involved. The same inputs always give the same plan, and every step
  * carries the sources that justify it.
