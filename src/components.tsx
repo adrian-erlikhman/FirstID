@@ -1,6 +1,10 @@
 import { useEffect, useId, useState, type ReactNode } from "react";
 import type { Mode, Plan, RuleSet, Source, Step } from "./engine/types";
 import { t, type Lang } from "./i18n";
+import applicationImg from "./forms/birth-record-application.jpg";
+import certificateImg from "./forms/certificate-of-identity.jpg";
+import applicationStrip from "./forms/strip-application.jpg";
+import certificateStrip from "./forms/strip-certificate.jpg";
 
 // Small shared pieces. Every screen is built from these, so a style change
 // here changes it everywhere. The look is First ID's own: black on white,
@@ -125,6 +129,37 @@ export function PathCard({ plan, lang, mode, name, busy = false, className = "" 
 const photoFiles = import.meta.glob("./photos/*.{jpg,jpeg,png,webp}", { eager: true, import: "default" }) as Record<string, string>;
 export const photoUrl = (name: string) =>
   Object.entries(photoFiles).find(([p]) => p.replace(/^.*\//, "").replace(/\.\w+$/, "") === name)?.[1];
+
+// The real LA County forms on Maria's path, rendered from lavote.gov's PDF
+// with our highlighter marks on the lines that matter.
+export const FORM_PDF = "https://www.lavote.gov/docs/rrcc/documents/birth-record-app-cerificate-of-identity.pdf?v=3";
+const formImages: Record<string, string> = { application: applicationImg, certificate: certificateImg };
+// A close-up of the highlighted line, laid over the page where that line is.
+const formZoom: Record<string, { src: string; top: string; left: string; width: string }> = {
+  application: { src: applicationStrip, top: "19%", left: "24%", width: "88%" },
+  certificate: { src: certificateStrip, top: "70.5%", left: "26%", width: "86%" },
+};
+/** Which form a step uses, if we have it. */
+export const formFor = (actionId: string) =>
+  actionId === "rrcc_mail" ? "application" : actionId === "notary_witnesses" || actionId === "notary_own_id" ? "certificate" : null;
+
+export function FormPaper({ form, lang, className = "" }: { form: string; lang: Lang; className?: string }) {
+  const s = t[lang];
+  const [title, line, alt] = s.forms[form];
+  return (
+    <figure className={`paper ${className}`}>
+      <div className="paper-desk">
+        <a href={FORM_PDF} target="_blank" rel="noreferrer" className="paper-sheet">
+          <img src={formImages[form]} alt={alt} loading="lazy" decoding="async" width={1105} height={1430} />
+        </a>
+        <span className="paper-zoom" aria-hidden="true" style={{ top: formZoom[form].top, width: formZoom[form].width, ["--zl" as string]: formZoom[form].left }}>
+          <img src={formZoom[form].src} alt="" loading="lazy" decoding="async" />
+        </span>
+      </div>
+      <figcaption><strong>{title}</strong><span>{line}</span></figcaption>
+    </figure>
+  );
+}
 
 export function Photo({ name, alt, caption, className = "" }: { name: string; alt: string; caption?: string; className?: string }) {
   const url = photoUrl(name);

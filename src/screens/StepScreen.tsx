@@ -1,4 +1,4 @@
-import { Block, HandNote, Icon, Notice, Printout, SourceCard, money, placeOf, sayFor } from "../components";
+import { Block, FormPaper, HandNote, Icon, Notice, Printout, SourceCard, formFor, money, placeOf, sayFor } from "../components";
 import type { Plan, RuleSet } from "../engine/types";
 import { t, type Lang } from "../i18n";
 import { href } from "../router";
@@ -56,6 +56,12 @@ export function StepScreen({ rules, lang, plan, n }: { rules: RuleSet; lang: Lan
             <Block label={s.sayThis} className="say-block">
               <blockquote className="say">“{say[lang]}”</blockquote>
               <HandNote dir="up" className="say-note">{s.sayNote}</HandNote>
+            </Block>
+          )}
+
+          {formFor(a.id) && (
+            <Block label={s.stepForm}>
+              <FormPaper form={formFor(a.id)!} lang={lang} className="step-paper" />
             </Block>
           )}
 

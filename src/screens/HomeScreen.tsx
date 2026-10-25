@@ -1,5 +1,5 @@
 import { useMemo } from "react";
-import { Br, HandNote, Icon, Loop, PathCard, Photo, Portrait, Printout, Solver, fullPrice, money, photoUrl } from "../components";
+import { Br, FORM_PDF, FormPaper, HandNote, Icon, Loop, PathCard, Photo, Portrait, Printout, Solver, fullPrice, money, photoUrl } from "../components";
 import { plan } from "../engine/planner";
 import type { RuleSet } from "../engine/types";
 import { examples } from "../examples";
@@ -87,7 +87,22 @@ export function HomeScreen({ rules, lang, onStart, onExample }: {
       </section>
 
       <section className="home-sec">
-        <Printout index="02" kicker={s.secHow} readout={s.howReadout} />
+        <Printout index="02" kicker={s.secForms} readout={s.formsReadout} />
+        <div className="split">
+          <div className="head">
+            <h2 className="display h2">{s.formsTitleA} <span className="second">{s.formsTitleB}</span></h2>
+            <p className="lede">{s.formsBody}</p>
+            <p className="fine">{s.formsNote} <a href={FORM_PDF} target="_blank" rel="noreferrer">{s.openForm} <Icon name="external" size={13} /></a></p>
+          </div>
+          <div className="body papers">
+            <FormPaper form="application" lang={lang} className="p-a" />
+            <FormPaper form="certificate" lang={lang} className="p-b" />
+          </div>
+        </div>
+      </section>
+
+      <section className="home-sec">
+        <Printout index="03" kicker={s.secHow} readout={s.howReadout} />
         <div className="split">
           <div className="head">
             <h2 className="display h2">{s.howTitleA} <span className="second">{s.howTitleB}</span></h2>
@@ -111,7 +126,7 @@ export function HomeScreen({ rules, lang, onStart, onExample }: {
       </section>
 
       <section className="home-sec">
-        <Printout index="03" kicker={s.secGet} readout={`${rules.actions.length} ${s.statRules} · ${nSources} ${s.statSources} · EN/ES`} />
+        <Printout index="04" kicker={s.secGet} readout={`${rules.actions.length} ${s.statRules} · ${nSources} ${s.statSources} · EN/ES`} />
         <h2 className="display h2 wide">{s.getTitleA} <span className="second">{s.getTitleB}</span></h2>
         <ul className="features">
           {s.features.map(([title, text], i) => (
@@ -125,7 +140,7 @@ export function HomeScreen({ rules, lang, onStart, onExample }: {
       </section>
 
       <section className="home-sec">
-        <Printout index="04" kicker={s.secTry} readout={s.people(examples.length)} />
+        <Printout index="05" kicker={s.secTry} readout={s.people(examples.length)} />
         <h2 className="display h2 wide">{s.tryTitleA} <span className="second">{s.tryTitleB}</span></h2>
         <ul className="people">
           {examples.map((e, i) => {
