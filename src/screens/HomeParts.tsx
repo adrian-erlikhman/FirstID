@@ -7,7 +7,7 @@ import { useCountUp, useInView, useScrollProgress, useTilt } from "../motion";
 import caIdImg from "../docs/ca-id-sample.jpg";
 import birthCertImg from "../docs/birth-certificate-sample.png";
 
-// OWNER: Adrian. The home page's moving parts, built like a product page:
+// The home page's moving parts, built like a product page:
 // a scroll story that pins while it plays, tiles whose numbers count up, the
 // real forms turning flat as you reach them. Maria's whole path is in
 // MariaTrail.tsx.
