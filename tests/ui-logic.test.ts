@@ -86,6 +86,13 @@ describe("no-path notes", () => {
     expect(plan(rules, person)).toBeNull();
     expect(noPathNotes(rules, person)).toEqual(["needSsn"]);
   });
+
+  it("some dead ends have no single change that opens a path (the what-if button is hidden)", () => {
+    // Housed, with no paper showing an address: no one answer fixes that.
+    const person = { facts: { born: "la_county", age: 30, unhoused: false, hasWitnesses: true }, have: [] };
+    expect(plan(rules, person)).toBeNull();
+    expect(flipsThatMatter(rules, person, "cheapest")).toEqual([]);
+  });
 });
 
 describe("router", () => {
