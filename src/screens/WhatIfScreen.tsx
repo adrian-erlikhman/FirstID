@@ -1,5 +1,5 @@
 import { useMemo, useState } from "react";
-import { Card3D, CardBack, PathCard, Solver, money, useRecompute } from "../components";
+import { Card3D, CardBack, PathCard, Solver, money } from "../components";
 import { plan } from "../engine/planner";
 import type { Mode, Person, RuleSet } from "../engine/types";
 import { t, type Lang } from "../i18n";
@@ -21,7 +21,6 @@ export function WhatIfScreen(props: {
   const base = useMemo(() => plan(rules, person, mode), [rules, person, mode]);
   const result = plan(rules, next, mode);
   const toggle = (k: string) => setOn(on.includes(k) ? on.filter((x) => x !== k) : [...on, k]);
-  const busy = useRecompute(on.join("|"));
 
   return (
     <section className="screen">
@@ -52,7 +51,7 @@ export function WhatIfScreen(props: {
           )}
 
           <div className="whatif-result" aria-live="polite">
-            {result && <Card3D lang={lang} className="path-card" front={<PathCard plan={result} lang={lang} mode={mode} busy={busy} />} back={<CardBack plan={result} rules={rules} lang={lang} />} />}
+            {result && <Card3D lang={lang} className="path-card" front={<PathCard plan={result} lang={lang} mode={mode} />} back={<CardBack plan={result} rules={rules} lang={lang} />} />}
             <Solver title={s.secWhatIf} readout={on.length ? s.withChange : s.nowLabel}>
               {result ? (
                 <>
