@@ -32,7 +32,6 @@ const en = {
   flip: "Flip the card", flipBack: "Flip it back",
   cardBackTitle: "Each step and the law it rests on.",
   cardBackNote: "Tap any step in the app to read its source.",
-  waivedLine: (full: number, n: number) => `instead of $${full}, with ${n} fee ${plural(n, "waiver", "waivers")}`,
   mariaName: "Maria",
   // Short names for the back of the card, where each step gets one line.
   stepShort: {
@@ -342,7 +341,6 @@ const es: Strings = {
   flip: "Voltear la tarjeta", flipBack: "Voltearla de nuevo",
   cardBackTitle: "Cada paso y la ley en la que se basa.",
   cardBackNote: "Toca cualquier paso en la app para leer su fuente.",
-  waivedLine: (full, n) => `en vez de $${full}, con ${n} ${plural(n, "exención", "exenciones")} de pago`,
   mariaName: "María",
   stepShort: {
     program_dl933: "DL 933 de tu programa",
