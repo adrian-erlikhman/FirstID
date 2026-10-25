@@ -610,7 +610,6 @@ h2.display.wide { max-width: 20ch; margin-bottom: 28px; }
   border-top: 1px solid var(--line); font-size: 0.8438rem; color: var(--text-2);
   display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px 24px;
 }
-.foot p { margin: 0; }
 .foot .lockup .mark { height: 16px; }
 .foot .lockup-word { font-size: 15px; }
 

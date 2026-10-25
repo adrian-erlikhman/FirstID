@@ -166,7 +166,6 @@ export default function App() {
       <main key={route.name === "step" ? `step-${route.n}` : route.name}>{screen}</main>
       <footer className="foot no-print">
         <Lockup />
-        <p>{s.privacy}</p>
       </footer>
     </div>
   );
