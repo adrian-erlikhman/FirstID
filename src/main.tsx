@@ -4,3 +4,11 @@ import App from "./App";
 import "./styles.css";
 
 createRoot(document.getElementById("root")!).render(<StrictMode><App /></StrictMode>);
+
+// Offline support (public/sw.js). Only in the built site, so the dev server
+// never serves stale files.
+if (import.meta.env.PROD && "serviceWorker" in navigator) {
+  window.addEventListener("load", () => {
+    navigator.serviceWorker.register("./sw.js").catch(() => {});
+  });
+}
