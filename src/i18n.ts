@@ -10,28 +10,19 @@ const dateFmt = (iso: string, lang: Lang) =>
 
 const en = {
   appName: "First ID",
-  langToggle: "Español",
-  langToggleLabel: "Ver en español",
   back: "Back",
   stepOf: (n: number, total: number) => `Step ${n} of ${total}`,
   privacy: "Nothing you enter leaves this phone. No account, no tracking.",
   notLegalAdvice: "Not legal advice. Rules change, and each step links to its source.",
   free: "Free",
-  money: (d: number) => `$${d}`,
   yes: "Yes", no: "No", notSure: "Not sure",
   homeLabel: "home",
   langLabel: "Language",
 
   // Section openings (the § lines) and their readouts
   secLoop: "the loop",
-  secHave: "what you have", secQuestions: "a few questions", secPath: "your path",
-  secWhatIf: "your path", secPacket: "packet", secSources: "how we know",
-  stepKicker: (n: number, total: number) => `step ${n} of ${total}`,
-  checkedCount: (n: number) => `${n} checked`,
-  answeredCount: (n: number, total: number) => `${n}/${total} answered`,
+  secWhatIf: "your path",
   solvedIn: (_n: number, _ms: number) => "Tap a step for details",
-  mattersCount: (n: number) => `${n} ${plural(n, "answer matters", "answers matter")}`,
-  onePage: "1 page · letter",
 
   // Hero and home sections
   heroA: "No ID. No birth certificate.",
@@ -80,9 +71,6 @@ const en = {
     phone: ["Someone using First ID on a phone", "First ID lays out the same steps on your phone."],
   } as Record<string, [string, string]>,
   seeMaria: "See Maria's path",
-  loopTitleA: "Each one needs the other.",
-  loopTitleB: "Lose both and you're stuck.",
-  loopNote: "the way out is legal, just hard to find",
   getTitleA: "What a caseworker would look up,",
   getTitleB: "worked out from your seven answers.",
   // Maria, start to finish (home, MariaTrail.tsx)
@@ -103,46 +91,18 @@ const en = {
   trailCreditId: "Sample: California DMV",
 
   // Screen headlines: say it in ink, finish it in the lighter weight
-  haveSecond: "Originals only.",
-  questionsSecond: "“Not sure” is fine.",
   pathHeadPre: "Your California ID for",
   pathHeadPost: ".",
-  pathSecond: {
-    cheapest: "The cheapest legal way there.",
-    fewestTrips: "With the fewest trips.",
-    fastest: "The fastest way there.",
-  } as Record<string, string>,
-  wasNote: (d: number) => `$${d} before fee waivers`,
-  sayNote: "show the clerk this line",
-  whatIfTitleA: "Change one answer",
-  whatIfTitleB: "and see how the path changes.",
-  sourcesTitleA: "Every step comes from a rule",
-  sourcesTitleB: "you can read.",
-  noPathTitleA: "We couldn't find a path",
-  noPathTitleB: "yet.",
 
   // 0. Home
-  homeTitle: "Get your California ID back, one legal step at a time.",
-  homeLede: "To get a California ID you need a birth certificate. To get a birth certificate you usually need an ID. Lose both, and you're stuck in a loop.",
-  homeWayOut: "First ID finds the legal way out, using rules that are easy to miss: two witnesses at a notary, free birth certificates for people without housing, and no-fee ID forms.",
   homeFor: "For people without housing, fire survivors, youth in foster care, anyone else who has lost their papers, and the caseworkers who help them.",
   loopId: "California ID", loopBc: "Birth certificate", loopNeeds: "needs", loopOut: "First ID finds the way out",
   start: "Find my path",
-  seeExample: "See an example",
   howTitle: "Three steps, about two minutes.",
   how: [
     ["Tick what you have", "Even one card or a number you remember can change the path."],
     ["Answer 7 quick questions", "Where you were born, where you're staying, your age and a few more."],
     ["Get your path", "Every step: where to go, what to bring, what it costs, and the rule behind it."],
-  ] as [string, string][],
-  featuresTitle: "What you get",
-  features: [
-    ["The cheapest legal path", "It compares every possible order of steps and picks the best one by cost, trips or time."],
-    ["Fee waivers you qualify for", "If a step can be free or reduced for you, the path uses that price and shows the full price next to it."],
-    ["The law behind every step", "Each step links to the official page or statute that allows it, and quotes the exact sentence once we've checked it."],
-    ["A one-page packet", "Every step, what to bring and what to say at the counter, to carry to each office."],
-    ["English y Español", "Every screen and every rule in both languages."],
-    ["Stays on your phone", "No account and no tracking. Your answers are never sent anywhere."],
   ] as [string, string][],
   homeFine: "Not legal advice. Steps marked \u201ccall ahead\u201d haven't been checked against their sources yet.",
 
@@ -153,7 +113,6 @@ const en = {
   noneOfThese: "None of these",
   startOver: "Start over",
   toQuestions: "Next: questions",
-  examplesTitle: "Just looking? Try a made-up person",
 
   // 2. Questions
   questionsTitle: "A few quick questions.",
@@ -176,7 +135,6 @@ const en = {
   pathTitle: "Your path to a California ID",
   totalCost: "Total cost",
   notConfirmed: "Not confirmed yet. Call ahead.",
-  examplesHint: "See a full path in one tap.",
   insteadOf: (d: number) => `instead of $${d}`,
   withWaivers: (n: number) => `with ${n} fee ${plural(n, "waiver", "waivers")}`,
   unitSteps: (n: number) => plural(n, "step", "steps"),
@@ -201,7 +159,7 @@ const en = {
   callAheadLongMail: "We haven't confirmed this rule from an official source yet. Call before you send it.",
   unverifiedNote: (n: number, total: number) =>
     total === 1 ? "This step isn't confirmed yet. Call ahead before you go." : n === total ? `None of these ${total} steps are confirmed yet. Call ahead before each one.` : `${n} of ${total} steps aren't confirmed yet. Call ahead before those.`,
-  allVerified: "Every step is backed by an official source we checked.",
+  allVerified: "Every step's rule has been checked against its sources.",
   helpsTitle: "What would help most",
   helpsResult: (steps: number, dollars: number) => `If this is true for you, your path drops to ${steps} ${plural(steps, "step", "steps")} and ${dollars === 0 ? "$0" : `$${dollars}`}.`,
   seeThatPath: "Try it",
@@ -222,13 +180,11 @@ const en = {
   changeAnswers: "Change my answers",
 
   // 4. One step
-  stepHeader: (n: number, total: number, place: string) => `Step ${n} of ${total} · ${place}`,
   cost: "Cost",
   where: "Where",
   time: "Time",
   timeVisit: "One visit",
   timeMail: "By mail",
-  waiverApplied: (label: string) => label,
   bring: "Bring",
   bringMail: "Put in the envelope",
   sayThis: "Say this",
@@ -243,7 +199,6 @@ const en = {
     certificate: ["Certificate of Identity", "Signed in front of a notary, who can rely on two credible witnesses.", "LA County's Certificate of Identity and Sworn Statement. Highlighted: it must be signed in the presence of a notary, who confirms identity on the basis of satisfactory evidence."],
   } as Record<string, [string, string, string]>,
   whyFree: "Why it costs less",
-  openSource: "Open the official page",
   inEnglish: "",
   checkedOn: (iso: string) => `Checked ${dateFmt(iso, "en")}`,
   quoteMissing: "We haven't copied the exact sentence from this page yet.",
@@ -255,7 +210,6 @@ const en = {
   yourPathShort: "Your path",
 
   // 5. What if
-  whatIfLabel: "What if",
   whatIfTitle: "What if one answer changed?",
   whatIfHint: "Tap an answer to see how your path would change.",
   whatIfNone: "Changing any one answer leaves this path the same.",
@@ -291,11 +245,9 @@ const en = {
   packetFoot: (url: string) => `Not legal advice. Rules change. Every rule and its sources: ${url}`,
 
   // 7. How we know
-  sourcesLabel: "How we know",
   sourcesTitle: "Every step comes from a rule you can read.",
   sourcesIntro: "We drafted these rules with help from AI. A rule only counts as verified once a person on our team has opened its sources and copied the exact sentence. Until then it shows “call ahead”.",
   verifiedSoFar: (n: number, total: number) => `So far ${n} of ${total} rules are verified.`,
-  statRules: "rules", statSources: "sources", statVerified: "verified", statChecked: "last checked",
   verified: "Verified",
   howPlanTitle: "How your path is worked out",
   howPlan: [
@@ -372,27 +324,18 @@ export type Strings = typeof en;
 // review every line before we submit (see AI-USE.md).
 const es: Strings = {
   appName: "First ID",
-  langToggle: "English",
-  langToggleLabel: "View in English",
   back: "Atrás",
   stepOf: (n, total) => `Paso ${n} de ${total}`,
   privacy: "Nada de lo que escribes sale de este teléfono. Sin cuenta, sin rastreo.",
   notLegalAdvice: "Esto no es asesoría legal. Las reglas cambian, y cada paso enlaza a su fuente.",
   free: "Gratis",
-  money: (d) => `$${d}`,
   yes: "Sí", no: "No", notSure: "No sé",
   homeLabel: "inicio",
   langLabel: "Idioma",
 
   secLoop: "el círculo",
-  secHave: "lo que tienes", secQuestions: "unas preguntas", secPath: "tu camino",
-  secWhatIf: "tu camino", secPacket: "paquete", secSources: "cómo lo sabemos",
-  stepKicker: (n, total) => `paso ${n} de ${total}`,
-  checkedCount: (n) => `${n} ${plural(n, "marcado", "marcados")}`,
-  answeredCount: (n, total) => `${n}/${total} contestadas`,
+  secWhatIf: "tu camino",
   solvedIn: () => "Toca un paso para ver más",
-  mattersCount: (n) => `${n} ${plural(n, "respuesta importa", "respuestas importan")}`,
-  onePage: "1 página · carta",
 
   heroA: "Sin identificación. Sin acta de nacimiento.",
   heroB: "Hay una salida legal",
@@ -439,9 +382,6 @@ const es: Strings = {
     phone: ["Alguien usa First ID en su teléfono", "First ID te muestra los mismos pasos en tu teléfono."],
   },
   seeMaria: "Ver el camino de María",
-  loopTitleA: "Cada uno necesita al otro.",
-  loopTitleB: "Si pierdes los dos, quedas atrapado.",
-  loopNote: "la salida es legal, pero cuesta encontrarla",
   getTitleA: "Lo que buscaría un trabajador social,",
   getTitleB: "calculado a partir de tus siete respuestas.",
   // María, de principio a fin (inicio, MariaTrail.tsx)
@@ -461,45 +401,17 @@ const es: Strings = {
   trailCreditAff: "Formulario: Departamento de Salud Pública de California",
   trailCreditId: "Muestra: DMV de California",
 
-  haveSecond: "Solo originales.",
-  questionsSecond: "Puedes contestar “No sé”.",
   pathHeadPre: "Tu identificación de California por",
   pathHeadPost: ".",
-  pathSecond: {
-    cheapest: "La forma legal más barata.",
-    fewestTrips: "Con menos viajes.",
-    fastest: "La forma más rápida.",
-  },
-  wasNote: (d) => `$${d} sin las exenciones`,
-  sayNote: "muéstrale esta frase al empleado",
-  whatIfTitleA: "Cambia una respuesta",
-  whatIfTitleB: "y mira cómo cambia el camino.",
-  sourcesTitleA: "Cada paso viene de una regla",
-  sourcesTitleB: "que puedes leer.",
-  noPathTitleA: "Todavía no encontramos",
-  noPathTitleB: "un camino.",
 
-  homeTitle: "Recupera tu identificación de California, un paso legal a la vez.",
-  homeLede: "Para sacar una identificación de California necesitas un acta de nacimiento. Para sacar el acta normalmente necesitas una identificación. Si pierdes las dos, quedas atrapado en un círculo.",
-  homeWayOut: "First ID encuentra la salida legal, con reglas fáciles de pasar por alto: dos testigos ante un notario público, actas de nacimiento gratis para personas sin hogar y formularios de identificación sin costo.",
   homeFor: "Para personas sin hogar, sobrevivientes de incendios, jóvenes en cuidado de crianza, cualquier otra persona que haya perdido sus papeles y los trabajadores sociales que las ayudan.",
   loopId: "Identificación", loopBc: "Acta de nacimiento", loopNeeds: "necesita", loopOut: "First ID encuentra la salida",
   start: "Buscar mi camino",
-  seeExample: "Ver un ejemplo",
   howTitle: "Tres pasos, unos dos minutos.",
   how: [
     ["Marca lo que tienes", "Incluso una sola tarjeta o un número que recuerdes puede cambiar el camino."],
     ["Contesta 7 preguntas rápidas", "Dónde naciste, dónde te quedas, tu edad y unas cuantas más."],
     ["Ve tu camino", "Cada paso: a dónde ir, qué llevar, cuánto cuesta y la regla que lo respalda."],
-  ],
-  featuresTitle: "Lo que recibes",
-  features: [
-    ["El camino legal más barato", "Compara cada orden posible de pasos y elige el mejor por costo, viajes o tiempo."],
-    ["Las exenciones que te tocan", "Si un paso puede ser gratis o más barato para ti, el camino usa ese precio y muestra el precio completo al lado."],
-    ["La ley detrás de cada paso", "Cada paso enlaza a la página oficial o la ley que lo permite, y cita la frase exacta cuando ya la revisamos."],
-    ["Un paquete de una página", "Cada paso, qué llevar y qué decir en la ventanilla, para llevar a cada oficina."],
-    ["English y Español", "Cada pantalla y cada regla en los dos idiomas."],
-    ["Se queda en tu teléfono", "Sin cuenta y sin rastreo. Tus respuestas nunca se envían a ningún lado."],
   ],
   homeFine: "No es asesoría legal. Los pasos marcados \u201cllama antes\u201d todavía no se han revisado con sus fuentes.",
 
@@ -509,7 +421,6 @@ const es: Strings = {
   noneOfThese: "Ninguno",
   startOver: "Empezar de nuevo",
   toQuestions: "Siguiente",
-  examplesTitle: "¿Solo estás viendo? Prueba con una persona inventada",
 
   questionsTitle: "Unas preguntas rápidas.",
   questionsHint: "Si no sabes una respuesta, toca “No sé”. Tu camino no dependerá de ella.",
@@ -530,7 +441,6 @@ const es: Strings = {
   pathTitle: "Tu camino a una identificación de California",
   totalCost: "Costo total",
   notConfirmed: "Sin confirmar todavía. Llama antes.",
-  examplesHint: "Mira un camino completo con un toque.",
   insteadOf: (d) => `en vez de $${d}`,
   withWaivers: (n) => `con ${n} ${plural(n, "exención", "exenciones")} de pago`,
   unitSteps: (n) => plural(n, "paso", "pasos"),
@@ -555,7 +465,7 @@ const es: Strings = {
   callAheadLongMail: "Todavía no confirmamos esta regla con una fuente oficial. Llama antes de enviarlo.",
   unverifiedNote: (n, total) =>
     total === 1 ? "Este paso no está confirmado todavía. Llama antes de ir." : n === total ? `Ninguno de estos ${total} pasos está confirmado todavía. Llama antes de cada uno.` : `${n} de ${total} pasos no están confirmados todavía. Llama antes de esos.`,
-  allVerified: "Cada paso tiene una fuente oficial que revisamos.",
+  allVerified: "La regla de cada paso ya se revisó con sus fuentes.",
   helpsTitle: "Lo que más ayudaría",
   helpsResult: (steps, dollars) => `Si este es tu caso, tu camino baja a ${steps} ${plural(steps, "paso", "pasos")} y ${dollars === 0 ? "$0" : `$${dollars}`}.`,
   seeThatPath: "Pruébalo",
@@ -575,13 +485,11 @@ const es: Strings = {
   helpLausdLine: "Para estudiantes y familias: 213‑241‑3552.",
   changeAnswers: "Cambiar mis respuestas",
 
-  stepHeader: (n, total, place) => `Paso ${n} de ${total} · ${place}`,
   cost: "Costo",
   where: "Dónde",
   time: "Tiempo",
   timeVisit: "Una visita",
   timeMail: "Por correo",
-  waiverApplied: (label) => label,
   bring: "Lleva",
   bringMail: "Pon en el sobre",
   sayThis: "Di esto",
@@ -596,7 +504,6 @@ const es: Strings = {
     certificate: ["Certificado de Identidad", "Se firma ante un notario, que puede aceptar a dos testigos fidedignos.", "Certificado de Identidad y declaración jurada del condado de Los Ángeles. Marcado: debe firmarse ante un notario, que confirma la identidad con evidencia satisfactoria."],
   },
   whyFree: "Por qué cuesta menos",
-  openSource: "Abrir la página oficial",
   inEnglish: " (en inglés)",
   checkedOn: (iso) => `Revisado el ${dateFmt(iso, "es")}`,
   quoteMissing: "Todavía no copiamos la frase exacta de esta página.",
@@ -607,7 +514,6 @@ const es: Strings = {
   backToPath: "Volver a tu camino",
   yourPathShort: "Tu camino",
 
-  whatIfLabel: "Qué pasaría si",
   whatIfTitle: "¿Y si cambiara una respuesta?",
   whatIfHint: "Toca una respuesta para ver cómo cambiaría tu camino.",
   whatIfNone: "Cambiar una sola respuesta no cambia este camino.",
@@ -641,11 +547,9 @@ const es: Strings = {
   printPreview: "Esta es la página que se imprime. La impresión funciona en el sitio; esta vista previa no puede abrir el diálogo de impresión.",
   packetFoot: (url) => `No es asesoría legal. Las reglas cambian. Cada regla y sus fuentes: ${url}`,
 
-  sourcesLabel: "Cómo lo sabemos",
   sourcesTitle: "Cada paso viene de una regla que puedes leer.",
   sourcesIntro: "Redactamos estas reglas con ayuda de IA. Una regla solo cuenta como verificada cuando una persona de nuestro equipo abre sus fuentes y copia la frase exacta. Mientras tanto aparece como “llama antes”.",
   verifiedSoFar: (n, total) => `Por ahora ${n} de ${total} reglas están verificadas.`,
-  statRules: "reglas", statSources: "fuentes", statVerified: "verificadas", statChecked: "última revisión",
   verified: "Verificada",
   howPlanTitle: "Cómo se calcula tu camino",
   howPlan: [
