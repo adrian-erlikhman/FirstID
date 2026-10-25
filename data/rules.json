@@ -671,6 +671,18 @@
         {
           "en": "The signed affidavit, if you have one, instead of a check",
           "es": "La declaración firmada, si la tienes, en vez de un cheque"
+        },
+        {
+          "en": "Tick “I am requesting an AUTHORIZED copy” on the form",
+          "es": "Marca en el formulario la casilla “I am requesting an AUTHORIZED copy” (copia autorizada)"
+        },
+        {
+          "en": "An address where you can get mail for the next 2 months, like your shelter or program (ask them first)",
+          "es": "Una dirección donde puedas recibir correo durante los próximos 2 meses, como tu albergue o programa (pregúntales primero)"
+        },
+        {
+          "en": "Mail it to: Registrar-Recorder/County Clerk, P.O. Box 489, Norwalk, CA 90651-0489",
+          "es": "Envíalo a: Registrar-Recorder/County Clerk, P.O. Box 489, Norwalk, CA 90651-0489"
         }
       ],
       "why": {
@@ -849,6 +861,10 @@
           "es": "El DL 933, o un papel con tu dirección en California"
         },
         {
+          "en": "An address where you can get mail for the next 2 months, like your shelter or program (ask them first)",
+          "es": "Una dirección donde puedas recibir correo durante los próximos 2 meses, como tu albergue o programa (pregúntales primero)"
+        },
+        {
           "en": "DMV mails the card in about 3 to 4 weeks. Keep the paper receipt.",
           "es": "El DMV envía la tarjeta en 3 a 4 semanas. Guarda el recibo."
         }
@@ -975,6 +991,10 @@
         {
           "en": "Any ID you still have. Start the application online first; ID cards can't be replaced online.",
           "es": "Cualquier identificación que tengas. Empieza la solicitud en línea; la identificación no se reemplaza en línea."
+        },
+        {
+          "en": "An address where you can get mail for the next 2 months, like your shelter or program (ask them first)",
+          "es": "Una dirección donde puedas recibir correo durante los próximos 2 meses, como tu albergue o programa (pregúntales primero)"
         },
         {
           "en": "DMV mails the card in about 3 to 4 weeks. Keep the paper receipt.",
