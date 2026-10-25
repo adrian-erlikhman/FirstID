@@ -305,14 +305,20 @@ h1.display .bracketed .num { color: var(--on-c); background: var(--hl); padding:
 /* ---------- the card in 3D: tilt, light, thickness, flip ---------- */
 .c3d { --rx: 0deg; --ry: 0deg; --flip: 0deg; perspective: 1600px; display: flex; flex-direction: column; align-items: center; gap: 18px; }
 .c3d.flipped { --flip: 180deg; }
-.c3d-card { position: relative; width: 100%; transform-style: preserve-3d; transform: rotateX(var(--rx)) rotateY(calc(var(--ry) + var(--flip))); transition: transform .8s var(--ease); }
-.c3d[data-tilt] .c3d-card { transition-duration: .35s; }
+/* Crisp at rest: with no tilt and no flip the card has no transform at all,
+ * and both faces sit exactly in the screen plane (no translateZ), so the
+ * text is drawn 1:1 instead of resampled. will-change is set only while the
+ * mouse is moving it. The edge is backface-hidden, so the back face needs no
+ * Z offset to sit in front of it when flipped. */
+.c3d-card { position: relative; width: 100%; transform-style: preserve-3d; transform: none; transition: transform .8s var(--ease); }
+.c3d[data-tilt] .c3d-card, .c3d.flipped .c3d-card { transform: rotateX(var(--rx)) rotateY(calc(var(--ry) + var(--flip))); }
+.c3d[data-tilt] .c3d-card { transition-duration: .35s; will-change: transform; }
 .c3d-face { -webkit-backface-visibility: hidden; backface-visibility: hidden; border-radius: var(--r-card); }
-.c3d-front { position: relative; transform: translateZ(2px); }
+.c3d-front { position: relative; }
 .c3d-front .id-card { box-shadow: 0 40px 70px -30px rgb(0 0 0 / .45); }
-.c3d-back { position: absolute; inset: 0; transform: rotateY(180deg) translateZ(5px); }
+.c3d-back { position: absolute; inset: 0; transform: rotateY(180deg); }
 .c3d-back .id-card { height: 100%; }
-.c3d-edge { position: absolute; inset: 1px; border-radius: var(--r-card); background: #48484a; transform: translateZ(-3px); }
+.c3d-edge { position: absolute; inset: 1px; border-radius: var(--r-card); background: #48484a; transform: translateZ(-3px); -webkit-backface-visibility: hidden; backface-visibility: hidden; }
 .c3d-glare { position: absolute; inset: 0; border-radius: inherit; pointer-events: none; z-index: 2;
   background: radial-gradient(circle at var(--gx, 25%) var(--gy, 15%), rgb(255 255 255 / .28), transparent 42%), linear-gradient(115deg, rgb(255 255 255 / .10), transparent 38%);
   mix-blend-mode: soft-light; }
