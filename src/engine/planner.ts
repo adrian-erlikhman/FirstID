@@ -155,10 +155,14 @@ export function suggestable(rules: RuleSet, person: Person, base: Plan | null): 
     !(d === "birth_cert_ca" && person.facts.born === "abroad"));
 }
 
+// A photo ID is what the person is trying to get, so "get a passport first"
+// isn't useful advice. These stay on the checklist and in "what if".
+const PHOTO_IDS = new Set<DocId>(["us_passport", "old_ca_id_5yr", "immigration_doc"]);
+
 export function whatHelps(rules: RuleSet, person: Person, mode: Mode = "cheapest") {
   const base = plan(rules, person, mode);
   if (!base) return [];
-  const candidates = suggestable(rules, person, base);
+  const candidates = suggestable(rules, person, base).filter((d) => !PHOTO_IDS.has(d));
   return candidates
     .map((doc) => ({ doc, plan: plan(rules, { ...person, have: [...person.have, doc] }, mode)! }))
     .filter((x) => x.plan && less(ORDER[mode](x.plan.total), ORDER[mode](base.total)))
