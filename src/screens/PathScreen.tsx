@@ -1,4 +1,5 @@
-import { Br, Card3D, CardBack, Icon, Notice, PathCard, Pills, Solver, Unconfirmed, money, placeOf } from "../components";
+import { Br, Card3D, CardBack, Collapse, Icon, Notice, PathCard, Pills, Solver, Swap, Tween, Unconfirmed, money, placeOf } from "../components";
+import { useListPresence } from "../motion";
 import type { Facts, Mode, Person, Plan, RuleSet, Step } from "../engine/types";
 import { t, type Lang } from "../i18n";
 import { href } from "../router";
@@ -48,25 +49,29 @@ export function StepList({ rules, lang, plan, done, onDone }: {
   rules: RuleSet; lang: Lang; plan: Plan; done?: Set<string>; onDone?: (id: string, on: boolean) => void;
 }) {
   const s = t[lang];
+  // When the path changes (a new mode), steps that drop out slide shut where
+  // they were and new ones slide open, keeping the wording they had.
+  const rows = useListPresence(plan.steps.map((st, i) => ({ st, i, when: whenLine(rules, plan.steps, i, lang) })), (x) => x.st.action.id);
   return (
     <ol className="steps">
-      {plan.steps.map((st, i) => {
+      {rows.map(({ item: { st, i, when }, key, phase }) => {
         const a = st.action;
         const was = st.dollars < a.dollars ? a.dollars : null;
         const isDone = done?.has(a.id) ?? false;
         return (
-          <li key={a.id} className={isDone ? "step-done" : undefined}>
-            <a className="step-row" href={href({ name: "step", n: i + 1 })}>
-              <span className="row-num" aria-hidden="true">{i + 1}</span>
+          <li key={key} className={`slide-row ${phase}${isDone ? " step-done" : ""}`} aria-hidden={phase === "leave" || undefined}>
+            <div className="slide-clip"><div className="slide-body">
+            <a className="step-row" href={href({ name: "step", n: i + 1 })} tabIndex={phase === "leave" ? -1 : undefined}>
+              <Swap className="row-num" text={String(i + 1)} />
               <span className="step-main">
                 <span className="label step-place">{placeOf(rules, st).label[lang]}</span>
                 <span className="step-title">{a.label[lang]}</span>
                 {was !== null && <span className="step-waiver">{st.waiver!.label[lang]}</span>}
-                <span className="step-when">{whenLine(rules, plan.steps, i, lang)}</span>
+                <span className="step-when">{when}</span>
                 {!a.verified && <Unconfirmed lang={lang} />}
               </span>
               <span className="step-cost">
-                <span className={`num${st.dollars === 0 ? " free" : ""}`}>{st.dollars === 0 ? s.free : money(st.dollars)}</span>
+                <Swap className={`num${st.dollars === 0 ? " free" : ""}`} text={st.dollars === 0 ? s.free : money(st.dollars)} />
                 {was !== null && <s className="num">{money(was)}</s>}
               </span>
               <Icon name="chevron" size={16} />
@@ -81,6 +86,7 @@ export function StepList({ rules, lang, plan, done, onDone }: {
                 <ReminderLink rules={rules} lang={lang} step={st} n={i + 1} />
               </div>
             )}
+            </div></div>
           </li>
         );
       })}
@@ -146,7 +152,7 @@ export function PathScreen(props: {
       <div className="split path-split">
         <div className="head">
           <h1 tabIndex={-1} className="display">
-            {s.pathHeadPre} <Br>{money(result.total.dollars)}</Br>{s.pathHeadPost}
+            {s.pathHeadPre} <Br><Tween value={result.total.dollars} format={money} /></Br>{s.pathHeadPost}
           </h1>
           <p className="progress-line">
             <span className="progress-count" aria-live="polite">{s.progressDone(done.size, result.steps.length)}</span>
@@ -166,7 +172,7 @@ export function PathScreen(props: {
             <div className="solver-tabs">
               <Pills label={s.modesLabel} value={mode} onChange={onMode}
                 options={[["cheapest", s.modeCheapest], ["fewestTrips", s.modeTrips], ["fastest", s.modeFastest]] as const} />
-              <p className="mode-hint">{s.modeHint[mode]}</p>
+              <p className="mode-hint"><Swap text={s.modeHint[mode]} /></p>
             </div>
             <StepList rules={rules} lang={lang} plan={result} done={done} onDone={setTick} />
           </Solver>
@@ -175,14 +181,14 @@ export function PathScreen(props: {
             ? <Notice tone="draft" title={s.callAhead}>{s.unverifiedNote(unverified, result.steps.length)}</Notice>
             : <Notice tone="accent">{s.allVerified}</Notice>}
 
-          {help && (
+          <Collapse show={!!help}>{help && (
             <div className="panel help">
               <span className="label">{s.helpsTitle}</span>
               <strong className="help-doc">{rules.docs[help.doc].label[lang]}</strong>
               <p>{s.helpsResult(help.plan.total.steps, help.plan.total.dollars)}</p>
               <a className="btn ghost" href={href({ name: "whatif" })}>{s.seeThatPath} <Icon name="arrow" size={16} /></a>
             </div>
-          )}
+          )}</Collapse>
 
           <div className="actions stack body-actions">
             <a className="btn primary" href={href({ name: "packet" })}><Icon name="print" size={18} /> {s.printPacket}</a>
