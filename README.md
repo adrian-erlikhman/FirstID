@@ -73,6 +73,12 @@ Other scripts: `npm test` runs only the tests, `npm run lint:rules` only the rul
 
 On the home page, tap one of the example people (for example Maria) to see a full path without typing anything.
 
+## How rules get verified
+
+The rules were drafted with AI help from the research in [`docs/research/`](docs/research/), so none of them counts as true until a person checks it. Every rule starts as `"verified": false`, and the app shows it as "call ahead" on the path, the step and the packet. To sign one off, a teammate opens every source the rule cites, copies the exact supporting sentence in place of any `TODO` quote, re-checks statutes on leginfo.legislature.ca.gov, checks the rule's requirements, fees and plain-language lines against the source, and only then sets `"verified": true`. The full checklist is in [`CONTRIBUTING.md`](CONTRIBUTING.md#verifying-a-rule).
+
+**Status today, counted from `data/rules.json`: 0 of 11 rules are verified, and 11 of the 23 sources still have a `TODO` in place of their exact quote.** The "How we know" screen shows the same count live.
+
 ## Project structure
 
 ```
