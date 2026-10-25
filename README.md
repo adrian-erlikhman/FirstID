@@ -12,7 +12,7 @@ First ID is for people in LA County who need a California ID card and don't have
 - people leaving jail (there is no reentry-specific rule yet, so their path uses the general rules)
 - caseworkers, shelter staff and counselors working through the process with any of them
 
-You tick the documents you still have and answer seven short questions. First ID works out the cheapest legal way to an ID from there: each step, where to go, what to bring, what it costs after fee waivers, what to say at the counter, and the source that allows it. It prints the whole path as a one-page packet to carry to each office.
+You tick the documents you still have and answer seven short questions. First ID works out the cheapest legal way to an ID from there: each step, where to go, what to bring, what it costs after fee waivers, what to say at the counter, and the source that allows it. It prints the whole path as a one-page packet to carry to each office. On the path you can tick steps off as you finish them, and add a calendar reminder for the steps that arrive by mail.
 
 On each step you can also:
 
@@ -56,9 +56,10 @@ The tests ([`tests/`](tests/)) check the planner on toy rules, check four invent
 ## Privacy
 
 - **No accounts, no server, no database.** First ID is a static site. The plan is computed in your browser, and nothing you tick or answer is sent anywhere.
-- **Your answers are gone when you close the tab.** They sit in the tab's `sessionStorage` so a phone that reloads the page doesn't lose them. The ZIP code you type for the office list stays in memory and is never saved. The only thing kept on the device is your text-size choice.
+- **Your answers are gone when you close the tab.** They sit in the tab's `sessionStorage` so a phone that reloads the page doesn't lose them. The ZIP code you type for the office list stays in memory and is never saved.
+- **Two things stay on the phone until you clear them:** the steps you tick as done ("Clear my progress" removes them) and your text-size choice, both in `localStorage`. Calendar reminders are `.ics` files made in the browser. None of it is sent anywhere.
 - **Works offline after the first visit.** A service worker ([`public/sw.js`](public/sw.js)) caches the site's own files so it still opens with no signal. It stores no answers.
-- **No third-party requests.** Fonts, images and the office list are served from the site itself; there are no analytics, trackers or CDNs. The only outside pages are the sources and an office's map directions, which open only when you tap them.
+- **No third-party requests.** Fonts, images and the office list are served from the site itself; there are no analytics, trackers or CDNs. The only outside pages are the sources, the DMV's office list and an office's map directions (which carry the office's address, never your ZIP), and they open only when you tap them.
 - **Enforced on the main site.** [`vercel.json`](vercel.json) sends a Content-Security-Policy that only lets the page load its own files, plus `Referrer-Policy: no-referrer`. (GitHub Pages can't send custom headers, so the mirror relies on the code alone.)
 
 ## English and Spanish
