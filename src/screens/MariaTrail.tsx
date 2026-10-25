@@ -8,7 +8,7 @@ import birthCertImg from "../docs/birth-certificate-sample.png";
 import affidavitImg from "../docs/homeless-affidavit.png";
 import caIdImg from "../docs/ca-id-sample.jpg";
 
-// OWNER: Adrian. One made-up person, start to finish, in place of a row of
+// One made-up person, start to finish, in place of a row of
 // example people: Maria's real computed path, each step on the real paper it
 // leaves her holding, ending on the card.
 
