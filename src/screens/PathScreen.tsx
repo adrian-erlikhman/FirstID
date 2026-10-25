@@ -6,7 +6,7 @@ import { noPathNotes, type NoPathNote } from "../whatif";
 import { useEffect, useMemo, useState } from "react";
 import { loadTicks, reminderFor, reminderIcs, saveTicks, ticksInPlan, toggleTick, type Ticks } from "../progress";
 
-// OWNER: Adrian. The hero screen: the total first, in brackets because the
+// The hero screen: the total first, in brackets because the
 // planner computed it, then the steps in a solver panel. Each step is one
 // tappable row that opens its detail screen with the proof.
 
