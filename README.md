@@ -20,7 +20,7 @@ data/rules.json ──► lint (CI) ──► planner (in your browser) ──�
 - **Private by design.** It's a static site. Nothing you enter leaves your phone, and there's no account and no database.
 - **No AI in the app.** See `AI-USE.md` for how we used AI to build it.
 
-**New to the repo? Read `START-HERE.md` first.**
+**New to the repo? Read `docs/team/START-HERE.md` first.**
 
 ## Run it
 
