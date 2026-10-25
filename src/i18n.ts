@@ -592,12 +592,12 @@ const es: Strings = {
   textSizeLargest: "Más grande",
   // Oficinas (src/screens/OfficesScreen.tsx)
   officesLink: (kind) => (kind === "dmv" ? "Ver oficinas del DMV" : kind === "ssa" ? "Ver oficinas del Seguro Social" : "Ver oficinas"),
-  officesKicker: "Oficinas en el condado de LA",
+  officesKicker: "Oficinas en el condado de Los Ángeles",
   officesTitle: (kind) => (kind === "dmv" ? "Oficinas del DMV" : kind === "ssa" ? "Oficinas del Seguro Social" : "Oficinas"),
   officesLede: "Todas las oficinas del condado de Los Ángeles. Los horarios cambian: llama o revisa la página de la oficina antes de ir.",
   officesZip: "Tu código postal, para ordenar por distancia",
   officesZipNote: "Se queda en este teléfono. Sin código postal, las oficinas se ordenan por ciudad.",
-  officesZipUnknown: "No tenemos ese código postal en el condado de LA, así que las oficinas se ordenan por ciudad.",
+  officesZipUnknown: "No tenemos ese código postal en el condado de Los Ángeles, así que las oficinas se ordenan por ciudad.",
   officesSortedNear: (zip) => `Primero las más cercanas a ${zip}, en línea recta.`,
   officesMiles: (mi) => `${mi < 10 ? mi.toFixed(1) : Math.round(mi)} mi`,
   officesHours: "Horario",
@@ -606,7 +606,7 @@ const es: Strings = {
   officesCall: (phone) => `Llamar al ${phone}`,
   officesDirections: "Cómo llegar",
   officesTo: (name) => `a ${name} (abre el mapa)`,
-  officesFrom: ["Datos de la oficina: ", ", revisados el 25 de octubre de 2026. Llama antes de ir."],
+  officesFrom: ["Datos de las oficinas tomados de ", ", revisados el 25 de octubre de 2026. Llama antes de ir."],
   // Progreso y recordatorios (src/progress.ts, PathScreen)
   progressDone: (n, total) => `${n} de ${total} hechos`,
   progressNote: "Se guarda solo en este teléfono.",
