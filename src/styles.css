@@ -495,8 +495,6 @@ h2.display.wide { max-width: 20ch; margin-bottom: 28px; }
 .step-when { font-size: 0.875rem; line-height: 1.4; color: var(--text-2); }
 .step-cost { display: flex; flex-direction: column; align-items: flex-end; gap: 1px; font-size: 1rem; font-weight: 600; padding-top: 18px; }
 .step-cost s { color: var(--text-2); font-size: 0.8438rem; font-weight: 400; }
-.formula { font-size: 0.8438rem; color: var(--text-2); margin: 12px 4px 0; overflow-wrap: anywhere; font-variant-numeric: tabular-nums; }
-.formula .bracketed { font-size: 0.875rem; color: var(--ink); font-weight: 600; }
 .waived { font-size: 0.875rem; color: var(--text-2); margin: 4px 0 0; }
 .was-note { margin: 2px 0 8px; }
 .help { margin-top: 16px; padding: 18px; display: flex; flex-direction: column; align-items: flex-start; gap: 6px; }
