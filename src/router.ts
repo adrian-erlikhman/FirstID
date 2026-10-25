@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 
 // A tiny hash router, so the phone's back button works and every screen has a
-// link (#/path, #/step/2, #/example/maria) we can open straight from the video
-// script. Nothing about the person goes in the URL: only which screen.
+// link (#/path, #/step/2, #/example/maria) that opens it directly. Nothing
+// about the person goes in the URL: only which screen.
 export type Route =
   | { name: "home" }
   | { name: "have" }
