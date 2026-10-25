@@ -111,6 +111,8 @@ export function NoPath({ rules, lang, person, onBack }: { rules: RuleSet; lang: 
           <ul className="panel link-list">
             <li><a className="link-row" href="tel:211"><span className="link-main"><strong>{s.help211}</strong><span className="row-sub">{s.help211Line}</span></span><Icon name="phone" size={18} /></a></li>
             <li><a className="link-row" href="tel:+12132413552"><span className="link-main"><strong>{s.helpLausd}</strong><span className="row-sub">{s.helpLausdLine}</span></span><Icon name="phone" size={18} /></a></li>
+            <li><a className="link-row" href="tel:+13239480444"><span className="link-main"><strong>{s.helpHopics}</strong><span className="row-sub">{s.helpHopicsLine}</span></span><Icon name="phone" size={18} /></a></li>
+            <li><a className="link-row" href="tel:+12132792785"><span className="link-main"><strong>{s.helpFpfy}</strong><span className="row-sub">{s.helpFpfyLine}</span></span><Icon name="phone" size={18} /></a></li>
           </ul>
           <div className="actions row">
             <button className="btn ghost" onClick={onBack}>{s.changeAnswers}</button>
