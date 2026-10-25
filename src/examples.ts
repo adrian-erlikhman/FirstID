@@ -1,8 +1,7 @@
 import { personas } from "../tests/personas";
 import type { Person } from "./engine/types";
 
-// The made-up people from the tests, so a judge (or the video) can see a full
-// path in one tap. Same data the persona tests check, so what the app shows
+// The made-up people from the tests, so anyone can see a full path in one tap. Same data the persona tests check, so what the app shows
 // for Maria is exactly what CI verified.
 export interface Example {
   id: keyof typeof personas;
