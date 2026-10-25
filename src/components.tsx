@@ -197,8 +197,19 @@ export function PathCard({ plan, lang, mode, name, busy = false, className = "" 
   );
 }
 
-/** The back of the path card: a stripe, then the official rule behind each
- *  step, the way the back of a real card carries the fine print. */
+/** The law a step rests on, short enough for the back of a card: the first
+ *  statute among its sources ("Civ. Code 1185"), else the office ("DMV"). */
+function citeOf(action: Plan["steps"][number]["action"], rules: RuleSet) {
+  const titles = action.sources.map((id) => rules.sources[id]?.title).filter(Boolean) as string[];
+  const title = titles.find((x) => /Code \d|^AB \d/.test(x)) ?? titles[0] ?? "";
+  return title.split(/[:(]/)[0].trim()
+    .replace("Health & Safety Code", "H&S Code").replace("Welfare & Institutions Code", "W&I Code")
+    .replace("Government Code", "Gov. Code").replace("Vehicle Code", "Veh. Code").replace("Civil Code", "Civ. Code")
+    .replace(/^(DMV|SSA)\b.*/, "$1");
+}
+
+/** The back of the path card: a stripe, then each step (in the person's
+ *  language) and the law behind it, the way a real card carries fine print. */
 export function CardBack({ plan, rules, lang }: { plan: Plan; rules: RuleSet; lang: Lang }) {
   const s = t[lang];
   return (
@@ -208,7 +219,11 @@ export function CardBack({ plan, rules, lang }: { plan: Plan; rules: RuleSet; la
       <strong className="idc-back-title">{s.cardBackTitle}</strong>
       <ol className="idc-back-list">
         {plan.steps.map((st, i) => (
-          <li key={st.action.id}><span className="num">{i + 1}</span><span>{rules.sources[st.action.sources[0]]?.title ?? st.action.label[lang]}</span></li>
+          <li key={st.action.id}>
+            <span className="num">{i + 1}</span>
+            <span className="idc-step">{s.stepShort[st.action.id] ?? st.action.label[lang]}</span>
+            <span className="idc-cite">{citeOf(st.action, rules)}</span>
+          </li>
         ))}
       </ol>
       <span className="idc-back-note">{s.cardBackNote}</span>
@@ -382,12 +397,12 @@ export function StatGrid({ plan, lang, busy = false }: { plan: Plan; lang: Lang;
   );
 }
 
-/** "instead of $41 · with 2 fee waivers", or nothing when nothing was waived. */
+/** "instead of $41, with 2 fee waivers", or nothing when nothing was waived. */
 export function Waived({ plan, lang }: { plan: Plan; lang: Lang }) {
   const s = t[lang];
   const full = fullPrice(plan);
   if (full <= plan.total.dollars) return null;
-  return <p className="waived">{s.insteadOf(full)} · {s.withWaivers(waiverCount(plan))}</p>;
+  return <p className="waived">{s.waivedLine(full, waiverCount(plan))}</p>;
 }
 
 /** The planner's sum, written out: $0 + $15 + $0 = [$15]. */
