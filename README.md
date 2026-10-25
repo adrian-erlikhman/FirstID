@@ -73,6 +73,34 @@ Other scripts: `npm test` runs only the tests, `npm run lint:rules` only the rul
 
 On the home page, tap one of the example people (for example Maria) to see a full path without typing anything.
 
+## Project structure
+
+```
+data/rules.json          every rule, document, place and source, in English and Spanish
+src/
+  engine/
+    types.ts             the shared types: rules, documents, plans
+    expr.ts              evaluates a rule's requirements
+    planner.ts           Dijkstra search for the best path
+    lint.ts              checks the rules file (run by scripts/lint-rules.ts)
+  screens/               home, what you have, questions, path, step, what-if, packet, how we know
+  App.tsx                app state, kept in sessionStorage for the tab
+  router.ts              hash routes (#/path, #/step/2, #/example/maria); no personal data in URLs
+  whatif.ts              re-plans for each answer that could change
+  components.tsx         shared UI pieces, including the source cards
+  i18n.ts                every screen string in English and Spanish
+  styles.css, motion.ts  look and motion (motion switches off for reduced-motion users)
+  fonts/, forms/         self-hosted fonts (with their licence) and the LA County form images
+tests/                   planner, persona and UI-logic tests (Vitest)
+scripts/                 rules linter and colour-contrast check
+public/                  icons and the link-preview image
+docs/research/           background research from before the build (AI-compiled leads)
+docs/team/               build-week team notes
+.github/workflows/       check.yml (pull requests) and pages.yml (deploy to GitHub Pages)
+vercel.json              Vercel build and security headers
+AI-USE.md                the AI disclosure
+```
+
 ## Team
 
 See `CONTRIBUTING.md` for who owns what and `docs/team/TASKS.md` for this week's work. Research leads are in `docs/research/`.
