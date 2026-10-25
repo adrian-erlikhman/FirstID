@@ -18,23 +18,26 @@ This is not legal advice. Rules change, and the app marks every rule our team ha
 
 ## The problem: the ID loop
 
-To get a California ID, the DMV wants proof of identity, usually a birth certificate. To order a certified birth certificate from LA County by mail, you need a notarized Certificate of Identity. To get something notarized, the notary needs to see your ID. Someone who has lost everything can go around that circle for weeks.
+To get a California ID, the DMV wants proof of identity, usually a birth certificate. To order a certified birth certificate from LA County by mail, you need a notarized Certificate of Identity. To get something notarized, the notary needs to see your ID. Someone who has lost every document is stuck inside that circle.
 
 There are legal ways out, and several are free, but each one lives with a different office: a shelter or nonprofit that can sign the DMV's no-fee form (DL 933), a social worker who can sign a free birth certificate affidavit, two credible witnesses who can vouch for you in front of a notary (California Civil Code 1185), the Social Security office, the county recorder and the DMV. First ID puts those rules in one place and works out which ones apply to you, in what order.
 
 ## How it works
 
 ```
-data/rules.json ──► lint (CI) ──► planner (in your browser) ──► your path + packet
-   rules, fees,       every rule       Dijkstra over "what you      every step links
-   waivers, sources   has a source     hold" states                 to its source
+data/rules.json ──► npm run lint:rules ──► planner (in the browser) ──► path, steps, packet
+ 11 rules, fees,     fails the build if a     Dijkstra over the set of    every step links
+ waivers, sources    rule has no source       documents you hold          to its source
 ```
 
-- **Rules are data, not code.** Each rule says what it requires, what it gives you, what it costs, which waivers apply and which official page says so. Every rule starts as `verified: false` and shows "call ahead" until a teammate checks it against the source and signs it off. The rules were drafted with AI help; none counts as verified until a person checks it.
-- **The planner is a search, not a guess.** Your situation is a state (the documents you hold). Each rule is a move. Dijkstra's algorithm finds the cheapest sequence of moves that ends with an ID, counting dollars, then trips, then days. Same answers every time.
-- **Guarantee, tested in CI:** having more documents can never make your plan worse. The test tries adding every document to every persona.
-- **Private by design.** It's a static site. Nothing you enter leaves your phone, and there's no account and no database.
-- **No AI in the app.** See `AI-USE.md` for how we used AI to build it.
+1. **The rules are data, not code.** [`data/rules.json`](data/rules.json) holds every rule First ID knows: what it requires, which documents it gives you, the fee, the fee waivers, how long it takes, where it happens, what to bring and say, and the official sources behind it, in English and Spanish.
+2. **A linter guards the rules.** [`src/engine/lint.ts`](src/engine/lint.ts) fails the build if a rule has no source, names an unknown document or place, has a waiver that costs more than the fee, is missing a Spanish line, or has a requirement of the form "you must not have document X" (which would break the guarantee below).
+3. **The planner is a deterministic search.** [`src/engine/planner.ts`](src/engine/planner.ts) treats your situation as a state (the documents you hold) and each rule as a move that adds documents. Because moves only ever add documents, Dijkstra's algorithm finds the exact best sequence that ends with a California ID. "Cheapest" compares dollars, then trips, then days, then steps; the path screen can also sort by fewest trips or fastest. The same answers always give the same path.
+4. **Every step cites its source.** Each step shows the rule's official pages (DMV, LA County Registrar-Recorder, California statutes, Social Security) with the exact sentence that supports it (or a note that we haven't copied it yet) and, once a person has verified the rule, the date they checked it. The "How we know" screen lists every rule and source.
+5. **What-if.** The app re-plans once for each answer you could change and shows only the changes that would alter your path.
+6. **When there is no path** with the rules we have, it says so and lists who can help today, instead of guessing.
+
+The tests ([`tests/`](tests/)) check the planner on toy rules, check four invented people against plans worked out by hand from the sources, and check one guarantee on the real rules: having more documents never makes your plan worse. `npm run check` runs the rules lint, the tests, the type check and the build, and nothing deploys unless it passes.
 
 **New to the repo? Read `docs/team/START-HERE.md` first.**
 
