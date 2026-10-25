@@ -252,11 +252,6 @@ h1.display .bracketed .num { color: var(--on-c); background: var(--hl); padding:
 .path-card { margin-bottom: 16px; }
 .route-step h1.display { overflow-wrap: anywhere; }
 
-
-/* ---------- asides ---------- */
-.hand-note { display: flex; align-items: center; gap: 10px; color: var(--text-2); font-size: 0.9063rem; line-height: 1.35; }
-.hand-note::before { content: ""; flex: none; width: 18px; height: 1px; background: var(--control); }
-
 /* ---------- tags and notices ---------- */
 .tag {
   display: inline-flex; align-items: center; width: fit-content; margin-top: 6px; padding: 2px 8px; border-radius: 6px;
