@@ -1,10 +1,20 @@
 # First ID
 
-**The shortest legal path to a California ID, with a source for every step.**
+**The shortest legal path to a California ID in LA County, with the official rule behind every step. In English and Spanish.**
 
-To get a California ID you need a birth certificate. To get a birth certificate you usually need an ID. People who have lost everything get stuck in that loop: people without a home, fire survivors, people leaving jail or foster care. There are legal ways out, and most are free, but they're spread across the DMV, the county, the state health department and Social Security.
+**Live site: https://first-id.vercel.app/** (mirror on GitHub Pages: https://adrian-erlikhman.github.io/FirstID/)
 
-First ID asks what you have and seven questions, then compares every legal path it knows and shows the best one: each step, where to go, what to bring, the cost after fee waivers, and the official rule behind it. Then it prints a one-page packet.
+First ID is for people in LA County who need a California ID card and don't have the documents to get one, and for the caseworkers who help them:
+
+- people without housing, including people staying in shelters
+- people who lost their documents in the January 2025 LA fires
+- young people in or leaving foster care
+- people leaving jail (there is no reentry-specific rule yet, so their path uses the general rules)
+- caseworkers, shelter staff and counselors working through the process with any of them
+
+You tick the documents you still have and answer seven short questions. First ID works out the cheapest legal way to an ID from there: each step, where to go, what to bring, what it costs after fee waivers, what to say at the counter, and the official source that allows it. It prints the whole path as a one-page packet to carry to each office.
+
+This is not legal advice. Rules change, and the app marks every rule our team has not yet checked against its source.
 
 ## How it works
 
@@ -33,7 +43,3 @@ npm run check   # rules lint + tests + build (CI runs this on pull requests and 
 ## Team
 
 See `CONTRIBUTING.md` for who owns what and `docs/team/TASKS.md` for this week's work. Research leads are in `docs/research/`.
-
-This is not legal advice. Rules change, and every rule shows whether our team has verified it yet.
-
-**Live site:** https://first-id.vercel.app (Vercel; a copy also runs on GitHub Pages at https://adrian-erlikhman.github.io/FirstID/)
