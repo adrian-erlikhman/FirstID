@@ -36,4 +36,4 @@ See `CONTRIBUTING.md` for who owns what and `TASKS.md` for this week's work. Res
 
 This is not legal advice. Rules change, and every rule shows whether our team has verified it yet.
 
-**Live site:** https://adrian-erlikhman.github.io/FirstID/
+**Live site:** https://first-id.vercel.app (Vercel; a copy also runs on GitHub Pages at https://adrian-erlikhman.github.io/FirstID/)

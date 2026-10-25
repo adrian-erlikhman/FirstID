@@ -1,6 +1,6 @@
 # Start here
 
-The site is live at **https://adrian-erlikhman.github.io/FirstID/**. It redeploys itself on every push to `main`, but only if the rules lint, the tests and the build all pass.
+The site is live at **https://first-id.vercel.app** (Vercel project `adrian-2443/first-id`), with a copy on GitHub Pages at https://adrian-erlikhman.github.io/FirstID/. Both build with `npm run check`, so nothing goes live unless the rules lint, the tests and the build all pass. Vercel's settings are in `vercel.json`, including a Content-Security-Policy header that stops the browser from contacting any server but ours.
 
 The repo is `adrian-erlikhman/FirstID`. The scaffold is one commit authored by Claude, labeled as AI-generated. It's the honest record of what AI wrote; everything after it is yours.
 
