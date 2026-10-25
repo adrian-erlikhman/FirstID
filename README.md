@@ -50,6 +50,7 @@ The tests ([`tests/`](tests/)) check the planner on toy rules, check four invent
 
 - **No accounts, no server, no database.** First ID is a static site. The plan is computed in your browser, and nothing you tick or answer is sent anywhere.
 - **Nothing is kept after you close the tab.** Your answers sit in the tab's `sessionStorage` so a phone that reloads the page doesn't lose them, and they disappear when the tab closes.
+- **Works offline after the first visit.** A service worker ([`public/sw.js`](public/sw.js)) caches the site's own files so it still opens with no signal. It stores no answers.
 - **No third-party requests.** Fonts and images are served from the site itself; there are no analytics, trackers or CDNs. The only outside pages are the official sources, which open when you tap them.
 - **Enforced on the main site.** [`vercel.json`](vercel.json) sends a Content-Security-Policy that only lets the page load its own files, plus `Referrer-Policy: no-referrer`. (GitHub Pages can't send custom headers, so the mirror relies on the code alone.)
 
