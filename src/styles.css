@@ -446,11 +446,6 @@ h2.display.h2 { font-size: 34px; margin: 0 0 16px; text-wrap: balance; }
 h2.display.wide { max-width: 20ch; margin-bottom: 28px; }
 .how > li { display: grid; grid-template-columns: 30px minmax(0, 1fr); gap: 12px; padding: 16px 18px; }
 .how strong { display: block; font-weight: 600; font-size: 1.0625rem; line-height: 1.3; letter-spacing: -0.015em; margin-bottom: 2px; }
-.features { display: grid; gap: 12px; }
-.features > li { display: flex; flex-direction: column; gap: 6px; padding: 18px 20px 20px; }
-.features strong { font-weight: 600; font-size: 1.1563rem; line-height: 1.25; letter-spacing: -0.025em; margin-top: 8px; }
-.features .label { align-self: flex-start; padding: 3px 8px; border-radius: 6px; background: var(--c, var(--c1)); color: var(--on-c); font-weight: 600; font-variant-numeric: tabular-nums; }
-.features > li:nth-child(4n+1) { --c: var(--c1); } .features > li:nth-child(4n+2) { --c: var(--c2); } .features > li:nth-child(4n+3) { --c: var(--c3); } .features > li:nth-child(4n+4) { --c: var(--c4); }
 
 
 /* old link rows (no-path help) */
@@ -658,7 +653,6 @@ h2.display.wide { max-width: 20ch; margin-bottom: 28px; }
   .stats > div::before, .stats > div:nth-child(even)::before { left: 18px; }
   .stats > div:first-child::before { left: 0; }
   .stats dd { font-size: 48px; }
-  .features { grid-template-columns: 1fr 1fr; }
   .photo-band { grid-template-columns: repeat(var(--n, 3), minmax(0, 1fr)); }
   .photo-band.n2 { --n: 2; } .photo-band.n1 { --n: 1; }
   .photo-band.n1 img { aspect-ratio: 21 / 9; }
@@ -691,7 +685,6 @@ h2.display.wide { max-width: 20ch; margin-bottom: 28px; }
   .home-sec { margin-top: 128px; }
   .stats { margin-top: 88px; }
   h2.display.h2 { font-size: 52px; }
-  .features { grid-template-columns: repeat(3, 1fr); }
   .home-cta h2.display { font-size: 64px; }
   .head-actions { display: flex; margin-top: 32px; }
   .body-actions { display: none; }
