@@ -10,9 +10,9 @@ We add a row whenever an AI tool writes or substantially changes something.
 
 ## Summary
 
-- **Tools:** Anthropic Claude, for research, the starter scaffold and code review. [Add any others you use.]
-- **The app itself uses no AI.** Plans come from a deterministic planner over a hand-checked rules file. The same inputs always give the same plan.
-- **What AI did not do:** decide any rule. Every rule in `data/rules.json` was checked by a teammate against the primary source linked next to it. (Make sure this is true before you submit: no rule in a persona plan may still be `verified: false`.)
+- **Tools:** Anthropic Claude, the only AI tool in the log below. We used it for research, the starter scaffold, the first draft of the rules file and the Spanish, the screens and the site's redesigns, copy passes, and code review.
+- **The app itself uses no AI.** Plans come from a deterministic planner over the rules file. The same inputs always give the same plan.
+- **Rules and AI:** Claude drafted the rules in `data/rules.json` from its research notes. A rule only counts as verified when a teammate has checked it against the primary source linked next to it; until then the app shows it as "call ahead". As of this update, 0 of the 11 rules are marked verified.
 
 ## Log
 
