@@ -52,7 +52,10 @@ export function go(r: Route, replace = false) {
 }
 
 if (typeof window !== "undefined") {
-  const fromUrl = () => emit(parse(location.hash));
+  // Only act when the address names a different screen. Changing the hash
+  // fires both popstate and hashchange, and by the second one the app may
+  // already have moved on (an example link swaps itself for #/path).
+  const fromUrl = () => { const r = parse(location.hash); if (href(r) !== href(current)) emit(r); };
   window.addEventListener("popstate", fromUrl);   // back and forward buttons
   window.addEventListener("hashchange", fromUrl); // someone typed or pasted a link
 }
