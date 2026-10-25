@@ -1,5 +1,5 @@
 import { useEffect, useId, useRef, useState, type ReactNode } from "react";
-import { useTilt } from "./motion";
+import { useTilt, useTween } from "./motion";
 import type { Mode, Plan, RuleSet, Source, Step } from "./engine/types";
 import { t, type Lang } from "./i18n";
 import applicationImg from "./forms/birth-record-application.jpg";
@@ -159,6 +159,11 @@ function Guilloche() {
   );
 }
 
+/** A number that counts to its new value. `format` turns it into text. */
+export function Tween({ value, format = String }: { value: number; format?: (n: number) => string }) {
+  return <>{format(Math.round(useTween(value)))}</>;
+}
+
 /** The path you get, shown as the thing it gets you: an ID card. Total up
  *  top, then steps, trips and time along the bottom, like the fields on a card. */
 export function PathCard({ plan, lang, mode, name, busy = false, className = "" }: {
@@ -183,16 +188,16 @@ export function PathCard({ plan, lang, mode, name, busy = false, className = "" 
         </div>
         <div className="idc-total">
           <span className="idc-key"><span>{s.totalCost}</span><span className="idc-mode">{modeLabel}</span></span>
-          <span className="idc-big"><Br busy={busy}>{money(total.dollars)}</Br></span>
+          <span className="idc-big"><Br busy={busy}><Tween value={total.dollars} format={money} /></Br></span>
           {full > total.dollars && (
             <span className="idc-was"><span>{s.insteadOf(full)}</span><span>{s.withWaivers(waiverCount(plan))}</span></span>
           )}
         </div>
       </div>
       <dl className="idc-fields" aria-hidden="true">
-        <div><dt>{s.unitSteps(total.steps)}</dt><dd>{total.steps}</dd></div>
-        <div><dt>{s.unitTrips(total.trips)}</dt><dd>{total.trips}</dd></div>
-        <div><dt>{s.untilCard}</dt><dd>{s.timeShort(total.days)}</dd></div>
+        <div><dt>{s.unitSteps(total.steps)}</dt><dd><Tween value={total.steps} /></dd></div>
+        <div><dt>{s.unitTrips(total.trips)}</dt><dd><Tween value={total.trips} /></dd></div>
+        <div><dt>{s.untilCard}</dt><dd><Tween value={total.days} format={s.timeShort} /></dd></div>
       </dl>
     </section>
   );
