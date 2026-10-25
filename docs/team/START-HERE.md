@@ -1,8 +1,8 @@
 # Start here
 
-The site is live at **https://first-id.vercel.app** (Vercel project `adrian-2443/first-id`), with a copy on GitHub Pages at https://adrian-erlikhman.github.io/FirstID/. Both build with `npm run check`, so nothing goes live unless the rules lint, the tests and the build all pass. Vercel's settings are in `vercel.json`, including a Content-Security-Policy header that stops the browser from contacting any server but ours.
+The site is live at **https://first-id.vercel.app** (Vercel project `adrian-2443/first-id`), with a copy on GitHub Pages at https://adrian-erlikhman.github.io/FirstID/. Both build with `npm run check`, so nothing goes live unless the rules lint, the tests and the build all pass. Vercel's settings are in `vercel.json`, including a Content-Security-Policy header that stops the page from loading anything from another server.
 
-The repo is `adrian-erlikhman/FirstID`. The scaffold is one commit authored by Claude, labeled as AI-generated. It's the honest record of what AI wrote; everything after it is yours.
+The repo is `adrian-erlikhman/FirstID`. The scaffold is one commit authored by Claude, labeled as AI-generated. Later AI work is labeled in its commit messages and logged in `AI-USE.md`.
 
 ## Adrian (repo owner, one time, about 10 minutes)
 
@@ -16,7 +16,7 @@ The repo is `adrian-erlikhman/FirstID`. The scaffold is one commit authored by C
 git clone https://github.com/adrian-erlikhman/FirstID.git
 cd FirstID
 npm install
-npm run check      # should pass the rules lint, every test (81 on Oct 25) and the build
+npm run check      # should pass the rules lint, every test and the build
 npm run dev        # open the local URL and tap "See Maria's path" on the home page,
                    # or answer for her: Medi-Cal card + "I know my SSN", LA County,
                    # shelter yes, witnesses yes

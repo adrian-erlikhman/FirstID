@@ -46,7 +46,7 @@ First ID is a static site with no accounts, server or database. Your answers sta
 ## Spanish and accessibility
 
 - The whole app, including the packet, works in English and Spanish, and the linter fails the build if a rule is missing its Spanish. The Spanish was drafted with AI help and hasn't had a full native-speaker review yet.
-- Everything works by keyboard with a visible focus ring; there's a text-size control; motion switches off for reduced-motion users; `npm run contrast` checks colour contrast. We haven't yet done a full screen-reader pass.
+- Everything works by keyboard with a visible focus ring; there's a text-size control; motion switches off for reduced-motion users, with Data Saver on, and on phones with 2 GB of memory or less; `npm run contrast` checks colour contrast. We haven't yet done a full screen-reader pass.
 
 ## Run it locally
 
