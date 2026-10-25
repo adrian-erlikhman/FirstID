@@ -226,7 +226,7 @@ export function Card3D({ front, back, lang, className = "" }: { front: ReactNode
     <div ref={stage} className={`c3d${flipped ? " flipped" : ""} ${className}`}>
       <div className="c3d-card">
         <div className="c3d-edge" aria-hidden="true" />
-        <div className="c3d-face c3d-front" aria-hidden={flipped || undefined}>{front}<span className="c3d-glare" aria-hidden="true" /></div>
+        <div className="c3d-face c3d-front" aria-hidden={flipped || undefined}>{front}<span className="c3d-holo" aria-hidden="true" /><span className="c3d-glare" aria-hidden="true" /></div>
         {back && <div className="c3d-face c3d-back" aria-hidden={!flipped || undefined}>{back}</div>}
       </div>
       {back && (

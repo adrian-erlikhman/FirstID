@@ -316,6 +316,16 @@ h1.display .bracketed .num { color: var(--on-c); background: var(--hl); padding:
 .c3d-glare { position: absolute; inset: 0; border-radius: inherit; pointer-events: none; z-index: 2;
   background: radial-gradient(circle at var(--gx, 25%) var(--gy, 15%), rgb(255 255 255 / .28), transparent 42%), linear-gradient(115deg, rgb(255 255 255 / .10), transparent 38%);
   mix-blend-mode: soft-light; }
+/* The holographic sheen: a band of the site's own four colours that slides
+ * across the card as it tilts, the way the foil on a real ID catches light.
+ * Faint at rest (phones never tilt), brighter while the mouse moves it. */
+.c3d-holo { position: absolute; inset: 0; border-radius: inherit; pointer-events: none; z-index: 2;
+  background: linear-gradient(115deg, transparent 43%, var(--c1) 46.5%, var(--c2) 49%, var(--c3) 51.5%, var(--c4) 54%, transparent 57.5%) no-repeat;
+  background-size: 220% 220%;
+  background-position: calc(100% - var(--gx, 30%)) calc(100% - var(--gy, 30%));
+  mix-blend-mode: color-dodge; opacity: .07; transition: opacity .5s var(--ease); }
+.c3d[data-tilt] .c3d-holo { opacity: .16; }
+@media (prefers-reduced-motion: reduce) { .c3d-holo { display: none; } }
 .c3d-flip { display: inline-flex; align-items: center; gap: 6px; min-height: 44px; padding: 6px 14px; border: 0; border-radius: 980px; background: var(--tile); color: var(--ink); font-size: 14.5px; font-weight: 500; }
 .c3d-flip:hover { background: var(--pick); }
 .idc-back { justify-content: flex-start !important; gap: 10px !important; padding-top: 0 !important; }
