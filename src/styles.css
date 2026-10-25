@@ -444,17 +444,6 @@ h2.display.h2.center { max-width: 20ch; margin-left: auto; margin-right: auto; }
 .home-sec { margin-top: 72px; }
 h2.display.h2 { font-size: 34px; margin: 0 0 16px; text-wrap: balance; }
 h2.display.wide { max-width: 20ch; margin-bottom: 28px; }
-.loop-wrap { padding: 16px 12px 12px; }
-.loop { display: block; width: 100%; max-width: 480px; margin: 0 auto; overflow: visible; }
-.loop-label { font-size: 13px; font-weight: 500; fill: var(--text-2); }
-.loop-node { fill: var(--panel); stroke: var(--ink); stroke-width: 1.4; }
-.loop-pic { fill: var(--ink); }
-.loop-text { font-family: var(--font); font-size: 13px; font-weight: 600; letter-spacing: -0.01em; fill: var(--ink); }
-.loop-out { fill: var(--hl); stroke: var(--ink); stroke-width: 1.4; }
-.loop-out-text { font-family: var(--font); font-size: 16px; font-weight: 600; letter-spacing: -0.02em; fill: var(--on-c); }
-.loop-arc { stroke-dasharray: 4 4; animation: flow 1.4s linear infinite; }
-@keyframes flow { to { stroke-dashoffset: -16; } }
-.loop-note { margin: 14px 0 0 2px; }
 .how > li { display: grid; grid-template-columns: 30px minmax(0, 1fr); gap: 12px; padding: 16px 18px; }
 .how strong { display: block; font-weight: 600; font-size: 1.0625rem; line-height: 1.3; letter-spacing: -0.015em; margin-bottom: 2px; }
 .features { display: grid; gap: 12px; }
