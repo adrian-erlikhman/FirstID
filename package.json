@@ -2,7 +2,7 @@
   "name": "first-id",
   "version": "0.1.0",
   "private": true,
-  "description": "The shortest legal path to a California ID in LA County, with the official rule behind every step. English and Spanish.",
+  "description": "The cheapest legal path to a California ID card in LA County, with the source for each step. English and Spanish.",
   "homepage": "https://first-id.vercel.app/",
   "repository": {
     "type": "git",
@@ -11,10 +11,6 @@
   "bugs": {
     "url": "https://github.com/adrian-erlikhman/FirstID/issues"
   },
-  "contributors": [
-    "Adrian Erlikhman",
-    "Michael Tarekegn"
-  ],
   "type": "module",
   "scripts": {
     "dev": "vite",
