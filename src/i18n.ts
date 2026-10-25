@@ -98,6 +98,7 @@ const en = {
   loopId: "California ID", loopBc: "Birth certificate", loopNeeds: "needs", loopOut: "First ID finds the way out",
   start: "Find my path",
   howTitle: "Three steps, about two minutes.",
+  howNote: "Some steps need a shelter, program or caseworker to sign a form.",
   how: [
     ["Tick what you have", "Even one card or a number you remember can change the path."],
     ["Answer 7 quick questions", "Where you were born, where you're staying, your age and a few more."],
@@ -406,6 +407,7 @@ const es: Strings = {
   loopId: "Identificación", loopBc: "Acta de nacimiento", loopNeeds: "necesita", loopOut: "First ID encuentra la salida",
   start: "Buscar mi camino",
   howTitle: "Tres pasos, unos dos minutos.",
+  howNote: "Algunos pasos necesitan que un albergue, programa o trabajador social firme un formulario.",
   how: [
     ["Marca lo que tienes", "Incluso una sola tarjeta o un número que recuerdes puede cambiar el camino."],
     ["Contesta 7 preguntas rápidas", "Dónde naciste, dónde te quedas, tu edad y unas cuantas más."],

@@ -79,6 +79,7 @@ export function HomeScreen({ rules, lang, onStart, onExample }: {
             </li>
           ))}
         </ol>
+        <p className="body-text center how-note">{s.howNote}</p>
         <Photo name="phone" alt={s.photos.phone[0]} caption={s.photos.phone[1]} className="side" />
       </section>
 
