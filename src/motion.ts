@@ -158,3 +158,77 @@ export function useTween(value: number, ms = 700) {
   }, [value, ms]);
   return shown;
 }
+
+type Phase = "closed" | "opening" | "expanding" | "open" | "closing";
+
+/** For something that comes and goes: keeps it mounted while it slides shut,
+ *  and gives it one collapsed frame before it slides open. `settled` is true
+ *  once it is fully open (so it can stop clipping its contents). */
+export function usePresence(show: boolean, ms = 450) {
+  const [phase, setPhase] = useState<Phase>(show ? "open" : "closed");
+  useEffect(() => {
+    if (show) {
+      if (phase === "open" || phase === "expanding") return;
+      if (reduced()) { setPhase("open"); return; }
+      setPhase("opening");
+      let r2 = 0;
+      const r1 = requestAnimationFrame(() => { r2 = requestAnimationFrame(() => setPhase("expanding")); });
+      return () => { cancelAnimationFrame(r1); cancelAnimationFrame(r2); };
+    }
+    if (phase === "closed") return;
+    if (reduced()) { setPhase("closed"); return; }
+    setPhase("closing");
+    const id = setTimeout(() => setPhase("closed"), ms);
+    return () => clearTimeout(id);
+    // Only `show` drives this; phase is read, not watched.
+  }, [show]);
+  useEffect(() => {
+    if (phase !== "expanding") return;
+    const id = setTimeout(() => setPhase("open"), ms);
+    return () => clearTimeout(id);
+  }, [phase, ms]);
+  return { mounted: phase !== "closed", open: phase === "expanding" || phase === "open", settled: phase === "open" };
+}
+
+export type Row<T> = { item: T; key: string; phase: "first" | "enter" | "in" | "leave"; num: number };
+
+/** A list whose rows slide in and out instead of popping: a removed row stays
+ *  where it was while it collapses, a new row starts collapsed and opens. */
+export function useListPresence<T>(items: T[], keyOf: (item: T) => string, ms = 450): Row<T>[] {
+  const sig = items.map(keyOf).join("|");
+  const [prevSig, setPrevSig] = useState(sig);
+  const [rows, setRows] = useState<Row<T>[]>(() => items.map((item, i) => ({ item, key: keyOf(item), phase: "first", num: i + 1 })));
+  let current = rows;
+  if (sig !== prevSig) {
+    const next = new Map(items.map((item, i) => [keyOf(item), i]));
+    const merged: Row<T>[] = items.map((item, i) => {
+      const old = rows.find((r) => r.key === keyOf(item));
+      const phase = !old ? "enter" : old.phase === "leave" ? "in" : old.phase;
+      return { item, key: keyOf(item), phase: reduced() && phase === "enter" ? "in" : phase, num: i + 1 };
+    });
+    // Put each row that's leaving back after the row it used to follow.
+    rows.forEach((r, i) => {
+      if (next.has(r.key)) return;
+      const prevKey = rows.slice(0, i).reverse().find((p) => merged.some((m) => m.key === p.key))?.key;
+      const at = prevKey ? merged.findIndex((m) => m.key === prevKey) + 1 : 0;
+      merged.splice(at, 0, { ...r, phase: "leave" });
+    });
+    current = reduced() ? merged.filter((r) => r.phase !== "leave") : merged;
+    setPrevSig(sig);
+    setRows(current);
+  }
+  useEffect(() => {
+    if (!rows.some((r) => r.phase === "enter")) return;
+    let r2 = 0;
+    const r1 = requestAnimationFrame(() => { r2 = requestAnimationFrame(() => setRows((rs) => rs.map((r) => (r.phase === "enter" ? { ...r, phase: "in" } : r)))); });
+    return () => { cancelAnimationFrame(r1); cancelAnimationFrame(r2); };
+  }, [rows]);
+  useEffect(() => {
+    if (!rows.some((r) => r.phase === "leave")) return;
+    const id = setTimeout(() => setRows((rs) => rs.filter((r) => r.phase !== "leave")), ms);
+    return () => clearTimeout(id);
+  }, [rows, ms]);
+  // Rows that stay keep showing the latest data (a price can change in place).
+  const fresh = new Map(items.map((item) => [keyOf(item), item]));
+  return current.map((r) => (fresh.has(r.key) ? { ...r, item: fresh.get(r.key)! } : r));
+}
