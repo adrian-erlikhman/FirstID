@@ -54,15 +54,22 @@ function Tile({ className = "", children }: { className?: string; children: Reac
   return <li ref={ref} className={`tile ${className}`}>{children}</li>;
 }
 
-/** Five tiles of real numbers, in a grid. The numbers count up the first
- *  time the grid scrolls into view. */
+/** Two tiles: Maria's real path as the proof, and the scale behind it. Every
+ *  number is counted from the rules, and counts up the first time the grid
+ *  scrolls into view. */
 export function Bento({ rules, lang, maria }: { rules: RuleSet; lang: Lang; maria: Plan | null }) {
   const s = t[lang];
   const [ref, seen] = useInView<HTMLUListElement>();
   const nWaivers = rules.actions.reduce((n, a) => n + (a.waivers?.length ?? 0), 0);
+  // Distinct pages cited by a rule or a fee waiver (two ids can share one page).
+  const cited = rules.actions.flatMap((a) => [...a.sources, ...(a.waivers ?? []).flatMap((w) => w.sources)]);
+  const nSources = new Set(cited.map((id) => rules.sources[id]?.url).filter(Boolean)).size;
   const dollars = useCountUp(maria?.total.dollars ?? 0, seen);
-  const waivers = useCountUp(nWaivers, seen);
-  const nRules = useCountUp(rules.actions.length, seen);
+  const scale: [number, string][] = [
+    [useCountUp(nWaivers, seen), s.statsWaivers],
+    [useCountUp(rules.actions.length, seen), s.statsRules],
+    [useCountUp(nSources, seen), s.statsSources],
+  ];
   return (
     <ul ref={ref} className={`bento${seen ? " seen" : ""}`}>
       {maria && (
@@ -80,12 +87,13 @@ export function Bento({ rules, lang, maria }: { rules: RuleSet; lang: Lang; mari
           </span>
         </Tile>
       )}
-      <Tile className="t-yellow"><span className="tile-big num">{waivers}</span><span className="tile-sub">{s.statsWaivers}</span></Tile>
-      <Tile className="t-rules"><span className="tile-big num">{nRules}</span><span className="tile-sub">{s.statsRules}</span></Tile>
-      <Tile className="t-lang"><span className="tile-big">{s.tileLangs[0]}</span><span className="tile-sub">{s.tileLangs[1]}</span></Tile>
-      <Tile className="t-packet">
-        <span className="tile-big">{s.tilePacket[0]}</span><span className="tile-sub">{s.tilePacket[1]}</span>
-        <span className="mini-sheet" aria-hidden="true"><b /><i /><i /><i /><i /></span>
+      <Tile className="t-scale">
+        <span className="scale-rows">
+          {scale.map(([n, label]) => (
+            <span key={label} className="scale-row"><span className="scale-n num">{n}</span><span className="scale-label">{label}</span></span>
+          ))}
+        </span>
+        <span className="scale-foot">{s.statsReach}</span>
       </Tile>
     </ul>
   );

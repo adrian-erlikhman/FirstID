@@ -376,25 +376,29 @@ h1.display .bracketed .num { color: var(--on-c); background: var(--hl); padding:
 /* ---------- home: bento tiles ---------- */
 .bento { display: grid; gap: 14px; margin-top: 8px; }
 .tile {
-  position: relative; display: flex; flex-direction: column; gap: 8px; min-height: 210px; padding: 28px 28px 30px; overflow: hidden;
+  position: relative; display: flex; flex-direction: column; gap: 8px; padding: 26px 22px 24px; overflow: hidden;
   background: var(--tile); border-radius: var(--r-tile);
   transform: perspective(900px) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg)); transition: transform .45s var(--ease);
 }
 .tile-big { font-size: 60px; font-weight: 600; letter-spacing: -0.05em; line-height: 1; }
 .tile-sub { font-size: 1.125rem; line-height: 1.35; color: var(--text-2); max-width: 18em; }
-.t-yellow { background: var(--hl); color: var(--on-c); } .t-yellow .tile-sub { color: #3a3a3c; }
-.t-dark { background: #000; color: #f5f5f7; } .t-dark .tile-sub { color: #a1a1a6; }
+/* The scale behind Maria's path: the highlighter yellow, the numbers set big and tight.
+   (Not black: the forms band right below is black.) */
+.t-scale { background: var(--hl); color: var(--on-c); }
+.scale-rows { display: flex; flex-direction: column; }
+.scale-row { display: flex; align-items: center; gap: 18px; padding: 14px 0; }
+.scale-row:first-child { padding-top: 0; }
+.scale-row + .scale-row { border-top: 1px solid rgb(0 0 0 / .14); }
+.scale-n { flex: none; min-width: 1.15em; font-size: 64px; font-weight: 600; letter-spacing: -0.06em; line-height: .9; }
+.scale-label { font-size: 1.0625rem; line-height: 1.35; color: #3a3a3c; text-wrap: pretty; }
+.scale-foot { margin-top: auto; padding-top: 18px; border-top: 1px solid rgb(0 0 0 / .14); font-size: 1.0625rem; line-height: 1.4; color: var(--on-c); text-wrap: pretty; }
 .tile-rows { display: flex; flex-direction: column; margin-top: auto; padding: 6px 16px; border-radius: 16px; background: #fff; }
 .tile-row { display: grid; grid-template-columns: 18px minmax(0, 1fr) auto; gap: 8px; padding: 9px 0; font-size: 0.9063rem; line-height: 1.3; align-items: baseline; text-align: left;
   opacity: 0; transform: translateY(10px); transition: opacity .5s var(--ease), transform .6s var(--ease); transition-delay: calc(var(--i) * 90ms + 200ms); }
 .tile-row + .tile-row { border-top: 1px solid var(--line); }
 .bento.seen .tile-row { opacity: 1; transform: none; }
 .tile-row .num { font-weight: 600; }
-.tile > span:not(.mini-sheet) { position: relative; z-index: 1; }
-.mini-sheet { position: absolute; z-index: 0; right: -18px; bottom: -64px; width: 124px; height: 156px; padding: 14px; display: flex; flex-direction: column; gap: 7px; background: #fff; border-radius: 4px; box-shadow: 0 0 0 1px var(--line), 0 20px 30px -16px rgb(0 0 0 / .3); transform: rotate(9deg); }
-.mini-sheet b { display: block; height: 6px; width: 70%; background: var(--ink); border-radius: 1px; }
-.mini-sheet i { display: block; height: 4px; background: var(--line-strong); border-radius: 1px; }
-.mini-sheet i:nth-child(odd) { width: 80%; }
+.tile > span { position: relative; z-index: 1; }
 
 /* ---------- home: photos ---------- */
 .photo { margin: 0; display: flex; flex-direction: column; gap: 8px; }
@@ -672,9 +676,8 @@ h2.display.wide { max-width: 20ch; margin-bottom: 28px; }
   h1.display { font-size: 50px; }
   .hero-a, .hero-b { font-size: 64px; }
   .story-line h2 { font-size: 46px; }
-  .bento { grid-template-columns: 1fr 1fr; }
-  .t-maria { grid-column: span 2; }
   .tile-big { font-size: 72px; }
+  .tile { padding: 34px 34px 32px; }
   .how-tiles { grid-template-columns: repeat(3, minmax(0, 1fr)); }
   .home-cta h2.display { font-size: 56px; }
   h2.display.h2 { font-size: 42px; }
@@ -713,12 +716,10 @@ h2.display.wide { max-width: 20ch; margin-bottom: 28px; }
   .story-line h2 { font-size: 56px; }
   .story-line p { margin: 0; }
   .story-dots { grid-column: 1 / -1; }
-  .bento { grid-template-columns: repeat(6, minmax(0, 1fr)); }
-  .t-maria { grid-column: span 3; grid-row: span 2; }
-  .t-yellow, .t-rules { grid-column: span 3; }
-  .t-lang, .t-packet { grid-column: span 3; }
+  .bento { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .tile-big { font-size: 80px; }
-  .t-lang .tile-big, .t-packet .tile-big { font-size: 60px; }
+  .scale-n { font-size: 80px; }
+  .scale-label, .scale-foot { font-size: 1.1875rem; }
   .home-sec { margin-top: 128px; }
   .stats { margin-top: 88px; }
   h2.display.h2 { font-size: 52px; }
