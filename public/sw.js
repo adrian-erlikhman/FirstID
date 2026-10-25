@@ -6,7 +6,18 @@
 const CACHE = "first-id-v1";
 
 self.addEventListener("install", (event) => {
-  event.waitUntil(caches.open(CACHE).then((c) => c.addAll(["./", "./index.html"])).then(() => self.skipWaiting()));
+  // The first visit loads the script and stylesheet before this worker runs,
+  // so read their hashed names from the page and store them now.
+  event.waitUntil((async () => {
+    const c = await caches.open(CACHE);
+    await c.addAll(["./", "./index.html"]);
+    try {
+      const html = await (await c.match("./index.html")).text();
+      const assets = [...html.matchAll(/(?:src|href)="(\.\/assets\/[^"]+)"/g)].map((m) => m[1]);
+      await c.addAll([...new Set(assets)]);
+    } catch { /* they will be cached on the next visit instead */ }
+    await self.skipWaiting();
+  })());
 });
 
 self.addEventListener("activate", (event) => {
