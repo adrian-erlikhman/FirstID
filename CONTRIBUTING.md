@@ -33,3 +33,7 @@ Every rule in `data/rules.json` starts as `"verified": false`, and the app shows
 5. Update each source's `checked` date, then set `"verified": true`.
 6. Write down what changed in `data/CHANGES.md` and in the commit message.
 7. Run `npm run check`. If a persona's plan changes, work it out again by hand from the sources before updating `tests/personas.test.ts`.
+
+## Team notes
+
+Our build-week notes (repo setup and the day-by-day task list) are in [`docs/team/`](docs/team/).
