@@ -495,7 +495,7 @@ const es: Strings = {
   sayThis: "Di esto",
   whyWorks: "Por qué funciona",
   formsTitle: "Estos son los formularios reales.",
-  formsBody: "Para pedir un acta de nacimiento por correo, el condado de Los Ángeles pide un Certificado de Identidad notariado. El notario público tiene que confirmar quién eres con \u201cevidencia satisfactoria\u201d, y según el Código Civil 1185 de California eso pueden ser dos testigos fidedignos (credible witnesses) en lugar de una identificación. Esa es la regla que le permite a alguien sin identificación pedir su acta de nacimiento.",
+  formsBody: "Para pedir un acta de nacimiento por correo, el condado de Los Ángeles pide un Certificado de Identidad notariado. El notario público tiene que confirmar quién eres \u201ccon base en evidencia satisfactoria\u201d, y según el Código Civil 1185 de California eso pueden ser dos testigos fidedignos (credible witnesses) en lugar de una identificación. Esa es la regla que le permite a alguien sin identificación pedir su acta de nacimiento.",
   formsNote: "Formularios oficiales en blanco de lavote.gov. Lo marcado en amarillo es nuestro.",
   openForm: "Abrir el PDF oficial",
   stepForm: "El formulario",
