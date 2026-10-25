@@ -222,15 +222,20 @@ h1.display .bracketed .num { color: var(--on-c); background: var(--hl); padding:
 }
 .id-card .num { letter-spacing: inherit; }
 .idc-top { display: flex; justify-content: space-between; align-items: center; gap: 12px; font-size: 13.5px; font-weight: 500; }
-.idc-top > span:first-child { opacity: .72; }
+.idc-doc { opacity: .72; }
 .idc-brand { display: inline-flex; align-items: center; gap: 6px; font-weight: 600; letter-spacing: -0.012em; font-size: 15px; }
 .idc-brand .mark { height: 14px; width: auto; }
-.idc-mid { display: grid; grid-template-columns: 64px minmax(0, 1fr); gap: 18px; align-items: end; }
+.idc-mid { display: grid; grid-template-columns: 64px minmax(0, 1fr); gap: 18px; align-items: end; text-align: left; }
+.idc-holder { display: flex; flex-direction: column; gap: 6px; min-width: 0; }
+.idc-name { font-size: 13px; font-weight: 600; line-height: 1.2; overflow-wrap: anywhere; }
 .idc-photo { display: block; width: 64px; height: 88px; border-radius: 3px; background: var(--pb); }
 .idc-total { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
-.idc-key { font-size: 13px; opacity: .72; }
+/* Two separate labels, not one string with a dot: what the number is, and which way it was planned. */
+.idc-key { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 8px; font-size: 13px; }
+.idc-key > span:first-child { opacity: .72; }
+.idc-mode { padding: 1px 6px; border-radius: 4px; background: var(--hl); color: var(--on-c); font-weight: 600; }
 .idc-big { font-weight: 600; font-size: 56px; line-height: .95; letter-spacing: -0.035em; }
-.idc-was { font-size: 13.5px; opacity: .72; margin-top: 6px; }
+.idc-was { display: flex; flex-direction: column; font-size: 13.5px; line-height: 1.25; opacity: .72; margin-top: 6px; }
 .idc-fields { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); margin: 0; border-top: 1px solid color-mix(in srgb, var(--on-ink) 22%, transparent); padding-top: 12px; }
 .idc-fields > div + div { padding-left: 14px; border-left: 1px solid color-mix(in srgb, var(--on-ink) 22%, transparent); }
 .idc-fields > div:not(:first-child) { padding-left: 14px; }

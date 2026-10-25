@@ -107,15 +107,20 @@ export function PathCard({ plan, lang, mode, name, busy = false, className = "" 
   return (
     <section className={`id-card ${className}`} aria-label={s.cardLabel}>
       <div className="idc-top">
-        <span>{name ? `${s.cardLabel} · ${name}` : s.cardLabel}</span>
         <span className="idc-brand"><Mark size={14} tilt={0} />First ID</span>
+        <span className="idc-doc">{s.cardLabel}</span>
       </div>
       <div className="idc-mid">
-        <Portrait className="idc-photo" />
+        <div className="idc-holder">
+          <Portrait className="idc-photo" />
+          {name && <span className="idc-name">{name}</span>}
+        </div>
         <div className="idc-total">
-          <span className="idc-key">{s.totalCost} · {modeLabel}</span>
+          <span className="idc-key"><span>{s.totalCost}</span><span className="idc-mode">{modeLabel}</span></span>
           <span className="idc-big"><Br busy={busy}>{money(total.dollars)}</Br></span>
-          {full > total.dollars && <span className="idc-was">{s.insteadOf(full)} · {s.withWaivers(waiverCount(plan))}</span>}
+          {full > total.dollars && (
+            <span className="idc-was"><span>{s.insteadOf(full)}</span><span>{s.withWaivers(waiverCount(plan))}</span></span>
+          )}
         </div>
       </div>
       <dl className="idc-fields">
