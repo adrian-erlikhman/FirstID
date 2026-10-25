@@ -1,10 +1,9 @@
 import { useMemo, useState } from "react";
-import { Br, Printout, Solver, StatGrid, money, useRecompute } from "../components";
+import { PathCard, Printout, Solver, money, useRecompute } from "../components";
 import { plan } from "../engine/planner";
 import type { Mode, Person, RuleSet } from "../engine/types";
 import { t, type Lang } from "../i18n";
 import { applyFlips, flipKey, flipsThatMatter, samePlan, type Flip } from "../whatif";
-import { commandFor } from "./PathScreen";
 
 // OWNER: Adrian (screen) + Ryan (re-planning). Flip an answer, the planner
 // runs again, and the steps that drop out disappear. The only motion in the
@@ -54,13 +53,10 @@ export function WhatIfScreen(props: {
           )}
 
           <div className="whatif-result" aria-live="polite">
-            <Solver command={commandFor(next, mode, on.length ? " --what-if" : "")} readout={on.length ? s.withChange : s.nowLabel}>
+            {result && <PathCard plan={result} lang={lang} mode={mode} busy={busy} className="path-card" />}
+            <Solver title={s.secWhatIf} readout={on.length ? s.withChange : s.nowLabel}>
               {result ? (
                 <>
-                  <p className="whatif-total display">
-                    <Br busy={busy}>{money(result.total.dollars)}</Br>
-                    <span className="second"> {result.total.steps} {s.unitSteps(result.total.steps)}</span>
-                  </p>
                   <ol className="mini-steps">
                     {result.steps.map((st, i) => (
                       <li key={st.action.id} style={{ ["--i" as string]: i }}>
@@ -70,7 +66,6 @@ export function WhatIfScreen(props: {
                       </li>
                     ))}
                   </ol>
-                  <StatGrid plan={result} lang={lang} busy={busy} />
                 </>
               ) : <p className="whatif-none">{s.noPathShort}</p>}
             </Solver>

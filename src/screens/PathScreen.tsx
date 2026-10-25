@@ -1,4 +1,4 @@
-import { Br, Formula, HandNote, Icon, Notice, Pills, Printout, Solver, StatGrid, Unconfirmed, Waived, fullPrice, money, placeOf } from "../components";
+import { Br, Formula, Icon, Notice, PathCard, Pills, Printout, Solver, Unconfirmed, money, placeOf } from "../components";
 import type { Facts, Mode, Person, Plan, RuleSet, Step } from "../engine/types";
 import { t, type Lang } from "../i18n";
 import { href } from "../router";
@@ -92,12 +92,11 @@ export function PathScreen(props: {
   rules: RuleSet; lang: Lang; result: Plan | null; mode: Mode; onMode: (m: Mode) => void; person: Person;
   help: { doc: string; plan: Plan } | null; facts: Facts; onChangeAnswers: () => void; ms: number;
 }) {
-  const { rules, lang, result, mode, onMode, help, facts, ms, person } = props;
+  const { rules, lang, result, mode, onMode, help, facts, ms } = props;
   const s = t[lang];
   if (!result) return <NoPath lang={lang} facts={facts} onBack={props.onChangeAnswers} />;
 
   const unverified = result.steps.filter((st) => !st.action.verified).length;
-  const full = fullPrice(result);
   return (
     <section className="screen">
       <Printout index="03" kicker={s.secPath} readout={`3 / 3 · ${result.total.steps} ${s.unitSteps(result.total.steps)}`} />
@@ -107,8 +106,6 @@ export function PathScreen(props: {
             {s.pathHeadPre} <Br>{money(result.total.dollars)}</Br>{s.pathHeadPost}{" "}
             <span className="second">{s.pathSecond[mode]}</span>
           </h1>
-          {full > result.total.dollars && <HandNote dir="up" className="was-note">{s.wasNote(full)}</HandNote>}
-          <Waived plan={result} lang={lang} />
           <div className="actions stack head-actions">
             <a className="btn primary" href={href({ name: "packet" })}><Icon name="print" size={18} /> {s.printPacket}</a>
             <a className="btn ghost" href={href({ name: "whatif" })}>{s.whatIfLink}</a>
@@ -117,14 +114,14 @@ export function PathScreen(props: {
         </div>
 
         <div className="body">
-          <Solver command={commandFor(person, mode)} readout={result.explored !== undefined ? s.solvedIn(result.explored, ms) : undefined}>
+          <PathCard plan={result} lang={lang} mode={mode} className="path-card" />
+          <Solver title={s.cardLabel} readout={result.explored !== undefined ? s.solvedIn(result.explored, ms) : undefined}>
             <div className="solver-tabs">
               <Pills numbered label={s.modesLabel} value={mode} onChange={onMode}
                 options={[["cheapest", s.modeCheapest], ["fewestTrips", s.modeTrips], ["fastest", s.modeFastest]] as const} />
               <p className="mode-hint">{s.modeHint[mode]}</p>
             </div>
             <StepList rules={rules} lang={lang} plan={result} />
-            <StatGrid plan={result} lang={lang} />
           </Solver>
           <Formula plan={result} />
 

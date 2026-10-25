@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import rulesJson from "../data/rules.json";
-import { TopBar } from "./components";
+import { Lockup, TopBar } from "./components";
 import { plan, whatHelps } from "./engine/planner";
 import type { Facts, Mode, Person, Plan, RuleSet } from "./engine/types";
 import { examples } from "./examples";
@@ -159,6 +159,7 @@ export default function App() {
       {top}
       <main key={route.name === "step" ? `step-${route.n}` : route.name}>{screen}</main>
       <footer className="foot no-print">
+        <Lockup />
         <p>{s.privacy}</p>
       </footer>
     </div>
