@@ -85,7 +85,22 @@ const en = {
   loopNote: "the way out is legal, just hard to find",
   getTitleA: "What a caseworker would look up,",
   getTitleB: "worked out from your seven answers.",
-  tryTitle: "Just looking? Try an example.",
+  // Maria, start to finish (home, MariaTrail.tsx)
+  trailTitle: "Maria's path, start to finish.",
+  trailWho: "Maria is 34 and was born in LA County. She lost her papers in the Eaton fire and is staying in a shelter. She still has her Medi-Cal card, knows her Social Security number, and has two people who know her and can vouch for her.",
+  trailGets: (docs: string) => `Then she has: ${docs}`,
+  trailHiddenShort: "Not shown",
+  trailHidden: "The DMV asks that this form not be shared online, so we don't show it.",
+  trailTotal: (n: number, full: number) => `for ${n === 1 ? "one step" : `all ${n} steps`}${full ? `, instead of $${full}` : ""}.`,
+  trailNote: "Maria is made up. The rules, the forms and the samples are real.",
+  trailAltCoi: "LA County's Certificate of Identity form",
+  trailAltBc: "A blank California Certificate of Live Birth, stamped SAMPLE by the state",
+  trailAltId: "The California DMV's sample card, 2025 design",
+  trailCreditCoi: "Form: LA County Registrar-Recorder",
+  trailCreditBc: "Sample: California Department of Public Health",
+  trailAltAff: "The state's Affidavit of Homeless Status for a fee-exempt birth certificate",
+  trailCreditAff: "Form: California Department of Public Health",
+  trailCreditId: "Sample: California DMV",
 
   // Screen headlines: say it in ink, finish it in the lighter weight
   haveSecond: "Originals only.",
@@ -139,7 +154,6 @@ const en = {
   startOver: "Start over",
   toQuestions: "Next: questions",
   examplesTitle: "Just looking? Try a made-up person",
-  examplesNote: "Made-up people, real rules.",
 
   // 2. Questions
   questionsTitle: "A few quick questions.",
@@ -397,7 +411,22 @@ const es: Strings = {
   loopNote: "la salida es legal, pero cuesta encontrarla",
   getTitleA: "Lo que buscaría un trabajador social,",
   getTitleB: "calculado a partir de tus siete respuestas.",
-  tryTitle: "¿Solo estás viendo? Prueba con un ejemplo.",
+  // María, de principio a fin (inicio, MariaTrail.tsx)
+  trailTitle: "El camino de María, de principio a fin.",
+  trailWho: "María tiene 34 años y nació en el condado de Los Ángeles. Perdió sus papeles en el incendio Eaton y vive en un albergue. Todavía tiene su tarjeta de Medi-Cal, sabe su número de Seguro Social y tiene dos personas que la conocen y pueden dar fe de quién es.",
+  trailGets: (docs) => `Después tiene: ${docs}`,
+  trailHiddenShort: "No se muestra",
+  trailHidden: "El DMV pide que este formulario no se comparta en internet, así que no lo mostramos.",
+  trailTotal: (n, full) => `por ${n === 1 ? "un paso" : `los ${n} pasos`}${full ? `, en vez de $${full}` : ""}.`,
+  trailNote: "María es inventada. Las reglas, los formularios y las muestras son reales.",
+  trailAltCoi: "El formulario Certificado de Identidad del condado de Los Ángeles",
+  trailAltBc: "Un acta de nacimiento de California en blanco, con el sello SAMPLE (muestra) del estado",
+  trailAltId: "La tarjeta de muestra del DMV de California, diseño 2025",
+  trailCreditCoi: "Formulario: Registro del condado de Los Ángeles",
+  trailCreditBc: "Muestra: Departamento de Salud Pública de California",
+  trailAltAff: "La declaración jurada del estado para un acta de nacimiento gratis por no tener hogar",
+  trailCreditAff: "Formulario: Departamento de Salud Pública de California",
+  trailCreditId: "Muestra: DMV de California",
 
   haveSecond: "Solo originales.",
   questionsSecond: "Puedes contestar “No sé”.",
@@ -448,7 +477,6 @@ const es: Strings = {
   startOver: "Empezar de nuevo",
   toQuestions: "Siguiente",
   examplesTitle: "¿Solo estás viendo? Prueba con una persona inventada",
-  examplesNote: "Personas inventadas, reglas reales.",
 
   questionsTitle: "Unas preguntas rápidas.",
   questionsHint: "Si no sabes una respuesta, toca “No sé”. Tu camino no dependerá de ella.",
