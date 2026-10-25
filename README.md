@@ -1,26 +1,14 @@
 # First ID
 
-**The cheapest legal path to a California ID card in LA County, with the source for each step. In English and Spanish.**
+**The cheapest legal path to a California ID card in LA County, with the source for every step. In English and Spanish.**
 
-**Live site: https://first-id.vercel.app/** (mirror on GitHub Pages: https://adrian-erlikhman.github.io/FirstID/)
+**Live: https://first-id.vercel.app/** (mirror: https://adrian-erlikhman.github.io/FirstID/)
 
-First ID is for people in LA County who need a California ID card and don't have the documents to get one, and for the caseworkers who help them:
+For people in LA County who need an ID and don't have the documents to get one: people without housing, people who lost their papers in the January 2025 fires, young people in or leaving foster care, people leaving jail, and the caseworkers who help them.
 
-- people without housing, including people staying in shelters
-- people who lost their documents in the January 2025 LA fires
-- young people in or leaving foster care
-- people leaving jail (there is no reentry-specific rule yet, so their path uses the general rules)
-- caseworkers, shelter staff and counselors working through the process with any of them
+Tick the documents you still have and answer seven questions. First ID works out the cheapest legal order of steps: where to go, what to bring, what it costs after fee waivers, what to say at the counter, and the source that allows it. Any step can be shown full screen to a clerk or read aloud, DMV steps list nearby offices, the whole path prints on one page, and you can tick steps off and add calendar reminders as you go.
 
-You tick the documents you still have and answer seven short questions. First ID works out the cheapest legal way to an ID from there: each step, where to go, what to bring, what it costs after fee waivers, what to say at the counter, and the source that allows it. It prints the whole path as a one-page packet to carry to each office. On the path you can tick steps off as you finish them, and add a calendar reminder for the steps that arrive by mail.
-
-On each step you can also:
-
-- **Show the clerk:** the "say this" line full screen, in large type, to hold up at the counter.
-- **Read aloud:** the phone reads the line in English or Spanish, using its own voice.
-- **Find an office:** DMV steps link to a list of 26 LA County DMV field offices with hours and a directions link, sorted by distance from a ZIP code you type.
-
-This is not legal advice. Rules change, and the app marks every rule our team has not yet checked against its source.
+Not legal advice. Rules change, and every rule our team hasn't yet checked against its source is marked "call ahead".
 
 ## The problem: the ID loop
 
