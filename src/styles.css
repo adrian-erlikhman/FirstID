@@ -556,12 +556,16 @@ h2.display.wide { max-width: 20ch; margin-bottom: 28px; }
 .toggle-row[aria-checked="true"] .switch-text { color: var(--ink); }
 .whatif-result { margin-top: 16px; }
 .mini-steps { padding: 4px 0 6px; }
-.mini-steps li {
+.mini-steps li { display: grid; grid-template-rows: 1fr; transition: grid-template-rows .45s var(--ease), opacity .35s var(--ease); }
+.mini-steps li.first { animation: step-in .35s var(--ease) both; animation-delay: calc(var(--i) * 45ms); }
+.mini-steps li.enter, .mini-steps li.leave { grid-template-rows: 0fr; opacity: 0; }
+.mini-clip { min-height: 0; overflow: hidden; }
+.mini-in {
   display: grid; grid-template-columns: 24px minmax(0, 1fr) auto; gap: 10px; padding: 11px 18px;
-  font-size: 15.5px; line-height: 1.35; animation: step-in .35s var(--ease) both; animation-delay: calc(var(--i) * 45ms);
+  font-size: 15.5px; line-height: 1.35;
 }
-.mini-steps li + li { border-top: 1px solid var(--line); }
-.mini-steps .num { font-size: 15px; font-weight: 600; }
+.mini-steps li + li .mini-in { border-top: 1px solid var(--line); }
+.mini-steps .num { font-size: 15px; font-weight: 600; justify-self: end; }
 @keyframes step-in { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
 .whatif-none { padding: 24px 18px; margin: 0; font-size: 1.125rem; }
 .compare { font-size: 0.8438rem; color: var(--text-2); margin: 10px 4px 0; font-variant-numeric: tabular-nums; }
