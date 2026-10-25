@@ -54,6 +54,24 @@ describe("no-path notes", () => {
   });
 
   it("no notes when there is a path", () => expect(noPathNotes(rules, personas.maria)).toEqual([]));
+
+  it("every yes/no answer 'Not sure': no path, and the note says so", () => {
+    const person = { facts: { born: "la_county", age: 30 }, have: ["ssn_known"] };
+    expect(plan(rules, person)).toBeNull();
+    expect(noPathNotes(rules, person)).toEqual(["allUnsure"]);
+  });
+
+  it("no paper with an address is what's blocking", () => {
+    const person = { facts: { born: "la_county", age: 30, unhoused: false, hasWitnesses: true }, have: ["ssn_known"] };
+    expect(plan(rules, person)).toBeNull();
+    expect(noPathNotes(rules, person)).toEqual(["needAddress"]);
+  });
+
+  it("no two people with ID is what's blocking", () => {
+    const person = { facts: { born: "la_county", age: 30, unhoused: true, hasWitnesses: false }, have: ["ssn_known"] };
+    expect(plan(rules, person)).toBeNull();
+    expect(noPathNotes(rules, person)).toEqual(["needWitnesses"]);
+  });
 });
 
 describe("router", () => {

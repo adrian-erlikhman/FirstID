@@ -51,7 +51,10 @@ export function StepList({ rules, lang, plan }: { rules: RuleSet; lang: Lang; pl
 
 export function NoPath({ rules, lang, person, onBack }: { rules: RuleSet; lang: Lang; person: Person; onBack: () => void }) {
   const s = t[lang];
-  const text: Record<NoPathNote, string> = { bornCA: s.noPathBornCA, bornElsewhere: s.noPathBornElsewhere };
+  const text: Record<NoPathNote, string> = {
+    bornCA: s.noPathBornCA, bornElsewhere: s.noPathBornElsewhere,
+    allUnsure: s.noPathAllUnsure, needAddress: s.noPathNeedAddress, needWitnesses: s.noPathNeedWitnesses,
+  };
   const notes = noPathNotes(rules, person);
   return (
     <section className="screen">
