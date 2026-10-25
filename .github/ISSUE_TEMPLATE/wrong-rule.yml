@@ -1,0 +1,37 @@
+name: Report a wrong or outdated rule
+description: A step, fee, waiver or source in First ID doesn't match what the official source says today.
+title: "Rule: "
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thank you. Every step in First ID comes from a rule in `data/rules.json`, and each rule cites official sources. Please don't include anyone's personal details (names, addresses, birthdates or document numbers).
+  - type: input
+    id: rule
+    attributes:
+      label: Rule id or step name
+      description: The step's name as the app shows it (for example "Mail the birth certificate request to LA County"), or the rule id from data/rules.json (for example rrcc_mail).
+    validations:
+      required: true
+  - type: textarea
+    id: wrong
+    attributes:
+      label: What's wrong
+      description: What the app says, and what the official source says instead. Quote the exact sentence if you can.
+    validations:
+      required: true
+  - type: input
+    id: source
+    attributes:
+      label: Official source link
+      description: The government page, form or statute that shows the correct rule (for example a dmv.ca.gov, lavote.gov, ssa.gov or leginfo.legislature.ca.gov link).
+      placeholder: https://
+    validations:
+      required: true
+  - type: input
+    id: checked
+    attributes:
+      label: Date you checked the source
+      placeholder: YYYY-MM-DD
+    validations:
+      required: true
