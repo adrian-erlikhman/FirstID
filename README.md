@@ -73,6 +73,14 @@ Other scripts: `npm test` runs only the tests, `npm run lint:rules` only the rul
 
 On the home page, tap one of the example people (for example Maria) to see a full path without typing anything.
 
+## Deployment
+
+- **Vercel** (https://first-id.vercel.app/) builds every push to `main` with `npm run check`, using the settings and security headers in [`vercel.json`](vercel.json).
+- **GitHub Pages** (https://adrian-erlikhman.github.io/FirstID/) is a mirror: [`.github/workflows/pages.yml`](.github/workflows/pages.yml) runs `npm run check` on every push to `main` and publishes `dist/` to the `gh-pages` branch.
+- **Pull requests** run the same `npm run check` in [`.github/workflows/check.yml`](.github/workflows/check.yml).
+
+A broken rule, a failing test or a type error stops both deploys.
+
 ## How rules get verified
 
 The rules were drafted with AI help from the research in [`docs/research/`](docs/research/), so none of them counts as true until a person checks it. Every rule starts as `"verified": false`, and the app shows it as "call ahead" on the path, the step and the packet. To sign one off, a teammate opens every source the rule cites, copies the exact supporting sentence in place of any `TODO` quote, re-checks statutes on leginfo.legislature.ca.gov, checks the rule's requirements, fees and plain-language lines against the source, and only then sets `"verified": true`. The full checklist is in [`CONTRIBUTING.md`](CONTRIBUTING.md#verifying-a-rule).
