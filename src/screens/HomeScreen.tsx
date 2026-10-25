@@ -5,12 +5,13 @@ import type { RuleSet } from "../engine/types";
 import { examples } from "../examples";
 import { withImplied } from "../person";
 import { t, type Lang } from "../i18n";
-import { Bento, LoopStory, PaperStage, PeopleRail } from "./HomeParts";
+import { Bento, LoopStory, PaperStage } from "./HomeParts";
+import { MariaTrail } from "./MariaTrail";
 
 // OWNER: Adrian. The first thing anyone sees, laid out like a product page:
 // one big line and the product itself (Maria's real computed path, as an ID
 // card you can tilt and flip), then the problem told as a scroll story, the
-// numbers, the real forms, how it works, and people to try.
+// numbers, the real forms, how it works, and Maria's path on real paper.
 export function HomeScreen({ rules, lang, onStart, onExample }: {
   rules: RuleSet; lang: Lang; onStart: () => void; onExample: (id: string) => void;
 }) {
@@ -81,11 +82,11 @@ export function HomeScreen({ rules, lang, onStart, onExample }: {
         <Photo name="phone" alt={s.photos.phone[0]} caption={s.photos.phone[1]} className="side" />
       </section>
 
-      <section className="home-sec">
-        <h2 className="display h2 center">{s.tryTitle}</h2>
-        <PeopleRail people={examples} plans={exPlans} lang={lang} onExample={onExample} />
-        <p className="body-text people-note center">{s.examplesNote}</p>
-      </section>
+      {maria && (
+        <section className="home-sec">
+          <MariaTrail plan={maria} rules={rules} lang={lang} onOpen={() => onExample("maria")} />
+        </section>
+      )}
 
       <section className="home-cta">
         <h2 className="display">{s.ctaTitle}</h2>

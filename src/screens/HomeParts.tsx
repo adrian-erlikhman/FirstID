@@ -1,16 +1,20 @@
-import { useRef, type ReactNode } from "react";
-import { FormPaper, Icon, Mark, Portrait, Br, money, fullPrice } from "../components";
+import type { ReactNode } from "react";
+import { FormPaper, Mark, money, fullPrice } from "../components";
 import type { Plan, RuleSet } from "../engine/types";
-import type { Example } from "../examples";
 import { t, type Lang } from "../i18n";
 import { useCountUp, useInView, useScrollProgress, useTilt } from "../motion";
+// The state's own sample documents (sources in src/docs/README.md).
+import caIdImg from "../docs/ca-id-sample.jpg";
+import birthCertImg from "../docs/birth-certificate-sample.png";
 
 // OWNER: Adrian. The home page's moving parts, built like a product page:
 // a scroll story that pins while it plays, tiles whose numbers count up, the
-// real forms turning flat as you reach them, and a row of people to swipe.
+// real forms turning flat as you reach them. Maria's whole path is in
+// MariaTrail.tsx.
 
 /** The loop, told in three beats while the section stays pinned: the two
- *  documents chase each other round a ring, then the card breaks out. */
+ *  documents (the state's own samples) chase each other round a ring, then
+ *  the card breaks out. */
 export function LoopStory({ lang }: { lang: Lang }) {
   const s = t[lang];
   const [ref, stage] = useScrollProgress<HTMLElement>("pin", 3);
@@ -29,11 +33,11 @@ export function LoopStory({ lang }: { lang: Lang }) {
           <div className="orbit">
             <svg className="orbit-ring" viewBox="0 0 200 200"><circle cx="100" cy="100" r="86" /></svg>
             <div className="orb orb-id">
-              <span className="mini-id"><Portrait className="mini-pic" /><i /><i /></span>
+              <img className="orb-card" src={caIdImg} alt="" width={752} height={474} decoding="async" />
               <span className="orb-label">{s.storyId}</span>
             </div>
             <div className="orb orb-bc">
-              <span className="mini-bc"><i /><i /><i /><i /></span>
+              <img className="orb-sheet" src={birthCertImg} alt="" width={1105} height={1200} decoding="async" />
               <span className="orb-label">{s.storyBc}</span>
             </div>
           </div>
@@ -97,51 +101,6 @@ export function PaperStage({ lang, children }: { lang: Lang; children: ReactNode
       <div className="papers papers3d">
         <FormPaper form="application" lang={lang} className="p-a" />
         <FormPaper form="certificate" lang={lang} className="p-b" />
-      </div>
-    </div>
-  );
-}
-
-function PersonCard({ e, p, lang, onOpen }: { e: Example; p: Plan | null; lang: Lang; onOpen: () => void }) {
-  const s = t[lang];
-  const ref = useTilt<HTMLLIElement>(7);
-  return (
-    <li ref={ref} className="rail-item">
-      <button className="person-card" onClick={onOpen}>
-        <Portrait className="pc-photo" />
-        <span className="pc-body">
-          <strong>{e.name}</strong>
-          <span className="row-sub">{e.line[lang]}</span>
-        </span>
-        <span className="pc-foot">
-          {p
-            ? <><Br>{money(p.total.dollars)}</Br><span>{p.total.steps} {s.unitSteps(p.total.steps)}, {s.timeShort(p.total.days)}</span></>
-            : <span>{s.noPathShort}</span>}
-          <Icon name="arrow" size={16} />
-        </span>
-      </button>
-    </li>
-  );
-}
-
-/** The made-up people, in a row you can swipe (or page with the arrows). */
-export function PeopleRail({ people, plans, lang, onExample }: { people: Example[]; plans: (Plan | null)[]; lang: Lang; onExample: (id: string) => void }) {
-  const s = t[lang];
-  const rail = useRef<HTMLUListElement>(null);
-  const page = (dir: number) => {
-    const el = rail.current;
-    if (!el) return;
-    const item = el.querySelector<HTMLElement>(".rail-item");
-    el.scrollBy({ left: dir * ((item?.offsetWidth ?? 300) + 16), behavior: "smooth" });
-  };
-  return (
-    <div className="rail-wrap">
-      <ul ref={rail} className="rail">
-        {people.map((e, i) => <PersonCard key={e.id} e={e} p={plans[i]} lang={lang} onOpen={() => onExample(e.id)} />)}
-      </ul>
-      <div className="rail-nav">
-        <button className="rail-btn" onClick={() => page(-1)} aria-label={s.prev}><Icon name="left" size={18} stroke={2} /></button>
-        <button className="rail-btn" onClick={() => page(1)} aria-label={s.next}><Icon name="right" size={18} stroke={2} /></button>
       </div>
     </div>
   );
