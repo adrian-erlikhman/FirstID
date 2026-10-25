@@ -175,10 +175,6 @@ const en = {
   help211Line: "For adults and families: dial 2-1-1, any time, and ask for help replacing ID documents.",
   helpLausd: "LAUSD Homeless Education Office",
   helpLausdLine: "For students and families: 213‑241‑3552.",
-  helpHopics: "HOPICS Broadway",
-  helpHopicsLine: "Homeless services in South LA, 5715 S Broadway. Ask about help with ID documents: 323‑948‑0444.",
-  helpFpfy: "First Place for Youth, South LA",
-  helpFpfyLine: "For young people leaving foster care, 4337 Leimert Blvd. Ask about help with ID documents: 213‑279‑2785.",
   changeAnswers: "Change my answers",
 
   // 4. One step
@@ -482,10 +478,6 @@ const es: Strings = {
   help211Line: "Para adultos y familias: marca 2-1-1 a cualquier hora y pide ayuda para reponer tus documentos de identidad.",
   helpLausd: "Oficina de Educación para Personas sin Hogar de LAUSD",
   helpLausdLine: "Para estudiantes y familias: 213‑241‑3552.",
-  helpHopics: "HOPICS Broadway",
-  helpHopicsLine: "Servicios para personas sin hogar en el sur de LA, 5715 S Broadway. Pregunta si te pueden ayudar con tus documentos de identidad: 323‑948‑0444.",
-  helpFpfy: "First Place for Youth, sur de LA",
-  helpFpfyLine: "Para jóvenes que salen del sistema de crianza temporal, 4337 Leimert Blvd. Pregunta si te pueden ayudar con tus documentos de identidad: 213‑279‑2785.",
   changeAnswers: "Cambiar mis respuestas",
 
   cost: "Costo",
