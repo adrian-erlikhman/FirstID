@@ -7,15 +7,15 @@ const L = (h) => { const [r, g, b] = h.slice(1).match(/../g).map((x) => lin(pars
 const mix = (a, b, w) => { const ch = (h) => h.slice(1).match(/../g).map((x) => parseInt(x, 16)); const [x, y] = [ch(a), ch(b)]; return "#" + x.map((v, i) => Math.round(v * w + y[i] * (1 - w)).toString(16).padStart(2, "0")).join(""); };
 const cr = (a, b) => { const [x, y] = [L(a), L(b)].sort((p, q) => q - p); return (x + 0.05) / (y + 0.05); };
 const P = {
-  light: { ground: "#ffffff", panel: "#ffffff", ink: "#0a0a0a", onInk: "#ffffff", text2: "#4d4d4d", slate: "#767676", wash: "#f5f5f5", pick: "#f0f0f0", control: "#8f8f8f", c1: "#ffe14d", c2: "#8be3bf", c3: "#9ccbff", c4: "#ffb067", onC: "#0a0a0a" },
-  dark: { ground: "#0a0a0a", panel: "#121212", ink: "#f5f5f5", onInk: "#0a0a0a", text2: "#b8b8b8", slate: "#8f8f8f", wash: "#1a1a1a", pick: "#1f1f1f", control: "#737373", c1: "#ffe14d", c2: "#8be3bf", c3: "#9ccbff", c4: "#ffb067", onC: "#0a0a0a" },
+  light: { ground: "#ffffff", panel: "#ffffff", ink: "#1d1d1f", onInk: "#ffffff", text2: "#6e6e73", slate: "#86868b", wash: "#f5f5f7", pick: "#e8e8ed", control: "#86868b", cta: "#0071e3", link: "#0066cc", c1: "#ffe14d", c2: "#8be3bf", c3: "#9ccbff", c4: "#ffb067", onC: "#0a0a0a" },
+  dark: { cta: "#0071e3", link: "#2997ff", ground: "#0a0a0a", panel: "#121212", ink: "#f5f5f5", onInk: "#0a0a0a", text2: "#b8b8b8", slate: "#8f8f8f", wash: "#1a1a1a", pick: "#1f1f1f", control: "#737373", c1: "#ffe14d", c2: "#8be3bf", c3: "#9ccbff", c4: "#ffb067", onC: "#0a0a0a" },
 };
 let failed = 0;
 for (const [name, t] of Object.entries(P)) {
   const checks = [
     ["ink on page", t.ink, t.ground, 4.5], ["ink on panel", t.ink, t.panel, 4.5], ["ink on hover row", t.ink, t.wash, 4.5],
     ["ink on picked row", t.ink, t.pick, 4.5], ["secondary text on page", t.text2, t.ground, 4.5], ["secondary on panel", t.text2, t.panel, 4.5],
-    ["secondary on hover row", t.text2, t.wash, 4.5], ["headline second voice on page", t.slate, t.ground, 4.5],
+    ["secondary on hover row", t.text2, t.wash, 4.5], ["headline second voice on page (large text, 3:1)", t.slate, t.ground, 3], ["secondary text on grey tile", t.text2, t.wash, 4.5], ["button text on blue", "#ffffff", t.cta, 4.5], ["link on page", t.link, t.ground, 4.5],
     ["primary button text", t.onInk, t.ink, 4.5], ["picked choice text", t.onInk, t.ink, 4.5],
     ["path card text (72% white on black)", mix(t.onInk, t.ink, 0.72), t.ink, 4.5],
     ["control outline on panel", t.control, t.panel, 3], ["control outline on page", t.control, t.ground, 3], ["checkbox fill vs panel", t.ink, t.panel, 3],

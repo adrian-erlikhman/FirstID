@@ -1,4 +1,5 @@
 import { useEffect, useId, useState, type ReactNode } from "react";
+import { useTilt } from "./motion";
 import type { Mode, Plan, RuleSet, Source, Step } from "./engine/types";
 import { t, type Lang } from "./i18n";
 import applicationImg from "./forms/birth-record-application.jpg";
@@ -20,6 +21,9 @@ const paths: Record<string, string> = {
   phone: "M6 3h4l2 5-2.5 1.5a11 11 0 0 0 5 5L16 12l5 2v4a2 2 0 0 1-2 2C10 20 4 14 4 5a2 2 0 0 1 2-2z",
   arrow: "M5 12h14 M13 6l6 6-6 6",
   alert: "M12 3a9 9 0 1 0 0 18a9 9 0 1 0 0-18 M12 7.5v5.5 M12 16.5v.5",
+  flip: "M4 12a8 8 0 0 1 14-5.3 M18.5 3v4h-4 M20 12a8 8 0 0 1-14 5.3 M5.5 21v-4h4",
+  left: "M15 5l-7 7 7 7",
+  right: "M9 5l7 7-7 7",
 };
 
 export function Icon({ name, size = 18, stroke = 1.8 }: { name: string; size?: number; stroke?: number }) {
@@ -123,6 +127,46 @@ export function PathCard({ plan, lang, mode, name, busy = false, className = "" 
   );
 }
 
+/** The back of the path card: a stripe, then the official rule behind each
+ *  step, the way the back of a real card carries the fine print. */
+export function CardBack({ plan, rules, lang }: { plan: Plan; rules: RuleSet; lang: Lang }) {
+  const s = t[lang];
+  return (
+    <section className="id-card idc-back" aria-label={s.cardBackTitle}>
+      <span className="idc-stripe" aria-hidden="true" />
+      <strong className="idc-back-title">{s.cardBackTitle}</strong>
+      <ol className="idc-back-list">
+        {plan.steps.map((st, i) => (
+          <li key={st.action.id}><span className="num">{i + 1}</span><span>{rules.sources[st.action.sources[0]]?.title ?? st.action.label[lang]}</span></li>
+        ))}
+      </ol>
+      <span className="idc-back-note">{s.cardBackNote}</span>
+    </section>
+  );
+}
+
+/** Any card, in 3D: it leans toward the mouse, catches the light, has a
+ *  little thickness, and flips over to show its back. */
+export function Card3D({ front, back, lang, className = "" }: { front: ReactNode; back?: ReactNode; lang: Lang; className?: string }) {
+  const s = t[lang];
+  const stage = useTilt<HTMLDivElement>(9);
+  const [flipped, setFlipped] = useState(false);
+  return (
+    <div ref={stage} className={`c3d${flipped ? " flipped" : ""} ${className}`}>
+      <div className="c3d-card">
+        <div className="c3d-edge" aria-hidden="true" />
+        <div className="c3d-face c3d-front" aria-hidden={flipped || undefined}>{front}<span className="c3d-glare" aria-hidden="true" /></div>
+        {back && <div className="c3d-face c3d-back" aria-hidden={!flipped || undefined}>{back}</div>}
+      </div>
+      {back && (
+        <button className="c3d-flip" onClick={() => setFlipped((f) => !f)} aria-pressed={flipped}>
+          <Icon name="flip" size={16} /> {flipped ? s.flipBack : s.flip}
+        </button>
+      )}
+    </div>
+  );
+}
+
 // Photos live in src/photos/. Drop a file named office, papers, counter or
 // phone (.jpg, .png or .webp) in there and it shows up; until then the page
 // simply has no photo in that spot. They are shown in black and white.
@@ -221,7 +265,7 @@ export function Solver({ title, readout, children, className = "" }: { title?: s
   );
 }
 
-export function TopBar(props: { lang: Lang; onLang: (l: Lang) => void; onHome: () => void; onBack?: () => void }) {
+export function TopBar(props: { lang: Lang; onLang: (l: Lang) => void; onHome: () => void; onBack?: () => void; onStart?: () => void }) {
   const s = t[props.lang];
   return (
     <header className="top no-print">
@@ -232,6 +276,7 @@ export function TopBar(props: { lang: Lang; onLang: (l: Lang) => void; onHome: (
         <button className="brand" onClick={props.onHome} aria-label={`${s.appName}, ${s.homeLabel}`}>
           <Lockup />
         </button>
+        {props.onStart && <button className="btn primary small nav-cta" onClick={props.onStart}>{s.start}</button>}
         <div className="lang" role="radiogroup" aria-label={s.langLabel}>
           {(["en", "es"] as const).map((l) => (
             <button key={l} role="radio" aria-checked={props.lang === l} lang={l} aria-label={l === "en" ? "English" : "Español"}

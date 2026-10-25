@@ -1,5 +1,5 @@
 import { useMemo, useState } from "react";
-import { PathCard, Printout, Solver, money, useRecompute } from "../components";
+import { Card3D, CardBack, PathCard, Printout, Solver, money, useRecompute } from "../components";
 import { plan } from "../engine/planner";
 import type { Mode, Person, RuleSet } from "../engine/types";
 import { t, type Lang } from "../i18n";
@@ -53,7 +53,7 @@ export function WhatIfScreen(props: {
           )}
 
           <div className="whatif-result" aria-live="polite">
-            {result && <PathCard plan={result} lang={lang} mode={mode} busy={busy} className="path-card" />}
+            {result && <Card3D lang={lang} className="path-card" front={<PathCard plan={result} lang={lang} mode={mode} busy={busy} />} back={<CardBack plan={result} rules={rules} lang={lang} />} />}
             <Solver title={s.secWhatIf} readout={on.length ? s.withChange : s.nowLabel}>
               {result ? (
                 <>

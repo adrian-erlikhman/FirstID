@@ -107,7 +107,8 @@ export default function App() {
   }, []);
 
   const bar = (back?: Route) => (
-    <TopBar lang={lang} onLang={setLang} onBack={back ? () => go(back) : undefined} onHome={() => go({ name: "home" })} />
+    <TopBar lang={lang} onLang={setLang} onBack={back ? () => go(back) : undefined} onHome={() => go({ name: "home" })}
+      onStart={route.name === "home" ? () => go({ name: "have" }) : undefined} />
   );
 
   let screen: JSX.Element | null = null;
