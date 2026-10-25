@@ -60,25 +60,13 @@ npm run dev       # start the local site and open the URL it prints
 npm run check     # rules lint + tests + type check + production build
 ```
 
-Other scripts: `npm test` runs only the tests, `npm run lint:rules` only the rules linter, `npm run build` only the type check and build, and `npm run contrast` checks the colour contrast ratios used in `src/styles.css`.
+To see a full path without typing anything, open `#/example/maria`.
 
-To see a full path without typing anything, tap "See Maria's path" on the home page, or open `#/example/maria`.
-
-## Deployment
-
-- **Vercel** (https://first-id.vercel.app/) hosts the main site. It installs with `npm ci` and builds with `npm run check`, using the settings and security headers in [`vercel.json`](vercel.json).
-- **GitHub Pages** (https://adrian-erlikhman.github.io/FirstID/) is a mirror: [`.github/workflows/pages.yml`](.github/workflows/pages.yml) runs `npm run check` on every push to `main` and publishes `dist/` to the `gh-pages` branch.
-- **Pull requests** run the same `npm run check` in [`.github/workflows/check.yml`](.github/workflows/check.yml).
-
-A broken rule, a failing test or a type error stops a deploy on either host.
+Vercel builds the main site from `vercel.json`; GitHub Pages builds the mirror from [`.github/workflows/pages.yml`](.github/workflows/pages.yml). Both run `npm run check`, so a broken rule or failing test never deploys.
 
 ## How rules get verified
 
-The rules were drafted with AI help from the research in [`docs/research/`](docs/research/), so none of them counts as true until a person checks it. Every rule starts as `"verified": false`, and the app shows it as "call ahead" on the path, the step and the packet. To sign one off, a teammate opens every source the rule cites, copies the exact supporting sentence in place of any `TODO` quote, re-checks statutes on leginfo.legislature.ca.gov, checks the rule's requirements, fees and plain-language lines against the source, and only then sets `"verified": true`. The full checklist is in [`CONTRIBUTING.md`](CONTRIBUTING.md#verifying-a-rule).
-
-**Status today, counted from `data/rules.json`: 0 of 11 rules are verified, and 11 of the 23 sources still have a `TODO` in place of their exact quote.** The "How we know" screen shows the same count live.
-
-Found a rule that's wrong or out of date? [Report it with the rule form](https://github.com/adrian-erlikhman/FirstID/issues/new?template=wrong-rule.yml), with the source and the date you checked it.
+A teammate opens every source a rule cites, copies the exact supporting sentence in place of any `TODO`, re-checks statutes on leginfo.legislature.ca.gov, checks the rule's fees and plain-language lines, and only then sets `"verified": true` ([checklist](CONTRIBUTING.md#verifying-a-rule)). The "How we know" screen shows the live count. Found a rule that's wrong? [Report it](https://github.com/adrian-erlikhman/FirstID/issues/new?template=wrong-rule.yml).
 
 ## Project structure
 
