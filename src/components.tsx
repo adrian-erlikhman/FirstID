@@ -170,12 +170,13 @@ export function PathCard({ plan, lang, mode, name, busy = false, className = "" 
   const full = fullPrice(plan);
   return (
     <section className={`id-card ${className}`} aria-label={s.cardLabel}>
+      <p className="sr-only">{s.cardSummary({ name, total: total.dollars, full, steps: total.steps, trips: total.trips, days: total.days })}</p>
       <Guilloche />
-      <div className="idc-top">
+      <div className="idc-top" aria-hidden="true">
         <span className="idc-brand"><Mark size={14} tilt={0} />First ID</span>
         <span className="idc-doc">{s.cardLabel}</span>
       </div>
-      <div className="idc-mid">
+      <div className="idc-mid" aria-hidden="true">
         <div className="idc-holder">
           <IdPortrait className="idc-photo" />
           {name && <span className="idc-name">{name}</span>}
@@ -188,7 +189,7 @@ export function PathCard({ plan, lang, mode, name, busy = false, className = "" 
           )}
         </div>
       </div>
-      <dl className="idc-fields">
+      <dl className="idc-fields" aria-hidden="true">
         <div><dt>{s.unitSteps(total.steps)}</dt><dd>{total.steps}</dd></div>
         <div><dt>{s.unitTrips(total.trips)}</dt><dd>{total.trips}</dd></div>
         <div><dt>{s.untilCard}</dt><dd>{s.timeShort(total.days)}</dd></div>

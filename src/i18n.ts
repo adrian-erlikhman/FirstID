@@ -296,6 +296,12 @@ const en = {
   ],
   reportWrong: "Found a rule that's wrong or out of date? Tell us and we'll check it again.",
   reportLink: "Report it on GitHub",
+  // Card accessibility: what a screen reader hears instead of the card's design.
+  cardSummary: (o: { name?: string; total: number; full: number; steps: number; trips: number; days: number }) =>
+    `Your path${o.name ? ` for ${o.name}` : ""}: total cost $${o.total}${o.full > o.total ? ` instead of $${o.full}` : ""}, ` +
+    `${o.steps} ${plural(o.steps, "step", "steps")}, ${o.trips} ${plural(o.trips, "trip", "trips")}, ` +
+    (o.days === 0 ? "the card today." : o.days < 7 ? `about ${o.days} ${plural(o.days, "day", "days")} until the card.`
+      : `about ${weeksOf(o.days)} ${plural(weeksOf(o.days), "week", "weeks")} until the card.`),
 };
 
 export type Strings = typeof en;
@@ -578,6 +584,12 @@ const es: Strings = {
   ],
   reportWrong: "¿Encontraste una regla equivocada o desactualizada? Avísanos y la revisamos otra vez.",
   reportLink: "Repórtala en GitHub",
+  // Card accessibility: what a screen reader hears instead of the card's design.
+  cardSummary: (o) =>
+    `Tu camino${o.name ? ` para ${o.name}` : ""}: costo total $${o.total}${o.full > o.total ? ` en vez de $${o.full}` : ""}, ` +
+    `${o.steps} ${plural(o.steps, "paso", "pasos")}, ${o.trips} ${plural(o.trips, "viaje", "viajes")}, ` +
+    (o.days === 0 ? "la tarjeta hoy mismo." : o.days < 7 ? `unos ${o.days} ${plural(o.days, "día", "días")} hasta la tarjeta.`
+      : `unas ${weeksOf(o.days)} ${plural(weeksOf(o.days), "semana", "semanas")} hasta la tarjeta.`),
 };
 
 export const t: Record<Lang, Strings> = { en, es };
