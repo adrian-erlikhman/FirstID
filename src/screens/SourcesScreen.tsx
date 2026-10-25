@@ -6,7 +6,7 @@ import { t, type Lang } from "../i18n";
 // OWNER: Michael (content) + Adrian (layout). The model card: every rule, its
 // sources, when we checked it, which ones we couldn't confirm, and plainly
 // what's real and what's made up.
-const REPO_ISSUES = "https://github.com/adrian-erlikhman/FirstID/issues";
+const REPO_ISSUES = "https://github.com/adrian-erlikhman/FirstID/issues/new?template=wrong-rule.yml";
 
 export function SourcesScreen({ rules, lang }: { rules: RuleSet; lang: Lang }) {
   const s = t[lang];
