@@ -319,8 +319,7 @@ const en = {
 
 export type Strings = typeof en;
 
-// Spanish drafted with AI help. A native speaker on the team or a tester must
-// review every line before we submit (see AI-USE.md).
+// Spanish strings
 const es: Strings = {
   appName: "First ID",
   back: "Atrás",
