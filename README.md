@@ -1,6 +1,6 @@
 # First ID
 
-**The cheapest legal path to a California ID card in LA County, with the official source for each step. In English and Spanish.**
+**The cheapest legal path to a California ID card in LA County, with the source for each step. In English and Spanish.**
 
 **Live site: https://first-id.vercel.app/** (mirror on GitHub Pages: https://adrian-erlikhman.github.io/FirstID/)
 
@@ -12,7 +12,7 @@ First ID is for people in LA County who need a California ID card and don't have
 - people leaving jail (there is no reentry-specific rule yet, so their path uses the general rules)
 - caseworkers, shelter staff and counselors working through the process with any of them
 
-You tick the documents you still have and answer seven short questions. First ID works out the cheapest legal way to an ID from there: each step, where to go, what to bring, what it costs after fee waivers, what to say at the counter, and the official source that allows it. It prints the whole path as a one-page packet to carry to each office.
+You tick the documents you still have and answer seven short questions. First ID works out the cheapest legal way to an ID from there: each step, where to go, what to bring, what it costs after fee waivers, what to say at the counter, and the source that allows it. It prints the whole path as a one-page packet to carry to each office.
 
 This is not legal advice. Rules change, and the app marks every rule our team has not yet checked against its source.
 
@@ -33,7 +33,7 @@ data/rules.json ──► npm run lint:rules ──► planner (in the browser) 
 1. **The rules are data, not code.** [`data/rules.json`](data/rules.json) holds every rule First ID knows: what it requires, which documents it gives you, the fee, the fee waivers, how long it takes, where it happens, what to bring and say, and the official sources behind it, in English and Spanish.
 2. **A linter guards the rules.** [`src/engine/lint.ts`](src/engine/lint.ts) fails the build if a rule has no source, names an unknown document or place, has a waiver that costs more than the fee, is missing a Spanish line, or has a requirement of the form "you must not have document X" (which would break the guarantee below).
 3. **The planner is a deterministic search.** [`src/engine/planner.ts`](src/engine/planner.ts) treats your situation as a state (the documents you hold) and each rule as a move that adds documents. Because moves only ever add documents, Dijkstra's algorithm finds the exact best sequence that ends with a California ID. "Cheapest" compares dollars, then trips, then days, then steps; the path screen can also sort by fewest trips or fastest. The same answers always give the same path.
-4. **Every step cites its source.** Each step shows the rule's official pages (DMV, LA County Registrar-Recorder, California statutes, Social Security) with the exact sentence that supports it (or a note that we haven't copied it yet) and, once a person has verified the rule, the date they checked it. The "How we know" screen lists every rule and source.
+4. **Every step cites its source.** Each step shows the rule's sources (DMV, LA County Registrar-Recorder and Social Security pages, and the text of California statutes; some statute links still go to FindLaw, public.law or LegiScan rather than leginfo.legislature.ca.gov) with the exact sentence that supports it (or a note that we haven't copied it yet) and, once a person has verified the rule, the date they checked it. The "How we know" screen lists every rule and source.
 5. **What-if.** The app re-plans once for each answer you could change and shows only the changes that would alter your path.
 6. **When there is no path** with the rules we have, it says so and lists who can help today, instead of guessing.
 
@@ -42,7 +42,7 @@ The tests ([`tests/`](tests/)) check the planner on toy rules, check four invent
 ## What's real and what's made up
 
 - **The people in the examples are invented.** Maria, DeShawn, Jayden and Luis (in [`tests/personas.ts`](tests/personas.ts)) are made up to show different situations, and the same people drive both the app's examples and the persona tests. They carry no real person's address, birthdate or document numbers.
-- **The rules are real but not yet verified.** Every rule points at a real official page or statute, but they were drafted with AI help from research notes, and a rule only counts as verified once a teammate has opened its sources and signed it off (see [How rules get verified](#how-rules-get-verified)). Until then the app labels it "call ahead".
+- **The rules are real but not yet verified.** Every rule points at a government page or the text of a statute, but they were drafted with AI help from research notes, and a rule only counts as verified once a teammate has opened its sources and signed it off (see [How rules get verified](#how-rules-get-verified)). Until then the app labels it "call ahead".
 - **The forms are real.** The home page and steps show LA County's blank Application for Birth Record and Certificate of Identity, with our highlights on the lines that matter.
 - **The app uses no AI.** Plans come from the deterministic planner over `data/rules.json`. How we used AI to build it is in [`AI-USE.md`](AI-USE.md).
 
@@ -51,7 +51,7 @@ The tests ([`tests/`](tests/)) check the planner on toy rules, check four invent
 - **No accounts, no server, no database.** First ID is a static site. The plan is computed in your browser, and nothing you tick or answer is sent anywhere.
 - **Nothing is kept after you close the tab.** Your answers sit in the tab's `sessionStorage` so a phone that reloads the page doesn't lose them, and they disappear when the tab closes.
 - **Works offline after the first visit.** A service worker ([`public/sw.js`](public/sw.js)) caches the site's own files so it still opens with no signal. It stores no answers.
-- **No third-party requests.** Fonts and images are served from the site itself; there are no analytics, trackers or CDNs. The only outside pages are the official sources, which open when you tap them.
+- **No third-party requests.** Fonts and images are served from the site itself; there are no analytics, trackers or CDNs. The only outside pages are the sources, which open when you tap them.
 - **Enforced on the main site.** [`vercel.json`](vercel.json) sends a Content-Security-Policy that only lets the page load its own files, plus `Referrer-Policy: no-referrer`. (GitHub Pages can't send custom headers, so the mirror relies on the code alone.)
 
 ## English and Spanish

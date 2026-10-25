@@ -1,7 +1,7 @@
 {
   "name": "First ID",
   "short_name": "First ID",
-  "description": "The cheapest legal path to a California ID card in LA County, with the official source for each step.",
+  "description": "The cheapest legal path to a California ID card in LA County, with the source for each step.",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",
