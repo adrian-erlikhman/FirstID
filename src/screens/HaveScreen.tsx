@@ -1,4 +1,4 @@
-import { Icon, Printout } from "../components";
+import { Icon } from "../components";
 import type { RuleSet } from "../engine/types";
 import { t, type Lang } from "../i18n";
 
@@ -28,10 +28,9 @@ export function HaveScreen(props: {
 
   return (
     <section className="screen">
-      <Printout index="01" kicker={s.secHave} readout={`1 / 3 · ${s.checkedCount(have.length)}`} />
       <div className="split">
         <div className="head">
-          <h1 tabIndex={-1} className="display">{s.haveTitle} <span className="second">{s.haveSecond}</span></h1>
+          <h1 tabIndex={-1} className="display">{s.haveTitle}</h1>
           <p className="lede">{s.haveHint}</p>
         </div>
         <div className="body">

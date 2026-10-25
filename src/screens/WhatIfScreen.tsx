@@ -25,10 +25,9 @@ export function WhatIfScreen(props: {
 
   return (
     <section className="screen">
-      <Printout index="04" kicker={s.secWhatIf} readout={s.mattersCount(options.length)} />
       <div className="split">
         <div className="head">
-          <h1 tabIndex={-1} className="display">{s.whatIfTitleA} <span className="second">{s.whatIfTitleB}</span></h1>
+          <h1 tabIndex={-1} className="display">{s.whatIfTitle}</h1>
           <p className="lede">{options.length > 0 ? s.whatIfHint : base ? s.whatIfNone : s.whatIfNoneNoPath}</p>
         </div>
 
@@ -60,7 +59,7 @@ export function WhatIfScreen(props: {
                   <ol className="mini-steps">
                     {result.steps.map((st, i) => (
                       <li key={st.action.id} style={{ ["--i" as string]: i }}>
-                        <span className="row-num" aria-hidden="true">{String(i + 1).padStart(2, "0")}</span>
+                        <span className="row-num" aria-hidden="true">{i + 1}</span>
                         <span>{st.action.label[lang]}</span>
                         <span className={`num${st.dollars === 0 ? " free" : ""}`}>{st.dollars === 0 ? s.free : money(st.dollars)}</span>
                       </li>
@@ -71,7 +70,7 @@ export function WhatIfScreen(props: {
             </Solver>
             {on.length > 0 && base && (
               <p className="compare">
-                {samePlan(result, base) ? s.sameAsNow : `${s.nowLabel}: ${money(base.total.dollars)} · ${base.total.steps} ${s.unitSteps(base.total.steps)} · ${base.total.trips} ${s.unitTrips(base.total.trips)} · ${s.timeShort(base.total.days)}`}
+                {samePlan(result, base) ? s.sameAsNow : s.nowWas(money(base.total.dollars), `${base.total.steps} ${s.unitSteps(base.total.steps)}`, `${base.total.trips} ${s.unitTrips(base.total.trips)}`, s.timeShort(base.total.days))}
               </p>
             )}
           </div>

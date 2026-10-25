@@ -1,4 +1,4 @@
-import { Block, FormPaper, HandNote, Icon, Notice, Printout, SourceCard, formFor, money, placeOf, sayFor } from "../components";
+import { Block, FormPaper, Icon, Notice, SourceCard, formFor, money, placeOf, sayFor } from "../components";
 import type { Plan, RuleSet } from "../engine/types";
 import { t, type Lang } from "../i18n";
 import { href } from "../router";
@@ -23,10 +23,9 @@ export function StepScreen({ rules, lang, plan, n }: { rules: RuleSet; lang: Lan
 
   return (
     <section className="screen">
-      <Printout index={`03.${n}`} kicker={s.stepKicker(n, total)} readout={`${cost} · ${time}`} />
       <div className="split">
         <div className="head">
-          <span className="label head-place">{place.label[lang]}</span>
+          <span className="label head-place">{s.stepOf(n, total)}</span>
           <h1 tabIndex={-1} className="display">{a.label[lang]}</h1>
           {a.why && <p className="lede">{a.why[lang]}</p>}
         </div>
@@ -55,7 +54,6 @@ export function StepScreen({ rules, lang, plan, n }: { rules: RuleSet; lang: Lan
           {say && (
             <Block label={s.sayThis} className="say-block">
               <blockquote className="say">“{say[lang]}”</blockquote>
-              <HandNote dir="up" className="say-note">{s.sayNote}</HandNote>
             </Block>
           )}
 

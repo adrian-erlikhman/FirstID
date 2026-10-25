@@ -1,4 +1,4 @@
-import { Icon, Printout, money, placeOf, sayFor } from "../components";
+import { Icon, money, placeOf, sayFor } from "../components";
 import type { Plan, RuleSet } from "../engine/types";
 import { t, type Lang } from "../i18n";
 
@@ -15,7 +15,6 @@ export function PacketScreen({ rules, lang, result }: { rules: RuleSet; lang: La
   return (
     <section className="screen packet-screen">
       <div className="no-print">
-        <Printout index="05" kicker={s.secPacket} readout={s.onePage} />
         <div className="packet-bar">
           {/* The shareable preview build runs in a frame that can't open the print dialog. */}
           {import.meta.env.VITE_PREVIEW

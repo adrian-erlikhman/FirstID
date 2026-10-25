@@ -12,19 +12,9 @@ export function whenLine(rules: RuleSet, steps: Step[], i: number, lang: Lang): 
   const st = steps[i];
   const place = placeOf(rules, st);
   const start = st.startDay === 0 ? s.startsToday : s.startsAround(st.startDay);
-  if (!place.inPerson) return `${start} · ${s.byMail} · ${s.readyIn(st.action.days)}`;
+  if (!place.inPerson) return `${start}, ${s.byMail}, ${s.readyIn(st.action.days)}`;
   const visit = !st.newTrip && i > 0 ? s.sameVisit(i) : s.oneVisit;
-  return st.action.days === 0 ? `${start} · ${visit}` : `${start} · ${visit} · ${s.readyIn(st.action.days)}`;
-}
-
-const FLAG: Record<Mode, string> = { cheapest: "--cheapest", fewestTrips: "--fewest-trips", fastest: "--fastest" };
-
-/** The planner's inputs, written as the command that would run it. */
-export function commandFor(person: Person, mode: Mode, extra = "") {
-  const have = person.have.length ? ` --have ${person.have.join(",")}` : "";
-  const born = typeof person.facts.born === "string" ? ` --born ${person.facts.born}` : "";
-  const yes = Object.entries(person.facts).filter(([, v]) => v === true).map(([k]) => ` --${k.replace(/[A-Z]/g, (c) => "-" + c.toLowerCase())}`).join("");
-  return `first-id plan ${FLAG[mode]}${extra}${born}${have}${yes}`;
+  return st.action.days === 0 ? `${start}, ${visit}` : `${start}, ${visit}, ${s.readyIn(st.action.days)}`;
 }
 
 export function StepList({ rules, lang, plan }: { rules: RuleSet; lang: Lang; plan: Plan }) {
@@ -37,7 +27,7 @@ export function StepList({ rules, lang, plan }: { rules: RuleSet; lang: Lang; pl
         return (
           <li key={a.id}>
             <a className="step-row" href={href({ name: "step", n: i + 1 })}>
-              <span className="row-num" aria-hidden="true">{String(i + 1).padStart(2, "0")}</span>
+              <span className="row-num" aria-hidden="true">{i + 1}</span>
               <span className="step-main">
                 <span className="label step-place">{placeOf(rules, st).label[lang]}</span>
                 <span className="step-title">{a.label[lang]}</span>
@@ -63,10 +53,9 @@ export function NoPath({ lang, facts, onBack }: { lang: Lang; facts: Facts; onBa
   const elsewhere = facts.born === "us_state" || facts.born === "abroad";
   return (
     <section className="screen">
-      <Printout index="03" kicker={s.secPath} readout="3 / 3" />
       <div className="split">
         <div className="head">
-          <h1 tabIndex={-1} className="display">{s.noPathTitleA} <span className="second">{s.noPathTitleB}</span></h1>
+          <h1 tabIndex={-1} className="display">{s.noPathTitle}</h1>
           <p className="lede">{s.noPathBody}</p>
         </div>
         <div className="body">
@@ -99,12 +88,10 @@ export function PathScreen(props: {
   const unverified = result.steps.filter((st) => !st.action.verified).length;
   return (
     <section className="screen">
-      <Printout index="03" kicker={s.secPath} readout={`3 / 3 · ${result.total.steps} ${s.unitSteps(result.total.steps)}`} />
       <div className="split path-split">
         <div className="head">
           <h1 tabIndex={-1} className="display">
-            {s.pathHeadPre} <Br>{money(result.total.dollars)}</Br>{s.pathHeadPost}{" "}
-            <span className="second">{s.pathSecond[mode]}</span>
+            {s.pathHeadPre} <Br>{money(result.total.dollars)}</Br>{s.pathHeadPost}
           </h1>
           <div className="actions stack head-actions">
             <a className="btn primary" href={href({ name: "packet" })}><Icon name="print" size={18} /> {s.printPacket}</a>
@@ -117,13 +104,12 @@ export function PathScreen(props: {
           <Card3D lang={lang} className="path-card" front={<PathCard plan={result} lang={lang} mode={mode} />} back={<CardBack plan={result} rules={rules} lang={lang} />} />
           <Solver title={s.cardLabel} readout={result.explored !== undefined ? s.solvedIn(result.explored, ms) : undefined}>
             <div className="solver-tabs">
-              <Pills numbered label={s.modesLabel} value={mode} onChange={onMode}
+              <Pills label={s.modesLabel} value={mode} onChange={onMode}
                 options={[["cheapest", s.modeCheapest], ["fewestTrips", s.modeTrips], ["fastest", s.modeFastest]] as const} />
               <p className="mode-hint">{s.modeHint[mode]}</p>
             </div>
             <StepList rules={rules} lang={lang} plan={result} />
           </Solver>
-          <Formula plan={result} />
 
           {unverified > 0
             ? <Notice tone="draft" title={s.callAhead}>{s.unverifiedNote(unverified, result.steps.length)}</Notice>
@@ -134,7 +120,7 @@ export function PathScreen(props: {
               <span className="label">{s.helpsTitle}</span>
               <strong className="help-doc">{rules.docs[help.doc].label[lang]}</strong>
               <p>{s.helpsResult(help.plan.total.steps, help.plan.total.dollars)}</p>
-              <a className="btn ghost small" href={href({ name: "whatif" })}>{s.seeThatPath} <Icon name="arrow" size={16} /></a>
+              <a className="btn ghost" href={href({ name: "whatif" })}>{s.seeThatPath} <Icon name="arrow" size={16} /></a>
             </div>
           )}
 
@@ -143,8 +129,6 @@ export function PathScreen(props: {
             <a className="btn ghost" href={href({ name: "whatif" })}>{s.whatIfLink}</a>
             <a className="btn ghost" href={href({ name: "sources" })}>{s.howWeKnow}</a>
           </div>
-          {result.explored !== undefined && <p className="fine">{s.foundBy(result.explored, ms)}</p>}
-          <p className="fine">{s.pathFoot}</p>
         </div>
       </div>
     </section>
