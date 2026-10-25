@@ -44,7 +44,7 @@ export function PacketScreen({ rules, lang, result }: { rules: RuleSet; lang: La
 
         <div className="sheet-table" role="table">
           <div className="sheet-row head mono" role="row">
-            <span role="columnheader" aria-label="Done" /><span role="columnheader">{s.colStep}</span><span role="columnheader">{s.colBring}</span>
+            <span role="columnheader" aria-label={s.doneShort} /><span role="columnheader">{s.colStep}</span><span role="columnheader">{s.colBring}</span>
             <span role="columnheader">{s.colCost}</span><span role="columnheader">{s.colRule}</span>
           </div>
           {result.steps.map((st, i) => {
