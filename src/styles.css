@@ -924,3 +924,31 @@ main h1:focus { box-shadow: none !important; } /* headings take focus on a new s
 .office-note { margin: 20px 0 8px; font-size: 1rem; line-height: 1.5; color: var(--text-2); }
 @media (min-width: 760px) { .office-list { grid-template-columns: 1fr 1fr; } }
 /* ===== end Offices ===== */
+
+/* ===== Progress ticks + calendar reminders (src/screens/PathScreen.tsx, src/progress.ts) ===== */
+.progress-line { display: flex; flex-wrap: wrap; align-items: center; gap: 2px 12px; margin: 14px 0 0; font-size: 0.9375rem; color: var(--text-2); }
+.progress-count { font-weight: 600; color: var(--ink); font-variant-numeric: tabular-nums; }
+.progress-note { font-size: 0.875rem; }
+.progress-clear {
+  min-height: 44px; padding: 0 2px; border: 0; background: none; font: inherit; font-size: 0.875rem;
+  color: var(--link); cursor: pointer; text-decoration: underline; text-underline-offset: 3px;
+}
+.step-track { display: flex; flex-wrap: wrap; align-items: center; gap: 0 18px; padding: 0 16px 10px 52px; margin-top: -8px; }
+.tick { position: relative; display: inline-flex; align-items: center; gap: 10px; min-height: 44px; min-width: 44px; cursor: pointer; font-size: 0.9375rem; color: var(--ink); }
+.tick input { position: absolute; inset: 0; width: 100%; height: 100%; margin: 0; opacity: 0; cursor: pointer; }
+.tick-box {
+  display: inline-grid; place-items: center; flex: none; width: 24px; height: 24px; border-radius: 7px;
+  box-shadow: inset 0 0 0 1.5px var(--control); color: transparent; background: var(--panel);
+  transition: background .15s, box-shadow .15s, color .15s;
+}
+.tick input:checked + .tick-box { background: var(--cta); box-shadow: none; color: #fff; }
+.tick input:focus-visible + .tick-box { outline: 2px solid var(--cta); outline-offset: 2px; }
+.remind-link { display: inline-flex; align-items: center; gap: 8px; min-height: 44px; font-size: 0.9375rem; color: var(--link); text-decoration: none; }
+.remind-link:hover { text-decoration: underline; text-underline-offset: 3px; }
+.remind-link .icon { flex: none; }
+.step-done .step-title { color: var(--text-2); }
+@media (min-width: 640px) { .step-track { padding: 0 18px 10px 56px; } }
+@media (prefers-reduced-motion: reduce) { .tick-box { transition: none; } }
+@media (forced-colors: active) { .tick-box { border: 1.5px solid CanvasText; } .tick input:checked + .tick-box { background: Highlight; color: HighlightText; } }
+@media print { .progress-line, .step-track { display: none !important; } }
+/* ===== end Progress ticks + calendar reminders ===== */
