@@ -99,6 +99,8 @@ const en = {
   trailAltId: "The California DMV's sample card, 2025 design",
   trailCreditCoi: "Form: LA County Registrar-Recorder",
   trailCreditBc: "Sample: California Department of Public Health",
+  trailAltAff: "The state's Affidavit of Homeless Status for a fee-exempt birth certificate",
+  trailCreditAff: "Form: California Department of Public Health",
   trailCreditId: "Sample: California DMV",
 
   // Screen headlines: say it in ink, finish it in the lighter weight
@@ -425,6 +427,8 @@ const es: Strings = {
   trailAltId: "La tarjeta de muestra del DMV de California, diseño 2025",
   trailCreditCoi: "Formulario: Registro del condado de Los Ángeles",
   trailCreditBc: "Muestra: Departamento de Salud Pública de California",
+  trailAltAff: "La declaración jurada del estado para un acta de nacimiento gratis por no tener hogar",
+  trailCreditAff: "Formulario: Departamento de Salud Pública de California",
   trailCreditId: "Muestra: DMV de California",
 
   haveSecond: "Solo originales.",

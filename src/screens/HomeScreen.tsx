@@ -37,7 +37,7 @@ export function HomeScreen({ rules, lang, onStart, onExample }: {
         {maria && (
           <div className="hero-stage">
             <Card3D lang={lang} className="hero-c3d"
-              front={<PathCard plan={maria} lang={lang} mode="cheapest" name="Maria" />}
+              front={<PathCard plan={maria} lang={lang} mode="cheapest" name={s.mariaName} />}
               back={<CardBack plan={maria} rules={rules} lang={lang} />} />
           </div>
         )}

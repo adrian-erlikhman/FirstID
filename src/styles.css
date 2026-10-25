@@ -634,21 +634,21 @@ h2.display.wide { max-width: 20ch; margin-bottom: 28px; }
 .is-card .trail-doc { --rot: -3deg; }
 .is-card .trail-doc img { border-radius: 3.7% / 5.9%; background: none; box-shadow: 0 0 0 1px rgb(0 0 0 / .06), 0 24px 40px -20px rgb(0 0 0 / .55); }
 .trail-hidden { display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 4px; aspect-ratio: 8.5 / 11; padding: 10px; border-radius: 3px; border: 1.5px dashed var(--control); background: #fff; text-align: center; }
-.trail-hidden b { font-size: 21px; font-weight: 600; letter-spacing: -0.03em; }
-.trail-hidden span { font-size: 14px; color: var(--text-2); }
+.trail-hidden b { font-size: 1.3125rem; font-weight: 600; letter-spacing: -0.03em; }
+.trail-hidden span { font-size: 0.875rem; color: var(--text-2); }
 .trail-text { display: flex; flex-direction: column; gap: 6px; min-width: 0; }
 .trail-meta { display: flex; align-items: center; gap: 10px; }
-.trail-n { width: 28px; height: 28px; display: grid; place-items: center; flex: none; border-radius: 50%; background: var(--ink); color: var(--on-ink); font-size: 14px; font-weight: 600; }
-.trail-cost { font-size: 16px; font-weight: 600; }
+.trail-n { width: 28px; height: 28px; display: grid; place-items: center; flex: none; border-radius: 50%; background: var(--ink); color: var(--on-ink); font-size: 0.875rem; font-weight: 600; }
+.trail-cost { font-size: 1rem; font-weight: 600; }
 .trail-cost.free { padding: 1px 8px; border-radius: 6px; background: var(--hl); color: var(--on-c); }
-.trail-text strong { font-size: 18px; font-weight: 600; letter-spacing: -0.02em; line-height: 1.25; }
-.trail-text .row-sub { font-size: 16px; }
-.trail-credit { font-size: 14px; color: var(--text-2); }
+.trail-text strong { font-size: 1.0625rem; font-weight: 600; letter-spacing: -0.02em; line-height: 1.25; }
+.trail-text .row-sub { font-size: 1rem; }
+.trail-credit { font-size: 0.875rem; color: var(--text-2); }
 /* On a phone the card gets the whole width, above its words. */
 .trail-step.is-card { grid-template-columns: minmax(0, 1fr); }
 .is-card .trail-desk { width: 100%; max-width: 340px; padding: 6px 4px 0; }
 .trail-foot { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 16px 24px; margin-top: 28px; }
-.trail-total { margin: 0; font-size: 18px; color: var(--text-2); }
+.trail-total { margin: 0; font-size: 1.125rem; color: var(--text-2); }
 .trail-total .num { font-size: 44px; font-weight: 600; letter-spacing: -0.04em; color: var(--ink); margin-right: 4px; }
 .trail-note { margin: 14px 0 0; }
 @media (min-width: 640px) {
@@ -658,13 +658,12 @@ h2.display.wide { max-width: 20ch; margin-bottom: 28px; }
 }
 /* Wide screens: the papers stand in a row on one shelf, in order, the card last and largest. */
 @media (min-width: 980px) {
-  .trail { grid-auto-flow: column; grid-auto-columns: minmax(0, 1fr); gap: 28px; padding: 48px 40px 40px; border-radius: var(--r-tile); background: var(--tile); }
-  .trail::before { content: ""; position: absolute; left: 40px; right: 40px; top: 298px; height: 1px; background: var(--line-strong); }
+  .trail { grid-template-columns: var(--cols); gap: 24px; padding: 48px 36px 40px; border-radius: var(--r-tile); background: var(--tile); }
+  .trail::before { content: ""; position: absolute; left: 36px; right: 36px; top: 298px; height: 1px; background: var(--line-strong); }
   .trail-step, .trail-step.is-card { grid-template-columns: minmax(0, 1fr); grid-template-rows: 250px auto; gap: 26px; align-items: start; padding: 0; border-radius: 0; background: none; }
-  .trail-step.is-card { grid-column: span 2; }
   .trail-desk, .is-card .trail-desk { height: 250px; max-width: none; padding: 0; display: flex; align-items: flex-end; justify-content: center; }
-  .trail-doc { width: 100%; max-width: 190px; transform-origin: 50% 100%; }
-  .is-card .trail-doc { max-width: 380px; }
+  .trail-doc { width: 100%; max-width: 180px; transform-origin: 50% 100%; }
+  .is-card .trail-doc { max-width: 340px; }
   .trail-foot { margin-top: 32px; }
   .trail-total .num { font-size: 56px; }
 }

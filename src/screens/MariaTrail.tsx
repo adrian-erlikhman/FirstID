@@ -5,6 +5,7 @@ import { useInView, useTilt } from "../motion";
 // LA County's form, and the state's own sample documents (sources in src/docs/README.md).
 import coiImg from "../forms/certificate-of-identity.jpg";
 import birthCertImg from "../docs/birth-certificate-sample.png";
+import affidavitImg from "../docs/homeless-affidavit.png";
 import caIdImg from "../docs/ca-id-sample.jpg";
 
 // OWNER: Adrian. One made-up person, start to finish, in place of a row of
@@ -18,6 +19,8 @@ function paperFor(actionId: string, s: Strings): Paper | null {
   switch (actionId) {
     case "notary_witnesses": case "notary_own_id":
       return { src: coiImg, w: 1105, h: 1430, alt: s.trailAltCoi, credit: s.trailCreditCoi };
+    case "program_bc_affidavit":
+      return { src: affidavitImg, w: 1105, h: 1430, alt: s.trailAltAff, credit: s.trailCreditAff };
     case "rrcc_mail":
       return { src: birthCertImg, w: 1105, h: 1200, alt: s.trailAltBc, credit: s.trailCreditBc };
     case "dmv_original": case "dmv_replace":
@@ -39,7 +42,7 @@ function TrailStep({ st, i, rules, lang }: { st: Step; i: number; rules: RuleSet
       <div className="trail-desk">
         <div ref={tilt} className="trail-doc">
           {paper
-            ? <img src={paper.src} alt={paper.alt} width={paper.w} height={paper.h} loading="lazy" decoding="async" />
+            ? <img src={paper.src} alt={paper.alt} width={paper.w} height={paper.h} decoding="async" />
             : <span className="trail-hidden"><b>{dmvForm ?? gets[0]}</b>{dmvForm && <span>{s.trailHiddenShort}</span>}</span>}
         </div>
       </div>
@@ -61,13 +64,15 @@ export function MariaTrail({ plan, rules, lang, onOpen }: { plan: Plan; rules: R
   const s = t[lang];
   const [ref, seen] = useInView<HTMLOListElement>();
   const full = fullPrice(plan);
+  // On wide screens the papers stand in one row; the card gets a wider column than the sheets.
+  const cols = plan.steps.map((st) => (paperFor(st.action.id, s)?.card ? "1.75fr" : "1fr")).join(" ");
   return (
     <div className="trail-wrap">
       <div className="trail-head">
         <h2 className="display h2">{s.trailTitle}</h2>
         <p className="lede">{s.trailWho}</p>
       </div>
-      <ol ref={ref} className={`trail${seen ? " seen" : ""}`}>
+      <ol ref={ref} className={`trail${seen ? " seen" : ""}`} style={{ ["--cols" as string]: cols }}>
         {plan.steps.map((st, i) => <TrailStep key={st.action.id} st={st} i={i} rules={rules} lang={lang} />)}
       </ol>
       <div className="trail-foot">

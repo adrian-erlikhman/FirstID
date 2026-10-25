@@ -1,8 +1,9 @@
 # Sample documents
 
-The real papers on the home page (the loop and Maria's path). Both are the
-state's own published samples, not anyone's documents, and both carry the word
-SAMPLE. We show them unaltered apart from cropping and resizing.
+The real papers on the home page (the loop and Maria's path). The ID and the
+birth certificate are the state's own published samples, not anyone's
+documents, and both carry the word SAMPLE; the affidavit is the state's blank
+form. We show them unaltered apart from cropping and resizing.
 
 - `ca-id-sample.jpg`: the California DMV's sample card, 2025 design ("Sample
   Janice"), from the DMV's news release of 1 Oct 2025, "DMV to Release New
@@ -17,6 +18,13 @@ SAMPLE. We show them unaltered apart from cropping and resizing.
   https://www.avss.ucsb.edu/news/AB_1951/ACL15-11_VS10D.pdf
   Page 1, cropped above the privacy notice, greyscale, 1105 px wide like the
   forms in `src/forms/`.
+
+- `homeless-affidavit.png`: the state's Affidavit of Homeless Status for Fee
+  Exempt Certified Copy of Birth Certificate (California Department of Public
+  Health, Rev. 10/18), page 2, the affidavit itself. The copy we rendered is
+  the one Orange County's Health Care Agency hosts; the form is the state's:
+  https://ochealthinfo.com/sites/hca/files/2022-08/Affidavit%20of%20Homeless%20Status%20for%20Fee%20Exempt%20Birth%20Certificate.pdf
+  Blank, cropped to the page, greyscale, 1105 px wide.
 
 The DL 933 is never shown anywhere in the app: the DMV says that form must not
 be shared or uploaded online.
