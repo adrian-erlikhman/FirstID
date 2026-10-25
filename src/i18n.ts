@@ -608,14 +608,14 @@ const es: Strings = {
   officesTo: (name) => `a ${name} (abre el mapa)`,
   officesFrom: ["Datos de las oficinas tomados de ", ", revisados el 25 de octubre de 2026. Llama antes de ir."],
   // Progreso y recordatorios (src/progress.ts, PathScreen)
-  progressDone: (n, total) => `${n} de ${total} hechos`,
+  progressDone: (n, total) => `${n} de ${total} pasos hechos`,
   progressNote: "Se guarda solo en este teléfono.",
   clearProgress: "Borrar mi progreso",
   markDone: (n) => `Marcar el paso ${n} como hecho`,
   doneShort: "Hecho",
   addReminder: "Agregar un recordatorio a mi calendario",
   forStep: (n) => `, paso ${n}`,
-  remindWhat: { birth_cert_ca: "acta de nacimiento", ssn_card: "tarjeta de Seguro Social", ca_id: "identificación de California" },
+  remindWhat: { birth_cert_ca: "acta de nacimiento", ssn_card: "tarjeta de Seguro Social", ca_id: "tarjeta de identificación de California" },
   remindSummary: (what) => `Revisa si llegó por correo tu ${what}`,
   remindDescription: (n, step, days) => `First ID, paso ${n}: ${step}. Este paso suele tardar unos ${days} días.`,
 };
