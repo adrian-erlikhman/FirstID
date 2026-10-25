@@ -120,7 +120,7 @@ export function PathScreen(props: {
               <span className="label">{s.helpsTitle}</span>
               <strong className="help-doc">{rules.docs[help.doc].label[lang]}</strong>
               <p>{s.helpsResult(help.plan.total.steps, help.plan.total.dollars)}</p>
-              <a className="btn ghost small" href={href({ name: "whatif" })}>{s.seeThatPath} <Icon name="arrow" size={16} /></a>
+              <a className="btn ghost" href={href({ name: "whatif" })}>{s.seeThatPath} <Icon name="arrow" size={16} /></a>
             </div>
           )}
 
