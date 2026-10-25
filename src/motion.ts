@@ -135,3 +135,26 @@ export function useCountUp(to: number, go: boolean, ms = 900) {
   }, [to, go, ms]);
   return n;
 }
+
+/** A number that glides to its new value instead of jumping: the card's total
+ *  counts down from $89 to $15 when an answer changes. Snaps straight there
+ *  for reduced motion and light mode. */
+export function useTween(value: number, ms = 700) {
+  const [shown, setShown] = useState(value);
+  const from = useRef(value);
+  useEffect(() => {
+    if (reduced() || from.current === value) { from.current = value; setShown(value); return; }
+    const start = from.current, t0 = performance.now();
+    let raf = 0;
+    const frame = (now: number) => {
+      const p = Math.min(1, (now - t0) / ms);
+      const v = start + (value - start) * (1 - Math.pow(1 - p, 4));
+      from.current = v;
+      setShown(v);
+      if (p < 1) raf = requestAnimationFrame(frame);
+    };
+    raf = requestAnimationFrame(frame);
+    return () => cancelAnimationFrame(raf);
+  }, [value, ms]);
+  return shown;
+}
