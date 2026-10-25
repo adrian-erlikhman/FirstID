@@ -62,7 +62,7 @@ export function WhatIfScreen(props: {
                       <li key={st.action.id} style={{ ["--i" as string]: i }}>
                         <span className="row-num" aria-hidden="true">{String(i + 1).padStart(2, "0")}</span>
                         <span>{st.action.label[lang]}</span>
-                        <span className="num">{st.dollars === 0 ? s.free : money(st.dollars)}</span>
+                        <span className={`num${st.dollars === 0 ? " free" : ""}`}>{st.dollars === 0 ? s.free : money(st.dollars)}</span>
                       </li>
                     ))}
                   </ol>

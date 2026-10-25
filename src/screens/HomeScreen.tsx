@@ -27,7 +27,7 @@ export function HomeScreen({ rules, lang, onStart, onExample }: {
           <p className="hero-eyebrow">{s.heroEyebrow}</p>
           <h1 tabIndex={-1} className="display hero-title">
             <span className="hero-a">{s.heroA}</span>{" "}
-            <span className="hero-b">{s.heroB}.</span>
+            <span className="hero-b"><span className="hl">{s.heroB}.</span></span>
           </h1>
           <p className="hero-lede">{s.heroLede}</p>
           <div className="actions row">
@@ -46,7 +46,7 @@ export function HomeScreen({ rules, lang, onStart, onExample }: {
                   <span className="hs-row" key={st.action.id}>
                     <span className="hs-n">{i + 1}</span>
                     <span className="hs-label">{st.action.label[lang]}</span>
-                    <span className="num">{st.dollars === 0 ? s.free : money(st.dollars)}</span>
+                    <span className={`num${st.dollars === 0 ? " free" : ""}`}>{st.dollars === 0 ? s.free : money(st.dollars)}</span>
                   </span>
                 ))}
               </span>

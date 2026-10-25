@@ -46,7 +46,7 @@ export function StepList({ rules, lang, plan }: { rules: RuleSet; lang: Lang; pl
                 {!a.verified && <Unconfirmed lang={lang} />}
               </span>
               <span className="step-cost">
-                <span className="num">{st.dollars === 0 ? s.free : money(st.dollars)}</span>
+                <span className={`num${st.dollars === 0 ? " free" : ""}`}>{st.dollars === 0 ? s.free : money(st.dollars)}</span>
                 {was !== null && <s className="num">{money(was)}</s>}
               </span>
               <Icon name="chevron" size={16} />
