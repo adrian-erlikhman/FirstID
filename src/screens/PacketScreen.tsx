@@ -10,7 +10,7 @@ export function PacketScreen({ rules, lang, result }: { rules: RuleSet; lang: La
   const { total } = result;
   const checked = Object.values(rules.sources).map((x) => x.checked).sort().at(-1) ?? "";
   const sourcesUrl = location.href.split("#")[0] + "#/sources";
-  const says = result.steps.map((st) => ({ st, say: sayFor(st) })).filter((x) => x.say).slice(0, 4);
+  const says = result.steps.map((st) => ({ st, say: sayFor(st) })).filter((x) => x.say);
 
   return (
     <section className="screen packet-screen">
@@ -28,7 +28,7 @@ export function PacketScreen({ rules, lang, result }: { rules: RuleSet; lang: La
             <h1 tabIndex={-1}>{s.pathTitle}</h1>
             <p>{s.packetSub}</p>
           </div>
-          <div className="mono sheet-meta">{s.rulesVersion(rules.version.split("-")[0])}<br />{s.checkedOn(checked)}</div>
+          <div className="mono sheet-meta">{s.rulesVersion(rules.version.split("-")[0])}<br />{result.allVerified ? s.checkedOn(checked) : s.draftRules}</div>
         </header>
 
         <div className="sheet-sum">

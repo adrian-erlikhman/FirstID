@@ -1,0 +1,14 @@
+name: check
+# Runs on every pull request; pushes to main are checked by deploy (pages.yml).
+on: [pull_request]
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 22, cache: npm }
+      - run: npm ci
+      # Fails the build if any rule is missing a source, uses an unknown
+      # document, or a persona's plan changes without someone updating the test.
+      - run: npm run check

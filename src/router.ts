@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 // link (#/path, #/step/2, #/example/maria) we can open straight from the video
 // script. Nothing about the person goes in the URL: only which screen.
 export type Route =
+  | { name: "home" }
   | { name: "have" }
   | { name: "questions" }
   | { name: "path" }
@@ -16,21 +17,21 @@ export type Route =
 export function parse(hash: string): Route {
   const [, a, b] = hash.replace(/^#/, "").split("/");
   switch (a) {
-    case "questions": case "path": case "whatif": case "packet": case "sources":
+    case "have": case "questions": case "path": case "whatif": case "packet": case "sources":
       return { name: a };
     case "step": {
       const n = Number(b);
       return Number.isInteger(n) && n > 0 ? { name: "step", n } : { name: "path" };
     }
     case "example":
-      return b ? { name: "example", id: b } : { name: "have" };
+      return b ? { name: "example", id: b } : { name: "home" };
     default:
-      return { name: "have" };
+      return { name: "home" };
   }
 }
 
 export function href(r: Route): string {
-  if (r.name === "have") return "#/";
+  if (r.name === "home") return "#/";
   if (r.name === "step") return `#/step/${r.n}`;
   if (r.name === "example") return `#/example/${r.id}`;
   return `#/${r.name}`;
@@ -38,7 +39,7 @@ export function href(r: Route): string {
 
 // The current screen lives here as well as in the URL, so the app still works
 // where a frame won't let the page change its own address.
-let current: Route = typeof location === "undefined" ? { name: "have" } : parse(location.hash);
+let current: Route = typeof location === "undefined" ? { name: "home" } : parse(location.hash);
 const listeners = new Set<(r: Route) => void>();
 const emit = (r: Route) => { current = r; listeners.forEach((f) => f(r)); };
 

@@ -34,7 +34,7 @@
     "dmv_record": {
       "label": {
         "en": "Had a California license or ID before (any year)",
-        "es": "Tuve licencia o identificación de California antes"
+        "es": "Tuve licencia o identificación de California antes (cualquier año)"
       },
       "askAtIntake": true
     },
@@ -111,7 +111,7 @@
     "notarized_coi": {
       "label": {
         "en": "Notarized Certificate of Identity",
-        "es": "Certificado de Identidad notarizado"
+        "es": "Certificado de Identidad notariado"
       },
       "askAtIntake": false
     }
@@ -141,7 +141,7 @@
     "notary": {
       "label": {
         "en": "Notary",
-        "es": "Notario"
+        "es": "Notario público (no es abogado)"
       },
       "inPerson": true
     },
@@ -350,6 +350,10 @@
         {
           "en": "Nothing. The program has the form; it can't be photocopied or downloaded.",
           "es": "Nada. El programa tiene el formulario; no se puede copiar ni descargar."
+        },
+        {
+          "en": "The signed form is good for 90 days. Use it at the DMV within 90 days of the date it's signed.",
+          "es": "El formulario firmado vale por 90 días. Úsalo en el DMV dentro de los 90 días desde que lo firmen."
         }
       ],
       "why": {
@@ -472,6 +476,12 @@
       ],
       "dollars": 0,
       "days": 0,
+      "bring": [
+        {
+          "en": "The signed form is good for 90 days. Use it at the DMV within 90 days of the date it's signed.",
+          "es": "El formulario firmado vale por 90 días. Úsalo en el DMV dentro de los 90 días desde que lo firmen."
+        }
+      ],
       "why": {
         "en": "If you get public assistance, an eligible agency or nonprofit can sign a DL 937, which lowers the ID fee.",
         "es": "Si recibes asistencia pública, una agencia u organización elegible puede firmar el DL 937, que reduce el costo de la identificación."
@@ -489,7 +499,7 @@
       "id": "notary_witnesses",
       "label": {
         "en": "Get the Certificate of Identity notarized, with two credible witnesses",
-        "es": "Notariza el Certificado de Identidad con dos testigos"
+        "es": "Certifica el Certificado de Identidad ante notario, con dos testigos"
       },
       "place": "notary",
       "requires": {
@@ -514,8 +524,8 @@
       "days": 0,
       "bring": [
         {
-          "en": "Two adults with ID who know you, aren't named on the form, and will swear you can't easily get ID",
-          "es": "Dos adultos con identificación que te conozcan, que no aparezcan en el formulario y que juren que no puedes obtener identificación fácilmente"
+          "en": "Two adults who know you, each with a photo ID that's current or was issued in the last 5 years (for example a California license or ID card, a U.S. passport, another state's license or a U.S. military ID). They can't be named on the form or gain anything from it, and each swears you can't easily get an ID.",
+          "es": "Dos adultos que te conozcan, cada uno con una identificación con foto vigente o emitida en los últimos 5 años (por ejemplo, licencia o identificación de California, pasaporte de EE. UU., licencia de otro estado o identificación militar de EE. UU.). No pueden aparecer en el formulario ni beneficiarse de él, y cada uno jura que no puedes obtener identificación fácilmente."
         },
         {
           "en": "The Certificate of Identity, not yet signed",
@@ -541,7 +551,7 @@
       "id": "notary_own_id",
       "label": {
         "en": "Get the Certificate of Identity notarized with your old ID",
-        "es": "Notariza el Certificado de Identidad con tu identificación anterior"
+        "es": "Certifica el Certificado de Identidad ante notario con tu identificación anterior"
       },
       "place": "notary",
       "requires": {
@@ -656,7 +666,7 @@
       "bring": [
         {
           "en": "The notarized Certificate of Identity and the request form",
-          "es": "El Certificado de Identidad notarizado y el formulario"
+          "es": "El Certificado de Identidad notariado y el formulario"
         },
         {
           "en": "The signed affidavit, if you have one, instead of a check",
@@ -665,7 +675,7 @@
       ],
       "why": {
         "en": "By mail, LA County asks for a notarized Certificate of Identity instead of a photo ID. That's why the notary step comes first.",
-        "es": "Por correo, el Condado de Los Ángeles pide un Certificado de Identidad notarizado en lugar de una identificación con foto. Por eso el paso del notario va primero."
+        "es": "Por correo, el Condado de Los Ángeles pide un Certificado de Identidad notariado en lugar de una identificación con foto. Por eso el paso del notario va primero."
       },
       "sources": [
         "lavote_mail",

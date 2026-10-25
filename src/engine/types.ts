@@ -112,4 +112,6 @@ export interface Plan {
   mode: Mode;
   /** Every step is backed by a verified source. */
   allVerified: boolean;
+  /** How many situations the search compared before it was sure this is the best path. */
+  explored?: number;
 }

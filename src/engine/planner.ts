@@ -95,7 +95,7 @@ export function plan(rules: RuleSet, person: Person, mode: Mode = "cheapest"): P
     const n = heap.pop()!;
     if (done.has(n.key)) continue;
     done.add(n.key);
-    if (n.have.has(rules.goal)) return unwind(n, mode);
+    if (n.have.has(rules.goal)) return unwind(n, mode, done.size);
 
     for (const a of rules.actions) {
       if (a.produces.every((d) => n.have.has(d))) continue;          // nothing new to gain
@@ -126,10 +126,10 @@ export function plan(rules: RuleSet, person: Person, mode: Mode = "cheapest"): P
   return null; // no legal path from here with the rules we know
 }
 
-function unwind(n: Node, mode: Mode): Plan {
+function unwind(n: Node, mode: Mode, explored: number): Plan {
   const steps: Step[] = [];
   for (let x: Node | null = n; x && x.step; x = x.prev) steps.unshift(x.step);
-  return { steps, total: n.cost, mode, allVerified: steps.every((s) => s.action.verified) };
+  return { steps, total: n.cost, mode, allVerified: steps.every((s) => s.action.verified), explored };
 }
 
 /**
