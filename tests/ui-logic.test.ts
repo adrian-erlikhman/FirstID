@@ -27,6 +27,14 @@ describe("what-if toggles", () => {
     expect(whatHelps(rules, personas.maria).map((h) => h.doc)).not.toContain("birth_cert_ca");
   });
 
+  it("'What would help most' never suggests getting a photo ID", () => {
+    // A passport would save Maria money, but a photo ID is what she's trying to get.
+    for (const p of Object.values(personas)) {
+      const docs = whatHelps(rules, p).map((h) => h.doc);
+      for (const id of ["us_passport", "old_ca_id_5yr", "immigration_doc"]) expect(docs).not.toContain(id);
+    }
+  });
+
   it("never suggests a U.S. birth certificate to someone born abroad", () => {
     const person = { facts: { born: "abroad", age: 30, unhoused: true }, have: ["ssn_known"] };
     const docs = flipsThatMatter(rules, person, "cheapest", 99).flatMap((o) => (o.flip.kind === "doc" ? [o.flip.doc] : []));
