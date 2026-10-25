@@ -43,10 +43,10 @@ export function StepScreen({ rules, lang, plan, n }: { rules: RuleSet; lang: Lan
             <div><dt>{s.time}</dt><dd>{Time}</dd></div>
           </dl>
 
-          {!a.verified && <Notice tone="draft" title={s.callAhead}>{s.callAheadLong}</Notice>}
+          {!a.verified && <Notice tone="draft" title={s.callAhead}>{place.inPerson ? s.callAheadLong : s.callAheadLongMail}</Notice>}
 
           {a.bring?.length ? (
-            <Block label={s.bring}>
+            <Block label={place.inPerson ? s.bring : s.bringMail}>
               <ul className="panel bring">{a.bring.map((b) => <li key={b.en}><span className="box" aria-hidden="true" />{b[lang]}</li>)}</ul>
             </Block>
           ) : null}

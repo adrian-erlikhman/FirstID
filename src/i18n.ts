@@ -184,6 +184,7 @@ const en = {
   byMail: "by mail, no trip",
   callAhead: "Call ahead",
   callAheadLong: "We haven't confirmed this rule from an official source yet. Call before you go.",
+  callAheadLongMail: "We haven't confirmed this rule from an official source yet. Call before you send it.",
   unverifiedNote: (n: number, total: number) =>
     total === 1 ? "This step isn't confirmed yet. Call ahead before you go." : n === total ? `None of these ${total} steps are confirmed yet. Call ahead before each one.` : `${n} of ${total} steps aren't confirmed yet. Call ahead before those.`,
   allVerified: "Every step is backed by an official source we checked.",
@@ -215,6 +216,7 @@ const en = {
   timeMail: "By mail",
   waiverApplied: (label: string) => label,
   bring: "Bring",
+  bringMail: "Put in the envelope",
   sayThis: "Say this",
   whyWorks: "Why this works",
   formsTitle: "These are the real forms.",
@@ -482,6 +484,7 @@ const es: Strings = {
   byMail: "por correo, sin viaje",
   callAhead: "Llama antes",
   callAheadLong: "Todavía no confirmamos esta regla con una fuente oficial. Llama antes de ir.",
+  callAheadLongMail: "Todavía no confirmamos esta regla con una fuente oficial. Llama antes de enviarlo.",
   unverifiedNote: (n, total) =>
     total === 1 ? "Este paso no está confirmado todavía. Llama antes de ir." : n === total ? `Ninguno de estos ${total} pasos está confirmado todavía. Llama antes de cada uno.` : `${n} de ${total} pasos no están confirmados todavía. Llama antes de esos.`,
   allVerified: "Cada paso tiene una fuente oficial que revisamos.",
@@ -512,6 +515,7 @@ const es: Strings = {
   timeMail: "Por correo",
   waiverApplied: (label) => label,
   bring: "Lleva",
+  bringMail: "Pon en el sobre",
   sayThis: "Di esto",
   whyWorks: "Por qué funciona",
   formsTitle: "Estos son los formularios reales.",
