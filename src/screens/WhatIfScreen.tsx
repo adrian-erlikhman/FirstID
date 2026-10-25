@@ -1,12 +1,13 @@
 import { useMemo, useState } from "react";
-import { Card3D, CardBack, PathCard, Solver, money } from "../components";
+import { Card3D, CardBack, Collapse, PathCard, Solver, Swap, money } from "../components";
 import { plan } from "../engine/planner";
 import type { Mode, Person, RuleSet } from "../engine/types";
+import { useListPresence } from "../motion";
 import { t, type Lang } from "../i18n";
 import { applyFlips, flipKey, flipsThatMatter, samePlan, type Flip } from "../whatif";
 
 // Flip an answer, the planner runs again, and the steps that drop out
-// disappear. The only motion in the app is here and on the brackets, because
+// slide away while the card counts to the new total. The only motion in the app is here and on the brackets, because
 // the change in the path is the point.
 export function WhatIfScreen(props: {
   rules: RuleSet; lang: Lang; person: Person; mode: Mode; onApply: (p: Person) => void;
@@ -20,6 +21,7 @@ export function WhatIfScreen(props: {
   const next = applyFlips(person, flips);
   const base = useMemo(() => plan(rules, person, mode), [rules, person, mode]);
   const result = plan(rules, next, mode);
+  const rows = useListPresence(result?.steps ?? [], (st) => st.action.id);
   const toggle = (k: string) => setOn(on.includes(k) ? on.filter((x) => x !== k) : [...on, k]);
 
   return (
@@ -41,7 +43,7 @@ export function WhatIfScreen(props: {
                   <li key={k}>
                     <button className="toggle-row" role="switch" aria-checked={yes} onClick={() => toggle(k)}>
                       <span>{label}</span>
-                      <span className="switch-text">{yes ? s.yes : s.no}</span>
+                      <Swap className="switch-text" text={yes ? s.yes : s.no} />
                       <span className="switch" aria-hidden="true"><span /></span>
                     </button>
                   </li>
@@ -51,35 +53,40 @@ export function WhatIfScreen(props: {
           )}
 
           <div className="whatif-result" aria-live="polite">
-            {result && <Card3D lang={lang} className="path-card" front={<PathCard plan={result} lang={lang} mode={mode} />} back={<CardBack plan={result} rules={rules} lang={lang} />} />}
-            <Solver title={s.secWhatIf} readout={on.length ? s.withChange : s.nowLabel}>
-              {result ? (
-                <>
-                  <ol className="mini-steps">
-                    {result.steps.map((st, i) => (
-                      <li key={st.action.id} style={{ ["--i" as string]: i }}>
-                        <span className="row-num" aria-hidden="true">{i + 1}</span>
+            <Collapse show={!!result}>
+              {result && <Card3D lang={lang} className="path-card" front={<PathCard plan={result} lang={lang} mode={mode} />} back={<CardBack plan={result} rules={rules} lang={lang} />} />}
+            </Collapse>
+            <Solver title={s.secWhatIf} readout={<Swap text={on.length ? s.withChange : s.nowLabel} />}>
+              <ol className="mini-steps">
+                {rows.map(({ item: st, key, phase, num }) => (
+                  <li key={key} className={phase} style={{ ["--i" as string]: num - 1 }}>
+                    <div className="mini-clip">
+                      <div className="mini-in">
+                        <span className="row-num" aria-hidden="true">{num}</span>
                         <span>{st.action.label[lang]}</span>
-                        <span className={`num${st.dollars === 0 ? " free" : ""}`}>{st.dollars === 0 ? s.free : money(st.dollars)}</span>
-                      </li>
-                    ))}
-                  </ol>
-                </>
-              ) : <p className="whatif-none">{s.noPathShort}</p>}
+                        <Swap className={`num${st.dollars === 0 ? " free" : ""}`} text={st.dollars === 0 ? s.free : money(st.dollars)} />
+                      </div>
+                    </div>
+                  </li>
+                ))}
+              </ol>
+              <Collapse show={!result}><p className="whatif-none">{s.noPathShort}</p></Collapse>
             </Solver>
-            {on.length > 0 && base && (
-              <p className="compare">
-                {samePlan(result, base) ? s.sameAsNow : s.nowWas(money(base.total.dollars), `${base.total.steps} ${s.unitSteps(base.total.steps)}`, `${base.total.trips} ${s.unitTrips(base.total.trips)}`, s.timeShort(base.total.days))}
-              </p>
-            )}
+            <Collapse show={on.length > 0 && !!base}>
+              {base && (
+                <p className="compare">
+                  <Swap text={samePlan(result, base) ? s.sameAsNow : s.nowWas(money(base.total.dollars), `${base.total.steps} ${s.unitSteps(base.total.steps)}`, `${base.total.trips} ${s.unitTrips(base.total.trips)}`, s.timeShort(base.total.days))} />
+                </p>
+              )}
+            </Collapse>
           </div>
 
-          {on.length > 0 && (
+          <Collapse show={on.length > 0}>
             <div className="actions pair">
               <button className="btn ghost" onClick={() => setOn([])}>{s.reset}</button>
               <button className="btn primary" onClick={() => onApply(next)}>{s.useThese}</button>
             </div>
-          )}
+          </Collapse>
         </div>
       </div>
     </section>
