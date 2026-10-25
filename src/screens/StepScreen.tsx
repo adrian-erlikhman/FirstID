@@ -5,7 +5,7 @@ import { href } from "../router";
 import { OfficesLink } from "./OfficesScreen";
 import { SayTools } from "./SayTools";
 
-// OWNER: Adrian. One step, with the proof: where to go, what to bring, what to
+// One step, with the proof: where to go, what to bring, what to
 // say, and the official sentence that makes it legal. This is the screen a
 // person shows the clerk when the clerk says no.
 export function StepScreen({ rules, lang, plan, n }: { rules: RuleSet; lang: Lang; plan: Plan; n: number }) {
