@@ -2,9 +2,8 @@ import { Icon, money, placeOf, sayFor } from "../components";
 import type { Plan, RuleSet } from "../engine/types";
 import { t, type Lang } from "../i18n";
 
-// OWNER: Adrian (layout) + Michael (which forms go in). One printed Letter page
-// a person can carry to every office, or a caseworker can hand over. No name
-// is ever stored: there's a line to write it by hand.
+// One printed Letter page a person can carry to every office, or a caseworker
+// can hand over. No name is ever stored: there's a line to write it by hand.
 export function PacketScreen({ rules, lang, result }: { rules: RuleSet; lang: Lang; result: Plan }) {
   const s = t[lang];
   const { total } = result;
