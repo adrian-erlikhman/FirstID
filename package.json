@@ -1,7 +1,21 @@
 {
   "name": "first-id",
   "version": "0.1.0",
-  "description": "The shortest legal path to a California ID, with a source for every step.",
+  "private": true,
+  "description": "The shortest legal path to a California ID in LA County, with the official rule behind every step. English and Spanish.",
+  "homepage": "https://first-id.vercel.app/",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/adrian-erlikhman/FirstID.git"
+  },
+  "bugs": {
+    "url": "https://github.com/adrian-erlikhman/FirstID/issues"
+  },
+  "contributors": [
+    "Adrian Erlikhman",
+    "Michael Tarekegn"
+  ],
+  "type": "module",
   "scripts": {
     "dev": "vite",
     "build": "tsc --noEmit && vite build",
@@ -9,6 +23,10 @@
     "lint:rules": "tsx scripts/lint-rules.ts",
     "check": "npm run lint:rules && npm test && npm run build",
     "contrast": "node scripts/contrast.mjs"
+  },
+  "dependencies": {
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
   },
   "devDependencies": {
     "@types/node": "^22.10.2",
@@ -19,11 +37,5 @@
     "typescript": "^5.6.3",
     "vite": "^5.4.11",
     "vitest": "^2.1.8"
-  },
-  "dependencies": {
-    "react": "^18.3.1",
-    "react-dom": "^18.3.1"
-  },
-  "private": true,
-  "type": "module"
+  }
 }
