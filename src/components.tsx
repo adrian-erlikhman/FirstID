@@ -326,16 +326,6 @@ export function useRecompute(key: string, ms = 320) {
   return busy;
 }
 
-/** An aside in small type after a short rule. It only repeats something the
- *  page already says, so screen readers skip it. */
-export function HandNote({ children, className = "" }: { children: ReactNode; dir?: "left" | "up" | "down"; className?: string }) {
-  return (
-    <span className={`hand-note ${className}`} aria-hidden="true">
-      <span className="hand-text">{children}</span>
-    </span>
-  );
-}
-
 /** A screen opens with a quiet line: its number and name on the left, a live
  *  readout on the right. */
 export function Printout({ index, kicker, readout }: { index: string; kicker: string; readout?: ReactNode }) {
