@@ -273,8 +273,6 @@ Caveat: district judging varies a lot. A middle-schooler's block-code reading-pl
 2. Verified each against its CAC district page.
 3. Cloned each and ran git log, line counts by file extension excluding vendored dirs, and test and CI file listings.
 
-Raw output: /tmp/claude-0/-home-claude/b5de5169-8809-574e-bb86-086144ad5808/scratchpad/research/repo_analysis_raw.txt
-
 ### Confirmed winners with public code
 
 | Repo | Win (verified) | Stack | Size and structure | Team split (git) | README | Tests / CI |
