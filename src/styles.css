@@ -276,7 +276,9 @@ h1.display .bracketed .num { color: var(--on-c); background: var(--hl); padding:
 .notice p { margin: 0 0 6px; }
 
 /* ---------- home: hero, centred, with the card on a stage ---------- */
-.hero { text-align: center; padding: 40px 0 8px; }
+/* Phones: less air above the headline, so Maria's summary fits in the first screenful. */
+.hero { text-align: center; padding: 16px 0 8px; }
+@media (min-width: 640px) { .hero { padding-top: 40px; } }
 .hero-eyebrow { font-size: 1rem; font-weight: 600; color: var(--text-2); margin: 0 0 14px; }
 .hero h1.hero-title { margin: 0 auto; max-width: 15em; text-wrap: balance; }
 /* 44px, or smaller on narrow phones so the longest word group ("Sin
