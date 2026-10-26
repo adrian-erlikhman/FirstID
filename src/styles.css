@@ -533,8 +533,8 @@ h2.display.wide { max-width: 20ch; margin-bottom: 28px; }
 .step-title { font-size: 1.0625rem; font-weight: 600; line-height: 1.3; letter-spacing: -0.015em; text-wrap: pretty; }
 .step-waiver { font-size: 0.875rem; line-height: 1.4; color: var(--text-2); }
 .step-when { font-size: 0.875rem; line-height: 1.4; color: var(--text-2); }
-/* No word left alone on the last line ("same visit as step / 2", "sin / costo)"). */
-.step-waiver, .step-when { text-wrap: pretty; }
+/* No word left alone on the last line ("same visit as step / 2", "sin / costo)", "lo más / rápido."). */
+.step-waiver, .step-when, .path-split .mode-hint { text-wrap: pretty; }
 .step-cost { display: flex; flex-direction: column; align-items: flex-end; gap: 1px; font-size: 1rem; font-weight: 600; }
 .step-cost s { color: var(--text-2); font-size: 0.8438rem; font-weight: 400; }
 .help { margin-top: 16px; padding: 18px; display: flex; flex-direction: column; align-items: flex-start; gap: 6px; }
