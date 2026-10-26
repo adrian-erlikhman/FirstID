@@ -79,9 +79,29 @@ export function noPathNotes(rules: RuleSet, person: Person, mode: Mode = "cheape
   if (facts.born === "california") notes.push("bornCA");
   if (facts.born === "us_state" || facts.born === "abroad") notes.push("bornElsewhere");
   // What's blocking: ask the planner whether one missing piece would open a path.
-  if (FLIPPABLE_FACTS.every((f) => facts[f] === undefined)) notes.push("allUnsure");
-  else if (plan(rules, { facts, have: [...have, "residency_doc"] }, mode)) notes.push("needAddress");
-  else if (facts.hasWitnesses !== true && plan(rules, { facts: { ...facts, hasWitnesses: true }, have }, mode)) notes.push("needWitnesses");
-  else if (!have.includes("ssn_known") && plan(rules, { facts, have: [...have, "ssn_known"] }, mode)) notes.push("needSsn");
+  if (FLIPPABLE_FACTS.every((f) => facts[f] === undefined)) { notes.push("allUnsure"); return notes; }
+  type Fix = [NoPathNote, boolean, (p: Person) => Person];
+  const missing = ([
+    ["needAddress", !have.includes("residency_doc"), (p) => ({ ...p, have: [...p.have, "residency_doc"] })],
+    ["needWitnesses", facts.hasWitnesses !== true, (p) => ({ ...p, facts: { ...p.facts, hasWitnesses: true } })],
+    ["needSsn", !have.includes("ssn_known"), (p) => ({ ...p, have: [...p.have, "ssn_known"] })],
+  ] as Fix[]).filter(([, isMissing]) => isMissing);
+  const opens = (fixes: Fix[]) => !!plan(rules, fixes.reduce((p, [, , add]) => add(p), person), mode);
+  // One missing piece that opens a path on its own: name that one.
+  const single = missing.find((fx) => opens([fx]));
+  if (single) { notes.push(single[0]); return notes; }
+  // Otherwise, if getting all of them would open a path, name each one it can't do without.
+  if (missing.length > 1 && opens(missing))
+    for (const fx of missing) if (!opens(missing.filter((x) => x !== fx))) notes.push(fx[0]);
   return notes;
+}
+
+/** "Who can help today" on the no-path screen. LAUSD's homeless education
+ *  office serves students and their families, so it is shown only to people
+ *  young enough to be in school, or who didn't give an age. */
+export type HelpOption = "211" | "lausd";
+
+export function helpOptions(person: Person): HelpOption[] {
+  const age = person.facts.age;
+  return typeof age === "number" && age >= 22 ? ["211"] : ["211", "lausd"];
 }

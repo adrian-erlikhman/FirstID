@@ -3,7 +3,7 @@ import { useListPresence } from "../motion";
 import type { Facts, Mode, Person, Plan, RuleSet, Step } from "../engine/types";
 import { t, type Lang } from "../i18n";
 import { href } from "../router";
-import { flipsThatMatter, noPathNotes, type NoPathNote } from "../whatif";
+import { flipsThatMatter, helpOptions, noPathNotes, type NoPathNote } from "../whatif";
 import { useEffect, useMemo, useState } from "react";
 import { loadTicks, reminderFor, reminderIcs, saveTicks, ticksInPlan, toggleTick, type Ticks } from "../progress";
 
@@ -120,7 +120,7 @@ export function NoPath({ rules, lang, person, onBack }: { rules: RuleSet; lang: 
           <h2 className="label block-label">{s.noPathWho}</h2>
           <ul className="panel link-list">
             <li><a className="link-row" href="tel:211"><span className="link-main"><strong>{s.help211}</strong><span className="row-sub">{s.help211Line}</span></span><Icon name="phone" size={18} /></a></li>
-            <li><a className="link-row" href="tel:+12132413552"><span className="link-main"><strong>{s.helpLausd}</strong><span className="row-sub">{s.helpLausdLine}</span></span><Icon name="phone" size={18} /></a></li>
+            {helpOptions(person).includes("lausd") && <li><a className="link-row" href="tel:+12132413552"><span className="link-main"><strong>{s.helpLausd}</strong><span className="row-sub">{s.helpLausdLine}</span></span><Icon name="phone" size={18} /></a></li>}
           </ul>
           <div className="actions row">
             <button className="btn ghost" onClick={onBack}>{s.changeAnswers}</button>

@@ -3,7 +3,7 @@ import rulesJson from "../data/rules.json";
 import type { RuleSet } from "../src/engine/types";
 import { examples } from "../src/examples";
 import { parse, href } from "../src/router";
-import { applyFlips, flipsThatMatter, noPathNotes } from "../src/whatif";
+import { applyFlips, flipsThatMatter, helpOptions, noPathNotes } from "../src/whatif";
 import { withImplied } from "../src/person";
 import { plan, suggestable, whatHelps } from "../src/engine/planner";
 import { personas } from "./personas";
@@ -107,6 +107,29 @@ describe("no-path notes", () => {
     const person = { facts: { born: "la_county", age: 30, unhoused: true, hasWitnesses: true }, have: ["birth_cert_ca"] };
     expect(plan(rules, person)).toBeNull();
     expect(noPathNotes(rules, person)).toEqual(["needSsn"]);
+  });
+
+  it("when two things are missing, the notes name both instead of saying nothing", () => {
+    // Housed, no paper with an address, no Social Security number: neither alone opens a path.
+    const person = { facts: { born: "la_county", age: 30, unhoused: false, hasWitnesses: true }, have: [] };
+    expect(plan(rules, person)).toBeNull();
+    expect(noPathNotes(rules, person)).toEqual(["needAddress", "needSsn"]);
+  });
+
+  it("only names a missing piece the path really needs", () => {
+    // No witnesses and no address paper, but housed: the witnesses alone don't help,
+    // and with both the plan still needs both.
+    const person = { facts: { born: "la_county", age: 30, unhoused: false, hasWitnesses: false }, have: ["ssn_known"] };
+    expect(plan(rules, person)).toBeNull();
+    expect(noPathNotes(rules, person)).toEqual(["needAddress", "needWitnesses"]);
+  });
+
+  it("'Who can help today' shows LAUSD (students and families) only to people young enough to be in school", () => {
+    expect(helpOptions({ facts: { age: 16 }, have: [] })).toEqual(["211", "lausd"]);
+    expect(helpOptions({ facts: { age: 19 }, have: [] })).toEqual(["211", "lausd"]);
+    expect(helpOptions({ facts: {}, have: [] })).toEqual(["211", "lausd"]);
+    expect(helpOptions({ facts: { age: 30 }, have: [] })).toEqual(["211"]);
+    expect(helpOptions({ facts: { age: 62 }, have: [] })).toEqual(["211"]);
   });
 
   it("some dead ends have no single change that opens a path (the what-if button is hidden)", () => {
