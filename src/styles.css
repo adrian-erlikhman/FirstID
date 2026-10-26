@@ -604,6 +604,9 @@ h2.display.wide { max-width: 20ch; margin-bottom: 28px; }
    path screen's wider card margins would leave 20px above the total, 28px below). */
 .whatif-result .path-card { margin: 0 0 16px; }
 @media (min-width: 640px) { .whatif-result { margin-top: 20px; } .whatif-result .path-card { margin-bottom: 20px; } }
+/* No switches to show ("Changing any one answer leaves this path the same"): the
+   total follows the opening line at the same distance the switches would. */
+.body > .whatif-result:first-child { margin-top: 0; }
 /* "With your changes" is said in ink, "Now" stays grey: the panel tells you which path you are looking at. */
 .whatif-result .solver.changed .solver-readout { color: var(--ink); font-weight: 600; }
 .mini-steps { padding: 4px 0 6px; }
