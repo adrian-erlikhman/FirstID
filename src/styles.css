@@ -592,7 +592,9 @@ h2.display.wide { max-width: 20ch; margin-bottom: 28px; }
 .switch span { position: absolute; top: 2px; left: 2px; width: 24px; height: 24px; border-radius: 980px; box-shadow: 0 2px 4px rgb(0 0 0 / .2), 0 0 0 .5px rgb(0 0 0 / .04); background: var(--panel);
   transition: transform .42s cubic-bezier(.3, 1.25, .5, 1), width .25s var(--ease), background-color .3s; }
 .toggle-row:active .switch span { width: 30px; }
-.toggle-row[aria-checked="true"] .switch { background: #34c759; }
+/* A deeper green than iOS's #34c759 (2.2:1 on white): the "on" track and the white
+   thumb on it both clear 3:1, on the panel (3.5:1) and on the hover wash (3.2:1). */
+.toggle-row[aria-checked="true"] .switch { background: #2a9d46; }
 .toggle-row[aria-checked="true"] .switch span { transform: translateX(18px); background: #fff; }
 .toggle-row[aria-checked="true"]:active .switch span { transform: translateX(12px); }
 .switch-text { min-width: 2.2em; text-align: right; font-size: 0.9375rem; font-weight: 500; color: var(--text-2); transition: color .3s var(--ease); }
