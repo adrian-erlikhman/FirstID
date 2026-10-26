@@ -136,6 +136,11 @@ h1.display .bracketed .num { color: var(--on-c); background: var(--hl); padding:
 .lang button { min-width: 44px; min-height: 32px; border: 0; border-radius: 980px; background: transparent; font-size: 13px; font-weight: 500; color: var(--text-2); }
 .lang button[aria-checked="true"] { background: var(--panel); color: var(--ink); box-shadow: 0 1px 3px rgb(0 0 0 / .12); }
 .lang button:not([aria-checked="true"]):hover { color: var(--ink); }
+/* Wider screens have room: Start and EN/ES read at 14px, Start a little wider. */
+@media (min-width: 640px) {
+  .nav-cta { padding: 4px 16px !important; font-size: 14px !important; }
+  .lang button { min-width: 46px; font-size: 14px; }
+}
 
 /* ---------- screens and their opening line ---------- */
 .screen { padding-top: 28px; animation: rise .5s var(--ease) both; }
