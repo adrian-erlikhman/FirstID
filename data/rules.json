@@ -332,16 +332,23 @@
     "lafires_docs": {
       "id": "lafires_docs",
       "title": "State of California: Replace personal documents (LA fires)",
-      "url": "https://ca.gov/lafires/help-for-you/replace-personal-documents/",
-      "quote": "TODO: copy the RR/CC no-cost records line and the DMV no-fee line for cards lost in the fires",
-      "checked": "2026-10-18"
+      "url": "https://www.ca.gov/lafires/help-for-you/replace-personal-documents/",
+      "quote": "Driver's license or California ID card (no fee for cards lost in the fires)",
+      "checked": "2026-10-25"
     },
     "rrcc_fire": {
       "id": "rrcc_fire",
       "title": "LA County: no-cost replacement records for fire-impacted residents",
       "url": "https://recovery.lacounty.gov/2025/01/16/registrar-recorder-county-clerk-offers-no-cost-replacement-records-to-fire-impacted-residents/",
-      "quote": "TODO: copy who qualifies and how long the program runs",
-      "checked": "2026-10-18"
+      "quote": "The Registrar-Recorder/County Clerk (RR/CC) is providing replacement vital records (i.e., birth, death, marriage), real estate/property records, and business filing/registration records at no cost to those impacted by recent wildfires.",
+      "checked": "2026-10-25"
+    },
+    "lavote_recovery": {
+      "id": "lavote_recovery",
+      "title": "LA County RR/CC: Fire recovery records",
+      "url": "https://www.lavote.gov/recovery",
+      "quote": "Los Angeles County residents directly impacted by fires can request property and vital records (i.e., birth, death, marriage) at no cost to support their recovery efforts.",
+      "checked": "2026-10-25"
     }
   },
   "actions": [
@@ -672,6 +679,7 @@
           },
           "sources": [
             "rrcc_fire",
+            "lavote_recovery",
             "lafires_docs"
           ]
         }
