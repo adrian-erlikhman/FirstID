@@ -1,5 +1,5 @@
 import { useEffect, useId, useRef, useState, type ReactNode } from "react";
-import { usePresence, useTilt, useTween } from "./motion";
+import { usePresence, useTween } from "./motion";
 import type { Mode, Plan, RuleSet, Source, Step } from "./engine/types";
 import { t, type Lang } from "./i18n";
 import applicationImg from "./forms/birth-record-application.jpg";
@@ -122,37 +122,6 @@ export function Br({ children, className = "" }: { children: ReactNode; classNam
 // The fine-line security print behind the card, on an 856 x 540 grid (ID-1 at
 // ten units a millimetre): a field of gentle waves, and a guilloche rosette
 // of interlaced loops on the right. Built once, as two path strings.
-const GUILLOCHE = (() => {
-  const f = (n: number) => n.toFixed(1);
-  let waves = "";
-  for (let i = 0; i < 20; i++) {
-    const y = 14 + i * 27, a = 5 + (i % 3), half = 34;
-    waves += `M${-half} ${f(y)}Q${f(-half / 2)} ${f(y - a * 2 * (i % 2 ? 1 : -1))} 0 ${f(y)}`;
-    for (let x = half; x <= 856 + half; x += half) waves += `T${x} ${f(y)}`;
-  }
-  let rosette = "";
-  const cx = 650, cy = 250, loops = 12, steps = 288;
-  for (let j = 0; j < loops; j++) {
-    const phase = (j / loops) * Math.PI * 2;
-    for (let k = 0; k <= steps; k++) {
-      const t = (k / steps) * Math.PI * 2;
-      const r = 150 + 38 * Math.sin(9 * t + phase) + 12 * Math.sin(27 * t - phase);
-      rosette += `${k ? "L" : "M"}${f(cx + r * Math.cos(t))} ${f(cy + r * Math.sin(t))}`;
-    }
-  }
-  return { waves, rosette };
-})();
-
-/** Security print for a card face. Decoration only: hidden from screen readers. */
-function Guilloche() {
-  return (
-    <svg className="idc-guilloche" viewBox="0 0 856 540" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false">
-      <path d={GUILLOCHE.waves} />
-      <path d={GUILLOCHE.rosette} />
-    </svg>
-  );
-}
-
 /** Slides its contents open and shut instead of popping them in and out.
  *  While closing it keeps showing what it last held. */
 export function Collapse({ show, children, className = "" }: { show: boolean; children: ReactNode; className?: string }) {
@@ -177,8 +146,8 @@ export function Tween({ value, format = String }: { value: number; format?: (n: 
   return <>{format(Math.round(useTween(value)))}</>;
 }
 
-/** The path you get, shown as the thing it gets you: an ID card. Total up
- *  top, then steps, trips and time along the bottom, like the fields on a card. */
+/** The path you get, as a plain summary: the total after fee waivers, what it
+ *  would have cost without them, then steps, trips and time. */
 export function PathCard({ plan, lang, mode, name, className = "" }: {
   plan: Plan; lang: Lang; mode: Mode; name?: string; className?: string;
 }) {
@@ -186,105 +155,24 @@ export function PathCard({ plan, lang, mode, name, className = "" }: {
   const { total } = plan;
   const modeLabel = { cheapest: s.modeCheapest, fewestTrips: s.modeTrips, fastest: s.modeFastest }[mode];
   const full = fullPrice(plan);
-  // "Instead of $89" slides open and shut rather than popping, and keeps its
-  // last wording while it closes.
   const was = full > total.dollars;
-  const last = useRef({ full, waivers: waiverCount(plan) });
-  if (was) last.current = { full, waivers: waiverCount(plan) };
-  const fullShown = useTween(last.current.full);
   return (
-    <section className={`id-card ${className}`} aria-label={s.cardLabel}>
+    <section className={`cost-card ${className}`} aria-label={s.cardLabel}>
       <p className="sr-only">{s.cardSummary({ name, total: total.dollars, full, steps: total.steps, trips: total.trips, days: total.days })}</p>
-      <Guilloche />
-      <div className="idc-top" aria-hidden="true">
-        <span className="idc-brand"><Mark size={14} tilt={0} />First ID</span>
-        <span className="idc-doc">{s.cardLabel}</span>
+      <div className="cc-top" aria-hidden="true">
+        <span className="cc-label">{name ?? s.totalCost}</span>
+        <span className="cc-mode">{modeLabel}</span>
       </div>
-      <div className="idc-mid" aria-hidden="true">
-        <div className="idc-holder">
-          <IdPortrait className="idc-photo" />
-          {name && <span className="idc-name">{name}</span>}
-        </div>
-        <div className="idc-total">
-          <span className="idc-key"><span>{s.totalCost}</span><span className="idc-mode">{modeLabel}</span></span>
-          <span className="idc-big"><Br><Tween value={total.dollars} format={money} /></Br></span>
-          <span className={`idc-was-wrap${was ? " open" : ""}`}>
-            <span className="idc-was"><span>{s.insteadOf(Math.round(fullShown))}</span><span>{s.withWaivers(last.current.waivers)}</span></span>
-          </span>
-        </div>
+      <div className="cc-total" aria-hidden="true">
+        <span className="cc-big"><Br><Tween value={total.dollars} format={money} /></Br></span>
+        {was && <span className="cc-was"><span>{s.insteadOf(full)}</span><span>{s.withWaivers(waiverCount(plan))}</span></span>}
       </div>
-      <dl className="idc-fields" aria-hidden="true">
+      <dl className="cc-fields" aria-hidden="true">
         <div><dt>{s.unitSteps(total.steps)}</dt><dd><Tween value={total.steps} /></dd></div>
         <div><dt>{s.unitTrips(total.trips)}</dt><dd><Tween value={total.trips} /></dd></div>
         <div><dt>{s.untilCard}</dt><dd><Tween value={total.days} format={s.timeShort} /></dd></div>
       </dl>
     </section>
-  );
-}
-
-/** The law a step rests on, short enough for the back of a card: the first
- *  statute among its sources ("Civ. Code 1185"), else the office ("DMV"). */
-function citeOf(action: Plan["steps"][number]["action"], rules: RuleSet) {
-  const titles = action.sources.map((id) => rules.sources[id]?.title).filter(Boolean) as string[];
-  const title = titles.find((x) => /Code \d|^AB \d/.test(x)) ?? titles[0] ?? "";
-  return title.split(/[:(]/)[0].trim()
-    .replace("Health & Safety Code", "H&S Code").replace("Welfare & Institutions Code", "W&I Code")
-    .replace("Government Code", "Gov. Code").replace("Vehicle Code", "Veh. Code").replace("Civil Code", "Civ. Code")
-    .replace(/^(DMV|SSA)\b.*/, "$1");
-}
-
-/** The back of the path card: a stripe, then each step (in the person's
- *  language) and the law behind it, the way a real card carries fine print. */
-export function CardBack({ plan, rules, lang }: { plan: Plan; rules: RuleSet; lang: Lang }) {
-  const s = t[lang];
-  return (
-    <section className="id-card idc-back" aria-label={s.cardBackTitle}>
-      <Guilloche />
-      <span className="idc-stripe" aria-hidden="true" />
-      <strong className="idc-back-title">{s.cardBackTitle}</strong>
-      <ol className="idc-back-list">
-        {plan.steps.map((st, i) => (
-          <li key={st.action.id}>
-            <span className="num">{i + 1}</span>
-            <span className="idc-step">{s.stepShort[st.action.id] ?? st.action.label[lang]}</span>
-            <span className="idc-cite">{citeOf(st.action, rules)}</span>
-          </li>
-        ))}
-      </ol>
-      <span className="idc-back-note">{s.cardBackNote}</span>
-    </section>
-  );
-}
-
-/** Any card, in 3D: it leans toward the mouse, catches the light, has a
- *  little thickness, and flips over to show its back. */
-export function Card3D({ front, back, lang, className = "" }: { front: ReactNode; back?: ReactNode; lang: Lang; className?: string }) {
-  const s = t[lang];
-  const stage = useTilt<HTMLDivElement>(9);
-  const [flipped, setFlipped] = useState(false);
-  // The face turned away is out of reach: not read, not focusable. React 18
-  // has no `inert` prop, so it is set on the element directly.
-  const frontRef = useRef<HTMLDivElement>(null);
-  const backRef = useRef<HTMLDivElement>(null);
-  useEffect(() => {
-    if (frontRef.current) frontRef.current.inert = flipped;
-    if (backRef.current) backRef.current.inert = !flipped;
-  }, [flipped, back]);
-  return (
-    <div ref={stage} className={`c3d${flipped ? " flipped" : ""} ${className}`}>
-      <div className="c3d-card">
-        <div className="c3d-edge" aria-hidden="true" />
-        <div ref={frontRef} className="c3d-face c3d-front" aria-hidden={flipped || undefined}>{front}<span className="c3d-holo" aria-hidden="true" /><span className="c3d-glare" aria-hidden="true" /></div>
-        {back && <div ref={backRef} className="c3d-face c3d-back" aria-hidden={!flipped || undefined}>{back}</div>}
-      </div>
-      {back && (
-        // A native button, so Enter and Space work and focus stays put. The
-        // label says what pressing it does next, so there is no aria-pressed.
-        <button type="button" className="c3d-flip" onClick={() => setFlipped((f) => !f)}>
-          <Icon name="flip" size={16} /> {flipped ? s.flipBack : s.flip}
-        </button>
-      )}
-    </div>
   );
 }
 

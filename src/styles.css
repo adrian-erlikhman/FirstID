@@ -273,13 +273,23 @@ h1.display .bracketed .num { color: var(--on-c); background: var(--hl); padding:
 .hero-lede { font-size: 1.1875rem; line-height: 1.42; color: var(--text-2); max-width: 30em; margin: 20px auto 0; text-wrap: pretty; }
 .hero .actions { justify-content: center; margin-top: 26px; }
 .hero-note { font-size: 1rem; color: var(--text-2); margin: 28px 0 0; }
-.hero-stage { position: relative; max-width: 600px; margin: 36px auto 0; padding: 0 6px; perspective: 1600px; }
-.hero-stage::after { content: ""; position: absolute; left: 12%; right: 12%; bottom: 34px; height: 40px; border-radius: 50%; background: radial-gradient(closest-side, rgb(0 0 0 / .28), transparent); filter: blur(8px); z-index: -1; }
-.hero-stage > .c3d { animation: card-in 1.2s var(--ease) .15s both; }
-/* The card bobs on its own (the translate property, so it never fights the tilt); the flip button stays put. */
-.hero-stage .c3d-card { animation: float 7s ease-in-out 1.5s infinite; }
-@keyframes card-in { from { opacity: 0; transform: translateY(80px) rotateX(42deg) scale(.9); } to { opacity: 1; transform: none; } }
-@keyframes float { 0%, 100% { translate: 0 0; } 50% { translate: 0 -10px; } }
+.hero-stage { position: relative; max-width: 560px; margin: 36px auto 0; padding: 0 6px; }
+.hero-stage > .cost-card { animation: card-in .9s var(--ease) .15s both; }
+@keyframes card-in { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: none; } }
+@media (prefers-reduced-motion: reduce) { .hero-stage > .cost-card { animation: none; } }
+
+/* ---------- the path summary: total, what it would have cost, steps, trips, time ---------- */
+.cost-card { display: flex; flex-direction: column; gap: 14px; width: 100%; padding: 22px 24px 20px;
+  background: var(--wash); color: var(--ink); border-radius: var(--r-tile); text-align: left; font-variant-numeric: tabular-nums; }
+.cc-top { display: flex; justify-content: space-between; align-items: center; gap: 12px; font-size: 1rem; font-weight: 600; color: var(--text-2); }
+.cc-mode { padding: 2px 9px; border-radius: 7px; background: var(--hl); color: #0a0a0a; font-size: 0.875rem; font-weight: 600; }
+.cc-total { display: flex; flex-wrap: wrap; align-items: flex-end; gap: 6px 18px; }
+.cc-big { font-size: clamp(3.5rem, 13vw, 5.25rem); font-weight: 700; line-height: 0.95; letter-spacing: -0.035em; color: var(--ink); }
+.cc-was { display: flex; flex-direction: column; padding-bottom: 6px; font-size: 1rem; line-height: 1.35; color: var(--text-2); }
+.cc-fields { display: grid; grid-template-columns: repeat(3, auto); justify-content: start; gap: 2px 32px; margin: 2px 0 0; padding-top: 14px; border-top: 1px solid var(--line); }
+.cc-fields div { display: flex; flex-direction: column-reverse; }
+.cc-fields dt { font-size: 0.875rem; color: var(--text-2); }
+.cc-fields dd { margin: 0; font-size: 1.5rem; font-weight: 700; line-height: 1.2; }
 
 /* ---------- the card in 3D: tilt, light, thickness, flip ---------- */
 .c3d { --rx: 0deg; --ry: 0deg; --flip: 0deg; perspective: 1600px; display: flex; flex-direction: column; align-items: center; gap: 18px; }
