@@ -127,6 +127,7 @@ const en = {
   fire: "Did you lose documents in the January 2025 LA fires?",
   witnesses: "Do two adults with ID know you, like staff at a shelter or program?",
   seePath: "Show my path",
+  bornNeeded: "Answer this one first. Your path depends on it.",
 
   // 3. Path
   pathTitle: "Your path to a California ID",
@@ -431,6 +432,7 @@ const es: Strings = {
   fire: "¿Perdiste documentos en los incendios de enero de 2025 en Los Ángeles?",
   witnesses: "¿Te conocen dos adultos con identificación, como el personal de un albergue o programa?",
   seePath: "Ver mi camino",
+  bornNeeded: "Primero responde esta. Tu camino depende de ella.",
 
   pathTitle: "Tu camino a una identificación de California",
   totalCost: "Costo total",
