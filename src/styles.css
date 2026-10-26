@@ -527,9 +527,9 @@ h2.display.wide { max-width: 20ch; margin-bottom: 28px; }
 
 /* ---------- one step ---------- */
 .facts { margin: 0; }
-.facts > div { display: grid; grid-template-columns: 72px minmax(0, 1fr); gap: 12px; padding: 14px 18px; }
+.facts > div { display: grid; grid-template-columns: 72px minmax(0, 1fr); align-items: baseline; gap: 12px; padding: 14px 18px; } /* label and value share a baseline */
 .facts > div + div { border-top: 1px solid var(--line); }
-.facts dt { font-size: 0.8438rem; font-weight: 500; color: var(--text-2); padding-top: 1px; }
+.facts dt { font-size: 0.8438rem; font-weight: 500; color: var(--text-2); }
 .facts dd { margin: 0; font-size: 1rem; }
 .facts .num.strong { font-weight: 600; font-size: 1rem; }
 .facts s { color: var(--text-2); }
