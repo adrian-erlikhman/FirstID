@@ -945,7 +945,7 @@ main h1:focus { box-shadow: none !important; } /* headings take focus on a new s
 }
 .offices-zip .row-sub { margin-top: 8px; }
 .office-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 12px; }
-.office { padding: 16px 18px; }
+.office { padding: 16px 18px; display: flex; flex-direction: column; }
 .office-name { margin: 0 0 4px; font-size: 1.125rem; font-weight: 600; line-height: 1.3; }
 .office-mi { font-weight: 400; color: var(--text-2); }
 .office-addr { margin: 0 0 10px; font-size: 1rem; line-height: 1.45; }
@@ -953,10 +953,11 @@ main h1:focus { box-shadow: none !important; } /* headings take focus on a new s
 .office-hours > div { display: grid; grid-template-columns: 6.5em minmax(0, 1fr); gap: 8px; }
 .office-hours dt { color: var(--text-2); }
 .office-hours dd { margin: 0; font-variant-numeric: tabular-nums; }
-.office-actions { display: flex; flex-wrap: wrap; gap: 8px; }
+.office-actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: auto; } /* side by side, the buttons line up along the bottom */
 .office-actions .btn.small { min-height: 44px; font-size: 1rem; padding: 8px 16px; }
 .office-note { margin: 20px 0 8px; font-size: 1rem; line-height: 1.5; color: var(--text-2); }
 @media (min-width: 760px) { .office-list { grid-template-columns: 1fr 1fr; } }
+@media (min-width: 1100px) { .office-list { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
 /* ===== end Offices ===== */
 
 /* ===== Progress ticks + calendar reminders (src/screens/PathScreen.tsx, src/progress.ts) ===== */
