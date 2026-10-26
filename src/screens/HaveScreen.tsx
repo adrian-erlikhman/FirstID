@@ -1,6 +1,7 @@
 import { Icon } from "../components";
 import type { RuleSet } from "../engine/types";
 import { t, type Lang } from "../i18n";
+import { clearPapers } from "../person";
 
 // A plain checklist, like a paper form: big rows, one tap each,
 // readable on a cracked screen. "I know my SSN" is its own group because it
@@ -41,10 +42,14 @@ export function HaveScreen(props: {
             <ul className="panel check-list single">{row("ssn_known", rules.docs.ssn_known.label[lang], s.ssnHint)}</ul>
           )}
 
-          <div className="actions row">
+          <div className="actions row have-actions">
             <button className="btn primary" onClick={onNext}>{s.toQuestions} <Icon name="arrow" size={18} /></button>
-            <button className="btn text" onClick={() => { onChange(have.filter((id) => id === "ssn_known")); onNext(); }}>{s.noneOfThese}</button>
-            {onStartOver && <button className="btn text" onClick={onStartOver}>{s.startOver}</button>}
+            <button className="btn text" onClick={() => { onChange(clearPapers(have)); onNext(); }}>{s.noneOfThese}</button>
+            {onStartOver && <button className="btn text" onClick={() => {
+              onStartOver();
+              // The button goes away once there is nothing to clear, so hand focus to the heading.
+              document.querySelector<HTMLElement>("main h1")?.focus();
+            }}>{s.startOver}</button>}
           </div>
         </div>
       </div>

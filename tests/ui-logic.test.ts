@@ -3,9 +3,9 @@ import rulesJson from "../data/rules.json";
 import type { RuleSet } from "../src/engine/types";
 import { examples } from "../src/examples";
 import { parse, href } from "../src/router";
-import { applyFlips, flipsThatMatter, noPathNotes } from "../src/whatif";
-import { withImplied } from "../src/person";
-import { plan, whatHelps } from "../src/engine/planner";
+import { applyFlips, flipsThatMatter, helpOptions, noPathNotes } from "../src/whatif";
+import { NOT_PAPERS, clearPapers, readyForPath, under18, withImplied } from "../src/person";
+import { plan, suggestable, whatHelps } from "../src/engine/planner";
 import { personas } from "./personas";
 
 const rules = rulesJson as unknown as RuleSet;
@@ -40,6 +40,28 @@ describe("what-if toggles", () => {
     const docs = flipsThatMatter(rules, person, "cheapest", 99).flatMap((o) => (o.flip.kind === "doc" ? [o.flip.doc] : []));
     expect(docs).not.toContain("birth_cert_ca");
     expect(docs).toContain("us_passport");
+  });
+
+  it("never suggests a green card or naturalization certificate to someone born in the U.S.", () => {
+    // suggestable() is the candidate list both what-if and "what would help" draw from.
+    for (const born of ["la_county", "california", "us_state"]) {
+      const person = { facts: { born, age: 30, unhoused: true, hasWitnesses: true }, have: ["ssn_known"] };
+      expect(suggestable(rules, person, plan(rules, person)), born).not.toContain("immigration_doc");
+    }
+    // Someone born abroad can still be offered one.
+    const abroad = { facts: { born: "abroad", age: 30, unhoused: true }, have: ["ssn_known"] };
+    expect(suggestable(rules, abroad, plan(rules, abroad))).toContain("immigration_doc");
+  });
+
+  it("for every example person, what-if and 'what would help' never offer a document their path already produces", () => {
+    for (const [name, p] of Object.entries(personas)) {
+      const produced = plan(rules, p)?.steps.flatMap((s) => s.action.produces) ?? [];
+      const offered = [
+        ...flipsThatMatter(rules, p, "cheapest", 99).flatMap((o) => (o.flip.kind === "doc" ? [o.flip.doc] : [])),
+        ...whatHelps(rules, p).map((h) => h.doc),
+      ];
+      for (const d of produced) expect(offered, `${name}: ${d}`).not.toContain(d);
+    }
   });
 
   it("only shows answers that change the plan", () => {
@@ -87,6 +109,29 @@ describe("no-path notes", () => {
     expect(noPathNotes(rules, person)).toEqual(["needSsn"]);
   });
 
+  it("when two things are missing, the notes name both instead of saying nothing", () => {
+    // Housed, no paper with an address, no Social Security number: neither alone opens a path.
+    const person = { facts: { born: "la_county", age: 30, unhoused: false, hasWitnesses: true }, have: [] };
+    expect(plan(rules, person)).toBeNull();
+    expect(noPathNotes(rules, person)).toEqual(["needAddress", "needSsn"]);
+  });
+
+  it("only names a missing piece the path really needs", () => {
+    // No witnesses and no address paper, but housed: the witnesses alone don't help,
+    // and with both the plan still needs both.
+    const person = { facts: { born: "la_county", age: 30, unhoused: false, hasWitnesses: false }, have: ["ssn_known"] };
+    expect(plan(rules, person)).toBeNull();
+    expect(noPathNotes(rules, person)).toEqual(["needAddress", "needWitnesses"]);
+  });
+
+  it("'Who can help today' shows LAUSD (students and families) only to people young enough to be in school", () => {
+    expect(helpOptions({ facts: { age: 16 }, have: [] })).toEqual(["211", "lausd"]);
+    expect(helpOptions({ facts: { age: 19 }, have: [] })).toEqual(["211", "lausd"]);
+    expect(helpOptions({ facts: {}, have: [] })).toEqual(["211", "lausd"]);
+    expect(helpOptions({ facts: { age: 30 }, have: [] })).toEqual(["211"]);
+    expect(helpOptions({ facts: { age: 62 }, have: [] })).toEqual(["211"]);
+  });
+
   it("some dead ends have no single change that opens a path (the what-if button is hidden)", () => {
     // Housed, with no paper showing an address: no one answer fixes that.
     const person = { facts: { born: "la_county", age: 30, unhoused: false, hasWitnesses: true }, have: [] };
@@ -120,6 +165,31 @@ describe("rule copy", () => {
       expect(a.why?.es, a.id).toBeTruthy();
     }
   });
+
+  it("the first-ID DMV step names one card type, the standard 'Federal Limits Apply' card, wherever it says what to ask for", () => {
+    const a = rules.actions.find((x) => x.id === "dmv_original")!;
+    expect(a.why!.en).toContain("Federal Limits Apply");
+    expect(a.why!.es).toContain("Federal Limits Apply");
+    for (const say of [a.say!, ...(a.waivers ?? []).flatMap((w) => (w.say ? [w.say] : []))]) {
+      expect(say.en).toMatch(/standard/);
+      expect(say.es).toMatch(/estándar/);
+    }
+  });
+
+  it("mail steps list only what goes in the envelope, what to write on the form, and where to send it", () => {
+    // The step screen heads these lines "Put in the envelope" when the place isn't in person.
+    const mail = rules.actions.filter((a) => !rules.places[a.place].inPerson);
+    expect(mail.map((a) => a.id)).toContain("rrcc_mail");
+    for (const a of mail) for (const b of a.bring ?? []) expect(b.en, a.id).toMatch(/^(The |On the form|Mail it to)/);
+  });
+
+  it("the school paper is a school ID card, not a transcript (SSA takes transcripts for children; unconfirmed for adults)", () => {
+    const texts = [rules.docs.school_record.label, ...rules.actions.filter((a) => a.id === "ssa_card").flatMap((a) => [a.why!, ...(a.bring ?? [])])];
+    for (const x of texts) {
+      expect(x.en).not.toMatch(/transcript|school record/i);
+      expect(x.es).not.toMatch(/certificado de estudios|registro escolar/i);
+    }
+  });
 });
 
 describe("documents you hold without ticking them", () => {
@@ -128,5 +198,30 @@ describe("documents you hold without ticking them", () => {
     expect(plan(rules, person)).toBeNull();                      // the raw rules alone miss it
     const p = plan(rules, { ...person, have: withImplied(person.have) });
     expect(p?.steps.map((s) => s.action.id)).toEqual(["dmv_replace"]);
+  });
+});
+
+describe("Have and Questions screens", () => {
+  it("'None of these' clears only the papers: a known SSN and an earlier California card stay", () => {
+    expect(clearPapers(["birth_cert_ca", "ssn_known", "medi_cal_card", "dmv_record", "residency_doc"])).toEqual(["ssn_known", "dmv_record"]);
+    expect(clearPapers(["us_passport"])).toEqual([]);
+    // Every row the Have screen shows is either a paper or one of the rows kept.
+    for (const id of NOT_PAPERS) expect(rules.docs[id]?.askAtIntake, id).toBe(true);
+  });
+
+  it("'Show my path' waits for the birthplace, and nothing else", () => {
+    expect(readyForPath({})).toBe(false);
+    expect(readyForPath({ unhoused: true, hasWitnesses: true, age: 30 })).toBe(false);
+    expect(readyForPath({ born: "abroad" })).toBe(true);
+  });
+});
+
+describe("not covered yet", () => {
+  it("the path screen flags under-18s (a parent or guardian may make the path shorter), including Jayden", () => {
+    expect(under18(personas.jayden.facts)).toBe(true);
+    expect(under18({ age: 16 })).toBe(true);
+    expect(under18({ age: 19 })).toBe(false);
+    expect(under18(personas.maria.facts)).toBe(false);
+    expect(under18({})).toBe(false); // no age given: say nothing
   });
 });

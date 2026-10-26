@@ -1,4 +1,4 @@
-import { useEffect, useId, useRef, useState, type ReactNode } from "react";
+import { useEffect, useId, useRef, useState, type KeyboardEvent as ReactKeyboardEvent, type ReactNode } from "react";
 import { usePresence, useTween } from "./motion";
 import type { Mode, Plan, RuleSet, Source, Step } from "./engine/types";
 import { t, type Lang } from "./i18n";
@@ -10,7 +10,7 @@ import certificateStrip from "./forms/strip-certificate.jpg";
 // Small shared pieces. Every screen is built from these, so a style change
 // here changes it everywhere. The look is First ID's own: black on white,
 // Instrument Sans, and one recurring object, an ID card set down at a slight
-// angle. The card is the logo, and the path you get is shown as one.
+// angle: the logo. The path you get is shown as a plain summary panel.
 
 const paths: Record<string, string> = {
   back: "M15 5l-7 7 7 7",
@@ -21,7 +21,6 @@ const paths: Record<string, string> = {
   phone: "M6 3h4l2 5-2.5 1.5a11 11 0 0 0 5 5L16 12l5 2v4a2 2 0 0 1-2 2C10 20 4 14 4 5a2 2 0 0 1 2-2z",
   arrow: "M5 12h14 M13 6l6 6-6 6",
   alert: "M12 3a9 9 0 1 0 0 18a9 9 0 1 0 0-18 M12 7.5v5.5 M12 16.5v.5",
-  flip: "M4 12a8 8 0 0 1 14-5.3 M18.5 3v4h-4 M20 12a8 8 0 0 1-14 5.3 M5.5 21v-4h4",
   left: "M15 5l-7 7 7 7",
   right: "M9 5l7 7-7 7",
 };
@@ -62,48 +61,6 @@ export function Mark({ size = 22, tilt = -10, className = "" }: { size?: number;
   );
 }
 
-/** The portrait window from the card, at any size: a head and shoulders in a
- *  photo frame. Colours come from --pw (frame) and --pb (person). */
-export function Portrait({ className = "" }: { className?: string }) {
-  return (
-    <svg viewBox="14 22.5 13 19" className={`portrait ${className}`} aria-hidden="true" focusable="false" preserveAspectRatio="xMidYMid slice">
-      <rect x="14" y="22.5" width="13" height="19" fill="var(--pw)" />
-      <circle cx="20.5" cy="29.53" r="3.3" fill="var(--pb)" />
-      <path d={BUST} fill="var(--pb)" />
-    </svg>
-  );
-}
-
-// A head and shoulders on an 80 x 100 photo, drawn as one outline: crown,
-// jaw, neck, then the slope of the shoulders out to the edges of the frame.
-const SILHOUETTE =
-  "M40 21C48.5 21 54.5 28 54.5 38.5C54.5 46 51.5 51.5 47.5 54.5L47.5 60C47.5 62 49 63.2 51.5 64C64 67.5 73 74 75 86L76 100L4 100L5 86C7 74 16 67.5 28.5 64C31 63.2 32.5 62 32.5 60L32.5 54.5C28.5 51.5 25.5 46 25.5 38.5C25.5 28 31.5 21 40 21Z";
-
-/** The photo on the ID card: a studio-lit backdrop in the card's yellow and a
- *  person's silhouette with a little light on the head and shoulders. Colours
- *  come from --pw (backdrop) and --pb (person). */
-export function IdPortrait({ className = "" }: { className?: string }) {
-  const id = "p" + useId().replace(/[^a-zA-Z0-9]/g, "");
-  return (
-    <svg viewBox="0 0 80 100" className={`portrait id-portrait ${className}`} aria-hidden="true" focusable="false" preserveAspectRatio="xMidYMid slice">
-      <defs>
-        <radialGradient id={`${id}b`} cx="50%" cy="34%" r="70%">
-          <stop offset="0" stopColor="#fff" stopOpacity=".38" />
-          <stop offset="1" stopColor="#fff" stopOpacity="0" />
-        </radialGradient>
-        <linearGradient id={`${id}s`} x1="0" y1="0" x2=".35" y2="1">
-          <stop offset="0" stopColor="#fff" stopOpacity=".16" />
-          <stop offset=".55" stopColor="#fff" stopOpacity="0" />
-        </linearGradient>
-      </defs>
-      <rect width="80" height="100" fill="var(--pw)" />
-      <rect width="80" height="100" fill={`url(#${id}b)`} />
-      <path d={SILHOUETTE} fill="var(--pb)" />
-      <path d={SILHOUETTE} fill={`url(#${id}s)`} />
-    </svg>
-  );
-}
-
 /** The mark, then the name. */
 export function Lockup() {
   return (
@@ -119,9 +76,6 @@ export function Br({ children, className = "" }: { children: ReactNode; classNam
   return <span className={`bracketed ${className}`}><span className="num">{children}</span></span>;
 }
 
-// The fine-line security print behind the card, on an 856 x 540 grid (ID-1 at
-// ten units a millimetre): a field of gentle waves, and a guilloche rosette
-// of interlaced loops on the right. Built once, as two path strings.
 /** Slides its contents open and shut instead of popping them in and out.
  *  While closing it keeps showing what it last held. */
 export function Collapse({ show, children, className = "" }: { show: boolean; children: ReactNode; className?: string }) {
@@ -139,6 +93,25 @@ export function Collapse({ show, children, className = "" }: { show: boolean; ch
 /** Text that fades in when it changes, instead of being swapped in place. */
 export function Swap({ text, className = "" }: { text: string; className?: string }) {
   return <span key={text} className={`swap ${className}`}>{text}</span>;
+}
+
+/** Says `text` to screen readers when it changes, not when the screen opens
+ *  (the heading already says it then). For totals that change in place: the
+ *  numbers on screen count up and down, so they can't be live themselves. */
+export function LiveNote({ text }: { text: string }) {
+  const [said, setSaid] = useState("");
+  const last = useRef(text);
+  useEffect(() => {
+    if (last.current === text) return;
+    last.current = text;
+    setSaid(text);
+  }, [text]);
+  return <p className="sr-only" role="status">{said}</p>;
+}
+
+/** A crossed-out price, read as "instead of $34" rather than a bare second number. */
+export function WasPrice({ dollars, lang }: { dollars: number; lang: Lang }) {
+  return <><s className="num" aria-hidden="true">{money(dollars)}</s><span className="sr-only"> {t[lang].insteadOf(dollars)}</span></>;
 }
 
 /** A number that counts to its new value. `format` turns it into text. */
@@ -255,6 +228,7 @@ export function TopBar(props: { lang: Lang; onLang: (l: Lang) => void; onHome: (
         <div className="lang" role="radiogroup" aria-label={s.langLabel}>
           {(["en", "es"] as const).map((l) => (
             <button key={l} role="radio" aria-checked={props.lang === l} lang={l} aria-label={l === "en" ? "English" : "Español"}
+              tabIndex={props.lang === l ? 0 : -1} onKeyDown={langKeys(props.onLang)}
               onClick={() => props.onLang(l)}>{l.toUpperCase()}</button>
           ))}
         </div>
@@ -263,6 +237,16 @@ export function TopBar(props: { lang: Lang; onLang: (l: Lang) => void; onHome: (
     </header>
   );
 }
+
+/** A radio group is one Tab stop: the arrow keys move between EN and ES,
+ *  picking as they go, the way screen readers say radios work. */
+const langKeys = (onLang: (l: Lang) => void) => (e: ReactKeyboardEvent<HTMLButtonElement>) => {
+  if (!["ArrowLeft", "ArrowRight", "ArrowUp", "ArrowDown"].includes(e.key)) return;
+  e.preventDefault();
+  const other = e.currentTarget.getAttribute("lang") === "en" ? "es" : "en";
+  onLang(other);
+  e.currentTarget.parentElement?.querySelector<HTMLButtonElement>(`[lang="${other}"]`)?.focus();
+};
 
 /* ---------- text size ----------
  * Three sizes, set as data-text-size on <html>, which scales the root font
@@ -368,19 +352,22 @@ export function Pills<V>(props: { label: string; options: readonly (readonly [V,
   );
 }
 
-/** One official source. Until a person verifies the rule, it never claims a "checked" date. */
+/** One official source. Until a person verifies the rule, it never claims a "checked" date.
+ *  Source pages are in English, so the Spanish title says "(en inglés)". */
 export function SourceCard({ src, lang, verified }: { src: Source; lang: Lang; verified: boolean }) {
   const s = t[lang];
   const missing = /^TODO/i.test(src.quote);
+  // Titles and quotes are the source's own English words, so screen readers
+  // say them in English on the Spanish screens too; " (en inglés)" stays Spanish.
   let host = "";
   try { host = new URL(src.url).hostname.replace(/^www\./, ""); } catch { /* not a URL */ }
   return (
     <a className="source" href={src.url} target="_blank" rel="noreferrer">
       <span className="source-host">{host} <Icon name="external" size={13} /></span>
-      <span className="source-title">{src.title}</span>
+      <span className="source-title"><span lang="en">{src.title}</span>{s.inEnglish}</span>
       {missing
         ? <span className="source-quote missing">{s.quoteMissing}</span>
-        : <span className="source-quote">“{src.quote}”</span>}
+        : <span className="source-quote" lang="en">“{src.quote}”</span>}
       <span className={`source-meta ${verified ? "" : "draft"}`}>{verified ? s.checkedOn(src.checked) : s.notCheckedYet}</span>
     </a>
   );

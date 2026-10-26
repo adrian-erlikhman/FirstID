@@ -1,6 +1,8 @@
+import { useEffect, useRef, useState, type ReactNode } from "react";
 import { Icon, Pills } from "../components";
 import type { Facts } from "../engine/types";
 import { t, type Lang } from "../i18n";
+import { readyForPath } from "../person";
 
 // Each answer becomes a fact the rules can test. "Not sure" leaves the fact
 // unset, so the planner won't use a path that depends on it.
@@ -33,12 +35,38 @@ export function QuestionsScreen(props: {
 
   // A plain function, not a component: a component defined inside render
   // would remount on every tap and drop keyboard focus.
-  const question = (k: string, q: string, opts: readonly (readonly [Facts[string] | typeof NOT_SURE, string])[]) => (
-    <fieldset className="q" key={k}>
+  const question = (k: string, q: string, opts: readonly (readonly [Facts[string] | typeof NOT_SURE, string])[], error?: ReactNode, shape = "pills-even") => (
+    <fieldset className="q" key={k} ref={k === "born" ? bornRef : undefined} aria-describedby={error ? `${k}-error` : undefined}>
       <legend><span className="row-num" aria-hidden="true">{++num}</span><span>{q}</span></legend>
-      <Pills label={q} options={opts} value={valueOf(k)} onChange={(v) => set(k, v)} />
+      <Pills label={q} options={opts} value={valueOf(k)} onChange={(v) => set(k, v)} className={shape} />
+      {error && <p id={`${k}-error`} className="q-error" role="alert"><Icon name="alert" size={18} stroke={2} /> {error}</p>}
     </fieldset>
   );
+
+  // "Show my path" stays reachable by Tab while it can't go yet (aria-disabled,
+  // not disabled), so pressing it can say why and take you to the question.
+  const bornRef = useRef<HTMLFieldSetElement>(null);
+  const [tried, setTried] = useState(false);
+  const blocked = !readyForPath(facts);
+  const next = () => {
+    if (!blocked) return onNext();
+    setTried(true);
+    bornRef.current?.scrollIntoView({ block: "center" });
+    bornRef.current?.querySelector<HTMLButtonElement>("button")?.focus({ preventScroll: true });
+  };
+
+  // The bar only gets its frosted ground while it floats over the questions;
+  // at rest under the last one it stays clear. A marker just after the bar
+  // is on screen exactly when the bar is at rest.
+  const barEnd = useRef<HTMLDivElement>(null);
+  const [floating, setFloating] = useState(false);
+  useEffect(() => {
+    const el = barEnd.current;
+    if (!el || typeof IntersectionObserver === "undefined") return;
+    const io = new IntersectionObserver(([e]) => setFloating(!e.isIntersecting && e.boundingClientRect.top > 0));
+    io.observe(el);
+    return () => io.disconnect();
+  }, []);
 
   return (
     <section className="screen">
@@ -49,24 +77,26 @@ export function QuestionsScreen(props: {
         </div>
         <div className="body">
           <div className="panel questions">
-            {question("born", s.bornWhere, [["la_county", s.bornLA], ["california", s.bornCA], ["us_state", s.bornUS], ["abroad", s.bornAbroad]] as const)}
+            {question("born", s.bornWhere, [["la_county", s.bornLA], ["california", s.bornCA], ["us_state", s.bornUS], ["abroad", s.bornAbroad]] as const,
+              tried && blocked ? s.bornNeeded : undefined, "pills-stack")}
             {question("unhoused", s.unhoused, yesNo)}
             {question("fireSurvivor", s.fire, yesNo)}
             {question("hasWitnesses", s.witnesses, yesNo)}
             <fieldset className="q">
               <legend><span className="row-num" aria-hidden="true">{++num}</span><span>{s.age}</span></legend>
               <Pills label={s.age} options={s.ageBands.map((label, i) => [i, label] as const)} value={bandOf(facts.age)}
-                onChange={(i) => set("age", AGE_BANDS[i])} />
+                onChange={(i) => set("age", AGE_BANDS[i])} className="pills-even pills-age" />
             </fieldset>
             {question("fosterYouth", s.foster, yesNo)}
             {question("publicAssistance", s.benefits, yesNo)}
           </div>
 
-          <div className="actions sticky">
+          <div className={`actions sticky q-bar${floating ? " floating" : ""}`}>
             {/* The rules can't pick a birth certificate office without this one. */}
-            <button className="btn primary" onClick={onNext} disabled={facts.born === undefined}
-              style={facts.born === undefined ? { opacity: 0.45, cursor: "not-allowed" } : undefined}>{s.seePath} <Icon name="arrow" size={18} /></button>
+            <button className="btn primary q-next" onClick={next} aria-disabled={blocked || undefined}>
+              {s.seePath} <Icon name="arrow" size={18} /></button>
           </div>
+          <div ref={barEnd} className="q-bar-end" aria-hidden="true" />
         </div>
       </div>
     </section>

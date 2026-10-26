@@ -6,7 +6,7 @@
     "ca_id": {
       "label": {
         "en": "California ID card",
-        "es": "Identificación de California"
+        "es": "Tarjeta de identificación de California"
       },
       "askAtIntake": false
     },
@@ -68,15 +68,15 @@
     },
     "school_record": {
       "label": {
-        "en": "School ID this year, or a school transcript",
-        "es": "Identificación escolar de este año o un certificado de estudios"
+        "en": "School ID card from this year",
+        "es": "Credencial escolar de este año"
       },
       "askAtIntake": true
     },
     "residency_doc": {
       "label": {
         "en": "A bill, lease, benefits letter or medical paper with my California address",
-        "es": "Una factura, contrato, carta de beneficios o papel médico con mi dirección en California"
+        "es": "Una factura, contrato de renta, carta de beneficios o papel médico con mi dirección en California"
       },
       "askAtIntake": true
     },
@@ -97,14 +97,14 @@
     "bc_waiver_homeless": {
       "label": {
         "en": "Homeless affidavit for a free birth certificate",
-        "es": "Declaración jurada de persona sin hogar para acta gratuita"
+        "es": "Declaración jurada de persona sin hogar para un acta gratuita"
       },
       "askAtIntake": false
     },
     "bc_waiver_foster": {
       "label": {
         "en": "Foster-youth affidavit for a free birth certificate",
-        "es": "Declaración jurada de joven en cuidado de crianza para acta gratuita"
+        "es": "Declaración jurada de joven en cuidado de crianza para un acta gratuita"
       },
       "askAtIntake": false
     },
@@ -186,8 +186,15 @@
       "id": "dmv_fees",
       "title": "DMV: Licensing fees",
       "url": "https://www.dmv.ca.gov/portal/driver-licenses-identification-cards/licensing-fees/",
-      "quote": "TODO: copy the exact ID card fee line ($40 regular, $11 reduced)",
-      "checked": "2026-10-18"
+      "quote": "Regular ID card | – Original – Renewal – Replacement (lost or stolen) – Change DL/ID Information – Emancipated minor | $40",
+      "checked": "2026-10-25"
+    },
+    "dmv_fees_reduced": {
+      "id": "dmv_fees_reduced",
+      "title": "DMV: Licensing fees, reduced-fee ID card",
+      "url": "https://www.dmv.ca.gov/portal/driver-licenses-identification-cards/licensing-fees/",
+      "quote": "Reduced-fee ID card | – Original – Renewal – Replacement (lost or stolen) – Change DL/ID Information | $11",
+      "checked": "2026-10-25"
     },
     "dmv_ssn": {
       "id": "dmv_ssn",
@@ -227,9 +234,9 @@
     "vc14902": {
       "id": "vc14902",
       "title": "Vehicle Code 14902 (no-fee and reduced-fee IDs)",
-      "url": "https://codes.findlaw.com/ca/vehicle-code/veh-sect-14902/",
-      "quote": "TODO: copy the no-fee sentence for homeless applicants from leginfo",
-      "checked": "2026-10-18"
+      "url": "https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?lawCode=VEH&sectionNum=14902",
+      "quote": "A fee shall not be charged for an original or replacement identification card issued to any person who can verify their status as a homeless person",
+      "checked": "2026-10-25"
     },
     "dmv_replace": {
       "id": "dmv_replace",
@@ -241,9 +248,16 @@
     "lavote_mail": {
       "id": "lavote_mail",
       "title": "LA County RR/CC: Birth record by mail",
-      "url": "https://lavote.gov/home/records/birth-records/birth-records-request/mail-request",
-      "quote": "TODO: copy the line saying the Certificate of Identity must be notarized",
-      "checked": "2026-10-18"
+      "url": "https://www.lavote.gov/home/records/birth-records/birth-records-request/mail-request",
+      "quote": "The Certificate of Identity must be notarized or it will delay the process",
+      "checked": "2026-10-25"
+    },
+    "lavote_fees": {
+      "id": "lavote_fees",
+      "title": "LA County RR/CC: Birth record fees by mail",
+      "url": "https://www.lavote.gov/home/records/birth-records/birth-records-request/mail-request",
+      "quote": "Authorized Certified Birth Record Copy: $34",
+      "checked": "2026-10-25"
     },
     "lavote_inperson": {
       "id": "lavote_inperson",
@@ -255,9 +269,9 @@
     "hsc103526": {
       "id": "hsc103526",
       "title": "Health & Safety Code 103526 (who may get a certified copy)",
-      "url": "https://california.public.law/codes/ca_health_and_safety_code_section_103526",
-      "quote": "TODO: copy the notarized sworn statement requirement for mail requests from leginfo",
-      "checked": "2026-10-18"
+      "url": "https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?lawCode=HSC&sectionNum=103526",
+      "quote": "a request for a certified copy of a birth, death, or marriage record pursuant to Section 103525 that is accompanied by a notarized statement sworn under penalty of perjury",
+      "checked": "2026-10-25"
     },
     "ab1733": {
       "id": "ab1733",
@@ -269,16 +283,16 @@
     "hsc103577": {
       "id": "hsc103577",
       "title": "Health & Safety Code 103577 (homeless fee waiver)",
-      "url": "https://california.public.law/codes/ca_health_and_safety_code_section_103577",
-      "quote": "TODO: copy the affidavit sentence (signed by both the requester and a homeless services provider)",
-      "checked": "2026-10-18"
+      "url": "https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?lawCode=HSC&sectionNum=103577",
+      "quote": "unless it is signed by both the person making a request for a certified record of live birth pursuant to subdivision (a) and a homeless services provider",
+      "checked": "2026-10-25"
     },
     "hsc103578": {
       "id": "hsc103578",
       "title": "Health & Safety Code 103578 (foster youth fee waiver)",
-      "url": "https://california.public.law/codes/ca_health_and_safety_code_section_103578",
-      "quote": "TODO: copy the sentence naming youth placed in foster care",
-      "checked": "2026-10-18"
+      "url": "https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?lawCode=HSC&sectionNum=103578",
+      "quote": "without a fee, issue a certified record of live birth to any person who demonstrates that he or she is a youth who has been placed in foster care",
+      "checked": "2026-10-25"
     },
     "wic391": {
       "id": "wic391",
@@ -290,16 +304,23 @@
     "civ1185": {
       "id": "civ1185",
       "title": "Civil Code 1185 (notary: credible witnesses)",
-      "url": "https://california.public.law/codes/ca_civ_code_section_1185",
-      "quote": "TODO: copy (b)(2), two credible witnesses each presenting ID, from leginfo",
-      "checked": "2026-10-18"
+      "url": "https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?lawCode=CIV&sectionNum=1185",
+      "quote": "The oath or affirmation under penalty of perjury of two credible witnesses, whose identities are proven to the officer upon the presentation of a document",
+      "checked": "2026-10-25"
     },
     "gov8211": {
       "id": "gov8211",
       "title": "Government Code 8211 (notary fees)",
-      "url": "https://codes.findlaw.com/ca/government-code/gov-sect-8211/",
-      "quote": "TODO: copy the $15 per signature line. Rises to $20 on Jan 1, 2027 (AB 1597).",
-      "checked": "2026-10-18"
+      "url": "https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?lawCode=GOV&sectionNum=8211",
+      "quote": "acknowledgment or proof of a deed, or other instrument, to include the seal and the writing of the certificate, the sum of fifteen dollars ($15) for each signature taken.",
+      "checked": "2026-10-25"
+    },
+    "ab1597": {
+      "id": "ab1597",
+      "title": "AB 1597 (2026): notary fee rises to $20",
+      "url": "https://leginfo.legislature.ca.gov/faces/billTextClient.xhtml?bill_id=202520260AB1597",
+      "quote": "acknowledgment or proof of a deed, or other instrument, to include the seal and the writing of the certificate, the sum of twenty dollars ($20) for each signature taken.",
+      "checked": "2026-10-25"
     },
     "ssa_replace": {
       "id": "ssa_replace",
@@ -312,22 +333,36 @@
       "id": "ssa_poms",
       "title": "SSA POMS RM 10210.420: evidence of identity",
       "url": "https://secure.ssa.gov/poms.nsf/lnx/0110210420",
-      "quote": "TODO: copy the secondary-evidence line covering Medicaid cards and school records",
-      "checked": "2026-10-18"
+      "quote": "Health insurance or U.S. Medicaid card showing, the applicant’s name and: – a photograph, or – age or DOB.",
+      "checked": "2026-10-25"
+    },
+    "ssa_poms_school": {
+      "id": "ssa_poms_school",
+      "title": "SSA POMS RM 10210.420: school records for adults",
+      "url": "https://secure.ssa.gov/poms.nsf/lnx/0110210420",
+      "quote": "School/student identification card or certified school record or transcript (for current school year) showing, the applicant’s name and either a photograph of the applicant or the applicant’s DOB).",
+      "checked": "2026-10-25"
     },
     "lafires_docs": {
       "id": "lafires_docs",
       "title": "State of California: Replace personal documents (LA fires)",
-      "url": "https://ca.gov/lafires/help-for-you/replace-personal-documents/",
-      "quote": "TODO: copy the RR/CC no-cost records line and the DMV no-fee line for cards lost in the fires",
-      "checked": "2026-10-18"
+      "url": "https://www.ca.gov/lafires/help-for-you/replace-personal-documents/",
+      "quote": "Driver's license or California ID card (no fee for cards lost in the fires)",
+      "checked": "2026-10-25"
     },
     "rrcc_fire": {
       "id": "rrcc_fire",
       "title": "LA County: no-cost replacement records for fire-impacted residents",
       "url": "https://recovery.lacounty.gov/2025/01/16/registrar-recorder-county-clerk-offers-no-cost-replacement-records-to-fire-impacted-residents/",
-      "quote": "TODO: copy who qualifies and how long the program runs",
-      "checked": "2026-10-18"
+      "quote": "The Registrar-Recorder/County Clerk (RR/CC) is providing replacement vital records (i.e., birth, death, marriage), real estate/property records, and business filing/registration records at no cost to those impacted by recent wildfires.",
+      "checked": "2026-10-25"
+    },
+    "lavote_recovery": {
+      "id": "lavote_recovery",
+      "title": "LA County RR/CC: Fire recovery records",
+      "url": "https://www.lavote.gov/recovery",
+      "quote": "Los Angeles County residents directly impacted by fires can request property and vital records (i.e., birth, death, marriage) at no cost to support their recovery efforts.",
+      "checked": "2026-10-25"
     }
   },
   "actions": [
@@ -348,12 +383,12 @@
       "days": 0,
       "bring": [
         {
-          "en": "Nothing. The program has the form; it can't be photocopied or downloaded.",
-          "es": "Nada. El programa tiene el formulario; no se puede copiar ni descargar."
+          "en": "Nothing. The program has the form.",
+          "es": "Nada. El programa tiene el formulario."
         },
         {
-          "en": "The signed form is good for 90 days. Use it at the DMV within 90 days of the date it's signed.",
-          "es": "El formulario firmado vale por 90 días. Úsalo en el DMV dentro de los 90 días desde que lo firmen."
+          "en": "Ask first whether the program is signed up with the DMV's no-fee ID program. Only those programs can sign it.",
+          "es": "Pregunta primero si el programa está inscrito en el programa de identificación sin costo del DMV. Solo esos programas pueden firmarlo."
         }
       ],
       "why": {
@@ -432,7 +467,7 @@
       "id": "dcfs_documents",
       "label": {
         "en": "Ask your social worker for the documents the county must give you before you leave care",
-        "es": "Pide a tu trabajador social los documentos que el condado debe darte antes de salir"
+        "es": "Pide a tu trabajador social los documentos que el condado debe darte antes de salir del cuidado"
       },
       "place": "dcfs",
       "requires": {
@@ -478,8 +513,8 @@
       "days": 0,
       "bring": [
         {
-          "en": "The signed form is good for 90 days. Use it at the DMV within 90 days of the date it's signed.",
-          "es": "El formulario firmado vale por 90 días. Úsalo en el DMV dentro de los 90 días desde que lo firmen."
+          "en": "Ask first whether the office is signed up with the DMV's reduced-fee ID program. Only those offices can sign it.",
+          "es": "Pregunta primero si la oficina está inscrita en el programa de identificación a costo reducido del DMV. Solo esas oficinas pueden firmarlo."
         }
       ],
       "why": {
@@ -499,7 +534,7 @@
       "id": "notary_witnesses",
       "label": {
         "en": "Get the Certificate of Identity notarized, with two credible witnesses",
-        "es": "Lleva el Certificado de Identidad a un notario público, con dos testigos"
+        "es": "Lleva el Certificado de Identidad a un notario público, con dos testigos fidedignos"
       },
       "place": "notary",
       "requires": {
@@ -525,7 +560,7 @@
       "bring": [
         {
           "en": "Two adults who know you, each with a photo ID that's current or was issued in the last 5 years (for example a California license or ID card, a U.S. passport, another state's license or a U.S. military ID). They can't be named on the form or gain anything from it, and each swears you can't easily get an ID.",
-          "es": "Dos adultos que te conozcan, cada uno con una identificación con foto vigente o emitida en los últimos 5 años (por ejemplo, licencia o identificación de California, pasaporte de EE. UU., licencia de otro estado o identificación militar de EE. UU.). No pueden aparecer en el formulario ni beneficiarse de él, y cada uno jura que no puedes obtener identificación fácilmente."
+          "es": "Dos adultos que te conozcan, cada uno con una identificación con foto vigente o emitida en los últimos 5 años (por ejemplo, licencia o identificación de California, pasaporte de EE. UU., licencia de otro estado o identificación militar de EE. UU.). No pueden aparecer en el formulario ni beneficiarse de él, y cada uno jura que no puedes obtener una identificación fácilmente."
         },
         {
           "en": "The Certificate of Identity, not yet signed",
@@ -534,7 +569,7 @@
       ],
       "why": {
         "en": "This is the step that breaks the loop. A notary can't check an ID you don't have, but California lets two people who know you vouch for who you are.",
-        "es": "Este es el paso que rompe el círculo. Un notario no puede revisar una identificación que no tienes, pero California permite que dos personas que te conocen confirmen quién eres."
+        "es": "Este es el paso que rompe el círculo. Un notario no puede revisar una identificación que no tienes, pero California permite que dos personas que te conocen den fe de quién eres."
       },
       "say": {
         "en": "I don't have an ID. These two people will identify me as credible witnesses under Civil Code 1185.",
@@ -605,7 +640,7 @@
       "id": "rrcc_mail",
       "label": {
         "en": "Mail the birth certificate request to LA County",
-        "es": "Envía por correo la solicitud del acta al Condado de Los Ángeles"
+        "es": "Envía por correo la solicitud de tu acta de nacimiento al condado de Los Ángeles"
       },
       "place": "mail",
       "requires": {
@@ -654,31 +689,31 @@
           "dollars": 0,
           "label": {
             "en": "free for fire-impacted residents",
-            "es": "gratis para afectados por los incendios"
+            "es": "gratis para personas afectadas por los incendios"
           },
           "sources": [
             "rrcc_fire",
-            "lafires_docs"
+            "lavote_recovery"
           ]
         }
       ],
       "days": 28,
       "bring": [
         {
-          "en": "The notarized Certificate of Identity and the request form",
-          "es": "El Certificado de Identidad notariado y el formulario"
+          "en": "The request form, with “I am requesting an AUTHORIZED copy” ticked",
+          "es": "El formulario, con la casilla “I am requesting an AUTHORIZED copy” (copia autorizada) marcada"
+        },
+        {
+          "en": "The notarized Certificate of Identity",
+          "es": "El Certificado de Identidad notariado"
         },
         {
           "en": "The signed homeless or foster-youth affidavit, if you have one, instead of a check",
           "es": "La declaración jurada firmada de persona sin hogar o de joven en cuidado de crianza, si la tienes, en vez de un cheque"
         },
         {
-          "en": "Tick “I am requesting an AUTHORIZED copy” on the form",
-          "es": "Marca en el formulario la casilla “I am requesting an AUTHORIZED copy” (copia autorizada)"
-        },
-        {
-          "en": "An address where you can get mail for the next 2 months, like your shelter or program (ask them first)",
-          "es": "Una dirección donde puedas recibir correo durante los próximos 2 meses, como tu albergue o programa (pregúntales primero)"
+          "en": "On the form, an address where you can get mail for the next 2 months, like your shelter or program (ask them first)",
+          "es": "En el formulario, una dirección donde puedas recibir correo durante los próximos 2 meses, como tu albergue o programa (pregúntales primero)"
         },
         {
           "en": "Mail it to: Registrar-Recorder/County Clerk, P.O. Box 489, Norwalk, CA 90651-0489",
@@ -687,10 +722,11 @@
       ],
       "why": {
         "en": "By mail, LA County asks for a notarized Certificate of Identity instead of a photo ID. That's why the notary step comes first.",
-        "es": "Por correo, el Condado de Los Ángeles pide un Certificado de Identidad notariado en lugar de una identificación con foto. Por eso el paso del notario va primero."
+        "es": "Por correo, el condado de Los Ángeles pide un Certificado de Identidad notariado en lugar de una identificación con foto. Por eso el paso del notario va primero."
       },
       "sources": [
         "lavote_mail",
+        "lavote_fees",
         "hsc103526"
       ],
       "verified": false
@@ -725,21 +761,22 @@
       "days": 14,
       "bring": [
         {
-          "en": "Your Medi-Cal card or school record. A birth certificate alone doesn't prove identity to SSA.",
-          "es": "Tu tarjeta de Medi-Cal o tu certificado de estudios. El acta de nacimiento sola no comprueba tu identidad ante el Seguro Social."
+          "en": "Your Medi-Cal card or school ID card. A birth certificate alone doesn't prove identity to SSA.",
+          "es": "Tu tarjeta de Medi-Cal o tu credencial escolar. El acta de nacimiento sola no comprueba tu identidad ante el Seguro Social."
         }
       ],
       "why": {
-        "en": "A replacement Social Security card is free. Without a photo ID, Social Security can accept other records, like a Medi-Cal card or a school record, to prove who you are.",
-        "es": "El reemplazo de la tarjeta de Seguro Social es gratis. Sin identificación con foto, el Seguro Social puede aceptar otros documentos, como la tarjeta de Medi-Cal o un certificado de estudios, para comprobar quién eres."
+        "en": "A replacement Social Security card is free. Without a photo ID, Social Security can accept other records, like a Medi-Cal card or a school ID card, to prove who you are.",
+        "es": "El reemplazo de la tarjeta de Seguro Social es gratis. Sin identificación con foto, el Seguro Social puede aceptar otros documentos, como la tarjeta de Medi-Cal o una credencial escolar, para comprobar quién eres."
       },
       "say": {
         "en": "I need a replacement Social Security card. I don't have a photo ID, so here's what I do have.",
-        "es": "Necesito un reemplazo de mi tarjeta de Seguro Social. No tengo identificación con foto, así que esto es lo que tengo."
+        "es": "Necesito un reemplazo de mi tarjeta de Seguro Social. No tengo identificación con foto, pero esto es lo que sí tengo."
       },
       "sources": [
         "ssa_replace",
-        "ssa_poms"
+        "ssa_poms",
+        "ssa_poms_school"
       ],
       "verified": false
     },
@@ -799,15 +836,15 @@
           "dollars": 0,
           "label": {
             "en": "no fee with DL 933",
-            "es": "sin costo con DL 933"
+            "es": "sin costo con el DL 933"
           },
           "sources": [
             "dmv_orgs",
             "vc14902"
           ],
           "say": {
-            "en": "I'm applying for a no-fee ID card. Here is my signed DL 933.",
-            "es": "Vengo a solicitar una identificación sin costo. Aquí está mi DL 933 firmado."
+            "en": "I'm applying for a no-fee standard ID card, not a REAL ID. Here is my signed DL 933.",
+            "es": "Vengo a solicitar una identificación estándar sin costo, no la REAL ID. Aquí está mi DL 933 firmado."
           }
         },
         {
@@ -824,8 +861,8 @@
             "dmv_senior"
           ],
           "say": {
-            "en": "I'm 62 or older and applying for a no-fee senior ID card.",
-            "es": "Tengo 62 años o más y vengo a solicitar una identificación sin costo para personas mayores."
+            "en": "I'm 62 or older and applying for a no-fee standard senior ID card, not a REAL ID.",
+            "es": "Tengo 62 años o más y vengo a solicitar una identificación estándar sin costo para personas mayores, no la REAL ID."
           }
         },
         {
@@ -835,14 +872,14 @@
           "dollars": 11,
           "label": {
             "en": "reduced fee with DL 937",
-            "es": "costo reducido con DL 937"
+            "es": "costo reducido con el DL 937"
           },
           "sources": [
-            "dmv_fees"
+            "dmv_fees_reduced"
           ],
           "say": {
-            "en": "I'm applying for a reduced-fee ID card. Here is my signed DL 937.",
-            "es": "Vengo a solicitar una identificación a costo reducido. Aquí está mi DL 937 firmado."
+            "en": "I'm applying for a reduced-fee standard ID card, not a REAL ID. Here is my signed DL 937.",
+            "es": "Vengo a solicitar una identificación estándar a costo reducido, no la REAL ID. Aquí está mi DL 937 firmado."
           }
         }
       ],
@@ -866,16 +903,16 @@
         },
         {
           "en": "DMV mails the card in about 3 to 4 weeks. Keep the paper receipt.",
-          "es": "El DMV envía la tarjeta en 3 a 4 semanas. Guarda el recibo."
+          "es": "El DMV te envía la tarjeta por correo en unas 3 a 4 semanas. Guarda el recibo de papel."
         }
       ],
       "why": {
-        "en": "For a first California ID, the DMV asks for three things: proof of who you are (like a birth certificate), your Social Security number, and proof of a California address.",
-        "es": "Para una primera identificación de California, el DMV pide tres cosas: comprobante de identidad (como el acta de nacimiento), tu número de Seguro Social y comprobante de domicilio en California."
+        "en": "For a first standard California ID (the card marked “Federal Limits Apply”), the DMV asks for three things: proof of who you are (like a birth certificate), your Social Security number, and proof of a California address. This path doesn't plan a REAL ID.",
+        "es": "Para una primera identificación estándar de California (la que dice “Federal Limits Apply”), el DMV pide tres cosas: comprobante de identidad (como el acta de nacimiento), tu número de Seguro Social y comprobante de domicilio en California. Este camino no incluye la REAL ID."
       },
       "say": {
-        "en": "I'm applying for a California ID card.",
-        "es": "Vengo a solicitar una identificación de California."
+        "en": "I'm applying for a standard California ID card, not a REAL ID.",
+        "es": "Vengo a solicitar una identificación estándar de California, no la REAL ID."
       },
       "sources": [
         "dmv_id_page",
@@ -922,7 +959,7 @@
           "dollars": 0,
           "label": {
             "en": "no fee with DL 933",
-            "es": "sin costo con DL 933"
+            "es": "sin costo con el DL 933"
           },
           "sources": [
             "dmv_orgs",
@@ -958,10 +995,10 @@
           "dollars": 11,
           "label": {
             "en": "reduced fee with DL 937",
-            "es": "costo reducido con DL 937"
+            "es": "costo reducido con el DL 937"
           },
           "sources": [
-            "dmv_fees"
+            "dmv_fees_reduced"
           ],
           "say": {
             "en": "I'm replacing my ID at the reduced fee. Here is my signed DL 937.",
@@ -1002,12 +1039,12 @@
         },
         {
           "en": "DMV mails the card in about 3 to 4 weeks. Keep the paper receipt.",
-          "es": "El DMV envía la tarjeta en 3 a 4 semanas. Guarda el recibo."
+          "es": "El DMV te envía la tarjeta por correo en unas 3 a 4 semanas. Guarda el recibo de papel."
         }
       ],
       "why": {
         "en": "If the DMV has a record of a license or ID you had before, you can ask for a replacement instead of applying from scratch.",
-        "es": "Si el DMV tiene registro de una licencia o identificación que tuviste antes, puedes pedir un reemplazo en vez de empezar desde cero."
+        "es": "Si el DMV tiene un registro de una licencia o identificación que tuviste antes, puedes pedir un reemplazo en vez de empezar desde cero."
       },
       "say": {
         "en": "I had a California ID before and I'd like to replace it.",
@@ -1015,7 +1052,8 @@
       },
       "sources": [
         "dmv_replace",
-        "dmv_id_page"
+        "dmv_id_page",
+        "dmv_fees"
       ],
       "verified": false
     }

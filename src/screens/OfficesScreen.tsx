@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Icon } from "../components";
 import { t, type Lang } from "../i18n";
-import { directionsUrl, groupHours, hasOffices, officeData, officesFor, sortOffices, zipCentroids } from "../offices";
+import { DAYS, type Day, directionsUrl, groupHours, hasOffices, officeData, officesFor, sortOffices, zipCentroids } from "../offices";
 import { href } from "../router";
 
 // Offices for one kind of place (DMV for now), from the snapshot in
@@ -16,6 +16,8 @@ export function OfficesScreen({ lang, kind }: { lang: Lang; kind: string }) {
   const full = /^\d{5}$/.test(zip);
   const known = full && !!zipCentroids[zip];
   const rows = sortOffices(list, known ? zip : "");
+  const today = (new Date().getDay() + 6) % 7; // index into DAYS, Monday first
+  const isToday = (from: Day, to: Day) => DAYS.indexOf(from) <= today && today <= DAYS.indexOf(to);
 
   return (
     <section className="screen offices">
@@ -28,9 +30,11 @@ export function OfficesScreen({ lang, kind }: { lang: Lang; kind: string }) {
       <div className="offices-zip">
         <label htmlFor="office-zip">{s.officesZip}</label>
         <input id="office-zip" type="text" inputMode="numeric" autoComplete="off" maxLength={5} pattern="[0-9]*"
-          value={zip} onChange={(e) => setZip(e.target.value.replace(/\D/g, "").slice(0, 5))} aria-describedby="office-zip-note" />
-        <p id="office-zip-note" className="row-sub" aria-live="polite">
-          {known ? s.officesSortedNear(zip) : full ? s.officesZipUnknown : s.officesZipNote}
+          value={zip} onChange={(e) => setZip(e.target.value.replace(/\D/g, "").slice(0, 5))} aria-describedby="office-zip-note"
+          aria-invalid={(full && !known) || undefined} />
+        <p id="office-zip-note" className={`row-sub${full && !known ? " zip-unknown" : ""}`} aria-live="polite">
+          {full && !known && <Icon name="alert" size={18} />}
+          <span>{known ? s.officesSortedNear(zip) : full ? s.officesZipUnknown : s.officesZipNote}</span>
         </p>
       </div>
 
@@ -39,12 +43,14 @@ export function OfficesScreen({ lang, kind }: { lang: Lang; kind: string }) {
           <li key={o.id} className="panel office">
             <h2 className="office-name">{o.name}{mi !== undefined && <span className="office-mi num"> · {s.officesMiles(mi)}</span>}</h2>
             <p className="office-addr">{o.address}<br />{o.city}, CA {o.zip}</p>
-            {o.hours && (
+            {o.hours && Object.values(o.hours).every((h) => h === "closed") ? (
+              <p className="office-closed">{s.officesClosedAll}</p>
+            ) : o.hours && (
               <dl className="office-hours" aria-label={s.officesHours}>
                 {groupHours(o.hours).map((g) => (
-                  <div key={g.from}>
+                  <div key={g.from} className={isToday(g.from, g.to) ? "is-today" : undefined}>
                     <dt>{g.from === g.to ? s.officesDay[g.from] : `${s.officesDay[g.from]}–${s.officesDay[g.to]}`}</dt>
-                    <dd>{g.value === "closed" ? s.officesClosed : g.value}</dd>
+                    <dd>{g.value === "closed" ? s.officesClosed : g.value}{isToday(g.from, g.to) && <span className="office-today"> · {s.officesToday}</span>}</dd>
                   </div>
                 ))}
               </dl>
@@ -53,6 +59,9 @@ export function OfficesScreen({ lang, kind }: { lang: Lang; kind: string }) {
               {o.phone && <a className="btn ghost small" href={`tel:${o.phone.replace(/[^\d+]/g, "")}`}><Icon name="phone" size={16} /> {s.officesCall(o.phone)}</a>}
               <a className="btn ghost small" href={directionsUrl(o)} target="_blank" rel="noopener noreferrer">
                 {s.officesDirections}<span className="sr-only"> {s.officesTo(o.name)}</span> <Icon name="external" size={16} />
+              </a>
+              <a className="btn ghost small" href={o.source} target="_blank" rel="noopener noreferrer">
+                {s.officesPage}<span className="sr-only">, {o.name}</span> <Icon name="external" size={16} />
               </a>
             </div>
           </li>

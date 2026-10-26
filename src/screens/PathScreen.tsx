@@ -1,10 +1,11 @@
-import { Br, Collapse, Icon, Notice, PathCard, Pills, Solver, Swap, Tween, Unconfirmed, money, placeOf } from "../components";
+import { Br, Collapse, Icon, LiveNote, Notice, PathCard, Pills, Solver, Swap, Tween, Unconfirmed, WasPrice, fullPrice, money, placeOf } from "../components";
 import { useListPresence } from "../motion";
 import type { Facts, Mode, Person, Plan, RuleSet, Step } from "../engine/types";
 import { t, type Lang } from "../i18n";
 import { href } from "../router";
-import { flipsThatMatter, noPathNotes, type NoPathNote } from "../whatif";
+import { flipsThatMatter, helpOptions, noPathNotes, type NoPathNote } from "../whatif";
 import { useEffect, useMemo, useState } from "react";
+import { under18 } from "../person";
 import { loadTicks, reminderFor, reminderIcs, saveTicks, ticksInPlan, toggleTick, type Ticks } from "../progress";
 
 // The hero screen: the total first, in brackets because the
@@ -63,8 +64,8 @@ export function StepList({ rules, lang, plan, done, onDone }: {
             <div className="slide-clip"><div className="slide-body">
             <a className="step-row" href={href({ name: "step", n: i + 1 })} tabIndex={phase === "leave" ? -1 : undefined}>
               <Swap className="row-num" text={String(i + 1)} />
+              <span className="label step-place">{placeOf(rules, st).label[lang]}</span>
               <span className="step-main">
-                <span className="label step-place">{placeOf(rules, st).label[lang]}</span>
                 <span className="step-title">{a.label[lang]}</span>
                 {was !== null && <span className="step-waiver">{st.waiver!.label[lang]}</span>}
                 <span className="step-when">{when}</span>
@@ -72,7 +73,7 @@ export function StepList({ rules, lang, plan, done, onDone }: {
               </span>
               <span className="step-cost">
                 <Swap className={`num${st.dollars === 0 ? " free" : ""}`} text={st.dollars === 0 ? s.free : money(st.dollars)} />
-                {was !== null && <s className="num">{money(was)}</s>}
+                {was !== null && <WasPrice dollars={was} lang={lang} />}
               </span>
               <Icon name="chevron" size={16} />
             </a>
@@ -104,7 +105,7 @@ export function NoPath({ rules, lang, person, onBack }: { rules: RuleSet; lang: 
   // Only offer "what if" when changing one answer would open a path; otherwise it leads to a dead end too.
   const canOpen = flipsThatMatter(rules, person, "cheapest").length > 0;
   return (
-    <section className="screen">
+    <section className="screen no-path">
       <div className="split">
         <div className="head">
           <h1 tabIndex={-1} className="display">{s.noPathTitle}</h1>
@@ -112,6 +113,7 @@ export function NoPath({ rules, lang, person, onBack }: { rules: RuleSet; lang: 
         </div>
         <div className="body">
           {notes.map((n) => <Notice key={n}>{text[n]}</Notice>)}
+          {under18(person.facts) && <Notice title={s.notYetTitle}>{s.notYetUnder18}</Notice>}
           {canOpen && (
             <div className="actions row">
               <a className="btn primary" href={href({ name: "whatif" })}>{s.tryWhatIf} <Icon name="arrow" size={18} /></a>
@@ -120,7 +122,7 @@ export function NoPath({ rules, lang, person, onBack }: { rules: RuleSet; lang: 
           <h2 className="label block-label">{s.noPathWho}</h2>
           <ul className="panel link-list">
             <li><a className="link-row" href="tel:211"><span className="link-main"><strong>{s.help211}</strong><span className="row-sub">{s.help211Line}</span></span><Icon name="phone" size={18} /></a></li>
-            <li><a className="link-row" href="tel:+12132413552"><span className="link-main"><strong>{s.helpLausd}</strong><span className="row-sub">{s.helpLausdLine}</span></span><Icon name="phone" size={18} /></a></li>
+            {helpOptions(person).includes("lausd") && <li><a className="link-row" href="tel:+12132413552"><span className="link-main"><strong>{s.helpLausd}</strong><span className="row-sub">{s.helpLausdLine}</span></span><Icon name="phone" size={18} /></a></li>}
           </ul>
           <div className="actions row">
             <button className="btn ghost" onClick={onBack}>{s.changeAnswers}</button>
@@ -173,6 +175,7 @@ export function PathScreen(props: {
               <Pills label={s.modesLabel} value={mode} onChange={onMode}
                 options={[["cheapest", s.modeCheapest], ["fewestTrips", s.modeTrips], ["fastest", s.modeFastest]] as const} />
               <p className="mode-hint"><Swap text={s.modeHint[mode]} /></p>
+              <LiveNote text={`${{ cheapest: s.modeCheapest, fewestTrips: s.modeTrips, fastest: s.modeFastest }[mode]}. ${s.cardSummary({ total: result.total.dollars, full: fullPrice(result), steps: result.total.steps, trips: result.total.trips, days: result.total.days })}`} />
             </div>
             <StepList rules={rules} lang={lang} plan={result} done={done} onDone={setTick} />
           </Solver>
@@ -180,6 +183,7 @@ export function PathScreen(props: {
           {unverified > 0
             ? <Notice tone="draft" title={s.callAhead}>{s.unverifiedNote(unverified, result.steps.length)}</Notice>
             : <Notice tone="accent">{s.allVerified}</Notice>}
+          {under18(props.person.facts) && <Notice title={s.notYetTitle}>{s.notYetUnder18}</Notice>}
 
           <Collapse show={!!help}>{help && (
             <div className="panel help">

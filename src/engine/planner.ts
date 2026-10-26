@@ -146,13 +146,18 @@ function unwind(n: Node, mode: Mode, explored: number): Plan {
  * Documents worth suggesting to this person: ones they could go looking for
  * (an old ID, a birth certificate), not forms only an agency can issue; that
  * they don't hold; that their path doesn't already get them; and that can
- * exist for them (no U.S. birth certificate for someone born abroad).
+ * exist for them (no U.S. birth certificate for someone born abroad, and no
+ * green card or naturalization certificate for someone born in the U.S.).
  */
+const BORN_IN_US = new Set(["la_county", "california", "us_state"]);
+
 export function suggestable(rules: RuleSet, person: Person, base: Plan | null): DocId[] {
   const produced = new Set(base?.steps.flatMap((s) => s.action.produces) ?? []);
+  const born = person.facts.born;
   return Object.keys(rules.docs).filter((d) =>
     rules.docs[d].askAtIntake && !person.have.includes(d) && !produced.has(d) &&
-    !(d === "birth_cert_ca" && person.facts.born === "abroad"));
+    !(d === "birth_cert_ca" && born === "abroad") &&
+    !(d === "immigration_doc" && typeof born === "string" && BORN_IN_US.has(born)));
 }
 
 // A photo ID is what the person is trying to get, so "get a passport first"

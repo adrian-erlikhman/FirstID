@@ -15,7 +15,7 @@ for (const [name, t] of Object.entries(P)) {
   const checks = [
     ["ink on page", t.ink, t.ground, 4.5], ["ink on panel", t.ink, t.panel, 4.5], ["ink on hover row", t.ink, t.wash, 4.5],
     ["ink on picked row", t.ink, t.pick, 4.5], ["secondary text on page", t.text2, t.ground, 4.5], ["secondary on panel", t.text2, t.panel, 4.5],
-    ["secondary on hover row", t.text2, t.wash, 4.5], ["headline second voice on page (large text, 3:1)", t.slate, t.ground, 3], ["secondary text on grey tile", t.text2, t.wash, 4.5], ["button text on blue", "#ffffff", t.cta, 4.5], ["link on page", t.link, t.ground, 4.5],
+    ["secondary on hover row", t.text2, t.wash, 4.5], ["secondary on picked row (mixed with ink)", mix(t.text2, t.ink, 0.8), t.pick, 4.5], ["step numbers (secondary) on page", t.text2, t.ground, 4.5], ["headline second voice on page (large text, 3:1)", t.slate, t.ground, 3], ["secondary text on grey tile", t.text2, t.wash, 4.5], ["button text on blue", "#ffffff", t.cta, 4.5], ["link on page", t.link, t.ground, 4.5],
     ["primary button text", t.onInk, t.ink, 4.5], ["picked choice text", t.onInk, t.ink, 4.5],
     ["path card text (72% white on black)", mix(t.onInk, t.ink, 0.72), t.ink, 4.5],
     ["control outline on panel", t.control, t.panel, 3], ["control outline on page", t.control, t.ground, 3], ["checkbox fill vs panel", t.ink, t.panel, 3],
