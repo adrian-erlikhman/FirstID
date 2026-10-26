@@ -23,6 +23,7 @@ const render = (person: Person, lang: Lang) =>
 const NOTE_TEXT: Record<NoPathNote, (l: Lang) => string> = {
   bornCA: (l) => t[l].noPathBornCA,
   bornElsewhere: (l) => t[l].noPathBornElsewhere,
+  bornAbroad: (l) => t[l].noPathBornAbroad,
   allUnsure: (l) => t[l].noPathAllUnsure,
   needAddress: (l) => t[l].noPathNeedAddress,
   needWitnesses: (l) => t[l].noPathNeedWitnesses,
@@ -33,6 +34,7 @@ const NOTE_TEXT: Record<NoPathNote, (l: Lang) => string> = {
 const luisNoOldId: Person = { facts: personas.luis.facts, have: personas.luis.have.filter((d) => d !== "dmv_record") };
 const DEAD_ENDS: [string, Person, NoPathNote[]][] = [
   ["Luis without his old ID (born in Texas, no witnesses)", luisNoOldId, ["bornElsewhere"]],
+  ["born abroad, no papers but a Social Security number", { facts: { born: "abroad", age: 30, unhoused: true, hasWitnesses: true }, have: ["ssn_known"] }, ["bornAbroad"]],
   ["born elsewhere in California", { facts: { born: "california", age: 30, unhoused: true, hasWitnesses: true }, have: ["ssn_known"] }, ["bornCA"]],
   ["every yes/no answer 'Not sure'", { facts: { born: "la_county", age: 30 }, have: ["ssn_known"] }, ["allUnsure"]],
   ["housed, no paper with an address", { facts: { born: "la_county", age: 30, unhoused: false, hasWitnesses: true }, have: ["ssn_known"] }, ["needAddress"]],

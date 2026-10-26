@@ -41,7 +41,11 @@ export interface FlipOption {
 
 export function flipsThatMatter(rules: RuleSet, person: Person, mode: Mode, max = 4): FlipOption[] {
   const base = plan(rules, person, mode);
-  const docFlips: Flip[] = suggestable(rules, person, base).map((doc) => ({ kind: "doc", doc }));
+  const docs = suggestable(rules, person, base);
+  // Born abroad: a green card or naturalization certificate is the paper they are
+  // likeliest to have, so it wins a tie with a U.S. passport in the dedupe below.
+  if (person.facts.born === "abroad") docs.sort((a, b) => Number(b === "immigration_doc") - Number(a === "immigration_doc"));
+  const docFlips: Flip[] = docs.map((doc) => ({ kind: "doc", doc }));
   const factFlips: Flip[] = FLIPPABLE_FACTS.map((fact) => ({ kind: "fact", fact }));
 
   const score = (p: Plan | null) => (p ? [p.total.dollars, p.total.trips, p.total.days, p.total.steps] : [Infinity, Infinity, Infinity, Infinity]);
@@ -70,14 +74,15 @@ export function flipsThatMatter(rules: RuleSet, person: Person, mode: Mode, max 
 }
 
 /** Plain reasons shown on the no-path screen, for the common dead ends. */
-export type NoPathNote = "bornCA" | "bornElsewhere" | "allUnsure" | "needAddress" | "needWitnesses" | "needSsn";
+export type NoPathNote = "bornCA" | "bornElsewhere" | "bornAbroad" | "allUnsure" | "needAddress" | "needWitnesses" | "needSsn";
 
 export function noPathNotes(rules: RuleSet, person: Person, mode: Mode = "cheapest"): NoPathNote[] {
   if (plan(rules, person, mode)) return [];
   const notes: NoPathNote[] = [];
   const { facts, have } = person;
   if (facts.born === "california") notes.push("bornCA");
-  if (facts.born === "us_state" || facts.born === "abroad") notes.push("bornElsewhere");
+  if (facts.born === "us_state") notes.push("bornElsewhere");
+  if (facts.born === "abroad") notes.push("bornAbroad");
   if (FLIPPABLE_FACTS.every((f) => facts[f] === undefined)) { notes.push("allUnsure"); return notes; }
   // What's blocking: ask the planner whether one missing piece would open a path.
   type Fix = [NoPathNote, boolean, (p: Person) => Person];

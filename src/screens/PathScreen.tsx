@@ -97,7 +97,7 @@ function StepList({ rules, lang, plan, done, onDone }: {
 export function NoPath({ rules, lang, person, onBack }: { rules: RuleSet; lang: Lang; person: Person; onBack: () => void }) {
   const s = t[lang];
   const text: Record<NoPathNote, string> = {
-    bornCA: s.noPathBornCA, bornElsewhere: s.noPathBornElsewhere,
+    bornCA: s.noPathBornCA, bornElsewhere: s.noPathBornElsewhere, bornAbroad: s.noPathBornAbroad,
     allUnsure: s.noPathAllUnsure, needAddress: s.noPathNeedAddress, needWitnesses: s.noPathNeedWitnesses, needSsn: s.noPathNeedSsn,
   };
   const notes = noPathNotes(rules, person);

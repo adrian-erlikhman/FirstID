@@ -39,7 +39,9 @@ describe("what-if toggles", () => {
     const person = { facts: { born: "abroad", age: 30, unhoused: true }, have: ["ssn_known"] };
     const docs = flipsThatMatter(rules, person, "cheapest", 99).flatMap((o) => (o.flip.kind === "doc" ? [o.flip.doc] : []));
     expect(docs).not.toContain("birth_cert_ca");
-    expect(docs).toContain("us_passport");
+    // A U.S. passport gives the same path, so the green card or naturalization
+    // certificate is the one shown: it is what most people born abroad have.
+    expect(docs).toContain("immigration_doc");
   });
 
   it("never suggests a green card or naturalization certificate to someone born in the U.S.", () => {

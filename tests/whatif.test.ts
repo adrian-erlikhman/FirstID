@@ -77,6 +77,14 @@ describe("what-if and 'what would help most'", () => {
     expect(rules.docs.birth_cert_ca.label.en).not.toMatch(/^California|California birth/i);
   });
 
+  it("someone born abroad with no path is offered a green card or naturalization certificate first", () => {
+    const person: Person = { facts: { born: "abroad", age: 30, unhoused: true, hasWitnesses: true }, have: ["ssn_known"] };
+    expect(plan(rules, person)).toBeNull();
+    const first = flipsThatMatter(rules, person, "cheapest")[0];
+    expect(first.flip).toEqual({ kind: "doc", doc: "immigration_doc" });
+    expect(first.plan).not.toBeNull();
+  });
+
   it("applying a what-if only adds papers or turns answers, never removes a paper", () => {
     for (const p of Object.values(personas)) {
       for (const o of flipsThatMatter(rules, p, "cheapest", 99)) {
