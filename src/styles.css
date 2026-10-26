@@ -124,7 +124,9 @@ h1.display .bracketed .num { color: var(--on-c); background: var(--hl); padding:
 /* Phones: the bar holds the mark, the button and EN/ES on one line. Where
    "Buscar mi camino" can't fit, the button steps aside; the hero has the same one. */
 @media (max-width: 400px) { .top-inner { gap: 6px; } .nav-cta { padding: 4px 10px !important; } }
-@media (max-width: 389px) { :root[lang="es"] .nav-cta { display: none; } }
+/* With the Aa button, "Buscar mi camino" needs about 430px; narrower, it
+   pushed Aa into the right gutter. */
+@media (max-width: 429px) { :root[lang="es"] .nav-cta { display: none; } }
 @media (max-width: 349px) { .nav-cta { display: none; } }
 .lang { display: inline-flex; gap: 2px; padding: 2px; border-radius: 980px; background: var(--tile); }
 .lang button { min-width: 44px; min-height: 30px; border: 0; border-radius: 980px; background: transparent; font-size: 13px; font-weight: 500; color: var(--text-2); }
@@ -166,7 +168,12 @@ h1.display .bracketed .num { color: var(--on-c); background: var(--hl); padding:
 .btn.small { min-height: 36px; padding: 7px 15px; font-size: 0.9063rem; }
 .actions { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 16px; margin-top: 24px; }
 .actions.stack { flex-direction: column; align-items: stretch; }
-.actions.pair { display: grid; grid-template-columns: 1fr 1fr; }
+/* Two buttons side by side, equal width while both labels fit on one line.
+   When a label is too long (Spanish, larger text) the second button drops to
+   its own row instead of breaking the label in two. */
+.actions.pair { display: flex; flex-wrap: wrap; }
+.actions.pair > .btn { flex: 1 1 0; min-width: fit-content; }
+@media (max-width: 639px) { .actions.pair { column-gap: 10px; } .actions.pair > .btn { padding-left: 16px; padding-right: 16px; } }
 .actions.sticky {
   position: sticky; bottom: 0; z-index: 2; margin-top: 8px;
   padding: 16px 0 calc(14px + env(safe-area-inset-bottom, 0px));
@@ -282,10 +289,10 @@ h1.display .bracketed .num { color: var(--on-c); background: var(--hl); padding:
 .cost-card { display: flex; flex-direction: column; gap: 14px; width: 100%; padding: 22px 24px 20px;
   background: var(--wash); color: var(--ink); border-radius: var(--r-tile); text-align: left; font-variant-numeric: tabular-nums; }
 .cc-top { display: flex; justify-content: space-between; align-items: center; gap: 12px; font-size: 1rem; font-weight: 600; color: var(--text-2); }
-.cc-mode { padding: 2px 9px; border-radius: 7px; background: var(--hl); color: #0a0a0a; font-size: 0.875rem; font-weight: 600; }
+.cc-mode { padding: 2px 9px; border-radius: 7px; background: var(--hl); color: var(--on-c); font-size: 0.875rem; font-weight: 600; }
 .cc-total { display: flex; flex-wrap: wrap; align-items: flex-end; gap: 6px 18px; }
 .cc-big { font-size: clamp(3.5rem, 13vw, 5.25rem); font-weight: 700; line-height: 0.95; letter-spacing: -0.035em; color: var(--ink); }
-.cc-was { display: flex; flex-direction: column; padding-bottom: 6px; font-size: 1rem; line-height: 1.35; color: var(--text-2); }
+.cc-was { display: flex; flex-direction: column; padding-bottom: 6px; font-size: 1rem; line-height: 1.35; color: var(--text-2); animation: swap-in .4s var(--ease) both; }
 .cc-fields { display: grid; grid-template-columns: repeat(3, auto); justify-content: start; gap: 2px 32px; margin: 2px 0 0; padding-top: 14px; border-top: 1px solid var(--line); }
 .cc-fields div { display: flex; flex-direction: column-reverse; }
 .cc-fields dt { font-size: 0.875rem; color: var(--text-2); }
@@ -370,7 +377,7 @@ h1.display .bracketed .num { color: var(--on-c); background: var(--hl); padding:
   transform: perspective(900px) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg)); transition: transform .45s var(--ease);
 }
 .tile-big { font-size: 60px; font-weight: 600; letter-spacing: -0.05em; line-height: 1; }
-.tile-sub { font-size: 1.125rem; line-height: 1.35; color: var(--text-2); max-width: 18em; }
+.tile-sub { font-size: 1.125rem; line-height: 1.35; color: var(--text-2); max-width: 18em; text-wrap: pretty; }
 /* The scale behind Maria's path: the highlighter yellow, the numbers set big and tight.
    (Not black: the forms band right below is black.) */
 .t-scale { background: var(--hl); color: var(--on-c); }
@@ -459,7 +466,7 @@ h2.display.wide { max-width: 20ch; margin-bottom: 28px; }
 
 /* old link rows (no-path help) */
 .link-row {
-  width: 100%; display: grid; grid-template-columns: minmax(0, 1fr) auto 16px; gap: 14px; align-items: center;
+  width: 100%; display: grid; grid-template-columns: minmax(0, 1fr) 18px; gap: 14px; align-items: center; /* text, then the icon at the right edge */
   min-height: 64px; padding: 14px 18px; border: 0; background: transparent; color: var(--ink); text-align: left; text-decoration: none;
 }
 .link-row:hover { background: var(--wash); }
@@ -590,10 +597,10 @@ h2.display.wide { max-width: 20ch; margin-bottom: 28px; }
 .mini-clip { min-height: 0; overflow: hidden; }
 .mini-in {
   display: grid; grid-template-columns: 24px minmax(0, 1fr) auto; gap: 10px; padding: 11px 18px;
-  font-size: 15.5px; line-height: 1.35;
+  font-size: 1rem; line-height: 1.35;
 }
 .mini-steps li + li .mini-in { border-top: 1px solid var(--line); }
-.mini-steps .num { font-size: 15px; font-weight: 600; justify-self: end; }
+.mini-steps .num { font-size: 1rem; font-weight: 600; justify-self: end; align-self: start; } /* "Free" keeps its own height on a two-line step */
 @keyframes step-in { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
 .whatif-none { padding: 24px 18px; margin: 0; font-size: 1.125rem; }
 .compare { font-size: 0.8438rem; color: var(--text-2); margin: 10px 4px 0; font-variant-numeric: tabular-nums; }
@@ -696,7 +703,9 @@ h2.display.wide { max-width: 20ch; margin-bottom: 28px; }
   .papers { grid-template-columns: 1fr 1fr; gap: 24px; align-items: start; }
   .papers .p-b { margin-top: 48px; }
   .step-row { padding: 16px 18px; gap: 14px; }
-  .path-card { max-width: 540px; margin: 4px 0 28px; align-items: flex-start; }
+  /* Full column width, so its edges line up with the steps panel below, and
+     the mode tag stays at the right edge as it does on phones. */
+  .path-card { margin: 4px 0 28px; }
 }
 @media (min-width: 980px) {
   .screen { padding-top: 48px; }
@@ -802,7 +811,7 @@ h2.display.wide { max-width: 20ch; margin-bottom: 28px; }
   .bring-line + .bring-line { margin-top: 1px; }
   .sheet-foot { font-size: 7.5pt; margin-top: 8px; padding-top: 5px; }
 }
-.actions + .block-label { margin-top: 32px; }
+.actions + .block-label, .notice + .block-label { margin-top: 32px; } /* no-path screen: room above "Who can help today" with or without the what-if button */
 
 /* ==== Card and shared-component accessibility (a11y pass) ================
    Kept together at the end of the file on purpose. */
@@ -830,7 +839,7 @@ main h1:focus { box-shadow: none !important; } /* headings take focus on a new s
 
 /* ===== Say this tools: Show the clerk + Read aloud (src/screens/SayTools.tsx) ===== */
 .say-tools { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 12px; }
-.say-tool { flex: 1 1 150px; min-height: 48px; padding: 10px 16px; font-size: 1rem; }
+.say-tool { flex: 1 1 0; min-width: fit-content; min-height: 48px; padding: 10px 16px; font-size: 1rem; } /* side by side, or stacked rather than a label broken in two */
 .btn.say-tool.is-on, .btn.say-tool.is-on:hover { background: var(--cta); color: #fff; box-shadow: none; }
 /* Full screen, black on white whatever the theme, for holding up at a counter. */
 .clerk {
