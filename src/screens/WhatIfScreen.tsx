@@ -6,6 +6,9 @@ import { useListPresence } from "../motion";
 import { t, type Lang } from "../i18n";
 import { applyFlips, flipKey, flipsThatMatter, samePlan, type Flip } from "../whatif";
 
+// "5 steps", "~7 wks": a number and its unit wrap as one piece, never "~7" / "sem.".
+const keep = (x: string) => x.replace(/ /g, "\u00a0");
+
 // Flip an answer, the planner runs again, and the steps that drop out
 // slide away while the card counts to the new total. The only motion in the app is here and on the brackets, because
 // the change in the path is the point.
@@ -76,7 +79,7 @@ export function WhatIfScreen(props: {
             <Collapse show={on.length > 0 && !!base}>
               {base && (
                 <p className="compare">
-                  <Swap text={samePlan(result, base) ? s.sameAsNow : s.nowWas(money(base.total.dollars), `${base.total.steps} ${s.unitSteps(base.total.steps)}`, `${base.total.trips} ${s.unitTrips(base.total.trips)}`, s.timeShort(base.total.days))} />
+                  <Swap text={samePlan(result, base) ? s.sameAsNow : s.nowWas(money(base.total.dollars), keep(`${base.total.steps} ${s.unitSteps(base.total.steps)}`), keep(`${base.total.trips} ${s.unitTrips(base.total.trips)}`), keep(s.timeShort(base.total.days)))} />
                 </p>
               )}
             </Collapse>
