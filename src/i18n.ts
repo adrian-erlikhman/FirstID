@@ -324,7 +324,7 @@ const es: Strings = {
   appName: "First ID",
   back: "Atrás",
   stepOf: (n, total) => `Paso ${n} de ${total}`,
-  notLegalAdvice: "Esto no es asesoría legal. Las reglas cambian, y cada paso enlaza a su fuente.",
+  notLegalAdvice: "Esto no es asesoría legal. Las reglas cambian y cada paso enlaza a su fuente.",
   free: "Gratis",
   yes: "Sí", no: "No", notSure: "No sé",
   homeLabel: "inicio",
@@ -550,7 +550,7 @@ const es: Strings = {
   howPlanTitle: "Cómo se calcula tu camino",
   howPlan: [
     "Cada regla dice qué necesita, qué te da, cuánto cuesta y qué exenciones de pago aplican.",
-    "La aplicación busca entre las secuencias de pasos que terminan en una tarjeta de identificación de California y encuentra la más barata, o la de menos viajes o la espera más corta si ordenas así. No usa IA ni azar, así que las mismas respuestas siempre dan el mismo camino.",
+    "La aplicación busca entre las secuencias de pasos que terminan en una tarjeta de identificación de California y encuentra la más barata, o la de menos viajes o la de espera más corta si eliges ese orden. No usa IA ni azar, así que las mismas respuestas siempre dan el mismo camino.",
     "Tener más documentos nunca puede empeorar tu camino. Lo comprobamos con cada cambio al código.",
   ],
   realTitle: "Qué es real",
