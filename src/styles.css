@@ -787,7 +787,7 @@ h2.display.wide { max-width: 20ch; margin-bottom: 28px; }
   .sheet-row.head { font-size: 0.6563rem; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; border-bottom: 1.5px solid #111; padding: 6px 0; }
   .sheet-says { grid-template-columns: 1fr 1fr; }
 }
-@media (min-width: 980px) { .packet-screen .sheet { max-width: 900px; } }
+@media (min-width: 980px) { .packet-screen .sheet, .packet-screen .packet-bar { max-width: 900px; } } /* the Print button lines up with the sheet's right edge */
 
 /* ---------- print: only the packet sheet ---------- */
 @page { size: letter; margin: 0.4in 0.45in; }
