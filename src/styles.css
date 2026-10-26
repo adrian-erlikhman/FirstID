@@ -282,10 +282,10 @@ h1.display .bracketed .num { color: var(--on-c); background: var(--hl); padding:
 .cost-card { display: flex; flex-direction: column; gap: 14px; width: 100%; padding: 22px 24px 20px;
   background: var(--wash); color: var(--ink); border-radius: var(--r-tile); text-align: left; font-variant-numeric: tabular-nums; }
 .cc-top { display: flex; justify-content: space-between; align-items: center; gap: 12px; font-size: 1rem; font-weight: 600; color: var(--text-2); }
-.cc-mode { padding: 2px 9px; border-radius: 7px; background: var(--hl); color: #0a0a0a; font-size: 0.875rem; font-weight: 600; }
+.cc-mode { padding: 2px 9px; border-radius: 7px; background: var(--hl); color: var(--on-c); font-size: 0.875rem; font-weight: 600; }
 .cc-total { display: flex; flex-wrap: wrap; align-items: flex-end; gap: 6px 18px; }
 .cc-big { font-size: clamp(3.5rem, 13vw, 5.25rem); font-weight: 700; line-height: 0.95; letter-spacing: -0.035em; color: var(--ink); }
-.cc-was { display: flex; flex-direction: column; padding-bottom: 6px; font-size: 1rem; line-height: 1.35; color: var(--text-2); }
+.cc-was { display: flex; flex-direction: column; padding-bottom: 6px; font-size: 1rem; line-height: 1.35; color: var(--text-2); animation: swap-in .4s var(--ease) both; }
 .cc-fields { display: grid; grid-template-columns: repeat(3, auto); justify-content: start; gap: 2px 32px; margin: 2px 0 0; padding-top: 14px; border-top: 1px solid var(--line); }
 .cc-fields div { display: flex; flex-direction: column-reverse; }
 .cc-fields dt { font-size: 0.875rem; color: var(--text-2); }
@@ -691,7 +691,9 @@ h2.display.wide { max-width: 20ch; margin-bottom: 28px; }
   .papers { grid-template-columns: 1fr 1fr; gap: 24px; align-items: start; }
   .papers .p-b { margin-top: 48px; }
   .step-row { padding: 16px 18px; gap: 14px; }
-  .path-card { max-width: 540px; margin: 4px 0 28px; align-items: flex-start; }
+  /* Full column width, so its edges line up with the steps panel below, and
+     the mode tag stays at the right edge as it does on phones. */
+  .path-card { margin: 4px 0 28px; }
 }
 @media (min-width: 980px) {
   .screen { padding-top: 48px; }
