@@ -943,7 +943,12 @@ main h1:focus { box-shadow: none !important; } /* headings take focus on a new s
   border: 1px solid var(--control); background: var(--panel); color: var(--ink);
   font: 500 1.25rem/1.2 var(--font); letter-spacing: 0.08em; font-variant-numeric: tabular-nums;
 }
-.offices-zip .row-sub { margin-top: 8px; }
+.offices-zip .row-sub { margin-top: 8px; text-wrap: pretty; }
+/* A ZIP we can't place: the note turns to ink with a mark, and the box's
+   outline matches, so it reads as "this didn't work", not as the usual hint. */
+.offices-zip .zip-unknown { display: flex; gap: 8px; align-items: flex-start; color: var(--ink); }
+.offices-zip .zip-unknown .icon { margin-top: 2px; }
+.offices-zip input[aria-invalid="true"] { border-color: var(--ink); border-width: 2px; padding: 9px 13px; }
 .office-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 12px; }
 .office { padding: 16px 18px; display: flex; flex-direction: column; }
 .office-name { margin: 0 0 4px; font-size: 1.125rem; font-weight: 600; line-height: 1.3; }
