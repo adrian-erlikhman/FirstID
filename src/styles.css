@@ -500,6 +500,10 @@ h2.display.wide { max-width: 20ch; margin-bottom: 28px; }
 .box .icon path, .tick-box .icon path { stroke-dasharray: 22; stroke-dashoffset: 22; transition: stroke-dashoffset .35s var(--ease) .05s; }
 .check-row[aria-checked="true"] .box .icon path, .tick input:checked + .tick-box .icon path { stroke-dashoffset: 0; }
 .check-list.single { margin-top: 12px; }
+/* The first and last rows take the panel's round corners, so the keyboard
+   focus ring follows them instead of being cut off square at the corners. */
+.check-list > li:first-child > .check-row { border-top-left-radius: var(--r); border-top-right-radius: var(--r); }
+.check-list > li:last-child > .check-row { border-bottom-left-radius: var(--r); border-bottom-right-radius: var(--r); }
 /* Phones: "Next" takes the full width, like "Show my path" on the next screen,
    and the two quiet links share the row below it in English and Spanish alike,
    their words lined up with the list's left edge. */
