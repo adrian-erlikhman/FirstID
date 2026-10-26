@@ -492,6 +492,10 @@ h2.display.wide { max-width: 20ch; margin-bottom: 28px; }
   display: grid; place-items: center; color: var(--on-ink);
 }
 .check-row[aria-checked="true"] .box { background: var(--cta); box-shadow: none; color: #fff; }
+/* The box and its tick grow with the "Aa" text size (22px and 15px at normal size),
+   so at the largest size they still match the words beside them. */
+.check-row .box { width: 1.3333em; height: 1.3333em; border-radius: .3em; }
+.check-row .box .icon { width: .9091em; height: .9091em; }
 .check-row[aria-checked="true"] { box-shadow: inset 4px 0 0 var(--cta); }
 /* The tick draws itself in, the box fills and gives a little on press. */
 .check-row { transition: background-color .3s var(--ease), box-shadow .3s var(--ease); -webkit-tap-highlight-color: transparent; }
