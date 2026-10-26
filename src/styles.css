@@ -769,6 +769,7 @@ h2.display.wide { max-width: 20ch; margin-bottom: 28px; }
 .sheet-row.head { display: none; }
 .sheet .box { width: 16px; height: 16px; box-shadow: inset 0 0 0 2px #111; border-radius: 3px; margin-top: 2px; background: #fff; }
 .sheet-where { font-size: 0.75rem; color: #333; }
+.sheet-flag { white-space: nowrap; font-weight: 600; color: #111; } /* "· CALL AHEAD" never starts a line or splits */
 .sheet-small { font-size: 0.75rem; color: #222; }
 .bring-line { display: block; }
 .bring-line + .bring-line { margin-top: 3px; }
