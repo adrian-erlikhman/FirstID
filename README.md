@@ -30,7 +30,7 @@ data/rules.json ──► npm run lint:rules ──► planner (in the browser) 
 4. **Every step cites its source** and quotes the sentence that supports it; we check each quote against its source when we verify the rule. The "How we know" screen lists every rule with its sources; a fee waiver's sources show on the step where it applies.
 5. **What-if and dead ends.** The app shows which answers would change your path, and when there's no path it says what's blocking it and who can help.
 
-The tests ([`tests/`](tests/)) cover the planner, four invented people checked against hand-worked plans, the "more documents never hurts" guarantee, the what-if and no-path logic, the links between screens, the office list and the progress logic. `npm run check` runs all of it plus the build, and nothing deploys unless it passes.
+The tests ([`tests/`](tests/)) cover the planner, four invented people checked against hand-worked plans, the "more documents never hurts" guarantee, the what-if and no-path logic, the links between screens, the office list, the progress logic, that Read aloud never picks an online voice, and that the offline copy is always the app. `npm run check` runs all of it plus the build, and nothing deploys unless it passes.
 
 ## What's real and what's made up
 
@@ -75,7 +75,7 @@ data/          rules, DMV offices and ZIP centres, each with sources
 src/engine/    types, rule linter and the planner (Dijkstra)
 src/screens/   every screen, from home to the printed packet
 src/           app state, routes, what-if, progress, strings (EN/ES), styles
-tests/         planner, persona, what-if, no-path, packet, translation, rules-data, office and progress tests (Vitest)
+tests/         planner, persona, what-if, no-path, packet, translation, rules-data, office, progress, Read aloud and offline tests (Vitest)
 public/        icons, manifest and the offline service worker
 scripts/       the rule linter's command line, the colour contrast check and a browser accessibility audit
 docs/          background research and team notes
