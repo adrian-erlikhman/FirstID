@@ -864,7 +864,7 @@ main h1:focus { box-shadow: none !important; } /* headings take focus on a new s
   min-height: 52px; padding: 10px 20px; border-radius: 980px; border: 2px solid #000;
   background: #000; color: #fff; font-size: 18px; font-weight: 600;
 }
-.clerk-close:focus-visible { outline: 3px solid #0071e3; outline-offset: 3px; }
+.clerk-close:focus-visible { outline: 2px solid #000; outline-offset: 2px; } /* the app's black ring in its yellow halo, not a third colour */
 .clerk-box { flex: 1; min-height: 0; overflow: auto; display: flex; align-items: center; margin-top: 12px; }
 .clerk-say {
   margin: auto 0; width: 100%; font-size: 32px; font-weight: 700; line-height: 1.18; letter-spacing: -0.02em;
