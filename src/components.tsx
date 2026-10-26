@@ -313,7 +313,7 @@ export const money = (d: number) => `$${d}`;
 
 /** What the same steps would cost with no fee waivers. */
 export const fullPrice = (p: Plan) => p.steps.reduce((sum, st) => sum + st.action.dollars, 0);
-export const waiverCount = (p: Plan) => p.steps.filter((st) => st.waiver && st.dollars < st.action.dollars).length;
+const waiverCount = (p: Plan) => p.steps.filter((st) => st.waiver && st.dollars < st.action.dollars).length;
 
 /** What to say at the counter: the waiver's line if one applies, else the step's own. */
 export const sayFor = (st: Step) => st.waiver?.say ?? st.action.say;

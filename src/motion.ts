@@ -12,7 +12,7 @@ type Nav = Navigator & { connection?: { saveData?: boolean }; deviceMemory?: num
  *  Android). Core counts are not used: Safari on iOS reports a clamped
  *  hardwareConcurrency, which would turn every iPhone into light mode.
  *  Browsers that don't say count as fast. */
-export function liteDevice() {
+function liteDevice() {
   if (typeof navigator === "undefined") return false;
   const n = navigator as Nav;
   const mem = n.deviceMemory;
@@ -190,7 +190,7 @@ export function usePresence(show: boolean, ms = 450) {
   return { mounted: phase !== "closed", open: phase === "expanding" || phase === "open", settled: phase === "open" };
 }
 
-export type Row<T> = { item: T; key: string; phase: "first" | "enter" | "in" | "leave"; num: number };
+type Row<T> = { item: T; key: string; phase: "first" | "enter" | "in" | "leave"; num: number };
 
 /** A list whose rows slide in and out instead of popping: a removed row stays
  *  where it was while it collapses, a new row starts collapsed and opens. */
