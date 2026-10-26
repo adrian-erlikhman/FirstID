@@ -29,9 +29,6 @@ const en = {
   heroLede: "The cheapest legal way to a California ID card, with the rule for each step and its source.",
   heroNote: "It's free, there's no account, and your answers stay on your phone.",
   heroEyebrow: "For Los Angeles County",
-  flip: "Flip the card", flipBack: "Flip it back",
-  cardBackTitle: "Each step and the law it rests on.",
-  cardBackNote: "Tap any step in the app to read its source.",
   mariaName: "Maria",
   // Short names for the back of the card, where each step gets one line.
   stepShort: {
@@ -344,9 +341,6 @@ const es: Strings = {
   heroLede: "La forma legal más barata de sacar una tarjeta de identificación de California, con la regla de cada paso y su fuente.",
   heroNote: "Es gratis, no necesitas cuenta y tus respuestas se quedan en tu teléfono.",
   heroEyebrow: "Para el condado de Los Ángeles",
-  flip: "Voltear la tarjeta", flipBack: "Voltearla de nuevo",
-  cardBackTitle: "Cada paso y la ley en la que se basa.",
-  cardBackNote: "Toca cualquier paso en la app para leer su fuente.",
   mariaName: "María",
   stepShort: {
     program_dl933: "DL 933 de tu programa",
