@@ -605,6 +605,7 @@ h2.display.wide { max-width: 20ch; margin-bottom: 28px; }
 /* "With your changes" is said in ink, "Now" stays grey: the panel tells you which path you are looking at. */
 .whatif-result .solver.changed .solver-readout { color: var(--ink); font-weight: 600; }
 .mini-steps { padding: 4px 0 6px; }
+.mini-steps:empty { padding: 0; } /* no path: "No path with these answers" sits centred in the panel, not 10px low */
 .mini-steps li { display: grid; grid-template-rows: 1fr; transition: grid-template-rows .45s var(--ease), opacity .35s var(--ease); }
 .mini-steps li.first { animation: step-in .35s var(--ease) both; animation-delay: calc(var(--i) * 45ms); }
 .mini-steps li.enter, .mini-steps li.leave { grid-template-rows: 0fr; opacity: 0; }
