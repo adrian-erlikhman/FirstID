@@ -362,9 +362,12 @@ h1.display .bracketed .num { color: var(--on-c); background: var(--hl); padding:
    its label stays readable (secondary grey on the tile, over 4.5:1). */
 .orb img { transition: opacity .5s; }
 .st-0 .orb-bc img, .st-1 .orb-id img { opacity: .4; }
-.orb-label { font-size: 13px; font-weight: 600; padding: 2px 9px; border-radius: 980px; background: var(--tile); color: var(--ink); white-space: nowrap; transition: color .5s; }
+.orb-label { font-size: 13px; font-weight: 600; padding: 2px 9px; border-radius: 980px; background: var(--tile); color: var(--ink); white-space: nowrap; }
 .st-0 .orb-bc .orb-label, .st-1 .orb-id .orb-label { color: var(--text-2); }
 .st-2 .orbit { opacity: .15; scale: .72; }
+/* Behind the card the ring is only texture: its words go, rather than stay as faint, unreadable text. */
+.orb-label { transition: color .5s, opacity .4s; }
+.st-2 .orb-label { opacity: 0; }
 .breakout { position: absolute; inset: 0; display: grid; place-items: center; opacity: 0; transform: scale(.55) rotate(-24deg); transition: opacity .6s, transform .9s var(--ease); }
 .breakout::before { content: ""; position: absolute; width: 74%; aspect-ratio: 1.586; border-radius: 22px; background: var(--hl); transform: rotate(9deg); }
 .breakout .mark { position: relative; height: auto; width: 68%; color: var(--ink); filter: drop-shadow(0 24px 30px rgb(0 0 0 / .25)); }
