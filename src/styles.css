@@ -607,7 +607,7 @@ h2.display.wide { max-width: 20ch; margin-bottom: 28px; }
   .how-tiles { grid-template-columns: repeat(3, minmax(0, 1fr)); }
   .home-cta h2.display { font-size: 56px; }
   h2.display.h2 { font-size: 42px; }
-  .actions.stack { align-items: flex-start; }
+  .actions.stack { align-items: stretch; width: fit-content; max-width: 100%; } /* one column of equal-width buttons, as wide as the longest label */
   .photo-band { grid-template-columns: repeat(var(--n, 3), minmax(0, 1fr)); }
   .photo-band.n2 { --n: 2; } .photo-band.n1 { --n: 1; }
   .photo-band.n1 img { aspect-ratio: 21 / 9; }
