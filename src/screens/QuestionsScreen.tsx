@@ -8,15 +8,16 @@ import { readyForPath } from "../person";
 // unset, so the planner won't use a path that depends on it.
 
 // The rules only care about two ages: under 22 (documents owed to youth
-// leaving foster care) and 62+ (the senior no-fee ID). Bands are faster to tap
-// than typing a number, and each band stores an age inside it.
+// leaving foster care) and 62+ (the senior no-fee ID). The path screen also
+// flags under 18. Bands are faster to tap than typing a number, and each band
+// stores an age inside it.
 const AGE_BANDS = [16, 19, 30, 62];
 const bandOf = (age: unknown) =>
   typeof age !== "number" ? -1 : age < 18 ? 0 : age < 22 ? 1 : age < 62 ? 2 : 3;
 
 // "Not sure" is remembered separately, so a question nobody has answered yet
 // shows no choice at all, while "Not sure" still leaves the fact unset.
-export const NOT_SURE = "__not_sure__";
+const NOT_SURE = "__not_sure__";
 
 export function QuestionsScreen(props: {
   lang: Lang; facts: Facts; unsure: string[];
