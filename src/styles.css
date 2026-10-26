@@ -480,7 +480,10 @@ h2.display.wide { max-width: 20ch; margin-bottom: 28px; }
 }
 /* No one word left alone on a label's last line ("state)", "pasaporte"). */
 .check-text { min-width: 0; text-wrap: pretty; }
-.check-row:hover { background: var(--wash); }
+/* Only where there is a real pointer: on a phone :hover sticks after a tap,
+   so a row just unticked stayed grey and still looked picked. */
+@media (hover: hover) { .check-row:hover { background: var(--wash); } }
+.check-row:active { background: var(--wash); }
 .check-row[aria-checked="true"] { background: var(--pick); }
 /* Grey on the picked grey is 4.2:1; a little more ink brings the hint back over 4.5. */
 .check-row[aria-checked="true"] .row-sub { color: color-mix(in srgb, var(--text-2) 80%, var(--ink)); }
