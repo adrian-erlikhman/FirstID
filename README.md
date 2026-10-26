@@ -27,7 +27,7 @@ data/rules.json ──► npm run lint:rules ──► planner (in the browser) 
 1. **Rules are data.** [`data/rules.json`](data/rules.json) holds each rule's requirements, the documents it gives you, fees, fee waivers, time, place, what to bring and say, and its sources, in English and Spanish.
 2. **A linter guards them.** [`src/engine/lint.ts`](src/engine/lint.ts) fails the build if a rule has no source, names an unknown document or place, or is missing its Spanish.
 3. **The planner is exact.** [`src/engine/planner.ts`](src/engine/planner.ts) runs Dijkstra's algorithm over the documents you hold. No step costs less than zero, so it finds the exact best order: fewest dollars, then trips, then days, then steps. Rules only ever add documents, so having more can never make your plan worse, and the same answers always give the same path.
-4. **Every step cites its source** and quotes the sentence that supports it; we check each quote against its source when we verify the rule. The "How we know" screen lists them all.
+4. **Every step cites its source** and quotes the sentence that supports it; we check each quote against its source when we verify the rule. The "How we know" screen lists every rule with its sources; a fee waiver's sources show on the step where it applies.
 5. **What-if and dead ends.** The app shows which answers would change your path, and when there's no path it says what's blocking it and who can help.
 
 The tests ([`tests/`](tests/)) cover the planner, four invented people checked against hand-worked plans, the "more documents never hurts" guarantee, the what-if and no-path logic, the links between screens, the office list and the progress logic. `npm run check` runs all of it plus the build, and nothing deploys unless it passes.
