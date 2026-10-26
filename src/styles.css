@@ -117,6 +117,9 @@ h1.display .bracketed .num { color: var(--on-c); background: var(--hl); padding:
   border-radius: 50%; border: 0; background: var(--tile); background-clip: content-box; color: var(--ink);
 }
 .back-btn:hover { background-color: var(--pick); }
+/* A press shows, the way the pill buttons give a little (.btn:active). */
+.back-btn:active, .ts-toggle:active { transform: scale(.94); }
+.back-btn, .ts-toggle { transition: background-color .2s, transform .15s; }
 .back-btn:focus-visible { outline-offset: -2px; }
 /* Small to look at, 44px to tap: the hit area reaches past the visible pill. */
 .nav-cta, .lang button { position: relative; }
@@ -911,6 +914,7 @@ main h1:focus { box-shadow: none !important; } /* headings take focus on a new s
 }
 @media (max-width: 374px) { .nav-cta { display: none; } }
 .ts-toggle .ts-big { font-size: 17px; }
+.ts-toggle:hover { background-color: var(--pick); }
 .ts-toggle[aria-expanded="true"] { background-color: var(--ink); color: var(--on-ink); }
 .ts-menu {
   position: absolute; top: calc(100% + 3px); right: 0; z-index: 30; width: max-content; max-width: calc(100vw - 2 * var(--gutter));
