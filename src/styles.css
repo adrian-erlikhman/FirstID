@@ -861,6 +861,10 @@ main h1:focus { box-shadow: none !important; } /* headings take focus on a new s
   background: #fff; color: #000; color-scheme: light;
   padding: max(12px, env(safe-area-inset-top)) max(16px, env(safe-area-inset-right)) max(16px, env(safe-area-inset-bottom)) max(16px, env(safe-area-inset-left));
 }
+/* Tablets and laptops: a real margin, so the huge words don't run into the screen edge. */
+@media (min-width: 640px) {
+  .clerk { padding: max(24px, env(safe-area-inset-top)) max(48px, env(safe-area-inset-right)) max(40px, env(safe-area-inset-bottom)) max(48px, env(safe-area-inset-left)); }
+}
 .clerk-bar { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex: none; }
 .clerk-title { margin: 0; font-size: 16px; font-weight: 600; color: #000; min-width: 0; }
 .clerk-close {
