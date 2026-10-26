@@ -806,8 +806,8 @@
             "vc14902"
           ],
           "say": {
-            "en": "I'm applying for a no-fee ID card. Here is my signed DL 933.",
-            "es": "Vengo a solicitar una identificación sin costo. Aquí está mi DL 933 firmado."
+            "en": "I'm applying for a no-fee standard ID card, not a REAL ID. Here is my signed DL 933.",
+            "es": "Vengo a solicitar una identificación estándar sin costo, no la REAL ID. Aquí está mi DL 933 firmado."
           }
         },
         {
@@ -824,8 +824,8 @@
             "dmv_senior"
           ],
           "say": {
-            "en": "I'm 62 or older and applying for a no-fee senior ID card.",
-            "es": "Tengo 62 años o más y vengo a solicitar una identificación sin costo para personas mayores."
+            "en": "I'm 62 or older and applying for a no-fee standard senior ID card, not a REAL ID.",
+            "es": "Tengo 62 años o más y vengo a solicitar una identificación estándar sin costo para personas mayores, no la REAL ID."
           }
         },
         {
@@ -841,8 +841,8 @@
             "dmv_fees"
           ],
           "say": {
-            "en": "I'm applying for a reduced-fee ID card. Here is my signed DL 937.",
-            "es": "Vengo a solicitar una identificación a costo reducido. Aquí está mi DL 937 firmado."
+            "en": "I'm applying for a reduced-fee standard ID card, not a REAL ID. Here is my signed DL 937.",
+            "es": "Vengo a solicitar una identificación estándar a costo reducido, no la REAL ID. Aquí está mi DL 937 firmado."
           }
         }
       ],
@@ -870,12 +870,12 @@
         }
       ],
       "why": {
-        "en": "For a first California ID, the DMV asks for three things: proof of who you are (like a birth certificate), your Social Security number, and proof of a California address.",
-        "es": "Para una primera identificación de California, el DMV pide tres cosas: comprobante de identidad (como el acta de nacimiento), tu número de Seguro Social y comprobante de domicilio en California."
+        "en": "For a first standard California ID (the card marked “Federal Limits Apply”), the DMV asks for three things: proof of who you are (like a birth certificate), your Social Security number, and proof of a California address. This path doesn't plan a REAL ID, which needs two papers with your address.",
+        "es": "Para una primera identificación estándar de California (la que dice “Federal Limits Apply”), el DMV pide tres cosas: comprobante de identidad (como el acta de nacimiento), tu número de Seguro Social y comprobante de domicilio en California. Este camino no incluye la REAL ID, que pide dos papeles con tu dirección."
       },
       "say": {
-        "en": "I'm applying for a California ID card.",
-        "es": "Vengo a solicitar una identificación de California."
+        "en": "I'm applying for a standard California ID card, not a REAL ID.",
+        "es": "Vengo a solicitar una identificación de California estándar, no la REAL ID."
       },
       "sources": [
         "dmv_id_page",

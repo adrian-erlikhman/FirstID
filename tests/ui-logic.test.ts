@@ -120,6 +120,16 @@ describe("rule copy", () => {
       expect(a.why?.es, a.id).toBeTruthy();
     }
   });
+
+  it("the first-ID DMV step names one card type, the standard 'Federal Limits Apply' card, wherever it says what to ask for", () => {
+    const a = rules.actions.find((x) => x.id === "dmv_original")!;
+    expect(a.why!.en).toContain("Federal Limits Apply");
+    expect(a.why!.es).toContain("Federal Limits Apply");
+    for (const say of [a.say!, ...(a.waivers ?? []).flatMap((w) => (w.say ? [w.say] : []))]) {
+      expect(say.en).toMatch(/standard/);
+      expect(say.es).toMatch(/estándar/);
+    }
+  });
 });
 
 describe("documents you hold without ticking them", () => {
