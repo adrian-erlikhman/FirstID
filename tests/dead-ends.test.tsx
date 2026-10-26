@@ -70,10 +70,9 @@ describe("no-path screen: says what is blocking", () => {
     for (const person of people(born)) if (!plan(rules, person)) expect(noPathNotes(rules, person), JSON.stringify(person)).not.toEqual([]);
   });
 
-  // Skipped because, when it was written, someone born in LA County with two
-  // things missing got no note at all. noPathNotes now names the missing
-  // pieces in that case (see ui-logic.test.ts), and this passes if unskipped.
-  it.skip("born in LA County: every dead end has at least one note", () => {
+  // Someone born in LA County with two things missing gets each one named
+  // (see ui-logic.test.ts).
+  it("born in LA County: every dead end has at least one note", () => {
     for (const person of people("la_county")) if (!plan(rules, person)) expect(noPathNotes(rules, person), JSON.stringify(person)).not.toEqual([]);
   });
 });
