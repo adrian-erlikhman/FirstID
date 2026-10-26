@@ -68,8 +68,8 @@
     },
     "school_record": {
       "label": {
-        "en": "School ID this year, or a school transcript",
-        "es": "Identificación escolar de este año o un certificado de estudios"
+        "en": "School ID card from this year",
+        "es": "Credencial escolar de este año"
       },
       "askAtIntake": true
     },
@@ -383,12 +383,12 @@
       "days": 0,
       "bring": [
         {
-          "en": "Nothing. The program has the form; it can't be photocopied or downloaded.",
-          "es": "Nada. El programa tiene el formulario; no se puede copiar ni descargar."
+          "en": "Nothing. The program has the form.",
+          "es": "Nada. El programa tiene el formulario."
         },
         {
-          "en": "The signed form is good for 90 days. Use it at the DMV within 90 days of the date it's signed.",
-          "es": "El formulario firmado vale por 90 días. Úsalo en el DMV dentro de los 90 días desde que lo firmen."
+          "en": "Ask first whether the program is signed up with the DMV's no-fee ID program. Only those programs can sign it.",
+          "es": "Pregunta primero si el programa está inscrito en el programa de identificación sin costo del DMV. Solo esos programas pueden firmarlo."
         }
       ],
       "why": {
@@ -513,8 +513,8 @@
       "days": 0,
       "bring": [
         {
-          "en": "The signed form is good for 90 days. Use it at the DMV within 90 days of the date it's signed.",
-          "es": "El formulario firmado vale por 90 días. Úsalo en el DMV dentro de los 90 días desde que lo firmen."
+          "en": "Ask first whether the office is signed up with the DMV's reduced-fee ID program. Only those offices can sign it.",
+          "es": "Pregunta primero si la oficina está inscrita en el programa de identificación a costo reducido del DMV. Solo esas oficinas pueden firmarlo."
         }
       ],
       "why": {
@@ -700,20 +700,20 @@
       "days": 28,
       "bring": [
         {
-          "en": "The notarized Certificate of Identity and the request form",
-          "es": "El Certificado de Identidad notariado y el formulario"
+          "en": "The request form, with “I am requesting an AUTHORIZED copy” ticked",
+          "es": "El formulario, con la casilla “I am requesting an AUTHORIZED copy” (copia autorizada) marcada"
+        },
+        {
+          "en": "The notarized Certificate of Identity",
+          "es": "El Certificado de Identidad notariado"
         },
         {
           "en": "The signed homeless or foster-youth affidavit, if you have one, instead of a check",
           "es": "La declaración jurada firmada de persona sin hogar o de joven en cuidado de crianza, si la tienes, en vez de un cheque"
         },
         {
-          "en": "Tick “I am requesting an AUTHORIZED copy” on the form",
-          "es": "Marca en el formulario la casilla “I am requesting an AUTHORIZED copy” (copia autorizada)"
-        },
-        {
-          "en": "An address where you can get mail for the next 2 months, like your shelter or program (ask them first)",
-          "es": "Una dirección donde puedas recibir correo durante los próximos 2 meses, como tu albergue o programa (pregúntales primero)"
+          "en": "On the form, an address where you can get mail for the next 2 months, like your shelter or program (ask them first)",
+          "es": "En el formulario, una dirección donde puedas recibir correo durante los próximos 2 meses, como tu albergue o programa (pregúntales primero)"
         },
         {
           "en": "Mail it to: Registrar-Recorder/County Clerk, P.O. Box 489, Norwalk, CA 90651-0489",
@@ -761,13 +761,13 @@
       "days": 14,
       "bring": [
         {
-          "en": "Your Medi-Cal card or school record. A birth certificate alone doesn't prove identity to SSA.",
-          "es": "Tu tarjeta de Medi-Cal o tu certificado de estudios. El acta de nacimiento sola no comprueba tu identidad ante el Seguro Social."
+          "en": "Your Medi-Cal card or school ID card. A birth certificate alone doesn't prove identity to SSA.",
+          "es": "Tu tarjeta de Medi-Cal o tu credencial escolar. El acta de nacimiento sola no comprueba tu identidad ante el Seguro Social."
         }
       ],
       "why": {
-        "en": "A replacement Social Security card is free. Without a photo ID, Social Security can accept other records, like a Medi-Cal card or a school record, to prove who you are.",
-        "es": "El reemplazo de la tarjeta de Seguro Social es gratis. Sin identificación con foto, el Seguro Social puede aceptar otros documentos, como la tarjeta de Medi-Cal o un certificado de estudios, para comprobar quién eres."
+        "en": "A replacement Social Security card is free. Without a photo ID, Social Security can accept other records, like a Medi-Cal card or a school ID card, to prove who you are.",
+        "es": "El reemplazo de la tarjeta de Seguro Social es gratis. Sin identificación con foto, el Seguro Social puede aceptar otros documentos, como la tarjeta de Medi-Cal o una credencial escolar, para comprobar quién eres."
       },
       "say": {
         "en": "I need a replacement Social Security card. I don't have a photo ID, so here's what I do have.",
@@ -843,8 +843,8 @@
             "vc14902"
           ],
           "say": {
-            "en": "I'm applying for a no-fee ID card. Here is my signed DL 933.",
-            "es": "Vengo a solicitar una identificación sin costo. Aquí está mi DL 933 firmado."
+            "en": "I'm applying for a no-fee standard ID card, not a REAL ID. Here is my signed DL 933.",
+            "es": "Vengo a solicitar una identificación estándar sin costo, no la REAL ID. Aquí está mi DL 933 firmado."
           }
         },
         {
@@ -861,8 +861,8 @@
             "dmv_senior"
           ],
           "say": {
-            "en": "I'm 62 or older and applying for a no-fee senior ID card.",
-            "es": "Tengo 62 años o más y vengo a solicitar una identificación sin costo para personas mayores."
+            "en": "I'm 62 or older and applying for a no-fee standard senior ID card, not a REAL ID.",
+            "es": "Tengo 62 años o más y vengo a solicitar una identificación estándar sin costo para personas mayores, no la REAL ID."
           }
         },
         {
@@ -878,8 +878,8 @@
             "dmv_fees_reduced"
           ],
           "say": {
-            "en": "I'm applying for a reduced-fee ID card. Here is my signed DL 937.",
-            "es": "Vengo a solicitar una identificación a costo reducido. Aquí está mi DL 937 firmado."
+            "en": "I'm applying for a reduced-fee standard ID card, not a REAL ID. Here is my signed DL 937.",
+            "es": "Vengo a solicitar una identificación estándar a costo reducido, no la REAL ID. Aquí está mi DL 937 firmado."
           }
         }
       ],
@@ -907,12 +907,12 @@
         }
       ],
       "why": {
-        "en": "For a first California ID, the DMV asks for three things: proof of who you are (like a birth certificate), your Social Security number, and proof of a California address.",
-        "es": "Para una primera identificación de California, el DMV pide tres cosas: comprobante de identidad (como el acta de nacimiento), tu número de Seguro Social y comprobante de domicilio en California."
+        "en": "For a first standard California ID (the card marked “Federal Limits Apply”), the DMV asks for three things: proof of who you are (like a birth certificate), your Social Security number, and proof of a California address. This path doesn't plan a REAL ID.",
+        "es": "Para una primera identificación estándar de California (la que dice “Federal Limits Apply”), el DMV pide tres cosas: comprobante de identidad (como el acta de nacimiento), tu número de Seguro Social y comprobante de domicilio en California. Este camino no incluye la REAL ID."
       },
       "say": {
-        "en": "I'm applying for a California ID card.",
-        "es": "Vengo a solicitar una identificación de California."
+        "en": "I'm applying for a standard California ID card, not a REAL ID.",
+        "es": "Vengo a solicitar una identificación estándar de California, no la REAL ID."
       },
       "sources": [
         "dmv_id_page",
