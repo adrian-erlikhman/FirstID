@@ -679,11 +679,19 @@ h2.display.wide { max-width: 20ch; margin-bottom: 28px; }
 
 /* ---------- what if ---------- */
 .toggle-row {
-  width: 100%; display: grid; grid-template-columns: minmax(0, 1fr) auto 44px; gap: 12px; align-items: center; text-align: left;
+  width: 100%; display: grid; grid-template-columns: minmax(0, 1fr) auto 46px; gap: 12px; align-items: center; text-align: left;
   min-height: 60px; padding: 13px 18px; border: 0; background: transparent; color: var(--ink); font-size: 1rem; line-height: 1.35;
 }
-.toggle-row { transition: background-color .25s var(--ease); -webkit-tap-highlight-color: transparent; }
+.toggle-row { transition: background-color .25s var(--ease), box-shadow .25s var(--ease); -webkit-tap-highlight-color: transparent; }
 .toggle-row:hover { background: var(--wash); }
+/* The first and last rows take the panel's corners, so the keyboard focus ring
+   bends with the panel instead of being clipped at the corners. */
+.toggle-list > li:first-child .toggle-row { border-radius: var(--r) var(--r) 0 0; }
+.toggle-list > li:last-child .toggle-row { border-radius: 0 0 var(--r) var(--r); }
+.toggle-list > li:only-child .toggle-row { border-radius: var(--r); }
+/* The answers you flipped get a highlighter edge, so you can see what differs from
+   your path now (the switch alone shows Yes or No, not whether you changed it). */
+.toggle-row.changed { box-shadow: inset 6px 0 0 var(--hl); }
 /* iOS-style switch: the track colour fades, the thumb glides and stretches a
    little while pressed, so a tap feels like it moved something. */
 .switch { width: 46px; height: 28px; border-radius: 980px; background: var(--control); position: relative;
@@ -691,13 +699,25 @@ h2.display.wide { max-width: 20ch; margin-bottom: 28px; }
 .switch span { position: absolute; top: 2px; left: 2px; width: 24px; height: 24px; border-radius: 980px; box-shadow: 0 2px 4px rgb(0 0 0 / .2), 0 0 0 .5px rgb(0 0 0 / .04); background: var(--panel);
   transition: transform .42s cubic-bezier(.3, 1.25, .5, 1), width .25s var(--ease), background-color .3s; }
 .toggle-row:active .switch span { width: 30px; }
-.toggle-row[aria-checked="true"] .switch { background: #34c759; }
+/* A deeper green than iOS's #34c759 (2.2:1 on white): the "on" track and the white
+   thumb on it both clear 3:1, on the panel (3.5:1) and on the hover wash (3.2:1). */
+.toggle-row[aria-checked="true"] .switch { background: #2a9d46; }
 .toggle-row[aria-checked="true"] .switch span { transform: translateX(18px); background: #fff; }
 .toggle-row[aria-checked="true"]:active .switch span { transform: translateX(12px); }
-.switch-text { min-width: 2.2em; text-align: right; font-size: 0.8125rem; font-weight: 500; color: var(--text-2); transition: color .3s var(--ease); }
+.switch-text { min-width: 2.2em; text-align: right; font-size: 0.9375rem; font-weight: 500; color: var(--text-2); transition: color .3s var(--ease); }
 .toggle-row[aria-checked="true"] .switch-text { color: var(--ink); }
 .whatif-result { margin-top: 16px; }
+/* Switches, total and steps sit the same distance apart at every width (the
+   path screen's wider card margins would leave 20px above the total, 28px below). */
+.whatif-result .path-card { margin: 0 0 16px; }
+@media (min-width: 640px) { .whatif-result { margin-top: 20px; } .whatif-result .path-card { margin-bottom: 20px; } }
+/* No switches to show ("Changing any one answer leaves this path the same"): the
+   total follows the opening line at the same distance the switches would. */
+.body > .whatif-result:first-child { margin-top: 0; }
+/* "With your changes" is said in ink, "Now" stays grey: the panel tells you which path you are looking at. */
+.whatif-result .solver.changed .solver-readout { color: var(--ink); font-weight: 600; }
 .mini-steps { padding: 4px 0 6px; }
+.mini-steps:empty { padding: 0; } /* no path: "No path with these answers" sits centred in the panel, not 10px low */
 .mini-steps li { display: grid; grid-template-rows: 1fr; transition: grid-template-rows .45s var(--ease), opacity .35s var(--ease); }
 .mini-steps li.first { animation: step-in .35s var(--ease) both; animation-delay: calc(var(--i) * 45ms); }
 .mini-steps li.enter, .mini-steps li.leave { grid-template-rows: 0fr; opacity: 0; }
@@ -707,10 +727,15 @@ h2.display.wide { max-width: 20ch; margin-bottom: 28px; }
   font-size: 1rem; line-height: 1.35;
 }
 .mini-steps li + li .mini-in { border-top: 1px solid var(--line); }
+/* No single word left alone on the last line ("costo)", "Ángeles") where the browser can avoid it. */
+.toggle-label, .mini-label { text-wrap: balance; }
 .mini-steps .num { font-size: 1rem; font-weight: 600; justify-self: end; align-self: start; } /* "Free" keeps its own height on a two-line step */
 @keyframes step-in { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
 .whatif-none { padding: 24px 18px; margin: 0; font-size: 1.125rem; }
-.compare { font-size: 0.8438rem; color: var(--text-2); margin: 10px 4px 0; font-variant-numeric: tabular-nums; }
+/* Indented like the panel's own text ("Your path", the step numbers), so it reads as that panel's footnote. */
+.compare { font-size: 0.8438rem; color: var(--text-2); margin: 10px 18px 0; font-variant-numeric: tabular-nums; }
+/* "Your path now: ..." is the sentence you compare against, so it reads at body size on phones. */
+@media (max-width: 639px) { .compare { font-size: 1rem; line-height: 1.45; } }
 
 /* ---------- how we know ---------- */
 .rule-head {
