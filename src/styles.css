@@ -166,7 +166,12 @@ h1.display .bracketed .num { color: var(--on-c); background: var(--hl); padding:
 .btn.small { min-height: 36px; padding: 7px 15px; font-size: 0.9063rem; }
 .actions { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 16px; margin-top: 24px; }
 .actions.stack { flex-direction: column; align-items: stretch; }
-.actions.pair { display: grid; grid-template-columns: 1fr 1fr; }
+/* Two buttons side by side, equal width while both labels fit on one line.
+   When a label is too long (Spanish, larger text) the second button drops to
+   its own row instead of breaking the label in two. */
+.actions.pair { display: flex; flex-wrap: wrap; }
+.actions.pair > .btn { flex: 1 1 0; min-width: fit-content; }
+@media (max-width: 639px) { .actions.pair { column-gap: 10px; } .actions.pair > .btn { padding-left: 16px; padding-right: 16px; } }
 .actions.sticky {
   position: sticky; bottom: 0; z-index: 2; margin-top: 8px;
   padding: 16px 0 calc(14px + env(safe-area-inset-bottom, 0px));
@@ -827,7 +832,7 @@ main h1:focus { box-shadow: none !important; } /* headings take focus on a new s
 
 /* ===== Say this tools: Show the clerk + Read aloud (src/screens/SayTools.tsx) ===== */
 .say-tools { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 12px; }
-.say-tool { flex: 1 1 150px; min-height: 48px; padding: 10px 16px; font-size: 1rem; }
+.say-tool { flex: 1 1 0; min-width: fit-content; min-height: 48px; padding: 10px 16px; font-size: 1rem; } /* side by side, or stacked rather than a label broken in two */
 .btn.say-tool.is-on, .btn.say-tool.is-on:hover { background: var(--cta); color: #fff; box-shadow: none; }
 /* Full screen, black on white whatever the theme, for holding up at a counter. */
 .clerk {
