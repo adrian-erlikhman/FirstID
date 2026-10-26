@@ -3,7 +3,8 @@
 // they can't. Built files have hashed names, so those are served from the
 // cache first. Nothing is sent anywhere: the worker only stores the site's own
 // files.
-const CACHE = "first-id-v1";
+// v2: drops any copy of a non-app page that v1 may have stored as the app.
+const CACHE = "first-id-v2";
 
 self.addEventListener("install", (event) => {
   // The first visit loads the script and stylesheet before this worker runs,
@@ -36,8 +37,13 @@ self.addEventListener("fetch", (event) => {
     event.respondWith(
       fetch(req)
         .then((res) => {
-          const copy = res.clone();
-          caches.open(CACHE).then((c) => c.put("./index.html", copy));
+          // Only the app's own page becomes the offline copy: not a 404 page,
+          // and not an image or other file opened directly in the browser.
+          const type = res.headers.get("content-type") || "";
+          if (res.ok && type.includes("text/html")) {
+            const copy = res.clone();
+            caches.open(CACHE).then((c) => c.put("./index.html", copy));
+          }
           return res;
         })
         .catch(() => caches.match("./index.html")),
