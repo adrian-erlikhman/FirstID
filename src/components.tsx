@@ -1,4 +1,4 @@
-import { useEffect, useId, useRef, useState, type ReactNode } from "react";
+import { useEffect, useId, useRef, useState, type KeyboardEvent as ReactKeyboardEvent, type ReactNode } from "react";
 import { usePresence, useTween } from "./motion";
 import type { Mode, Plan, RuleSet, Source, Step } from "./engine/types";
 import { t, type Lang } from "./i18n";
@@ -255,6 +255,7 @@ export function TopBar(props: { lang: Lang; onLang: (l: Lang) => void; onHome: (
         <div className="lang" role="radiogroup" aria-label={s.langLabel}>
           {(["en", "es"] as const).map((l) => (
             <button key={l} role="radio" aria-checked={props.lang === l} lang={l} aria-label={l === "en" ? "English" : "Español"}
+              tabIndex={props.lang === l ? 0 : -1} onKeyDown={langKeys(props.onLang)}
               onClick={() => props.onLang(l)}>{l.toUpperCase()}</button>
           ))}
         </div>
@@ -263,6 +264,16 @@ export function TopBar(props: { lang: Lang; onLang: (l: Lang) => void; onHome: (
     </header>
   );
 }
+
+/** A radio group is one Tab stop: the arrow keys move between EN and ES,
+ *  picking as they go, the way screen readers say radios work. */
+const langKeys = (onLang: (l: Lang) => void) => (e: ReactKeyboardEvent<HTMLButtonElement>) => {
+  if (!["ArrowLeft", "ArrowRight", "ArrowUp", "ArrowDown"].includes(e.key)) return;
+  e.preventDefault();
+  const other = e.currentTarget.getAttribute("lang") === "en" ? "es" : "en";
+  onLang(other);
+  e.currentTarget.parentElement?.querySelector<HTMLButtonElement>(`[lang="${other}"]`)?.focus();
+};
 
 /* ---------- text size ----------
  * Three sizes, set as data-text-size on <html>, which scales the root font
