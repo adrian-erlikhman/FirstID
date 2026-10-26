@@ -41,7 +41,7 @@ The tests ([`tests/`](tests/)) cover the planner, four invented people checked a
 
 ## Privacy
 
-First ID is a static site with no accounts, server or database. Your answers stay in the tab and are gone when you close it; the ZIP you type for offices is never saved. Ticked steps and your text-size choice stay on the phone until you clear them, and calendar reminders are made on the phone. There are no analytics or third-party requests, [`vercel.json`](vercel.json) enforces that with a Content-Security-Policy, and a service worker ([`public/sw.js`](public/sw.js)) keeps the site working offline without storing any answers.
+First ID is a static site with no accounts, server or database. Your answers stay in the tab and are gone when you close it; the ZIP you type for offices is never saved. Ticked steps and your text-size choice stay on the phone until you clear them (Start over clears the ticks too), calendar reminders are made on the phone, and Read aloud uses only the phone's own voices, never an online one. There are no analytics or third-party requests, [`vercel.json`](vercel.json) enforces that with a Content-Security-Policy, and a service worker ([`public/sw.js`](public/sw.js)) keeps the site working offline without storing any answers.
 
 ## Spanish and accessibility
 
