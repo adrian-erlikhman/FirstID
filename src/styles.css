@@ -553,6 +553,9 @@ h2.display.wide { max-width: 20ch; margin-bottom: 28px; }
 .source-quote { font-size: 0.9375rem; line-height: 1.5; padding-left: 12px; border-left: 2px solid var(--ink); }
 .source-quote.missing { border-left: 2px dashed var(--control); color: var(--text-2); }
 .source-meta { font-size: 0.8125rem; color: var(--text-2); }
+/* Not checked yet: a small dashed ring, the same dashed line as the "Call ahead" box. */
+.source-meta.draft { display: flex; align-items: center; gap: 8px; }
+.source-meta.draft::before { content: ""; flex: none; width: 11px; height: 11px; border-radius: 50%; border: 1.5px dashed var(--control); }
 /* Phones: the website a source lives on and whether we checked it are read,
    not skimmed, so they get 16px too. */
 @media (max-width: 639px) {
