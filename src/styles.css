@@ -875,23 +875,25 @@ main h1:focus { box-shadow: none !important; } /* headings take focus on a new s
 
 .ts { position: relative; flex: none; }
 .ts-toggle {
-  position: relative; display: grid; place-items: center; min-width: 40px; height: 30px; padding: 0 8px;
-  border: 0; border-radius: 980px; background: var(--tile); color: var(--ink);
+  /* A real 44px box to tap, drawn as a 36px grey circle like Back (the circle
+     is the content box). The -4px margins give the bar back the extra width,
+     so it takes the same room as before and the circle ends on the gutter. */
+  position: relative; display: grid; place-items: center; width: 44px; height: 44px; padding: 4px; margin: 0 -4px;
+  border: 0; border-radius: 50%; background: var(--tile); background-clip: content-box; color: var(--ink);
   font-family: var(--font); font-size: 13px; font-weight: 600; line-height: 1; letter-spacing: -0.02em;
 }
-.ts-toggle::after { content: ""; position: absolute; inset: -7px -4px; } /* 44px to tap */
+.ts-toggle:focus-visible { outline-offset: -2px; }
 /* Phones: the bar gets 4px tighter per gap so "Aa" fits next to EN/ES at 375px.
    Narrower than that, the home page's Start pill gives way (the hero has one). */
 @media (max-width: 400px) {
   .top-inner { gap: 4px; }
   .brand { padding-right: 0; }
-  .ts-toggle { min-width: 36px; padding: 0 6px; }
 }
 @media (max-width: 374px) { .nav-cta { display: none; } }
 .ts-toggle .ts-big { font-size: 17px; }
-.ts-toggle[aria-expanded="true"] { background: var(--ink); color: var(--on-ink); }
+.ts-toggle[aria-expanded="true"] { background-color: var(--ink); color: var(--on-ink); }
 .ts-menu {
-  position: absolute; top: calc(100% + 10px); right: 0; z-index: 30; width: max-content; max-width: calc(100vw - 2 * var(--gutter));
+  position: absolute; top: calc(100% + 3px); right: 0; z-index: 30; width: max-content; max-width: calc(100vw - 2 * var(--gutter));
   padding: 12px; border-radius: var(--r-sm); background: var(--panel); box-shadow: 0 0 0 1px var(--line), 0 12px 30px -12px rgb(0 0 0 / .3);
 }
 .ts-menu[hidden] { display: none; }
