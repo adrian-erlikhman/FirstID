@@ -955,6 +955,8 @@ main h1:focus { box-shadow: none !important; } /* headings take focus on a new s
 .office-hours dd { margin: 0; font-variant-numeric: tabular-nums; }
 .office-actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: auto; } /* side by side, the buttons line up along the bottom */
 .office-actions .btn.small { min-height: 44px; font-size: 1rem; padding: 8px 16px; }
+/* Equal widths side by side; when a label is too long (Spanish), each takes its own full row. */
+.office-actions .btn { flex: 1 1 0; min-width: fit-content; }
 .office-note { margin: 20px 0 8px; font-size: 1rem; line-height: 1.5; color: var(--text-2); }
 @media (min-width: 760px) { .office-list { grid-template-columns: 1fr 1fr; } }
 @media (min-width: 1100px) { .office-list { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
