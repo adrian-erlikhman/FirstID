@@ -16,7 +16,7 @@ export type Route =
   | { name: "offices"; kind: string; n?: number };
 
 export function parse(hash: string): Route {
-  const [, a, b] = hash.replace(/^#/, "").split("/");
+  const [, a, b, c] = hash.replace(/^#/, "").split("/");
   switch (a) {
     case "have": case "questions": case "path": case "whatif": case "packet": case "sources":
       return { name: a };
@@ -27,7 +27,7 @@ export function parse(hash: string): Route {
     case "example":
       return b ? { name: "example", id: b } : { name: "home" };
     case "offices": { // #/offices/dmv/3: the DMV list, opened from step 3
-      const n = Number(hash.split("/")[3]);
+      const n = Number(c);
       return b ? { name: "offices", kind: b, ...(Number.isInteger(n) && n > 0 ? { n } : {}) } : { name: "home" };
     }
     default:
