@@ -412,6 +412,13 @@ h1.display .bracketed .num { color: var(--on-c); background: var(--hl); padding:
 .bento.seen .tile-row { opacity: 1; transform: none; }
 .tile-row .num { font-weight: 600; }
 .tile > span { position: relative; z-index: 1; }
+/* Phones: Maria's list of steps reaches closer to the tile's edges, so each
+   step name gets two lines, not four. */
+@media (max-width: 639px) {
+  .t-maria { padding-left: 14px; padding-right: 14px; padding-bottom: 14px; }
+  .t-maria .tile-big, .t-maria .tile-sub { margin-left: 8px; margin-right: 8px; }
+  .t-maria .tile-rows { padding: 4px 14px; }
+}
 
 /* ---------- home: photos ---------- */
 .photo { margin: 0; display: flex; flex-direction: column; gap: 8px; }
