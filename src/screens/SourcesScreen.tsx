@@ -30,7 +30,7 @@ export function SourcesScreen({ rules, lang }: { rules: RuleSet; lang: Lang }) {
                     <span className="row-num" aria-hidden="true">{i + 1}</span>
                     <span className="rule-name">{a.label[lang]}</span>
                     <span className={`tag ${a.verified ? "ok" : "draft"}`}>{a.verified ? s.verified : s.callAhead}</span>
-                    <span className="rule-src">{a.sources.map((id) => rules.sources[id].title.split(" (")[0]).join("; ")}</span>
+                    <span className="rule-src">{a.sources.map((id) => rules.sources[id].title.split(" (")[0]).join("; ")}{s.inEnglish}</span>
                   </button>
                   {isOpen && (
                     <div className="rule-body sources">

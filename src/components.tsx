@@ -368,7 +368,8 @@ export function Pills<V>(props: { label: string; options: readonly (readonly [V,
   );
 }
 
-/** One official source. Until a person verifies the rule, it never claims a "checked" date. */
+/** One official source. Until a person verifies the rule, it never claims a "checked" date.
+ *  Source pages are in English, so the Spanish title says "(en inglés)". */
 export function SourceCard({ src, lang, verified }: { src: Source; lang: Lang; verified: boolean }) {
   const s = t[lang];
   const missing = /^TODO/i.test(src.quote);
@@ -377,7 +378,7 @@ export function SourceCard({ src, lang, verified }: { src: Source; lang: Lang; v
   return (
     <a className="source" href={src.url} target="_blank" rel="noreferrer">
       <span className="source-host">{host} <Icon name="external" size={13} /></span>
-      <span className="source-title">{src.title}</span>
+      <span className="source-title">{src.title}{s.inEnglish}</span>
       {missing
         ? <span className="source-quote missing">{s.quoteMissing}</span>
         : <span className="source-quote">“{src.quote}”</span>}
