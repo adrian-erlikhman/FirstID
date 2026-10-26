@@ -1,8 +1,8 @@
-// Feedback item 10: "What if" and "What would help most" must never suggest
-// a document the path already gets you, a form only an agency can issue, a
-// photo ID (the thing the person is trying to get), or a U.S. birth
-// certificate to someone born abroad. Checked for every answer set the
-// questions screen allows (tests/grid.ts), not just the personas.
+// "What if" and "What would help most" must never suggest a document the
+// path already gets you, a form only an agency can issue, a photo ID (the
+// thing the person is trying to get), or a U.S. birth certificate to someone
+// born abroad. Checked for every answer set the questions screen allows
+// (tests/grid.ts), not just the personas.
 import { describe, expect, it } from "vitest";
 import rulesJson from "../data/rules.json";
 import { plan, whatHelps } from "../src/engine/planner";
@@ -23,7 +23,7 @@ const keyFor = (mode: Mode, p: Plan | null) => {
 };
 const lessThan = (a: number[], b: number[]) => { for (let i = 0; i < a.length; i++) if (a[i] !== b[i]) return a[i] < b[i]; return false; };
 
-/** Every rule of item 10 for one person; returns what broke, as text. */
+/** All the checks for one person; returns what broke, as text. */
 function problems(person: Person, mode: Mode): string[] {
   const out: string[] = [];
   const base = plan(rules, person, mode);
@@ -53,7 +53,7 @@ function problems(person: Person, mode: Mode): string[] {
   return out;
 }
 
-describe("what-if and 'what would help most' (feedback item 10)", () => {
+describe("what-if and 'what would help most'", () => {
   it.each(BORN)("born %s: no bad suggestion for any answer set (cheapest)", (born) => {
     const found: string[] = [];
     for (const person of people(born)) found.push(...problems(person, "cheapest"));
