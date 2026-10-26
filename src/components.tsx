@@ -402,15 +402,19 @@ export function Pills<V>(props: { label: string; options: readonly (readonly [V,
 export function SourceCard({ src, lang, verified }: { src: Source; lang: Lang; verified: boolean }) {
   const s = t[lang];
   const missing = /^TODO/i.test(src.quote);
+  // Titles and quotes are the source's own English words, so screen readers
+  // say them in English on the Spanish screens too; " (en inglés)" stays Spanish.
+  const note = s.inEnglish && src.title.endsWith(s.inEnglish) ? s.inEnglish : "";
+  const title = src.title.slice(0, src.title.length - note.length);
   let host = "";
   try { host = new URL(src.url).hostname.replace(/^www\./, ""); } catch { /* not a URL */ }
   return (
     <a className="source" href={src.url} target="_blank" rel="noreferrer">
       <span className="source-host">{host} <Icon name="external" size={13} /></span>
-      <span className="source-title">{src.title}</span>
+      <span className="source-title"><span lang="en">{title}</span>{note}</span>
       {missing
         ? <span className="source-quote missing">{s.quoteMissing}</span>
-        : <span className="source-quote">“{src.quote}”</span>}
+        : <span className="source-quote" lang="en">“{src.quote}”</span>}
       <span className={`source-meta ${verified ? "" : "draft"}`}>{verified ? s.checkedOn(src.checked) : s.notCheckedYet}</span>
     </a>
   );
