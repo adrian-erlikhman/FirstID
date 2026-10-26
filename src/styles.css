@@ -377,7 +377,7 @@ h1.display .bracketed .num { color: var(--on-c); background: var(--hl); padding:
   transform: perspective(900px) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg)); transition: transform .45s var(--ease);
 }
 .tile-big { font-size: 60px; font-weight: 600; letter-spacing: -0.05em; line-height: 1; }
-.tile-sub { font-size: 1.125rem; line-height: 1.35; color: var(--text-2); max-width: 18em; }
+.tile-sub { font-size: 1.125rem; line-height: 1.35; color: var(--text-2); max-width: 18em; text-wrap: pretty; }
 /* The scale behind Maria's path: the highlighter yellow, the numbers set big and tight.
    (Not black: the forms band right below is black.) */
 .t-scale { background: var(--hl); color: var(--on-c); }
