@@ -7,10 +7,7 @@ import certificateImg from "./forms/certificate-of-identity.jpg";
 import applicationStrip from "./forms/strip-application.jpg";
 import certificateStrip from "./forms/strip-certificate.jpg";
 
-// Small shared pieces. Every screen is built from these, so a style change
-// here changes it everywhere. The look is First ID's own: black on white,
-// Instrument Sans, and one recurring object, an ID card set down at a slight
-// angle: the logo. The path you get is shown as a plain summary panel.
+// Small pieces shared by every screen.
 
 const paths: Record<string, string> = {
   back: "M15 5l-7 7 7 7",
@@ -61,7 +58,6 @@ export function Mark({ size = 22, tilt = -10, className = "" }: { size?: number;
   );
 }
 
-/** The mark, then the name. */
 export function Lockup() {
   return (
     <span className="lockup">
@@ -119,8 +115,8 @@ export function Tween({ value, format = String }: { value: number; format?: (n: 
   return <>{format(Math.round(useTween(value)))}</>;
 }
 
-/** The path you get, as a plain summary: the total after fee waivers, what it
- *  would have cost without them, then steps, trips and time. */
+/** The path's totals: the cost after fee waivers, what it would have cost
+ *  without them, then steps, trips and time. */
 export function PathCard({ plan, lang, mode, name, className = "" }: {
   plan: Plan; lang: Lang; mode: Mode; name?: string; className?: string;
 }) {
@@ -149,15 +145,15 @@ export function PathCard({ plan, lang, mode, name, className = "" }: {
   );
 }
 
-// Photos live in src/photos/. Drop a file named office, papers, counter or
-// phone (.jpg, .png or .webp) in there and it shows up; until then the page
-// simply has no photo in that spot. They are shown in black and white.
+// Optional photos in src/photos/, named office, papers, counter or phone
+// (.jpg, .jpeg, .png or .webp). A missing one leaves no photo in that spot.
+// The stylesheet shows them in black and white.
 const photoFiles = import.meta.glob("./photos/*.{jpg,jpeg,png,webp}", { eager: true, import: "default" }) as Record<string, string>;
 export const photoUrl = (name: string) =>
   Object.entries(photoFiles).find(([p]) => p.replace(/^.*\//, "").replace(/\.\w+$/, "") === name)?.[1];
 
-// The real LA County forms on Maria's path, rendered from lavote.gov's PDF
-// with our highlighter marks on the lines that matter.
+// The two LA County forms on Maria's path, rendered from lavote.gov's PDF,
+// with the line that matters on each highlighted.
 export const FORM_PDF = "https://www.lavote.gov/docs/rrcc/documents/birth-record-app-cerificate-of-identity.pdf?v=3";
 const formImages: Record<string, string> = { application: applicationImg, certificate: certificateImg };
 // A close-up of the highlighted line, laid over the page where that line is.
@@ -198,7 +194,7 @@ export function Photo({ name, alt, caption, className = "" }: { name: string; al
   );
 }
 
-/** A white panel with a small header: what it is, and what the planner found. */
+/** A panel with a small header: a title, and a short note beside it. */
 export function Solver({ title, readout, children, className = "" }: { title?: string; readout?: ReactNode; children: ReactNode; className?: string }) {
   return (
     <div className={`panel solver ${className}`}>
@@ -238,8 +234,8 @@ export function TopBar(props: { lang: Lang; onLang: (l: Lang) => void; onHome: (
   );
 }
 
-/** A radio group is one Tab stop: the arrow keys move between EN and ES,
- *  picking as they go, the way screen readers say radios work. */
+/** The language radios are one Tab stop. The arrow keys move between EN and
+ *  ES and pick as they go, as screen reader users expect of a radio group. */
 const langKeys = (onLang: (l: Lang) => void) => (e: ReactKeyboardEvent<HTMLButtonElement>) => {
   if (!["ArrowLeft", "ArrowRight", "ArrowUp", "ArrowDown"].includes(e.key)) return;
   e.preventDefault();
@@ -322,7 +318,7 @@ export const waiverCount = (p: Plan) => p.steps.filter((st) => st.waiver && st.d
 /** What to say at the counter: the waiver's line if one applies, else the step's own. */
 export const sayFor = (st: Step) => st.waiver?.say ?? st.action.say;
 
-/** One "not confirmed" tag. Dashed, because the rule is still a draft. */
+/** The "Call ahead" tag on a step whose rule hasn't been checked against its sources. */
 export function Unconfirmed({ lang }: { lang: Lang }) {
   const s = t[lang];
   return <span className="tag draft" title={s.notConfirmed}>{s.callAhead}</span>;
@@ -352,13 +348,13 @@ export function Pills<V>(props: { label: string; options: readonly (readonly [V,
   );
 }
 
-/** One official source. Until a person verifies the rule, it never claims a "checked" date.
- *  Source pages are in English, so the Spanish title says "(en inglés)". */
+/** One official source. Until a person verifies the rule, it never claims a
+ *  "checked" date. Titles and quotes are the source's own English words, so
+ *  screen readers say them in English on the Spanish screens too, where the
+ *  title adds " (en inglés)". */
 export function SourceCard({ src, lang, verified }: { src: Source; lang: Lang; verified: boolean }) {
   const s = t[lang];
   const missing = /^TODO/i.test(src.quote);
-  // Titles and quotes are the source's own English words, so screen readers
-  // say them in English on the Spanish screens too; " (en inglés)" stays Spanish.
   let host = "";
   try { host = new URL(src.url).hostname.replace(/^www\./, ""); } catch { /* not a URL */ }
   return (
