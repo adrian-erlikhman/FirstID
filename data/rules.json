@@ -348,12 +348,12 @@
       "days": 0,
       "bring": [
         {
-          "en": "Nothing. The program has the form; it can't be photocopied or downloaded.",
-          "es": "Nada. El programa tiene el formulario; no se puede copiar ni descargar."
+          "en": "Nothing. The program has the form.",
+          "es": "Nada. El programa tiene el formulario."
         },
         {
-          "en": "The signed form is good for 90 days. Use it at the DMV within 90 days of the date it's signed.",
-          "es": "El formulario firmado vale por 90 días. Úsalo en el DMV dentro de los 90 días desde que lo firmen."
+          "en": "Ask first whether the program is signed up with the DMV's no-fee ID program. Only those programs can sign it.",
+          "es": "Pregunta primero si el programa está inscrito en el programa de identificación sin costo del DMV. Solo esos programas pueden firmarlo."
         }
       ],
       "why": {
@@ -478,8 +478,8 @@
       "days": 0,
       "bring": [
         {
-          "en": "The signed form is good for 90 days. Use it at the DMV within 90 days of the date it's signed.",
-          "es": "El formulario firmado vale por 90 días. Úsalo en el DMV dentro de los 90 días desde que lo firmen."
+          "en": "Ask first whether the office is signed up with the DMV's reduced-fee ID program. Only those offices can sign it.",
+          "es": "Pregunta primero si la oficina está inscrita en el programa de identificación a costo reducido del DMV. Solo esas oficinas pueden firmarlo."
         }
       ],
       "why": {
