@@ -661,7 +661,7 @@ h2.display.wide { max-width: 20ch; margin-bottom: 28px; }
 .trail-head .lede { margin: 0; }
 .trail { list-style: none; margin: 36px 0 0; padding: 0; display: grid; gap: 12px; position: relative; }
 .trail-step {
-  display: grid; grid-template-columns: 104px minmax(0, 1fr); gap: 18px; align-items: center; padding: 18px; border-radius: var(--r-tile); background: var(--tile);
+  display: grid; grid-template-columns: 88px minmax(0, 1fr); gap: 16px; align-items: center; padding: 18px 16px; border-radius: var(--r-tile); background: var(--tile);
   opacity: 0; transform: translateY(18px); transition: opacity .6s var(--ease), transform .7s var(--ease); transition-delay: calc(var(--i, 0) * 110ms);
 }
 .trail.seen .trail-step { opacity: 1; transform: none; }
@@ -671,10 +671,10 @@ h2.display.wide { max-width: 20ch; margin-bottom: 28px; }
 .trail-doc img { display: block; width: 100%; height: auto; border-radius: 3px; background: #fff; box-shadow: 0 0 0 1px var(--line-strong), 0 16px 28px -18px rgb(0 0 0 / .45); }
 .is-card .trail-doc { --rot: -3deg; }
 .is-card .trail-doc img { border-radius: 3.7% / 5.9%; background: none; box-shadow: 0 0 0 1px rgb(0 0 0 / .06), 0 24px 40px -20px rgb(0 0 0 / .55); }
-.trail-hidden { display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 4px; aspect-ratio: 8.5 / 11; padding: 10px; border-radius: 3px; border: 1.5px dashed var(--control); background: #fff; text-align: center; }
-.trail-hidden b { font-size: 1.3125rem; font-weight: 600; letter-spacing: -0.03em; }
+.trail-hidden { display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 4px; aspect-ratio: 8.5 / 11; padding: 8px 4px; border-radius: 3px; border: 1.5px dashed var(--control); background: #fff; text-align: center; }
+.trail-hidden b { font-size: 1.1875rem; font-weight: 600; letter-spacing: -0.03em; white-space: nowrap; }
 .trail-hidden span { font-size: 1rem; color: var(--text-2); }
-.trail-text { display: flex; flex-direction: column; gap: 6px; min-width: 0; }
+.trail-text { display: flex; flex-direction: column; gap: 6px; min-width: 0; text-wrap: pretty; }
 .trail-meta { display: flex; align-items: center; gap: 10px; }
 .trail-n { width: 28px; height: 28px; display: grid; place-items: center; flex: none; border-radius: 50%; background: var(--ink); color: var(--on-ink); font-size: 0.875rem; font-weight: 600; }
 .trail-cost { font-size: 1rem; font-weight: 600; }
@@ -692,6 +692,7 @@ h2.display.wide { max-width: 20ch; margin-bottom: 28px; }
 @media (min-width: 640px) {
   .trail-step { grid-template-columns: 136px minmax(0, 1fr); gap: 24px; padding: 22px 26px; }
   .trail-step.is-card { grid-template-columns: 300px minmax(0, 1fr); }
+  .trail-hidden b { font-size: 1.3125rem; }
   .is-card .trail-desk { padding: 6px 0; }
 }
 /* Wide screens: the papers stand in a row on one shelf, in order, the card last and largest. */
