@@ -577,6 +577,11 @@ h2.display.wide { max-width: 20ch; margin-bottom: 28px; }
 }
 .toggle-row { transition: background-color .25s var(--ease), box-shadow .25s var(--ease); -webkit-tap-highlight-color: transparent; }
 .toggle-row:hover { background: var(--wash); }
+/* The first and last rows take the panel's corners, so the keyboard focus ring
+   bends with the panel instead of being clipped at the corners. */
+.toggle-list > li:first-child .toggle-row { border-radius: var(--r) var(--r) 0 0; }
+.toggle-list > li:last-child .toggle-row { border-radius: 0 0 var(--r) var(--r); }
+.toggle-list > li:only-child .toggle-row { border-radius: var(--r); }
 /* The answers you flipped get a highlighter edge, so you can see what differs from
    your path now (the switch alone shows Yes or No, not whether you changed it). */
 .toggle-row.changed { box-shadow: inset 6px 0 0 var(--hl); }
