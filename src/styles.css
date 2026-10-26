@@ -124,7 +124,9 @@ h1.display .bracketed .num { color: var(--on-c); background: var(--hl); padding:
 /* Phones: the bar holds the mark, the button and EN/ES on one line. Where
    "Buscar mi camino" can't fit, the button steps aside; the hero has the same one. */
 @media (max-width: 400px) { .top-inner { gap: 6px; } .nav-cta { padding: 4px 10px !important; } }
-@media (max-width: 389px) { :root[lang="es"] .nav-cta { display: none; } }
+/* With the Aa button, "Buscar mi camino" needs about 430px; narrower, it
+   pushed Aa into the right gutter. */
+@media (max-width: 429px) { :root[lang="es"] .nav-cta { display: none; } }
 @media (max-width: 349px) { .nav-cta { display: none; } }
 .lang { display: inline-flex; gap: 2px; padding: 2px; border-radius: 980px; background: var(--tile); }
 .lang button { min-width: 44px; min-height: 30px; border: 0; border-radius: 980px; background: transparent; font-size: 13px; font-weight: 500; color: var(--text-2); }
