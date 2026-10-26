@@ -607,16 +607,9 @@ h2.display.wide { max-width: 20ch; margin-bottom: 28px; }
 /* No path: what is blocking starts level with the heading on wide screens,
    and right under the lede on phones, instead of 16px lower. */
 .no-path .body > :first-child { margin-top: 0; }
-/* "See which answers would open a / path" wrapped with one word left over on phones. */
-.no-path .btn { text-wrap: balance; }
 /* Phones: both no-path buttons are full width, like the buttons under a path,
    so "Change my answers" is as easy to hit as the blue one above it. */
 @media (max-width: 639px) { .no-path .actions > .btn { flex: 1 1 100%; } }
-/* Wider screens: the three path buttons share one width (the widest label's),
-   so they read as one column instead of three ragged pills. */
-@media (min-width: 640px) {
-  .path-split .actions.stack { width: fit-content; max-width: 100%; align-items: stretch; }
-}
 
 /* ---------- one step ---------- */
 .facts { margin: 0; }
@@ -769,7 +762,6 @@ h2.display.wide { max-width: 20ch; margin-bottom: 28px; }
   .rule-body { padding: 0 12px 14px; }
   .rule-body > .row-sub { padding: 0 6px; }
   .rule-body .source { padding: 14px 14px 16px; }
-  .rule-body .source-meta { font-size: 1rem; } /* "Not checked by our team yet" is a sentence: 16px */
 }
 /* Wider screens: an open rule's explanation and sources start under its name,
    not under its number, and long quotes get a shorter line. */
