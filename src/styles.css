@@ -198,7 +198,7 @@ h1.display .bracketed .num { color: var(--on-c); background: var(--hl); padding:
    widths, like a segmented control, while every label fits on one line; a
    label that doesn't fit (Spanish, larger text) moves to the next row whole. */
 .pills-even { max-width: 400px; }
-.pills-even > .pill { flex: 1 1 0; min-width: fit-content; }
+.pills-even > .pill { flex: 1 1 0; min-width: fit-content; padding-left: 10px; padding-right: 10px; }
 /* Ages: two by two on a phone, so "62 or older" isn't left alone on a row. */
 .pills-age > .pill { flex-basis: calc(50% - 4px); }
 /* Longer answers (where you were born) stack full width on a phone: one
