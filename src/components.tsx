@@ -18,7 +18,6 @@ const paths: Record<string, string> = {
   phone: "M6 3h4l2 5-2.5 1.5a11 11 0 0 0 5 5L16 12l5 2v4a2 2 0 0 1-2 2C10 20 4 14 4 5a2 2 0 0 1 2-2z",
   arrow: "M5 12h14 M13 6l6 6-6 6",
   alert: "M12 3a9 9 0 1 0 0 18a9 9 0 1 0 0-18 M12 7.5v5.5 M12 16.5v.5",
-  left: "M15 5l-7 7 7 7",
   right: "M9 5l7 7-7 7",
 };
 
@@ -38,12 +37,12 @@ const BUST = "M13.5 42 V 37.93 H 14 C 14 35.13 17.3 34.33 20.5 34.33 C 23.7 34.3
 
 /** The mark: the card, set down at a slight angle. It is cut out of
  *  currentColor with a mask, so it sits on any background. */
-export function Mark({ size = 22, tilt = -10, className = "" }: { size?: number; tilt?: number; className?: string }) {
+export function Mark({ size = 22, className = "" }: { size?: number; className?: string }) {
   const id = "m" + useId().replace(/[^a-zA-Z0-9]/g, "");
   return (
     <svg viewBox="6 13 52 38" height={size} width={(size * 52) / 38} aria-hidden="true" focusable="false" className={`mark ${className}`}>
       <mask id={id} maskUnits="userSpaceOnUse" x="0" y="0" width="64" height="64">
-        <g transform={`rotate(${tilt} 32 32)`}>
+        <g transform="rotate(-10 32 32)">
           <rect x="9" y="17.5" width="46" height="29" rx="2.5" fill="#fff" />
           <rect x="14" y="22.5" width="13" height="19" fill="#000" />
           <circle cx="20.5" cy="29.53" r="3.3" fill="#fff" />
@@ -333,14 +332,12 @@ export function Notice({ tone = "info", title, children }: { tone?: "info" | "dr
   );
 }
 
-/** Pick one answer. Pills with aria-pressed, so screen readers announce the
- *  choice. `numbered` adds 01, 02… in mono. */
-export function Pills<V>(props: { label: string; options: readonly (readonly [V, string])[]; value: V | null; onChange: (v: V) => void; numbered?: boolean; className?: string }) {
+/** Pick one answer. Pills with aria-pressed, so screen readers announce the choice. */
+export function Pills<V>(props: { label: string; options: readonly (readonly [V, string])[]; value: V | null; onChange: (v: V) => void; className?: string }) {
   return (
     <div className={`pills ${props.className ?? ""}`} role="group" aria-label={props.label}>
-      {props.options.map(([v, text], i) => (
+      {props.options.map(([v, text]) => (
         <button key={text} className="pill" aria-pressed={props.value === v} onClick={() => props.onChange(v)}>
-          {props.numbered && <span className="pill-num" aria-hidden="true">{String(i + 1).padStart(2, "0")}</span>}
           {text}
         </button>
       ))}
