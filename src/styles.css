@@ -449,6 +449,9 @@ h1.display .bracketed .num { color: var(--on-c); background: var(--hl); padding:
 .dark-band .lede { color: #a1a1a6; }
 .dark-band .fine { color: #86868b; }
 .dark-band a { color: #2997ff; }
+/* "Open the official PDF" stays in one piece with its icon, and its tap area
+   reaches 44px tall without moving the line around it. */
+.paper-head .fine a { display: inline-block; white-space: nowrap; padding: 12px 0; margin: -12px 0; }
 .papers3d { max-width: 900px; margin: 56px auto 0; perspective: 1400px; }
 .papers3d .paper-sheet { transition: transform .15s linear; box-shadow: 0 40px 80px -30px rgb(0 0 0 / .8); }
 .papers3d .p-a .paper-sheet { transform-origin: right center; transform: rotateY(calc((1 - var(--p, 1)) * 34deg)) rotateX(calc((1 - var(--p, 1)) * 12deg)) rotate(-2deg); }
