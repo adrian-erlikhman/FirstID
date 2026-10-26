@@ -84,7 +84,11 @@ export function WhatIfScreen(props: {
 
           <Collapse show={on.length > 0}>
             <div className="actions pair">
-              <button className="btn ghost" onClick={() => setOn([])}>{s.reset}</button>
+              <button className="btn ghost" onClick={() => {
+                setOn([]);
+                // These buttons slide away with the changes, so keep focus on the first switch.
+                document.querySelector<HTMLElement>("main .toggle-row")?.focus();
+              }}>{s.reset}</button>
               <button className="btn primary" onClick={() => onApply(next)}>{s.useThese}</button>
             </div>
           </Collapse>
