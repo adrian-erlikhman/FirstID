@@ -358,8 +358,12 @@ h1.display .bracketed .num { color: var(--on-c); background: var(--hl); padding:
 .orbit-ring circle { fill: none; stroke: var(--ink); stroke-width: 1.2; stroke-dasharray: 3 5; }
 .orb { position: absolute; top: 50%; display: flex; flex-direction: column; align-items: center; gap: 8px; transform: translate(-50%, -50%) rotate(calc(var(--p, 0) * -300deg)); transition: opacity .5s; }
 .orb-id { left: 7%; } .orb-bc { left: 93%; }
-.st-0 .orb-bc, .st-1 .orb-id { opacity: .4; }
-.orb-label { font-size: 13px; font-weight: 600; padding: 2px 9px; border-radius: 980px; background: var(--tile); white-space: nowrap; }
+/* The document not being talked about steps back, but only its picture fades:
+   its label stays readable (secondary grey on the tile, over 4.5:1). */
+.orb img { transition: opacity .5s; }
+.st-0 .orb-bc img, .st-1 .orb-id img { opacity: .4; }
+.orb-label { font-size: 13px; font-weight: 600; padding: 2px 9px; border-radius: 980px; background: var(--tile); color: var(--ink); white-space: nowrap; transition: color .5s; }
+.st-0 .orb-bc .orb-label, .st-1 .orb-id .orb-label { color: var(--text-2); }
 .st-2 .orbit { opacity: .15; scale: .72; }
 .breakout { position: absolute; inset: 0; display: grid; place-items: center; opacity: 0; transform: scale(.55) rotate(-24deg); transition: opacity .6s, transform .9s var(--ease); }
 .breakout::before { content: ""; position: absolute; width: 74%; aspect-ratio: 1.586; border-radius: 22px; background: var(--hl); transform: rotate(9deg); }
