@@ -290,16 +290,23 @@
     "civ1185": {
       "id": "civ1185",
       "title": "Civil Code 1185 (notary: credible witnesses)",
-      "url": "https://california.public.law/codes/ca_civ_code_section_1185",
-      "quote": "TODO: copy (b)(2), two credible witnesses each presenting ID, from leginfo",
-      "checked": "2026-10-18"
+      "url": "https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?lawCode=CIV&sectionNum=1185",
+      "quote": "The oath or affirmation under penalty of perjury of two credible witnesses, whose identities are proven to the officer upon the presentation of a document",
+      "checked": "2026-10-25"
     },
     "gov8211": {
       "id": "gov8211",
       "title": "Government Code 8211 (notary fees)",
-      "url": "https://codes.findlaw.com/ca/government-code/gov-sect-8211/",
-      "quote": "TODO: copy the $15 per signature line. Rises to $20 on Jan 1, 2027 (AB 1597).",
-      "checked": "2026-10-18"
+      "url": "https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?lawCode=GOV&sectionNum=8211",
+      "quote": "acknowledgment or proof of a deed, or other instrument, to include the seal and the writing of the certificate, the sum of fifteen dollars ($15) for each signature taken.",
+      "checked": "2026-10-25"
+    },
+    "ab1597": {
+      "id": "ab1597",
+      "title": "AB 1597 (2026): notary fee rises to $20",
+      "url": "https://leginfo.legislature.ca.gov/faces/billTextClient.xhtml?bill_id=202520260AB1597",
+      "quote": "acknowledgment or proof of a deed, or other instrument, to include the seal and the writing of the certificate, the sum of twenty dollars ($20) for each signature taken.",
+      "checked": "2026-10-25"
     },
     "ssa_replace": {
       "id": "ssa_replace",
