@@ -535,6 +535,8 @@ h2.display.wide { max-width: 20ch; margin-bottom: 28px; }
 /* No path: what is blocking starts level with the heading on wide screens,
    and right under the lede on phones, instead of 16px lower. */
 .no-path .body > :first-child { margin-top: 0; }
+/* "See which answers would open a / path" wrapped with one word left over on phones. */
+.no-path .btn { text-wrap: balance; }
 /* Wider screens: the three path buttons share one width (the widest label's),
    so they read as one column instead of three ragged pills. */
 @media (min-width: 640px) {
