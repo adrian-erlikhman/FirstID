@@ -633,6 +633,7 @@ h2.display.wide { max-width: 20ch; margin-bottom: 28px; }
   .rule-body { padding: 0 12px 14px; }
   .rule-body > .row-sub { padding: 0 6px; }
   .rule-body .source { padding: 14px 14px 16px; }
+  .rule-body .source-meta { font-size: 1rem; } /* "Not checked by our team yet" is a sentence: 16px */
 }
 /* Wider screens: an open rule's explanation and sources start under its name,
    not under its number, and long quotes get a shorter line. */
