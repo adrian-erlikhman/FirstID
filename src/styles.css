@@ -953,6 +953,11 @@ main h1:focus { box-shadow: none !important; } /* headings take focus on a new s
 .office-hours > div { display: grid; grid-template-columns: 6.5em minmax(0, 1fr); gap: 8px; }
 .office-hours dt { color: var(--text-2); }
 .office-hours dd { margin: 0; font-variant-numeric: tabular-nums; }
+/* Today's row, in ink on a grey band and labelled, so a glance answers "is it open today?" */
+.office-hours > .is-today { margin: 0 -8px; padding: 0 8px; border-radius: 6px; background: var(--wash); }
+.office-hours > .is-today dt { color: var(--ink); font-weight: 600; }
+.office-hours > .is-today dd { font-weight: 600; }
+.office-today { font-weight: 400; color: var(--text-2); }
 /* An office the snapshot shows closed all week (Inglewood): say so plainly instead of "Mon–Sun Closed". */
 .office-closed { margin: 0 0 12px; padding: 10px 12px; border: 1px dashed var(--control); border-radius: var(--r-sm); font-size: 1rem; line-height: 1.45; }
 .office-actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: auto; } /* side by side, the buttons line up along the bottom */

@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Icon } from "../components";
 import { t, type Lang } from "../i18n";
-import { directionsUrl, groupHours, hasOffices, officeData, officesFor, sortOffices, zipCentroids } from "../offices";
+import { DAYS, type Day, directionsUrl, groupHours, hasOffices, officeData, officesFor, sortOffices, zipCentroids } from "../offices";
 import { href } from "../router";
 
 // Offices for one kind of place (DMV for now), from the snapshot in
@@ -16,6 +16,8 @@ export function OfficesScreen({ lang, kind }: { lang: Lang; kind: string }) {
   const full = /^\d{5}$/.test(zip);
   const known = full && !!zipCentroids[zip];
   const rows = sortOffices(list, known ? zip : "");
+  const today = (new Date().getDay() + 6) % 7; // index into DAYS, Monday first
+  const isToday = (from: Day, to: Day) => DAYS.indexOf(from) <= today && today <= DAYS.indexOf(to);
 
   return (
     <section className="screen offices">
@@ -45,9 +47,9 @@ export function OfficesScreen({ lang, kind }: { lang: Lang; kind: string }) {
             ) : o.hours && (
               <dl className="office-hours" aria-label={s.officesHours}>
                 {groupHours(o.hours).map((g) => (
-                  <div key={g.from}>
+                  <div key={g.from} className={isToday(g.from, g.to) ? "is-today" : undefined}>
                     <dt>{g.from === g.to ? s.officesDay[g.from] : `${s.officesDay[g.from]}–${s.officesDay[g.to]}`}</dt>
-                    <dd>{g.value === "closed" ? s.officesClosed : g.value}</dd>
+                    <dd>{g.value === "closed" ? s.officesClosed : g.value}{isToday(g.from, g.to) && <span className="office-today"> · {s.officesToday}</span>}</dd>
                   </div>
                 ))}
               </dl>
