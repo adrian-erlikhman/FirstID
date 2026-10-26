@@ -585,10 +585,10 @@ h2.display.wide { max-width: 20ch; margin-bottom: 28px; }
 .mini-clip { min-height: 0; overflow: hidden; }
 .mini-in {
   display: grid; grid-template-columns: 24px minmax(0, 1fr) auto; gap: 10px; padding: 11px 18px;
-  font-size: 15.5px; line-height: 1.35;
+  font-size: 1rem; line-height: 1.35;
 }
 .mini-steps li + li .mini-in { border-top: 1px solid var(--line); }
-.mini-steps .num { font-size: 15px; font-weight: 600; justify-self: end; }
+.mini-steps .num { font-size: 1rem; font-weight: 600; justify-self: end; align-self: start; } /* "Free" keeps its own height on a two-line step */
 @keyframes step-in { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
 .whatif-none { padding: 24px 18px; margin: 0; font-size: 1.125rem; }
 .compare { font-size: 0.8438rem; color: var(--text-2); margin: 10px 4px 0; font-variant-numeric: tabular-nums; }
