@@ -167,6 +167,8 @@ h1.display .bracketed .num { color: var(--on-c); background: var(--hl); padding:
 .btn.link:hover .icon { transform: translateX(2px); }
 .btn.text { background: none; min-height: 44px; padding: 0 10px; color: var(--link); text-decoration: none; font-weight: 400; }
 .btn.text:hover { text-decoration: underline; }
+/* In a row of actions the words line up with the gutter when a text button wraps to its own line; the padding still widens the tap area. */
+.actions > .btn.text { margin-inline: -10px -6px; } /* evens the gaps between words without the tap areas overlapping */
 .btn.small { min-height: 36px; padding: 7px 15px; font-size: 0.9063rem; }
 .actions { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 16px; margin-top: 24px; }
 .actions.stack { flex-direction: column; align-items: stretch; }
