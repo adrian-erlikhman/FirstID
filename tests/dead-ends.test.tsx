@@ -1,6 +1,6 @@
-// Feedback item 9: the no-path screen should say what is blocking, and offer
-// help an adult can use. These tests render the real screen (as HTML, no
-// browser) for the dead ends we know about, in English and Spanish.
+// The no-path screen should say what is blocking, and offer help an adult can
+// use. These tests render the real screen (as HTML, no browser) for the dead
+// ends we know about, in English and Spanish.
 import { describe, expect, it } from "vitest";
 import { renderToStaticMarkup } from "react-dom/server";
 import rulesJson from "../data/rules.json";
@@ -29,8 +29,7 @@ const NOTE_TEXT: Record<NoPathNote, (l: Lang) => string> = {
   needSsn: (l) => t[l].noPathNeedSsn,
 };
 
-// The dead ends named in the feedback and the persona notes, with what the
-// screen should say for each.
+// Known dead ends, with the notes the screen should show for each.
 const luisNoOldId: Person = { facts: personas.luis.facts, have: personas.luis.have.filter((d) => d !== "dmv_record") };
 const DEAD_ENDS: [string, Person, NoPathNote[]][] = [
   ["Luis without his old ID (born in Texas, no witnesses)", luisNoOldId, ["bornElsewhere"]],
@@ -69,12 +68,9 @@ describe("no-path screen: says what is blocking", () => {
     for (const person of people(born)) if (!plan(rules, person)) expect(noPathNotes(rules, person), JSON.stringify(person)).not.toEqual([]);
   });
 
-  // BUG (found by this test, not fixed here): someone born in LA County with
-  // TWO things missing gets no note at all, only "None of the rules we have
-  // so far gives a path". noPathNotes only asks whether ONE missing piece
-  // would open a path. Examples: housed, no witnesses, knows their SSN, no
-  // paper with an address; or unhoused, no witnesses, no SSN.
-  // Unskip once the no-path screen names every blocker (feedback item 9).
+  // Skipped because, when it was written, someone born in LA County with two
+  // things missing got no note at all. noPathNotes now names the missing
+  // pieces in that case (see ui-logic.test.ts), and this passes if unskipped.
   it.skip("born in LA County: every dead end has at least one note", () => {
     for (const person of people("la_county")) if (!plan(rules, person)) expect(noPathNotes(rules, person), JSON.stringify(person)).not.toEqual([]);
   });
@@ -88,10 +84,10 @@ describe("no-path screen: who can help today", () => {
     expect(rows.map((r) => r.tel)).toContain("211");
   });
 
-  // BUG / open item (feedback item 9, not fixed here): besides 211 the only
-  // option is the LAUSD Homeless Education Office, which is for students.
-  // An adult like Luis has no second place to call. Unskip once an adult
-  // option whose own site says it helps with ID or documents is added.
+  // Open item: an adult like Luis is shown 211 and nothing else, since the
+  // LAUSD Homeless Education Office serves students and is shown only to
+  // people under 22. Unskip once an adult option whose own site says it
+  // helps with ID or documents is added.
   it.skip.each(LANGS)("%s: at least one option for adults besides 211", (lang) => {
     const rows = helpRows(render(luisNoOldId, lang)).filter((r) => r.tel !== "211" && !/LAUSD|student|estudiant/i.test(r.text));
     expect(rows.length).toBeGreaterThan(0);
