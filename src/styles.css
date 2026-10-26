@@ -157,6 +157,7 @@ h1.display .bracketed .num { color: var(--on-c); background: var(--hl); padding:
   transition: background-color .2s, box-shadow .2s, transform .15s, color .2s;
 }
 .btn:active { transform: scale(.98); }
+.btn .icon { width: 1.05em; height: 1.05em; } /* grows with the label under the Aa text sizes, instead of staying 18px */
 .btn.primary { background: var(--cta); color: #fff; }
 .btn.primary:hover { background: var(--cta-hover); color: #fff; }
 .btn.ghost { background: transparent; color: var(--cta); box-shadow: inset 0 0 0 1px var(--cta); }
