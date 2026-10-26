@@ -216,7 +216,9 @@ h1.display .bracketed .num { color: var(--on-c); background: var(--hl); padding:
 
 /* ---------- the path summary's place on a screen ---------- */
 .path-card { margin-bottom: 16px; }
-.route-step h1.display { overflow-wrap: anywhere; }
+/* A step's title is a long instruction, so it is set a size down from the other screens' titles at every width;
+   on a phone that leaves Where / Cost / Time on the first screen. */
+.route-step h1.display { overflow-wrap: anywhere; font-size: 34px; }
 
 /* ---------- tags and notices ---------- */
 .tag {
@@ -604,6 +606,7 @@ h2.display.wide { max-width: 20ch; margin-bottom: 28px; }
 /* ---------- wider screens ---------- */
 @media (min-width: 640px) {
   h1.display { font-size: 50px; }
+  .route-step h1.display { font-size: 42px; }
   .foot { margin-top: 88px; }
   .hero-a, .hero-b { font-size: 64px; }
   .story-line h2 { font-size: 46px; }
