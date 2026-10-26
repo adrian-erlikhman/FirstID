@@ -120,7 +120,10 @@ h1.display .bracketed .num { color: var(--on-c); background: var(--hl); padding:
 /* A press shows, the way the pill buttons give a little (.btn:active). */
 .back-btn:active, .ts-toggle:active { transform: scale(.94); }
 .back-btn, .ts-toggle { transition: background-color .2s, transform .15s; }
-.back-btn:focus-visible { outline-offset: -2px; }
+/* Focus: the black ring hugs the 36px circle and the yellow halo fills the
+   spare 4px around it, so the whole ring stays inside the 52px bar instead of
+   running off the top of the screen. Aa does the same (Text size block). */
+.back-btn:focus-visible { outline-offset: -4px; box-shadow: inset 0 0 0 2px var(--focus-halo), 0 0 0 2px var(--focus-halo) !important; }
 /* Small to look at, 44px to tap: the hit area reaches past the visible pill. */
 .nav-cta, .lang button { position: relative; }
 .nav-cta::after, .lang button::after { content: ""; position: absolute; inset: -6px 0; }
@@ -905,7 +908,7 @@ main h1:focus { box-shadow: none !important; } /* headings take focus on a new s
   border: 0; border-radius: 50%; background: var(--tile); background-clip: content-box; color: var(--ink);
   font-family: var(--font); font-size: 13px; font-weight: 600; line-height: 1; letter-spacing: -0.02em;
 }
-.ts-toggle:focus-visible { outline-offset: -2px; }
+.ts-toggle:focus-visible { outline-offset: -4px; box-shadow: inset 0 0 0 2px var(--focus-halo), 0 0 0 2px var(--focus-halo) !important; }
 /* Phones: the bar gets 4px tighter per gap so "Aa" fits next to EN/ES at 375px.
    Narrower than that, the home page's Start pill gives way (the hero has one). */
 @media (max-width: 400px) {
