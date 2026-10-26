@@ -1,4 +1,4 @@
-// npm run lint:rules — fails if data/rules.json has a broken rule.
+// npm run lint:rules: fails if data/rules.json has a broken rule.
 import { readFileSync } from "node:fs";
 import { lint } from "../src/engine/lint";
 import type { RuleSet } from "../src/engine/types";
