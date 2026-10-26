@@ -10,7 +10,7 @@ import certificateStrip from "./forms/strip-certificate.jpg";
 // Small shared pieces. Every screen is built from these, so a style change
 // here changes it everywhere. The look is First ID's own: black on white,
 // Instrument Sans, and one recurring object, an ID card set down at a slight
-// angle. The card is the logo, and the path you get is shown as one.
+// angle: the logo. The path you get is shown as a plain summary panel.
 
 const paths: Record<string, string> = {
   back: "M15 5l-7 7 7 7",
@@ -21,7 +21,6 @@ const paths: Record<string, string> = {
   phone: "M6 3h4l2 5-2.5 1.5a11 11 0 0 0 5 5L16 12l5 2v4a2 2 0 0 1-2 2C10 20 4 14 4 5a2 2 0 0 1 2-2z",
   arrow: "M5 12h14 M13 6l6 6-6 6",
   alert: "M12 3a9 9 0 1 0 0 18a9 9 0 1 0 0-18 M12 7.5v5.5 M12 16.5v.5",
-  flip: "M4 12a8 8 0 0 1 14-5.3 M18.5 3v4h-4 M20 12a8 8 0 0 1-14 5.3 M5.5 21v-4h4",
   left: "M15 5l-7 7 7 7",
   right: "M9 5l7 7-7 7",
 };
@@ -62,48 +61,6 @@ export function Mark({ size = 22, tilt = -10, className = "" }: { size?: number;
   );
 }
 
-/** The portrait window from the card, at any size: a head and shoulders in a
- *  photo frame. Colours come from --pw (frame) and --pb (person). */
-export function Portrait({ className = "" }: { className?: string }) {
-  return (
-    <svg viewBox="14 22.5 13 19" className={`portrait ${className}`} aria-hidden="true" focusable="false" preserveAspectRatio="xMidYMid slice">
-      <rect x="14" y="22.5" width="13" height="19" fill="var(--pw)" />
-      <circle cx="20.5" cy="29.53" r="3.3" fill="var(--pb)" />
-      <path d={BUST} fill="var(--pb)" />
-    </svg>
-  );
-}
-
-// A head and shoulders on an 80 x 100 photo, drawn as one outline: crown,
-// jaw, neck, then the slope of the shoulders out to the edges of the frame.
-const SILHOUETTE =
-  "M40 21C48.5 21 54.5 28 54.5 38.5C54.5 46 51.5 51.5 47.5 54.5L47.5 60C47.5 62 49 63.2 51.5 64C64 67.5 73 74 75 86L76 100L4 100L5 86C7 74 16 67.5 28.5 64C31 63.2 32.5 62 32.5 60L32.5 54.5C28.5 51.5 25.5 46 25.5 38.5C25.5 28 31.5 21 40 21Z";
-
-/** The photo on the ID card: a studio-lit backdrop in the card's yellow and a
- *  person's silhouette with a little light on the head and shoulders. Colours
- *  come from --pw (backdrop) and --pb (person). */
-export function IdPortrait({ className = "" }: { className?: string }) {
-  const id = "p" + useId().replace(/[^a-zA-Z0-9]/g, "");
-  return (
-    <svg viewBox="0 0 80 100" className={`portrait id-portrait ${className}`} aria-hidden="true" focusable="false" preserveAspectRatio="xMidYMid slice">
-      <defs>
-        <radialGradient id={`${id}b`} cx="50%" cy="34%" r="70%">
-          <stop offset="0" stopColor="#fff" stopOpacity=".38" />
-          <stop offset="1" stopColor="#fff" stopOpacity="0" />
-        </radialGradient>
-        <linearGradient id={`${id}s`} x1="0" y1="0" x2=".35" y2="1">
-          <stop offset="0" stopColor="#fff" stopOpacity=".16" />
-          <stop offset=".55" stopColor="#fff" stopOpacity="0" />
-        </linearGradient>
-      </defs>
-      <rect width="80" height="100" fill="var(--pw)" />
-      <rect width="80" height="100" fill={`url(#${id}b)`} />
-      <path d={SILHOUETTE} fill="var(--pb)" />
-      <path d={SILHOUETTE} fill={`url(#${id}s)`} />
-    </svg>
-  );
-}
-
 /** The mark, then the name. */
 export function Lockup() {
   return (
@@ -119,9 +76,6 @@ export function Br({ children, className = "" }: { children: ReactNode; classNam
   return <span className={`bracketed ${className}`}><span className="num">{children}</span></span>;
 }
 
-// The fine-line security print behind the card, on an 856 x 540 grid (ID-1 at
-// ten units a millimetre): a field of gentle waves, and a guilloche rosette
-// of interlaced loops on the right. Built once, as two path strings.
 /** Slides its contents open and shut instead of popping them in and out.
  *  While closing it keeps showing what it last held. */
 export function Collapse({ show, children, className = "" }: { show: boolean; children: ReactNode; className?: string }) {
