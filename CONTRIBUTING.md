@@ -29,7 +29,7 @@ Every rule in `data/rules.json` starts as `"verified": false`, and the app shows
 3. For statutes, re-check the text on leginfo.legislature.ca.gov, not a mirror site.
 4. Check the rule's requirements, fee, waivers and days, and its plain-language `why`, `say` and `bring` lines (AI-drafted), against what the source actually says, in English and Spanish.
 5. Update each source's `checked` date, then set `"verified": true`.
-6. Write down what changed in `data/CHANGES.md` and in the commit message.
+6. Write down what changed in [`data/CHANGES.md`](data/CHANGES.md) and in the commit message.
 7. Run `npm run check`. If a persona's plan changes, work it out again by hand from the sources before updating `tests/personas.test.ts`.
 
 ## Team notes
