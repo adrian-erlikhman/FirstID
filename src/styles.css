@@ -283,6 +283,13 @@ h1.display .bracketed .num { color: var(--on-c); background: var(--hl); padding:
    identificación.", about 7.7em) keeps one line instead of leaving "Sin" alone. */
 .hero-a, .hero-b { font-size: min(44px, calc((100vw - 2 * var(--gutter)) / 7.8)); }
 .hero-a { display: block; line-height: 1.02; }
+/* Wide screens: a line break falls between the two sentences, never inside
+   one ("Sin identificación. Sin / acta de nacimiento."). Phones wrap freely. */
+@media (min-width: 640px) { .hero-s { display: inline-block; } }
+/* Just past 640px, 64px would split "Sin acta de nacimiento." (about 10.05em). */
+@media (min-width: 640px) and (max-width: 979px) {
+  .hero .hero-a, .hero .hero-b { font-size: min(64px, calc((100vw - 2 * var(--gutter)) / 10.3)); }
+}
 .hero-b { display: block; line-height: 1.1; margin-top: 0.08em; }
 .hero-lede { font-size: 1.1875rem; line-height: 1.42; color: var(--text-2); max-width: 30em; margin: 20px auto 0; text-wrap: pretty; }
 .hero .actions { justify-content: center; margin-top: 26px; }
