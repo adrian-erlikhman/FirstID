@@ -210,6 +210,9 @@ h1.display .bracketed .num { color: var(--on-c); background: var(--hl); padding:
 @media (min-width: 640px) {
   .pills-age { max-width: 520px; }
   .pills-age > .pill { flex-basis: 0; }
+  /* Where you were born: two by two in equal widths, not three and one. */
+  .pills-stack { max-width: 520px; }
+  .pills-stack > .pill { flex: 1 1 calc(50% - 4px); min-width: fit-content; }
 }
 
 /* ---------- panel with a small header ---------- */
