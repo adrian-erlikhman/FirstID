@@ -396,6 +396,9 @@ h1.display .bracketed .num { color: var(--on-c); background: var(--hl); padding:
    (Not black: the forms band right below is black.) */
 .t-scale { background: var(--hl); color: var(--on-c); }
 .scale-rows { display: flex; flex-direction: column; }
+/* Side by side with Maria's tile (wide screens), the three numbers spread
+   down the yellow tile instead of bunching at the top over an empty gap. */
+@media (min-width: 980px) { .t-scale .scale-rows { flex: 1; justify-content: space-between; } }
 .scale-row { display: flex; align-items: center; gap: 18px; padding: 14px 0; }
 .scale-row:first-child { padding-top: 0; }
 .scale-row + .scale-row { border-top: 1px solid rgb(0 0 0 / .14); }
