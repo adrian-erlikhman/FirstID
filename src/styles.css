@@ -607,10 +607,14 @@ h2.display.wide { max-width: 20ch; margin-bottom: 28px; }
 
 /* ---------- how we know ---------- */
 .rule-head {
-  width: 100%; display: grid; grid-template-columns: 24px minmax(0, 1fr) auto; gap: 4px 12px; align-items: start;
+  width: 100%; display: grid; grid-template-columns: 24px minmax(0, 1fr) auto 18px; gap: 4px 12px; align-items: start;
   text-align: left; padding: 14px 18px; border: 0; background: transparent; color: var(--ink); min-height: 60px;
 }
 .rule-head:hover { background: var(--wash); }
+/* Points down while closed, up while open, so the row reads as something that opens. */
+.rule-chev { grid-column: 4; grid-row: 1; display: flex; padding-top: 2px; color: var(--text-2); }
+.rule-chev .icon { transform: rotate(90deg); transition: transform .25s var(--ease); }
+.rule-head[aria-expanded="true"] .rule-chev .icon { transform: rotate(-90deg); }
 .rule-name { font-weight: 600; font-size: 1rem; line-height: 1.35; letter-spacing: -0.01em; }
 .rule-head .tag { margin-top: 1px; }
 .rule-src { grid-column: 2 / -1; font-size: 0.875rem; line-height: 1.4; color: var(--text-2); }

@@ -31,6 +31,7 @@ export function SourcesScreen({ rules, lang }: { rules: RuleSet; lang: Lang }) {
                     <span className="rule-name">{a.label[lang]}</span>
                     <span className={`tag ${a.verified ? "ok" : "draft"}`}>{a.verified ? s.verified : s.callAhead}</span>
                     <span className="rule-src"><span lang="en">{a.sources.map((id) => rules.sources[id].title.split(" (")[0]).join("; ")}</span>{s.inEnglish}</span>
+                    <span className="rule-chev"><Icon name="chevron" size={18} /></span>
                   </button>
                   {isOpen && (
                     <div className="rule-body sources">
