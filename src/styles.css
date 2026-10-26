@@ -199,8 +199,12 @@ h1.display .bracketed .num { color: var(--on-c); background: var(--hl); padding:
    label that doesn't fit (Spanish, larger text) moves to the next row whole. */
 .pills-even { max-width: 400px; }
 .pills-even > .pill { flex: 1 1 0; min-width: fit-content; padding-left: 10px; padding-right: 10px; }
-/* Ages: two by two on a phone, so "62 or older" isn't left alone on a row. */
+/* Ages: two by two on a phone, so "62 or older" isn't left alone on a row.
+   Where two can't fit side by side (the narrowest phones at the largest
+   text) all four go one under the other instead of 1-2-1. */
+.pills-age { container-type: inline-size; }
 .pills-age > .pill { flex-basis: calc(50% - 4px); }
+@container (max-width: 13.4em) { .pills-age > .pill { flex-basis: 100%; } }
 /* Longer answers (where you were born) stack full width on a phone: one
    clean column of equal targets instead of four ragged rows. */
 @media (max-width: 639px) {
