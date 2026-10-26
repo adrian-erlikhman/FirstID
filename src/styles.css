@@ -143,6 +143,9 @@ h1.display .bracketed .num { color: var(--on-c); background: var(--hl); padding:
 /* ---------- surfaces ---------- */
 .panel { background: var(--panel); border-radius: var(--r); box-shadow: 0 0 0 1px var(--line); overflow: hidden; }
 .panel > li + li, .panel > .q + .q { border-top: 1px solid var(--line); }
+/* A row's focus ring is drawn inside the panel; rounding it to sit inside the panel's own corners keeps the first and
+   last rows' rings from being clipped square at the corners. Buttons and pills keep their own shape. */
+.panel :focus-visible:not(.btn):not(.pill) { border-radius: calc(var(--r) - 4px); }
 .block { margin-top: 32px; }
 /* A section's heading ("Bring", "Say this", "Why this works"): ink and
    semibold at body size, so it reads as a heading, not as a grey caption. */
