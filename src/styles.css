@@ -782,6 +782,12 @@ h2.display.wide { max-width: 20ch; margin-bottom: 28px; }
 .bring-line { display: block; }
 .bring-line + .bring-line { margin-top: 3px; }
 .sheet-none { color: #555; }
+/* On screen each thing to bring gets a small box, so a long item and the
+   next one don't read as one paragraph. Paper skips it: no room to spare. */
+@media screen {
+  .bring-line:not(.sheet-none) { position: relative; padding-left: 12px; }
+  .bring-line:not(.sheet-none)::before { content: ""; position: absolute; left: 0; top: .5em; width: 6px; height: 6px; box-shadow: inset 0 0 0 1.25px #111; border-radius: 1px; }
+}
 .sheet-says { display: grid; grid-template-columns: 1fr; gap: 10px; margin-top: 14px; }
 .say-box { border: 2px solid #111; border-radius: 8px; padding: 10px 12px; display: flex; flex-direction: column; gap: 4px; break-inside: avoid; }
 .say-box .mono { font-size: 0.6563rem; text-transform: uppercase; letter-spacing: .06em; }
