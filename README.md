@@ -80,6 +80,10 @@ public/        icons, manifest and the offline service worker
 docs/          background research and team notes
 ```
 
+## License
+
+Our code is under the [MIT License](LICENSE). That doesn't cover what we didn't make: the fonts in `src/fonts/` keep their SIL Open Font License ([`OFL.txt`](src/fonts/OFL.txt)), LA County's blank forms in `src/forms/` come from lavote.gov, and the state's samples in `src/docs/` are listed with their sources in [`src/docs/README.md`](src/docs/README.md).
+
 ## Contributing and AI use
 
 How we work, verify rules and record AI help is in [`CONTRIBUTING.md`](CONTRIBUTING.md). The contest allows AI tools when all use is disclosed: we used Anthropic's Claude for research, drafting the rules and Spanish, much of the code and design, and review. Every AI contribution is logged in **[`AI-USE.md`](AI-USE.md)**, Claude's commits are labeled, and we never rewrite history. The app itself uses no AI.

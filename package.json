@@ -2,6 +2,7 @@
   "name": "first-id",
   "version": "0.1.0",
   "private": true,
+  "license": "MIT",
   "description": "The cheapest legal path to a California ID card in LA County, with the source for each step. English and Spanish.",
   "homepage": "https://first-id.vercel.app/",
   "repository": {
