@@ -8,7 +8,7 @@ For people in LA County who need an ID and don't have the documents to get one: 
 
 Tick the documents you still have and answer seven questions. First ID works out the cheapest legal order of steps: where to go, what to bring, what it costs after fee waivers, what to say at the counter, and the source that allows it. A step's "say this" line can be shown full screen to a clerk or read aloud, DMV steps list nearby offices, the whole path prints on one page, and you can tick steps off and add calendar reminders as you go.
 
-Not legal advice. Rules change, and every rule our team hasn't yet checked against its source is marked "call ahead".
+Not legal advice. Rules change, and every rule we haven't yet checked against its source is marked "call ahead".
 
 ## The problem: the ID loop
 
@@ -35,7 +35,7 @@ The tests ([`tests/`](tests/)) cover the planner, four invented people checked a
 ## What's real and what's made up
 
 - **The people are invented.** Maria (on the home page) and three others in [`tests/personas.ts`](tests/personas.ts) carry no real names, addresses or document numbers.
-- **The rules are real but not yet verified.** Each cites a government page or statute, but they were drafted with AI help, so each stays "call ahead" until a teammate checks it ([how](#how-rules-get-verified)).
+- **The rules are real but not yet verified.** Each cites a government page or statute, but they were drafted with AI help, so each stays "call ahead" until one of us checks it ([how](#how-rules-get-verified)).
 - **The documents and office list are real.** LA County's blank forms, the state's published samples ([sources](src/docs/README.md)), and 26 DMV field offices from the DMV's own data ([`data/offices.json`](data/offices.json)), each with its source and check date. The DMV's DL 933 is never shown, because the DMV says it must not be shared online.
 - **The app uses no AI.** Plans come from the planner. How we used AI to build it is in [`AI-USE.md`](AI-USE.md).
 
