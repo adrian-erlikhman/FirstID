@@ -757,6 +757,8 @@ h2.display.wide { max-width: 20ch; margin-bottom: 28px; }
 .sheet { background: #fff; color: #111; border-radius: 6px; box-shadow: 0 0 0 1px var(--line); padding: 22px 18px; font-size: 0.8125rem; line-height: 1.4; letter-spacing: 0; }
 .sheet h1 { font-size: 1.5rem; font-weight: 600; letter-spacing: -0.035em; margin: 0 0 4px; color: #111; line-height: 1.1; }
 .sheet p { margin: 0; }
+.sheet h1 { text-wrap: balance; }
+.sheet-head p, .say-box > span:last-child { text-wrap: pretty; } /* no one-word last lines */
 /* The title gets the full width; the rules note sits under the subtitle on
    phones and beside it on wider screens and paper, never squeezing the title. */
 .sheet-head { display: grid; grid-template-columns: minmax(0, 1fr); gap: 8px 16px; align-items: end; border-bottom: 3px solid #111; padding-bottom: 10px; }
