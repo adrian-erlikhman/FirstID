@@ -131,6 +131,13 @@ describe("rule copy", () => {
     }
   });
 
+  it("mail steps list only what goes in the envelope, what to write on the form, and where to send it", () => {
+    // The step screen heads these lines "Put in the envelope" when the place isn't in person.
+    const mail = rules.actions.filter((a) => !rules.places[a.place].inPerson);
+    expect(mail.map((a) => a.id)).toContain("rrcc_mail");
+    for (const a of mail) for (const b of a.bring ?? []) expect(b.en, a.id).toMatch(/^(The |On the form|Mail it to)/);
+  });
+
   it("the school paper is a school ID card, not a transcript (SSA takes transcripts for children; unconfirmed for adults)", () => {
     const texts = [rules.docs.school_record.label, ...rules.actions.filter((a) => a.id === "ssa_card").flatMap((a) => [a.why!, ...(a.bring ?? [])])];
     for (const x of texts) {

@@ -665,20 +665,20 @@
       "days": 28,
       "bring": [
         {
-          "en": "The notarized Certificate of Identity and the request form",
-          "es": "El Certificado de Identidad notariado y el formulario"
+          "en": "The request form, with “I am requesting an AUTHORIZED copy” ticked",
+          "es": "El formulario, con la casilla “I am requesting an AUTHORIZED copy” (copia autorizada) marcada"
+        },
+        {
+          "en": "The notarized Certificate of Identity",
+          "es": "El Certificado de Identidad notariado"
         },
         {
           "en": "The signed homeless or foster-youth affidavit, if you have one, instead of a check",
           "es": "La declaración jurada firmada de persona sin hogar o de joven en cuidado de crianza, si la tienes, en vez de un cheque"
         },
         {
-          "en": "Tick “I am requesting an AUTHORIZED copy” on the form",
-          "es": "Marca en el formulario la casilla “I am requesting an AUTHORIZED copy” (copia autorizada)"
-        },
-        {
-          "en": "An address where you can get mail for the next 2 months, like your shelter or program (ask them first)",
-          "es": "Una dirección donde puedas recibir correo durante los próximos 2 meses, como tu albergue o programa (pregúntales primero)"
+          "en": "On the form, an address where you can get mail for the next 2 months, like your shelter or program (ask them first)",
+          "es": "En el formulario, una dirección donde puedas recibir correo durante los próximos 2 meses, como tu albergue o programa (pregúntales primero)"
         },
         {
           "en": "Mail it to: Registrar-Recorder/County Clerk, P.O. Box 489, Norwalk, CA 90651-0489",
