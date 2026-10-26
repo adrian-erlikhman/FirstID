@@ -797,16 +797,20 @@ h2.display.wide { max-width: 20ch; margin-bottom: 28px; }
   /* Tight enough that the longest path still fits one Letter page, in Spanish too. */
   .sheet { box-shadow: none; padding: 0; font-size: 8.8pt; line-height: 1.28; border-radius: 0; max-width: none !important; }
   .sheet h1 { font-size: 17pt; }
-  .sheet-head { padding-bottom: 6px; }
+  /* Title on one line, the rules note beside the subtitle: two lines of Spanish title pushed the footer onto a second page. */
+  .sheet-head { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 0 16px; align-items: end; padding-bottom: 6px; }
+  .sheet-head > div:first-child { display: contents; }
+  .sheet-head h1 { grid-column: 1 / -1; white-space: nowrap; }
+  .sheet-meta { line-height: 1.35; white-space: nowrap; }
   .sheet-sum { margin: 8px 0; }
   .name-line i { height: 18px; }
-  .sheet-row, .sheet-row.head { display: grid; grid-template-columns: 18px minmax(0, 2fr) minmax(0, 2.2fr) 52px minmax(0, 1.4fr); gap: 8px; padding: 4px 0; break-inside: avoid; }
+  .sheet-row, .sheet-row.head { display: grid; grid-template-columns: 18px minmax(0, 1.8fr) minmax(0, 2.5fr) 52px minmax(0, 1.4fr); gap: 8px; padding: 4px 0; break-inside: avoid; }
   .sheet-row > * { grid-column: auto !important; grid-row: auto !important; text-align: left !important; }
   .sheet-row.head { font-size: 7.5pt; font-weight: 700; text-transform: uppercase; border-bottom: 1.5px solid #111; padding: 3px 0; }
   .sheet .box { width: 12px; height: 12px; }
   .sheet-says { grid-template-columns: repeat(3, 1fr); gap: 6px; margin-top: 8px; }
-  .say-box { padding: 5px 8px; font-size: 8pt; line-height: 1.26; }
-  .say-box .mono { font-size: 7pt; }
+  .say-box { padding: 5px 8px; gap: 2px; font-size: 8pt; line-height: 1.26; }
+  .say-box .mono { font-size: 7pt; letter-spacing: .02em; } /* keeps "DI ESTO · NOTARIO PÚBLICO…" on one line */
   .sheet-small, .sheet-where { font-size: 7.9pt; }
   .bring-line + .bring-line { margin-top: 1px; }
   .sheet-foot { font-size: 7.5pt; margin-top: 8px; padding-top: 5px; }
