@@ -553,8 +553,8 @@ h2.display.wide { max-width: 20ch; margin-bottom: 28px; }
 .source:active { box-shadow: 0 0 0 1px var(--control); }
 .source-host { display: inline-flex; align-items: center; gap: 6px; font-size: 0.8125rem; color: var(--text-2); }
 .source-title { font-weight: 600; font-size: 1rem; line-height: 1.3; letter-spacing: -0.015em; }
-.source-quote { font-size: 0.9375rem; line-height: 1.5; padding-left: 12px; border-left: 2px solid var(--ink); }
-.source-quote.missing { border-left: 2px dashed var(--control); color: var(--text-2); }
+.source-quote { font-size: 0.9375rem; line-height: 1.5; padding-left: 16px; border-left: 2px solid var(--ink); text-indent: -0.4em; } /* the quote mark hangs */
+.source-quote.missing { border-left: 2px dashed var(--control); color: var(--text-2); text-indent: 0; padding-left: 12px; }
 .source-meta { font-size: 0.8125rem; color: var(--text-2); }
 /* Not checked yet: a small dashed ring, the same dashed line as the "Call ahead" box. */
 .source-meta.draft { display: flex; align-items: center; gap: 8px; }
