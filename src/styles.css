@@ -680,7 +680,9 @@ h2.display.wide { max-width: 20ch; margin-bottom: 28px; }
 .trail-cost { font-size: 1rem; font-weight: 600; }
 .trail-cost.free { padding: 1px 8px; border-radius: 6px; background: var(--hl); color: var(--on-c); }
 .trail-text strong { font-size: 1.0625rem; font-weight: 600; letter-spacing: -0.02em; line-height: 1.25; }
-.trail-text .row-sub { font-size: 1rem; }
+/* Three levels: the step in bold, what she holds afterwards in ink, and
+   where the picture comes from in grey. */
+.trail-text .row-sub { font-size: 1rem; color: var(--ink); }
 .trail-credit { font-size: 1rem; color: var(--text-2); }
 /* On a phone the card gets the whole width, above its words. */
 .trail-step.is-card { grid-template-columns: minmax(0, 1fr); }
