@@ -1,6 +1,7 @@
 import { Icon, Pills } from "../components";
 import type { Facts } from "../engine/types";
 import { t, type Lang } from "../i18n";
+import { readyForPath } from "../person";
 
 // Each answer becomes a fact the rules can test. "Not sure" leaves the fact
 // unset, so the planner won't use a path that depends on it.
@@ -28,6 +29,7 @@ export function QuestionsScreen(props: {
     onChange(next, v === NOT_SURE ? [...new Set([...unsure, k])] : unsure.filter((x) => x !== k));
   };
   const valueOf = (k: string) => (facts[k] !== undefined ? facts[k] : unsure.includes(k) ? NOT_SURE : null);
+  const ready = readyForPath(facts);
   const yesNo = [[true, s.yes], [false, s.no], [NOT_SURE, s.notSure]] as const;
   let num = 0;
 
@@ -64,8 +66,8 @@ export function QuestionsScreen(props: {
 
           <div className="actions sticky">
             {/* The rules can't pick a birth certificate office without this one. */}
-            <button className="btn primary" onClick={onNext} disabled={facts.born === undefined}
-              style={facts.born === undefined ? { opacity: 0.45, cursor: "not-allowed" } : undefined}>{s.seePath} <Icon name="arrow" size={18} /></button>
+            <button className="btn primary" onClick={onNext} disabled={!ready}
+              style={ready ? undefined : { opacity: 0.45, cursor: "not-allowed" }}>{s.seePath} <Icon name="arrow" size={18} /></button>
           </div>
         </div>
       </div>

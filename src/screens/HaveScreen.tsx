@@ -1,6 +1,7 @@
 import { Icon } from "../components";
 import type { RuleSet } from "../engine/types";
 import { t, type Lang } from "../i18n";
+import { clearPapers } from "../person";
 
 // A plain checklist, like a paper form: big rows, one tap each,
 // readable on a cracked screen. "I know my SSN" is its own group because it
@@ -43,7 +44,7 @@ export function HaveScreen(props: {
 
           <div className="actions row">
             <button className="btn primary" onClick={onNext}>{s.toQuestions} <Icon name="arrow" size={18} /></button>
-            <button className="btn text" onClick={() => { onChange(have.filter((id) => id === "ssn_known")); onNext(); }}>{s.noneOfThese}</button>
+            <button className="btn text" onClick={() => { onChange(clearPapers(have)); onNext(); }}>{s.noneOfThese}</button>
             {onStartOver && <button className="btn text" onClick={onStartOver}>{s.startOver}</button>}
           </div>
         </div>

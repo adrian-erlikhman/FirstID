@@ -4,7 +4,7 @@ import type { RuleSet } from "../src/engine/types";
 import { examples } from "../src/examples";
 import { parse, href } from "../src/router";
 import { applyFlips, flipsThatMatter, helpOptions, noPathNotes } from "../src/whatif";
-import { withImplied } from "../src/person";
+import { NOT_PAPERS, clearPapers, readyForPath, withImplied } from "../src/person";
 import { plan, suggestable, whatHelps } from "../src/engine/planner";
 import { personas } from "./personas";
 
@@ -198,5 +198,20 @@ describe("documents you hold without ticking them", () => {
     expect(plan(rules, person)).toBeNull();                      // the raw rules alone miss it
     const p = plan(rules, { ...person, have: withImplied(person.have) });
     expect(p?.steps.map((s) => s.action.id)).toEqual(["dmv_replace"]);
+  });
+});
+
+describe("Have and Questions screens", () => {
+  it("'None of these' clears only the papers: a known SSN and an earlier California card stay", () => {
+    expect(clearPapers(["birth_cert_ca", "ssn_known", "medi_cal_card", "dmv_record", "residency_doc"])).toEqual(["ssn_known", "dmv_record"]);
+    expect(clearPapers(["us_passport"])).toEqual([]);
+    // Every row the Have screen shows is either a paper or one of the rows kept.
+    for (const id of NOT_PAPERS) expect(rules.docs[id]?.askAtIntake, id).toBe(true);
+  });
+
+  it("'Show my path' waits for the birthplace, and nothing else", () => {
+    expect(readyForPath({})).toBe(false);
+    expect(readyForPath({ unhoused: true, hasWitnesses: true, age: 30 })).toBe(false);
+    expect(readyForPath({ born: "abroad" })).toBe(true);
   });
 });
