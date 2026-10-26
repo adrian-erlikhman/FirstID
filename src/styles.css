@@ -111,14 +111,16 @@ h1.display .bracketed .num { color: var(--on-c); background: var(--hl); padding:
 .brand:hover .mark { transform: rotate(-3deg); }
 .brand .mark { transition: transform .4s var(--ease); }
 .back-btn {
-  width: 36px; height: 36px; flex: none; display: grid; place-items: center; border-radius: 50%; border: 0;
-  background: var(--tile); color: var(--ink); margin-right: 4px;
+  /* A real 44px box to tap; the grey circle you see is its 36px content box.
+     The negative margin keeps that circle on the gutter, as before. */
+  width: 44px; height: 44px; padding: 4px; margin: 0 0 0 -4px; flex: none; display: grid; place-items: center;
+  border-radius: 50%; border: 0; background: var(--tile); background-clip: content-box; color: var(--ink);
 }
-.back-btn:hover { background: var(--pick); }
+.back-btn:hover { background-color: var(--pick); }
+.back-btn:focus-visible { outline-offset: -2px; }
 /* Small to look at, 44px to tap: the hit area reaches past the visible pill. */
-.back-btn, .nav-cta, .lang button { position: relative; }
-.back-btn::after, .nav-cta::after, .lang button::after { content: ""; position: absolute; inset: -7px 0; }
-.back-btn::after { inset: -4px; }
+.nav-cta, .lang button { position: relative; }
+.nav-cta::after, .lang button::after { content: ""; position: absolute; inset: -7px 0; }
 .nav-cta { min-height: 30px !important; padding: 4px 13px !important; font-size: 13px !important; white-space: nowrap; }
 .lockup-word { white-space: nowrap; }
 /* Phones: the bar holds the mark, the button and EN/ES on one line. Where
