@@ -28,7 +28,8 @@ export function OfficesScreen({ lang, kind }: { lang: Lang; kind: string }) {
       <div className="offices-zip">
         <label htmlFor="office-zip">{s.officesZip}</label>
         <input id="office-zip" type="text" inputMode="numeric" autoComplete="off" maxLength={5} pattern="[0-9]*"
-          value={zip} onChange={(e) => setZip(e.target.value.replace(/\D/g, "").slice(0, 5))} aria-describedby="office-zip-note" />
+          value={zip} onChange={(e) => setZip(e.target.value.replace(/\D/g, "").slice(0, 5))} aria-describedby="office-zip-note"
+          aria-invalid={(full && !known) || undefined} />
         <p id="office-zip-note" className="row-sub" aria-live="polite">
           {known ? s.officesSortedNear(zip) : full ? s.officesZipUnknown : s.officesZipNote}
         </p>
