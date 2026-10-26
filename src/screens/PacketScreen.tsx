@@ -55,11 +55,11 @@ export function PacketScreen({ rules, lang, result }: { rules: RuleSet; lang: La
               <div className="sheet-row" role="row" key={a.id}>
                 <span role="cell"><span className="box" aria-hidden="true" /></span>
                 <span role="cell"><strong>{i + 1}. {a.label[lang]}</strong><br /><span className="sheet-where">{placeOf(rules, st).label[lang]}{!a.verified && <span className="sheet-flag"> · {s.callAhead.toUpperCase()}</span>}</span></span>
-                <span role="cell" className="sheet-small">{a.bring?.length
+                <span role="cell" className="sheet-small" data-label={s.colBring}>{a.bring?.length
                   ? a.bring.map((b) => <span key={b.en} className="bring-line">{b[lang]}</span>)
                   : <span className="bring-line sheet-none">{s.noBring}</span>}</span>
                 <span role="cell"><strong>{st.dollars === 0 ? s.free : money(st.dollars)}</strong>{was !== null && <><br /><s aria-hidden="true">{money(was)}</s><span className="sr-only"> {s.insteadOf(was)}</span></>}</span>
-                <span role="cell" className="sheet-small">{ruleIds.map((id, k) => <span key={id}>{k > 0 && "; "}<span lang="en">{rules.sources[id].title}</span>{s.inEnglish}</span>)}</span>
+                <span role="cell" className="sheet-small" data-label={s.colRule}>{ruleIds.map((id, k) => <span key={id}>{k > 0 && "; "}<span lang="en">{rules.sources[id].title}</span>{s.inEnglish}</span>)}</span>
               </div>
             );
           })}
