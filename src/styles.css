@@ -772,6 +772,7 @@ h2.display.wide { max-width: 20ch; margin-bottom: 28px; }
 .sheet-small { font-size: 0.75rem; color: #222; }
 .bring-line { display: block; }
 .bring-line + .bring-line { margin-top: 3px; }
+.sheet-none { color: #555; }
 .sheet-says { display: grid; grid-template-columns: 1fr; gap: 10px; margin-top: 14px; }
 .say-box { border: 2px solid #111; border-radius: 8px; padding: 10px 12px; display: flex; flex-direction: column; gap: 4px; break-inside: avoid; }
 .say-box .mono { font-size: 0.6563rem; text-transform: uppercase; letter-spacing: .06em; }
