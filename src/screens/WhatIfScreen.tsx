@@ -44,7 +44,7 @@ export function WhatIfScreen(props: {
                 const label = o.flip.kind === "doc" ? rules.docs[o.flip.doc].label[lang] : s.factLabels[o.flip.fact];
                 return (
                   <li key={k}>
-                    <button className="toggle-row" role="switch" aria-checked={yes} onClick={() => toggle(k)}>
+                    <button className={`toggle-row${on.includes(k) ? " changed" : ""}`} role="switch" aria-checked={yes} onClick={() => toggle(k)}>
                       <span>{label}</span>
                       <span aria-hidden="true"><Swap className="switch-text" text={yes ? s.yes : s.no} /></span>
                       <span className="switch" aria-hidden="true"><span /></span>
