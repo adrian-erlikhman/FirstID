@@ -8,11 +8,10 @@ import { useEffect, useMemo, useState } from "react";
 import { under18 } from "../person";
 import { loadTicks, reminderFor, reminderIcs, saveTicks, ticksInPlan, toggleTick, type Ticks } from "../progress";
 
-// The hero screen: the total first, in brackets because the
-// planner computed it, then the steps in a solver panel. Each step is one
-// tappable row that opens its detail screen with the proof.
+// The path: the total in the heading and the cost summary, then the steps.
+// Each step is one row that opens its own screen with the sources.
 
-export function whenLine(rules: RuleSet, steps: Step[], i: number, lang: Lang): string {
+function whenLine(rules: RuleSet, steps: Step[], i: number, lang: Lang): string {
   const s = t[lang];
   const st = steps[i];
   const place = placeOf(rules, st);
@@ -46,7 +45,7 @@ function ReminderLink({ rules, lang, step, n }: { rules: RuleSet; lang: Lang; st
   );
 }
 
-export function StepList({ rules, lang, plan, done, onDone }: {
+function StepList({ rules, lang, plan, done, onDone }: {
   rules: RuleSet; lang: Lang; plan: Plan; done?: Set<string>; onDone?: (id: string, on: boolean) => void;
 }) {
   const s = t[lang];
