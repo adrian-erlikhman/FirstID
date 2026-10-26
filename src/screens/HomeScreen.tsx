@@ -57,7 +57,7 @@ export function HomeScreen({ rules, lang, onStart, onExample }: {
         <Bento rules={rules} lang={lang} maria={maria} />
       </section>
 
-      <section className="home-sec dark-band">
+      <section className="home-sec forms-band">
         <PaperStage lang={lang}>
           <div className="paper-head">
             <h2 className="display h2 center">{s.formsTitle}</h2>

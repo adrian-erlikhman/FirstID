@@ -379,14 +379,17 @@ h1.display .bracketed .num { color: var(--on-c); background: var(--hl); padding:
 .scale-label { font-size: 1.0625rem; line-height: 1.35; color: #3a3a3c; text-wrap: pretty; }
 .scale-foot { margin-top: auto; padding-top: 18px; border-top: 1px solid rgb(0 0 0 / .14); font-size: 1.0625rem; line-height: 1.4; color: var(--on-c); text-wrap: pretty; }
 .tile-rows { display: flex; flex-direction: column; margin-top: auto; padding: 6px 16px; border-radius: 16px; background: #fff; }
-.tile-row { display: grid; grid-template-columns: 18px minmax(0, 1fr) auto; gap: 8px; padding: 10px 0; font-size: 1rem; line-height: 1.35; align-items: baseline; text-align: left;
+.tile-row { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 2px 12px; padding: 10px 0; font-size: 1rem; line-height: 1.35; align-items: baseline; text-align: left;
   opacity: 0; transform: translateY(10px); transition: opacity .5s var(--ease), transform .6s var(--ease); transition-delay: calc(var(--i) * 90ms + 200ms); }
 .tile-row + .tile-row { border-top: 1px solid var(--line); }
 .bento.seen .tile-row { opacity: 1; transform: none; }
 .tile-row .num { font-weight: 600; }
+.tile-row .hs-label { font-weight: 600; }
+.tile-row .row-sub { grid-column: 1; font-size: 0.9375rem; color: var(--text-2); }
+.tile-row .row-sub::first-letter { text-transform: uppercase; }
+.tile-row s { grid-column: 2; grid-row: 1; color: var(--text-2); font-weight: 500; }
 .tile > span { position: relative; z-index: 1; }
-/* Phones: Maria's list of steps reaches closer to the tile's edges, so each
-   step name gets two lines, not four. */
+/* Phones: Maria's list of fee waivers reaches closer to the tile's edges. */
 @media (max-width: 639px) {
   .t-maria { padding-left: 14px; padding-right: 14px; padding-bottom: 14px; }
   .t-maria .tile-big, .t-maria .tile-sub { margin-left: 8px; margin-right: 8px; }
@@ -420,31 +423,27 @@ h1.display .bracketed .num { color: var(--on-c); background: var(--hl); padding:
 .step-paper { max-width: 440px; }
 .step-paper .paper-sheet { transform: rotate(-1.2deg); }
 
-/* ---------- home: the real forms on a dark stage ---------- */
-.dark-band { background: #000; color: #f5f5f7; margin-left: calc(50% - 50vw); margin-right: calc(50% - 50vw); padding: 88px var(--gutter) 104px; }
+/* ---------- home: the real forms on a light grey band (Adrian: white, never black) ---------- */
+.forms-band { background: var(--tile); color: var(--ink); margin-left: calc(50% - 50vw); margin-right: calc(50% - 50vw); padding: 88px var(--gutter) 104px; }
 .paper-stage { max-width: var(--wide); margin: 0 auto; }
 .paper-head { max-width: 780px; margin: 0 auto; }
 /* Phones: the explanation runs to a dozen lines, too long to read centred
    (both edges ragged), so it starts each line at the same left edge. */
 @media (max-width: 639px) { .paper-head .lede, .paper-head .fine, .paper-head h2.display.h2.center { text-align: left; margin-left: 0; } .paper-head .lede { text-wrap: pretty; } }
-.dark-band h2.display { color: #f5f5f7; }
-.dark-band .second { color: #86868b; }
-.dark-band .lede { color: #a1a1a6; }
-.dark-band .fine { color: #86868b; }
-.dark-band a { color: #2997ff; }
+.forms-band .lede, .forms-band .fine { color: var(--text-2); }
 /* "Open the official PDF" stays in one piece with its icon, and its tap area
    reaches 44px tall without moving the line around it. */
 .paper-head .fine a { display: inline-block; white-space: nowrap; padding: 12px 0; margin: -12px 0; }
 .papers3d { max-width: 900px; margin: 56px auto 0; perspective: 1400px; }
-.papers3d .paper-sheet { transition: transform .15s linear; box-shadow: 0 40px 80px -30px rgb(0 0 0 / .8); }
+.papers3d .paper-sheet { transition: transform .15s linear; box-shadow: 0 0 0 1px var(--line-strong), 0 40px 70px -34px rgb(0 0 0 / .4); }
 .papers3d .p-a .paper-sheet { transform-origin: right center; transform: rotateY(calc((1 - var(--p, 1)) * 34deg)) rotateX(calc((1 - var(--p, 1)) * 12deg)) rotate(-2deg); }
 .papers3d .p-b .paper-sheet { transform-origin: left center; transform: rotateY(calc((1 - var(--p, 1)) * -34deg)) rotateX(calc((1 - var(--p, 1)) * 12deg)) rotate(1.6deg); }
 .papers3d .paper-sheet:hover { transform: none; }
 .papers3d .paper-zoom { opacity: calc((var(--p, 1) - .55) * 3); }
 /* The sheets stand at an angle, so their low corner needs room above the caption. */
 .papers3d .paper { gap: 30px; }
-.dark-band .paper figcaption { color: #a1a1a6; font-size: 1rem; }
-.dark-band .paper figcaption strong { color: #f5f5f7; font-size: 1.0625rem; }
+.forms-band .paper figcaption { font-size: 1rem; }
+.forms-band .paper figcaption strong { font-size: 1.0625rem; }
 
 /* ---------- home: how it works, the last call ---------- */
 .how-tiles { display: grid; gap: 14px; margin-top: 36px; }
