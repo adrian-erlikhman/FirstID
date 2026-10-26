@@ -1,4 +1,4 @@
-import { useRef, useState, type ReactNode } from "react";
+import { useEffect, useRef, useState, type ReactNode } from "react";
 import { Icon, Pills } from "../components";
 import type { Facts } from "../engine/types";
 import { t, type Lang } from "../i18n";
@@ -55,6 +55,19 @@ export function QuestionsScreen(props: {
     bornRef.current?.querySelector<HTMLButtonElement>("button")?.focus({ preventScroll: true });
   };
 
+  // The bar only gets its frosted ground while it floats over the questions;
+  // at rest under the last one it stays clear. A marker just after the bar
+  // is on screen exactly when the bar is at rest.
+  const barEnd = useRef<HTMLDivElement>(null);
+  const [floating, setFloating] = useState(false);
+  useEffect(() => {
+    const el = barEnd.current;
+    if (!el || typeof IntersectionObserver === "undefined") return;
+    const io = new IntersectionObserver(([e]) => setFloating(!e.isIntersecting && e.boundingClientRect.top > 0));
+    io.observe(el);
+    return () => io.disconnect();
+  }, []);
+
   return (
     <section className="screen">
       <div className="split">
@@ -78,11 +91,12 @@ export function QuestionsScreen(props: {
             {question("publicAssistance", s.benefits, yesNo)}
           </div>
 
-          <div className="actions sticky">
+          <div className={`actions sticky q-bar${floating ? " floating" : ""}`}>
             {/* The rules can't pick a birth certificate office without this one. */}
             <button className="btn primary q-next" onClick={next} aria-disabled={blocked || undefined}>
               {s.seePath} <Icon name="arrow" size={18} /></button>
           </div>
+          <div ref={barEnd} className="q-bar-end" aria-hidden="true" />
         </div>
       </div>
     </section>

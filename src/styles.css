@@ -523,6 +523,18 @@ h2.display.wide { max-width: 20ch; margin-bottom: 28px; }
 /* What to do before "Show my path" works: an icon and words, not colour alone. */
 .q-error { display: flex; gap: 8px; align-items: flex-start; margin: 12px 0 0; font-size: 1rem; font-weight: 500; line-height: 1.4; color: var(--ink); }
 .q-error .icon { margin-top: 1px; }
+/* The "Show my path" bar. While it floats over the questions it is a frosted
+   strip with a hairline, like the top bar, edge to edge on phones, so a
+   question going under it reads as scrolling under a bar, not as cut off.
+   At rest below the last question it is clear. Slimmer than before, so it
+   hides less of the question behind it. */
+.actions.sticky.q-bar { padding-top: 12px; padding-bottom: calc(12px + env(safe-area-inset-bottom, 0px)); background: transparent; transition: background-color .2s, box-shadow .2s; }
+.actions.sticky.q-bar.floating {
+  background: color-mix(in srgb, var(--ground) 86%, transparent); box-shadow: 0 -1px 0 var(--line);
+  backdrop-filter: saturate(1.8) blur(20px); -webkit-backdrop-filter: saturate(1.8) blur(20px);
+}
+@media (max-width: 979px) { .actions.sticky.q-bar { margin-left: calc(-1 * var(--gutter)); margin-right: calc(-1 * var(--gutter)); padding-left: var(--gutter); padding-right: var(--gutter); } }
+.q-bar-end { height: 1px; margin-top: -1px; }
 /* "Show my path" before question 1 is answered: still a blue pill, but pale
    with blue words (5:1), not white words faded to 1.9:1. */
 .btn.q-next[aria-disabled="true"], .btn.q-next[aria-disabled="true"]:hover {
