@@ -478,6 +478,8 @@ h2.display.wide { max-width: 20ch; margin-bottom: 28px; }
   width: 100%; display: flex; align-items: center; gap: 14px; text-align: left;
   min-height: 58px; padding: 13px 18px; border: 0; background: transparent; color: var(--ink); font-size: 1.0313rem; line-height: 1.35;
 }
+/* No one word left alone on a label's last line ("state)", "pasaporte"). */
+.check-text { min-width: 0; text-wrap: pretty; }
 .check-row:hover { background: var(--wash); }
 .check-row[aria-checked="true"] { background: var(--pick); }
 /* Grey on the picked grey is 4.2:1; a little more ink brings the hint back over 4.5. */
