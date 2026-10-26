@@ -1,4 +1,4 @@
-import { Block, FormPaper, Icon, Notice, SourceCard, formFor, money, placeOf, sayFor } from "../components";
+import { Block, FormPaper, Icon, Notice, SourceCard, WasPrice, formFor, money, placeOf, sayFor } from "../components";
 import type { Plan, RuleSet } from "../engine/types";
 import { t, type Lang } from "../i18n";
 import { href } from "../router";
@@ -39,7 +39,7 @@ export function StepScreen({ rules, lang, plan, n }: { rules: RuleSet; lang: Lan
               <dt>{s.cost}</dt>
               <dd>
                 <span className="num strong">{cost}</span>
-                {was !== null && <> <s className="num">{money(was)}</s><span className="row-sub"> {st.waiver!.label[lang]}</span></>}
+                {was !== null && <> <WasPrice dollars={was} lang={lang} /><span className="row-sub"> {st.waiver!.label[lang]}</span></>}
               </dd>
             </div>
             <div><dt>{s.time}</dt><dd>{Time}</dd></div>

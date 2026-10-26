@@ -1,4 +1,4 @@
-import { useEffect, useId, useRef, useState, type ReactNode } from "react";
+import { useEffect, useId, useRef, useState, type KeyboardEvent as ReactKeyboardEvent, type ReactNode } from "react";
 import { usePresence, useTween } from "./motion";
 import type { Mode, Plan, RuleSet, Source, Step } from "./engine/types";
 import { t, type Lang } from "./i18n";
@@ -141,6 +141,25 @@ export function Swap({ text, className = "" }: { text: string; className?: strin
   return <span key={text} className={`swap ${className}`}>{text}</span>;
 }
 
+/** Says `text` to screen readers when it changes, not when the screen opens
+ *  (the heading already says it then). For totals that change in place: the
+ *  numbers on screen count up and down, so they can't be live themselves. */
+export function LiveNote({ text }: { text: string }) {
+  const [said, setSaid] = useState("");
+  const last = useRef(text);
+  useEffect(() => {
+    if (last.current === text) return;
+    last.current = text;
+    setSaid(text);
+  }, [text]);
+  return <p className="sr-only" role="status">{said}</p>;
+}
+
+/** A crossed-out price, read as "instead of $34" rather than a bare second number. */
+export function WasPrice({ dollars, lang }: { dollars: number; lang: Lang }) {
+  return <><s className="num" aria-hidden="true">{money(dollars)}</s><span className="sr-only"> {t[lang].insteadOf(dollars)}</span></>;
+}
+
 /** A number that counts to its new value. `format` turns it into text. */
 export function Tween({ value, format = String }: { value: number; format?: (n: number) => string }) {
   return <>{format(Math.round(useTween(value)))}</>;
@@ -255,6 +274,7 @@ export function TopBar(props: { lang: Lang; onLang: (l: Lang) => void; onHome: (
         <div className="lang" role="radiogroup" aria-label={s.langLabel}>
           {(["en", "es"] as const).map((l) => (
             <button key={l} role="radio" aria-checked={props.lang === l} lang={l} aria-label={l === "en" ? "English" : "Español"}
+              tabIndex={props.lang === l ? 0 : -1} onKeyDown={langKeys(props.onLang)}
               onClick={() => props.onLang(l)}>{l.toUpperCase()}</button>
           ))}
         </div>
@@ -263,6 +283,16 @@ export function TopBar(props: { lang: Lang; onLang: (l: Lang) => void; onHome: (
     </header>
   );
 }
+
+/** A radio group is one Tab stop: the arrow keys move between EN and ES,
+ *  picking as they go, the way screen readers say radios work. */
+const langKeys = (onLang: (l: Lang) => void) => (e: ReactKeyboardEvent<HTMLButtonElement>) => {
+  if (!["ArrowLeft", "ArrowRight", "ArrowUp", "ArrowDown"].includes(e.key)) return;
+  e.preventDefault();
+  const other = e.currentTarget.getAttribute("lang") === "en" ? "es" : "en";
+  onLang(other);
+  e.currentTarget.parentElement?.querySelector<HTMLButtonElement>(`[lang="${other}"]`)?.focus();
+};
 
 /* ---------- text size ----------
  * Three sizes, set as data-text-size on <html>, which scales the root font
@@ -373,15 +403,17 @@ export function Pills<V>(props: { label: string; options: readonly (readonly [V,
 export function SourceCard({ src, lang, verified }: { src: Source; lang: Lang; verified: boolean }) {
   const s = t[lang];
   const missing = /^TODO/i.test(src.quote);
+  // Titles and quotes are the source's own English words, so screen readers
+  // say them in English on the Spanish screens too; " (en inglés)" stays Spanish.
   let host = "";
   try { host = new URL(src.url).hostname.replace(/^www\./, ""); } catch { /* not a URL */ }
   return (
     <a className="source" href={src.url} target="_blank" rel="noreferrer">
       <span className="source-host">{host} <Icon name="external" size={13} /></span>
-      <span className="source-title">{src.title}{s.inEnglish}</span>
+      <span className="source-title"><span lang="en">{src.title}</span>{s.inEnglish}</span>
       {missing
         ? <span className="source-quote missing">{s.quoteMissing}</span>
-        : <span className="source-quote">“{src.quote}”</span>}
+        : <span className="source-quote" lang="en">“{src.quote}”</span>}
       <span className={`source-meta ${verified ? "" : "draft"}`}>{verified ? s.checkedOn(src.checked) : s.notCheckedYet}</span>
     </a>
   );

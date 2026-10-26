@@ -1,3 +1,4 @@
+import { useRef, useState, type ReactNode } from "react";
 import { Icon, Pills } from "../components";
 import type { Facts } from "../engine/types";
 import { t, type Lang } from "../i18n";
@@ -29,18 +30,30 @@ export function QuestionsScreen(props: {
     onChange(next, v === NOT_SURE ? [...new Set([...unsure, k])] : unsure.filter((x) => x !== k));
   };
   const valueOf = (k: string) => (facts[k] !== undefined ? facts[k] : unsure.includes(k) ? NOT_SURE : null);
-  const ready = readyForPath(facts);
   const yesNo = [[true, s.yes], [false, s.no], [NOT_SURE, s.notSure]] as const;
   let num = 0;
 
   // A plain function, not a component: a component defined inside render
   // would remount on every tap and drop keyboard focus.
-  const question = (k: string, q: string, opts: readonly (readonly [Facts[string] | typeof NOT_SURE, string])[]) => (
-    <fieldset className="q" key={k}>
+  const question = (k: string, q: string, opts: readonly (readonly [Facts[string] | typeof NOT_SURE, string])[], error?: ReactNode) => (
+    <fieldset className="q" key={k} ref={k === "born" ? bornRef : undefined} aria-describedby={error ? `${k}-error` : undefined}>
       <legend><span className="row-num" aria-hidden="true">{++num}</span><span>{q}</span></legend>
       <Pills label={q} options={opts} value={valueOf(k)} onChange={(v) => set(k, v)} />
+      {error && <p id={`${k}-error`} className="q-error" role="alert"><Icon name="alert" size={18} stroke={2} /> {error}</p>}
     </fieldset>
   );
+
+  // "Show my path" stays reachable by Tab while it can't go yet (aria-disabled,
+  // not disabled), so pressing it can say why and take you to the question.
+  const bornRef = useRef<HTMLFieldSetElement>(null);
+  const [tried, setTried] = useState(false);
+  const blocked = !readyForPath(facts);
+  const next = () => {
+    if (!blocked) return onNext();
+    setTried(true);
+    bornRef.current?.scrollIntoView({ block: "center" });
+    bornRef.current?.querySelector<HTMLButtonElement>("button")?.focus({ preventScroll: true });
+  };
 
   return (
     <section className="screen">
@@ -51,7 +64,8 @@ export function QuestionsScreen(props: {
         </div>
         <div className="body">
           <div className="panel questions">
-            {question("born", s.bornWhere, [["la_county", s.bornLA], ["california", s.bornCA], ["us_state", s.bornUS], ["abroad", s.bornAbroad]] as const)}
+            {question("born", s.bornWhere, [["la_county", s.bornLA], ["california", s.bornCA], ["us_state", s.bornUS], ["abroad", s.bornAbroad]] as const,
+              tried && blocked ? s.bornNeeded : undefined)}
             {question("unhoused", s.unhoused, yesNo)}
             {question("fireSurvivor", s.fire, yesNo)}
             {question("hasWitnesses", s.witnesses, yesNo)}
@@ -66,8 +80,8 @@ export function QuestionsScreen(props: {
 
           <div className="actions sticky">
             {/* The rules can't pick a birth certificate office without this one. */}
-            <button className="btn primary" onClick={onNext} disabled={!ready}
-              style={ready ? undefined : { opacity: 0.45, cursor: "not-allowed" }}>{s.seePath} <Icon name="arrow" size={18} /></button>
+            <button className="btn primary" onClick={next} aria-disabled={blocked || undefined}
+              style={blocked ? { opacity: 0.45, cursor: "not-allowed" } : undefined}>{s.seePath} <Icon name="arrow" size={18} /></button>
           </div>
         </div>
       </div>

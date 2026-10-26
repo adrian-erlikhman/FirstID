@@ -1,5 +1,5 @@
 import { useMemo, useState } from "react";
-import { Collapse, PathCard, Solver, Swap, money } from "../components";
+import { Collapse, LiveNote, PathCard, Solver, Swap, fullPrice, money } from "../components";
 import { plan } from "../engine/planner";
 import type { Mode, Person, RuleSet } from "../engine/types";
 import { useListPresence } from "../motion";
@@ -43,7 +43,7 @@ export function WhatIfScreen(props: {
                   <li key={k}>
                     <button className="toggle-row" role="switch" aria-checked={yes} onClick={() => toggle(k)}>
                       <span>{label}</span>
-                      <Swap className="switch-text" text={yes ? s.yes : s.no} />
+                      <span aria-hidden="true"><Swap className="switch-text" text={yes ? s.yes : s.no} /></span>
                       <span className="switch" aria-hidden="true"><span /></span>
                     </button>
                   </li>
@@ -52,7 +52,8 @@ export function WhatIfScreen(props: {
             </ul>
           )}
 
-          <div className="whatif-result" aria-live="polite">
+          <div className="whatif-result">
+            <LiveNote text={result ? s.cardSummary({ total: result.total.dollars, full: fullPrice(result), steps: result.total.steps, trips: result.total.trips, days: result.total.days }) : s.noPathShort} />
             <Collapse show={!!result}>
               {result && <PathCard plan={result} lang={lang} mode={mode} className="path-card" />}
             </Collapse>
@@ -83,7 +84,11 @@ export function WhatIfScreen(props: {
 
           <Collapse show={on.length > 0}>
             <div className="actions pair">
-              <button className="btn ghost" onClick={() => setOn([])}>{s.reset}</button>
+              <button className="btn ghost" onClick={() => {
+                setOn([]);
+                // These buttons slide away with the changes, so keep focus on the first switch.
+                document.querySelector<HTMLElement>("main .toggle-row")?.focus();
+              }}>{s.reset}</button>
               <button className="btn primary" onClick={() => onApply(next)}>{s.useThese}</button>
             </div>
           </Collapse>

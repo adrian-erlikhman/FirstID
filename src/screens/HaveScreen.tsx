@@ -45,7 +45,11 @@ export function HaveScreen(props: {
           <div className="actions row">
             <button className="btn primary" onClick={onNext}>{s.toQuestions} <Icon name="arrow" size={18} /></button>
             <button className="btn text" onClick={() => { onChange(clearPapers(have)); onNext(); }}>{s.noneOfThese}</button>
-            {onStartOver && <button className="btn text" onClick={onStartOver}>{s.startOver}</button>}
+            {onStartOver && <button className="btn text" onClick={() => {
+              onStartOver();
+              // The button goes away once there is nothing to clear, so hand focus to the heading.
+              document.querySelector<HTMLElement>("main h1")?.focus();
+            }}>{s.startOver}</button>}
           </div>
         </div>
       </div>
