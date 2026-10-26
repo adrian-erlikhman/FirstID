@@ -475,10 +475,17 @@ h1.display .bracketed .num { color: var(--on-c); background: var(--hl); padding:
 .how-tile { display: flex; flex-direction: column; gap: 8px; padding: 28px; border-radius: var(--r-tile); background: var(--tile); }
 .how-n { font-size: 52px; font-weight: 600; letter-spacing: -0.05em; line-height: 1; margin-bottom: 8px; }
 .how-tile strong { font-size: 1.3125rem; font-weight: 600; letter-spacing: -0.025em; line-height: 1.2; }
-.how-tile .row-sub { font-size: 1rem; }
+.how-tile .row-sub { font-size: 1rem; text-wrap: pretty; }
+.how-tile strong { text-wrap: balance; }
+/* Phones: the three tiles stack, so they come a little tighter (less to
+   scroll past on the way to Maria's path); words still 16px and up. */
+@media (max-width: 639px) {
+  .how-tile { padding: 24px; gap: 6px; }
+  .how-n { font-size: 44px; margin-bottom: 6px; }
+}
 /* On the home page nothing a person reads is smaller than 16px (1rem). */
 .home .fine, .home .photo figcaption { font-size: 1rem; }
-.how-note { margin-top: 20px; }
+.how-note { margin-top: 20px; text-wrap: balance; }
 .home-cta { margin-top: 112px; padding: 72px 24px 64px; text-align: center; border-radius: var(--r-tile); background: var(--tile); }
 .home-cta h2.display { font-size: 40px; margin: 0 0 12px; }
 .home-cta .actions { justify-content: center; }
