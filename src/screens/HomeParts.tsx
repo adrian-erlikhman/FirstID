@@ -7,14 +7,13 @@ import { useCountUp, useInView, useScrollProgress, useTilt } from "../motion";
 import caIdImg from "../docs/ca-id-sample.jpg";
 import birthCertImg from "../docs/birth-certificate-sample.png";
 
-// The home page's moving parts, built like a product page:
-// a scroll story that pins while it plays, tiles whose numbers count up, the
-// real forms turning flat as you reach them. Maria's whole path is in
-// MariaTrail.tsx.
+// Parts of the home page: the scroll story that pins while it plays, the
+// tiles whose numbers count up, and the real forms that lie flat as you reach
+// them. Maria's path is in MariaTrail.tsx.
 
-/** The loop, told in three beats while the section stays pinned: the two
- *  documents (the state's own samples) chase each other round a ring, then
- *  the card breaks out. */
+/** The loop in three beats while the section stays pinned: the two documents
+ *  (the state's own samples) chase each other round a ring, then the ring
+ *  fades and the mark breaks out. */
 export function LoopStory({ lang }: { lang: Lang }) {
   const s = t[lang];
   const [ref, stage] = useScrollProgress<HTMLElement>("pin", 3);
@@ -54,13 +53,18 @@ function Tile({ className = "", children }: { className?: string; children: Reac
   return <li ref={ref} className={`tile ${className}`}>{children}</li>;
 }
 
-/** Two tiles: Maria's real path as the proof, and the scale behind it. Every
- *  number is counted from the rules, and counts up the first time the grid
- *  scrolls into view. */
+/** Distinct fee waivers: the DL 933, 62-and-over and DL 937 waivers apply to
+ *  both DMV rules but are one waiver each. */
+export const waiverKinds = (rules: RuleSet) =>
+  new Set(rules.actions.flatMap((a) => (a.waivers ?? []).map((w) => w.label.en))).size;
+
+/** Two tiles: Maria's total with the fee waivers that bring it down, and the
+ *  size of the rule set. Maria's total comes from the planner and the counts
+ *  from the rules; they count up the first time the grid scrolls into view. */
 export function Bento({ rules, lang, maria }: { rules: RuleSet; lang: Lang; maria: Plan | null }) {
   const s = t[lang];
   const [ref, seen] = useInView<HTMLUListElement>();
-  const nWaivers = rules.actions.reduce((n, a) => n + (a.waivers?.length ?? 0), 0);
+  const nWaivers = waiverKinds(rules);
   // Distinct pages cited by a rule or a fee waiver (two ids can share one page).
   const cited = rules.actions.flatMap((a) => [...a.sources, ...(a.waivers ?? []).flatMap((w) => w.sources)]);
   const nSources = new Set(cited.map((id) => rules.sources[id]?.url).filter(Boolean)).size;
@@ -101,8 +105,8 @@ export function Bento({ rules, lang, maria }: { rules: RuleSet; lang: Lang; mari
   );
 }
 
-/** The two real forms on a dark stage. They start turned away and lie flat
- *  as the section reaches the middle of the screen. */
+/** The two real forms. They start turned away and lie flat as the section
+ *  reaches the middle of the screen. */
 export function PaperStage({ lang, children }: { lang: Lang; children: ReactNode }) {
   const [ref] = useScrollProgress<HTMLDivElement>("view");
   return (

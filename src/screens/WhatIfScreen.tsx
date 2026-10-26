@@ -11,9 +11,8 @@ const keep = (x: string) => x.replace(/ /g, "\u00a0");
 // A form name such as "DL 933" stays on one line in a step label.
 const formNames = (x: string) => x.replace(/\bDL (\d)/g, "DL\u00a0$1");
 
-// Flip an answer, the planner runs again, and the steps that drop out
-// slide away while the card counts to the new total. The only motion in the app is here and on the brackets, because
-// the change in the path is the point.
+// Flip an answer and the planner runs again: steps that drop out slide away
+// and the summary counts to the new total.
 export function WhatIfScreen(props: {
   rules: RuleSet; lang: Lang; person: Person; mode: Mode; onApply: (p: Person) => void;
 }) {
@@ -91,7 +90,7 @@ export function WhatIfScreen(props: {
             <div className="actions pair">
               <button className="btn ghost" onClick={() => {
                 setOn([]);
-                // These buttons slide away with the changes, so keep focus on the first switch.
+                // These buttons slide away once nothing is changed, so move focus to the first switch.
                 document.querySelector<HTMLElement>("main .toggle-row")?.focus();
               }}>{s.reset}</button>
               <button className="btn primary" onClick={() => onApply(next)}>{s.useThese}</button>

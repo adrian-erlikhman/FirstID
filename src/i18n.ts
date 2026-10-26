@@ -18,7 +18,7 @@ const en = {
   homeLabel: "home",
   langLabel: "Language",
 
-  // Section openings (the § lines) and their readouts
+  // Section and panel names, and the path panel's readout
   secLoop: "the loop",
   secWhatIf: "your path",
   solvedIn: (_n: number, _ms: number) => "Tap a step for details",
@@ -29,11 +29,8 @@ const en = {
   heroLede: "The cheapest legal way to a California ID card, with the rule for each step and its source.",
   heroNote: "It's free, there's no account, and your answers stay on your phone.",
   heroEyebrow: "For Los Angeles County",
-  flip: "Flip the card", flipBack: "Flip it back",
-  cardBackTitle: "Each step and the law it rests on.",
-  cardBackNote: "Tap any step in the app to read its source.",
   mariaName: "Maria",
-  // Short names for the back of the card, where each step gets one line.
+  // Short step names. The app doesn't show them; tests/i18n.test.ts checks that every rule has one.
   stepShort: {
     program_dl933: "DL 933 from your program",
     program_bc_affidavit: "Homeless affidavit",
@@ -87,7 +84,7 @@ const en = {
   trailCreditAff: "Form: California Department of Public Health",
   trailCreditId: "Sample: California DMV",
 
-  // Screen headlines: say it in ink, finish it in the lighter weight
+  // The path screen's headline, around the total: "Your California ID for $15."
   pathHeadPre: "Your California ID for",
   pathHeadPost: ".",
 
@@ -166,6 +163,7 @@ const en = {
   noPathTitle: "We couldn't find a path yet",
   noPathBody: "None of the rules we have so far gives a path for your answers. That doesn't mean there isn't one.",
   noPathBornElsewhere: "Right now First ID can only order birth certificates from LA County. Another state's office can mail yours, and once you have it, tick it on the first screen.",
+  noPathBornAbroad: "First ID can't order a birth certificate from another country. If you have a green card, a naturalization or citizenship certificate, or a U.S. passport, tick it on the first screen.",
   noPathBornCA: "LA County can only send birth certificates for births in LA County. Order from the county where you were born, or the state office in Sacramento, with the same notarized form.",
   noPathAllUnsure: "You answered “Not sure” or skipped every yes-or-no question, so First ID can't count on any route that depends on your answers, like shelter forms, witnesses or fee waivers. If a shelter or caseworker can help you answer, change your answers and try again.",
   noPathNeedAddress: "What's missing: one paper with your California address, like a bill, lease, benefits letter or medical paper. If you're staying in a shelter or program, ask whether they can sign a DL 933 instead.",
@@ -272,7 +270,7 @@ const en = {
   ],
   reportWrong: "Found a rule that's wrong or out of date? Tell us and we'll check it again.",
   reportLink: "Report it on GitHub",
-  // Card accessibility: what a screen reader hears instead of the card's design.
+  // What a screen reader hears for the path summary (PathCard), and when the path changes.
   cardSummary: (o: { name?: string; total: number; full: number; steps: number; trips: number; days: number }) =>
     `Your path${o.name ? ` for ${o.name}` : ""}: total cost $${o.total}${o.full > o.total ? ` instead of $${o.full}` : ""}, ` +
     `${o.steps} ${plural(o.steps, "step", "steps")}, ${o.trips} ${plural(o.trips, "trip", "trips")}, ` +
@@ -344,9 +342,6 @@ const es: Strings = {
   heroLede: "La forma legal más barata de sacar una tarjeta de identificación de California, con la regla de cada paso y su fuente.",
   heroNote: "Es gratis, no necesitas cuenta y tus respuestas se quedan en tu teléfono.",
   heroEyebrow: "Para el condado de Los Ángeles",
-  flip: "Voltear la tarjeta", flipBack: "Voltearla de nuevo",
-  cardBackTitle: "Cada paso y la ley en la que se basa.",
-  cardBackNote: "Toca cualquier paso en la app para leer su fuente.",
   mariaName: "María",
   stepShort: {
     program_dl933: "DL 933 de tu programa",
@@ -475,6 +470,7 @@ const es: Strings = {
   noPathTitle: "Todavía no encontramos un camino",
   noPathBody: "Ninguna de las reglas que tenemos hasta ahora da un camino para tus respuestas. Eso no significa que no exista uno.",
   noPathBornElsewhere: "Por ahora First ID solo puede pedir actas de nacimiento al condado de Los Ángeles. La oficina de otro estado puede enviarte la tuya por correo, y cuando la tengas, márcala en la primera pantalla.",
+  noPathBornAbroad: "First ID no puede pedir actas de nacimiento de otro país. Si tienes tarjeta de residente (green card), certificado de naturalización o ciudadanía, o pasaporte de EE. UU., márcalo en la primera pantalla.",
   noPathBornCA: "El condado de Los Ángeles solo envía actas de personas nacidas en el condado de Los Ángeles. Pídela al condado donde naciste o a la oficina estatal en Sacramento, con el mismo formulario notariado.",
   noPathAllUnsure: "Contestaste “No sé” o dejaste sin contestar todas las preguntas de sí o no, así que First ID no puede contar con ningún camino que dependa de ellas, como los formularios del albergue, los testigos o las exenciones de pago. Si un albergue o un trabajador social te ayuda a contestar, cambia tus respuestas y vuelve a intentarlo.",
   noPathNeedAddress: "Lo que falta: un papel con tu dirección en California, como una factura, un contrato de renta, una carta de beneficios o un papel médico. Si te quedas en un albergue o programa, pregunta si te pueden firmar un DL 933 en su lugar.",
@@ -577,7 +573,7 @@ const es: Strings = {
   ],
   reportWrong: "¿Encontraste una regla equivocada o desactualizada? Avísanos y la revisamos otra vez.",
   reportLink: "Repórtala en GitHub",
-  // Card accessibility: what a screen reader hears instead of the card's design.
+  // What a screen reader hears for the path summary (PathCard), and when the path changes.
   cardSummary: (o) =>
     `Tu camino${o.name ? ` para ${o.name}` : ""}: costo total $${o.total}${o.full > o.total ? ` en vez de $${o.full}` : ""}, ` +
     `${o.steps} ${plural(o.steps, "paso", "pasos")}, ${o.trips} ${plural(o.trips, "viaje", "viajes")}, ` +

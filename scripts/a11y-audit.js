@@ -1,6 +1,7 @@
 // Accessibility check for every screen, in English and Spanish, with axe-core
-// (WCAG 2.0/2.1/2.2 A and AA rules) plus three checks of our own that axe
-// doesn't make: text under 16px, tap targets under 44px, and <html lang>.
+// (WCAG 2.0 and 2.1 A and AA, WCAG 2.2 AA, and axe's best practices) plus
+// three checks of our own that axe doesn't make: text under 16px, tap targets
+// under 44px, and an <html lang> that matches the language picked.
 //
 // It runs in the browser, against the dev server:
 //   1. npm run dev
@@ -17,7 +18,7 @@ const SCREENS = ["#/", "#/have", "#/questions", "#/example/maria", "#/step/1", "
 // Small text that is a label, not something a person reads as a sentence.
 // Kept short on purpose: anything new that is small shows up in the report.
 const SMALL_OK = [".label", ".tag", ".row-num", ".source-host", ".source-meta", ".switch-text", ".step-place", ".cc-mode",
-  ".lang", ".nav-cta", ".ts-toggle", ".ts-menu", ".foot", ".sheet", ".pill-num", ".facts dt", ".cc-fields dt", ".orb-label",
+  ".lang", ".nav-cta", ".ts-toggle", ".ts-menu", ".foot", ".sheet", ".facts dt", ".cc-fields dt", ".orb-label",
   ".solver-head", ".sr-only", ".step-cost s", ".trail-n"];
 
 const wait = (ms) => new Promise((r) => setTimeout(r, ms));
@@ -90,7 +91,7 @@ export async function audit({ langs = ["en", "es"], screens = SCREENS } = {}) {
       await wait(500); // let slides and count-ups finish
       // A background tab pauses CSS animations part way, which leaves text at
       // opacity 0 and hides it from the contrast check. Jump them to the end.
-      document.getAnimations().forEach((a) => { try { a.finish(); } catch { /* infinite */ } });
+      document.getAnimations().forEach((a) => { try { a.finish(); } catch { /* an infinite animation can't finish */ } });
       await wait(50);
       const where = `${lang} ${location.hash}`;
       if (document.documentElement.lang !== lang) problems.push(`${where}: <html lang="${document.documentElement.lang}">`);

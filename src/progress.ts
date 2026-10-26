@@ -36,6 +36,13 @@ export function saveTicks(ticks: Ticks, store: Pick<Storage, "setItem" | "remove
   } catch { /* storage blocked or full: keep going without it */ }
 }
 
+/** Forget every stored tick, including ticks for steps not in the current plan.
+ *  "Start over" and "Clear my progress" both call this, so the next person on a
+ *  shared phone starts with none. */
+export function clearTicks(store: Pick<Storage, "setItem" | "removeItem"> | null = safeLocal()): void {
+  saveTicks({}, store);
+}
+
 export function toggleTick(ticks: Ticks, id: string, done: boolean): Ticks {
   const next = { ...ticks };
   if (done) next[id] = true;
@@ -44,7 +51,8 @@ export function toggleTick(ticks: Ticks, id: string, done: boolean): Ticks {
 }
 
 /** Only the ticks for steps in the current plan. Ticks for steps that left the
- *  plan stay stored (they come back if the plan does) but are never shown. */
+ *  plan stay stored (they come back if the plan does) until "Start over" or
+ *  "Clear my progress" removes them. */
 export function ticksInPlan(ticks: Ticks, stepIds: string[]): Set<string> {
   return new Set(stepIds.filter((id) => ticks[id] === true));
 }
@@ -63,7 +71,7 @@ export function icsDate(d: Date): string {
 }
 
 /** A UTC timestamp as YYYYMMDDTHHMMSSZ. */
-export function icsStamp(d: Date): string {
+function icsStamp(d: Date): string {
   return `${d.getUTCFullYear()}${pad(d.getUTCMonth() + 1)}${pad(d.getUTCDate())}T${pad(d.getUTCHours())}${pad(d.getUTCMinutes())}${pad(d.getUTCSeconds())}Z`;
 }
 
@@ -73,7 +81,7 @@ export function addDays(from: Date, days: number): Date {
 }
 
 /** RFC 5545 TEXT escaping. */
-export function icsEscape(s: string): string {
+function icsEscape(s: string): string {
   return s.replace(/\\/g, "\\\\").replace(/;/g, "\\;").replace(/,/g, "\\,").replace(/\r?\n/g, "\\n");
 }
 
@@ -136,8 +144,8 @@ function randomId(): string {
   return `${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 10)}`;
 }
 
-/** Minimal iCalendar reader used by the tests (and handy for checking a file):
- *  unfolds lines and returns each component's properties. */
+/** Minimal iCalendar reader for the tests: unfolds lines and returns each
+ *  component's properties. */
 export function parseIcs(text: string): { name: string; props: Record<string, { params: string; value: string }> }[] {
   if (/[^\r]\n/.test(text) || /\r(?!\n)/.test(text)) throw new Error("line endings must be CRLF");
   const lines = text.replace(/\r\n[ \t]/g, "").split("\r\n").filter((l) => l !== "");
@@ -170,7 +178,6 @@ export function icsUnescape(s: string): string {
 }
 
 // ---------- the reminder for a step ----------
-
 
 /** The reminder for step `n` (1-based), or null when the step has no wait. */
 export function reminderFor(rules: RuleSet, step: Step, n: number, lang: Lang): Reminder | null {

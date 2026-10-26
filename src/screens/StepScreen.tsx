@@ -21,7 +21,7 @@ export function StepScreen({ rules, lang, plan, n }: { rules: RuleSet; lang: Lan
   const cost = st.dollars === 0 ? s.free : money(st.dollars);
 
   const time = a.days > 0 ? s.readyIn(a.days) : !st.newTrip && n > 1 ? s.sameVisit(n - 1) : (place.inPerson ? s.timeVisit : s.timeMail);
-  const Time = time.charAt(0).toUpperCase() + time.slice(1);
+  const timeText = time.charAt(0).toUpperCase() + time.slice(1);
 
   return (
     <section className="screen">
@@ -42,7 +42,7 @@ export function StepScreen({ rules, lang, plan, n }: { rules: RuleSet; lang: Lan
                 {was !== null && <> <WasPrice dollars={was} lang={lang} /><span className="row-sub"> {st.waiver!.label[lang]}</span></>}
               </dd>
             </div>
-            <div><dt>{s.time}</dt><dd>{Time}</dd></div>
+            <div><dt>{s.time}</dt><dd>{timeText}</dd></div>
           </dl>
 
           {!a.verified && <Notice tone="draft" title={s.callAhead}>{place.inPerson ? s.callAheadLong : s.callAheadLongMail}</Notice>}

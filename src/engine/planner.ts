@@ -24,9 +24,9 @@ import type { Action, Cost, DocId, Mode, Person, Plan, RuleSet, Step, Waiver } f
  * carries the sources that justify it.
  */
 
-// Last tie-break is the number of steps: without it, a free same-visit step
-// that achieves nothing costs "zero" and can sneak into a plan. (The DeShawn
-// persona test caught exactly that.)
+// The last tie-break is the number of steps. Without it, a free step on the
+// same visit that the goal doesn't need adds nothing to the cost and can end
+// up in the plan. The DeShawn persona test covers this.
 type Key = [number, number, number, number];
 const ORDER: Record<Mode, (c: Cost) => Key> = {
   cheapest: (c) => [c.dollars, c.trips, c.days, c.steps],
@@ -40,7 +40,7 @@ function less(a: Key, b: Key): boolean {
 }
 
 /** The fee for an action after the cheapest waiver this person qualifies for. */
-export function priceOf(a: Action, have: ReadonlySet<DocId>, facts: Person["facts"]): { dollars: number; waiver?: Waiver } {
+function priceOf(a: Action, have: ReadonlySet<DocId>, facts: Person["facts"]): { dollars: number; waiver?: Waiver } {
   let best: { dollars: number; waiver?: Waiver } = { dollars: a.dollars };
   for (const w of a.waivers ?? []) {
     if (w.dollars < best.dollars && holds(w.if, have, facts)) best = { dollars: w.dollars, waiver: w };
@@ -137,11 +137,8 @@ function unwind(n: Node, mode: Mode, explored: number): Plan {
   return { steps, total: n.cost, mode, allVerified: steps.every((s) => s.action.verified), explored };
 }
 
-/**
- * "What would help most?" For each document the person doesn't hold, how much
- * would having it shorten the plan? This is what a caseworker asks first:
- * is it worth digging for the old ID number, or calling the hospital?
- */
+const BORN_IN_US = new Set(["la_county", "california", "us_state"]);
+
 /**
  * Documents worth suggesting to this person: ones they could go looking for
  * (an old ID, a birth certificate), not forms only an agency can issue; that
@@ -149,8 +146,6 @@ function unwind(n: Node, mode: Mode, explored: number): Plan {
  * exist for them (no U.S. birth certificate for someone born abroad, and no
  * green card or naturalization certificate for someone born in the U.S.).
  */
-const BORN_IN_US = new Set(["la_county", "california", "us_state"]);
-
 export function suggestable(rules: RuleSet, person: Person, base: Plan | null): DocId[] {
   const produced = new Set(base?.steps.flatMap((s) => s.action.produces) ?? []);
   const born = person.facts.born;
@@ -164,6 +159,12 @@ export function suggestable(rules: RuleSet, person: Person, base: Plan | null): 
 // isn't useful advice. These stay on the checklist and in "what if".
 const PHOTO_IDS = new Set<DocId>(["us_passport", "old_ca_id_5yr", "immigration_doc"]);
 
+/**
+ * "What would help most?" For each document worth suggesting, how much having
+ * it would improve the plan, biggest saving first. Documents that don't improve
+ * it are left out. This is what a caseworker asks first: which missing paper is
+ * worth tracking down?
+ */
 export function whatHelps(rules: RuleSet, person: Person, mode: Mode = "cheapest") {
   const base = plan(rules, person, mode);
   if (!base) return [];

@@ -39,7 +39,9 @@ describe("what-if toggles", () => {
     const person = { facts: { born: "abroad", age: 30, unhoused: true }, have: ["ssn_known"] };
     const docs = flipsThatMatter(rules, person, "cheapest", 99).flatMap((o) => (o.flip.kind === "doc" ? [o.flip.doc] : []));
     expect(docs).not.toContain("birth_cert_ca");
-    expect(docs).toContain("us_passport");
+    // A U.S. passport gives the same path, so the green card or naturalization
+    // certificate is the one shown: it is what most people born abroad have.
+    expect(docs).toContain("immigration_doc");
   });
 
   it("never suggests a green card or naturalization certificate to someone born in the U.S.", () => {
@@ -205,7 +207,7 @@ describe("Have and Questions screens", () => {
   it("'None of these' clears only the papers: a known SSN and an earlier California card stay", () => {
     expect(clearPapers(["birth_cert_ca", "ssn_known", "medi_cal_card", "dmv_record", "residency_doc"])).toEqual(["ssn_known", "dmv_record"]);
     expect(clearPapers(["us_passport"])).toEqual([]);
-    // Every row the Have screen shows is either a paper or one of the rows kept.
+    // The rows it keeps are ones the Have screen asks about.
     for (const id of NOT_PAPERS) expect(rules.docs[id]?.askAtIntake, id).toBe(true);
   });
 

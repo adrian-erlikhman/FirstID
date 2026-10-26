@@ -178,29 +178,28 @@ function useWakeLock() {
 const voicePrefs: Record<Lang, string[]> = { es: ["es-US", "es-MX", "es-ES"], en: ["en-US"] };
 const norm = (tag: string) => tag.replace("_", "-").toLowerCase();
 
-/** Pick the best on-device voice for the language: preferred regions first, then any of that language. */
+/** Pick the best on-device voice for the language: preferred regions first, then any of that
+ *  language. Network voices (`localService: false`, such as Chrome's "Google" voices) are never
+ *  used, because they send the text to a server. No on-device voice means no Read aloud. */
 export function pickVoice(voices: SpeechSynthesisVoice[], lang: Lang): SpeechSynthesisVoice | null {
   const local = voices.filter((v) => v.localService);
-  for (const pool of [local, voices]) {
-    for (const tag of voicePrefs[lang]) {
-      const v = pool.find((x) => norm(x.lang) === tag.toLowerCase());
-      if (v) return v;
-    }
-    const any = pool.find((x) => norm(x.lang).startsWith(`${lang}-`) || norm(x.lang) === lang);
-    if (any) return any;
+  for (const tag of voicePrefs[lang]) {
+    const v = local.find((x) => norm(x.lang) === tag.toLowerCase());
+    if (v) return v;
   }
-  return null;
+  return local.find((x) => norm(x.lang).startsWith(`${lang}-`) || norm(x.lang) === lang) ?? null;
 }
 
-/** speechSynthesis as Play/Stop. `supported` is false where the API is missing. */
-export function useSpeech(lang: Lang) {
-  const supported = typeof window !== "undefined" && "speechSynthesis" in window && typeof window.SpeechSynthesisUtterance === "function";
+/** speechSynthesis as Play/Stop. `supported` is false where the API is missing or the
+ *  device has no voice of its own for the language. */
+function useSpeech(lang: Lang) {
+  const api = typeof window !== "undefined" && "speechSynthesis" in window && typeof window.SpeechSynthesisUtterance === "function";
   const [speaking, setSpeaking] = useState(false);
   const [voices, setVoices] = useState<SpeechSynthesisVoice[]>([]);
   const run = useRef(0);
 
   useEffect(() => {
-    if (!supported) return;
+    if (!api) return;
     const synth = window.speechSynthesis;
     const load = () => setVoices(synth.getVoices());
     load();
@@ -209,35 +208,38 @@ export function useSpeech(lang: Lang) {
       synth.removeEventListener?.("voiceschanged", load);
       synth.cancel();
     };
-  }, [supported]);
+  }, [api]);
+
+  const supported = api && pickVoice(voices, lang) !== null;
 
   const stop = useCallback(() => {
-    if (!supported) return;
+    if (!api) return;
     run.current++;
     window.speechSynthesis.cancel();
     setSpeaking(false);
-  }, [supported]);
+  }, [api]);
 
   const speak = useCallback((parts: string[]) => {
-    if (!supported) return;
+    if (!api) return;
     const synth = window.speechSynthesis;
     synth.cancel();
     const id = ++run.current;
     const voice = pickVoice(voices.length ? voices : synth.getVoices(), lang);
-    const tag = voice?.lang.replace("_", "-") ?? voicePrefs[lang][0];
+    if (!voice) return;
+    const tag = voice.lang.replace("_", "-");
     const list = parts.filter(Boolean);
     // One utterance per part: shorter utterances avoid browsers cutting long speech off.
     list.forEach((part, i) => {
       const u = new SpeechSynthesisUtterance(part);
       u.lang = tag;
-      if (voice) u.voice = voice;
+      u.voice = voice;
       u.rate = 0.95;
       if (i === list.length - 1) u.onend = () => { if (run.current === id) setSpeaking(false); };
       u.onerror = () => { if (run.current === id) setSpeaking(false); };
       synth.speak(u);
     });
     setSpeaking(list.length > 0);
-  }, [supported, voices, lang]);
+  }, [api, voices, lang]);
 
   return { supported, speaking, speak, stop };
 }

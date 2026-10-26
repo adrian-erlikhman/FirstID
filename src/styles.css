@@ -1,11 +1,9 @@
 /* First ID's look.
  *
- * Black on white, nothing else. One typeface, Instrument Sans, self-hosted.
- * One recurring object: an ID card set down at a slight angle. It is the
- * logo, the hero, the path summary and the example people. Everything else
- * stays flat and square-ish: hairline borders, small radii, no shadows, no
- * gradients, no pills, no icon tiles. The tilt is the only casual thing, so it
- * is used sparingly.
+ * Ink on white, in Instrument Sans (self-hosted). One blue for buttons and
+ * links. Highlighter colours only ever sit behind black text. Buttons and
+ * answers are pills; panels are rounded, with hairline borders.
+ * The logo is an ID card set down at a slight angle (Mark, components.tsx).
  *
  * Headlines have two voices: say it in ink, finish it in grey. Every text
  * colour is checked for WCAG AA (`npm run contrast`); outlines of things you
@@ -13,44 +11,35 @@
  */
 
 @font-face { font-family: "Instrument Sans"; src: url("./fonts/instrument-sans.woff2") format("woff2"); font-weight: 400 700; font-display: swap; }
-/* The ID card's own face: San Francisco on iPhones and Macs, Inter (self-hosted) everywhere else. */
-@font-face { font-family: "Inter"; src: url("./fonts/inter.woff2") format("woff2"); font-weight: 100 900; font-display: swap; }
 
 :root {
   --ground: #ffffff; --panel: #ffffff; --ink: #1d1d1f; --on-ink: #ffffff;
   --tile: #f5f5f7;       /* the light grey of a product-page tile */
   --text-2: #6e6e73;     /* secondary text */
   --slate: #86868b;      /* second voice of a headline: large text only */
-  --mute: #a1a1a6;       /* decoration only, never text */
   --control: #86868b;    /* outlines of things you tap: 3:1 on white */
   --line: #d2d2d7; --line-strong: #c7c7cc; --wash: #f5f5f7; --pick: #e8e8ed;
   --cta: #0071e3; --cta-hover: #0077ed; --link: #0066cc;   /* the one blue: buttons and links */
-  --accent: var(--cta);
-  --pw: #ffffff; --pb: #0a0a0a;   /* portrait: frame, person */
   /* Colour. Always behind black text, never as text on white. */
   --hl: #ffe14d;        /* highlighter yellow: the way out, free, the answer */
   --c1: #ffe14d; --c2: #8be3bf; --c3: #9ccbff; --c4: #ffb067;   /* yellow, mint, sky, orange */
   --on-c: #0a0a0a;
   color-scheme: light;
 }
-/* White background always; dark is opt-in only (data-theme="dark"). */
+/* Dark is opt-in only, and nothing in the app sets data-theme="dark", so the page is always white. */
 :root[data-theme="dark"] {
   --ground: #0a0a0a; --panel: #121212; --ink: #f5f5f5; --on-ink: #0a0a0a;
-  --text-2: #b8b8b8; --slate: #8f8f8f; --mute: #4d4d4d; --control: #737373;
+  --text-2: #b8b8b8; --slate: #8f8f8f; --control: #737373;
   --line: #222222; --line-strong: #2e2e2e; --wash: #1a1a1a; --pick: #1f1f1f;
-  --pw: #0a0a0a; --pb: #f5f5f5;
   color-scheme: dark;
 }
 
 :root {
   --font: "Instrument Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
-  --mono: var(--font);
-  --card-font: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Inter", system-ui, sans-serif;
   --r: 18px; --r-sm: 12px; --r-card: 18px; --r-tile: 28px;
   --ease: cubic-bezier(0.16, 1, 0.3, 1);
   --wide: 1160px;
   --gutter: max(20px, env(safe-area-inset-left, 0px));
-  --tilt: -7deg;
 }
 
 /* ---------- base ---------- */
@@ -112,12 +101,11 @@ h1.display .bracketed .num { color: var(--on-c); background: var(--hl); padding:
 .brand .mark { transition: transform .4s var(--ease); }
 .back-btn {
   /* A real 44px box to tap; the grey circle you see is its 36px content box.
-     The negative margin keeps that circle on the gutter, as before. */
+     The negative margin keeps that circle on the gutter. */
   width: 44px; height: 44px; padding: 4px; margin: 0 0 0 -4px; flex: none; display: grid; place-items: center;
   border-radius: 50%; border: 0; background: var(--tile); background-clip: content-box; color: var(--ink);
 }
 .back-btn:hover { background-color: var(--pick); }
-/* A press shows, the way the pill buttons give a little (.btn:active). */
 .back-btn:active, .ts-toggle:active { transform: scale(.94); }
 .back-btn, .ts-toggle { transition: background-color .2s, transform .15s; }
 /* Focus: the black ring hugs the 36px circle and the yellow halo fills the
@@ -131,18 +119,16 @@ h1.display .bracketed .num { color: var(--on-c); background: var(--hl); padding:
 /* Back, Start, EN/ES and Aa all stand 36px tall, so their tops and bottoms line up. */
 .nav-cta { min-height: 36px !important; padding: 4px 13px !important; font-size: 13px !important; white-space: nowrap; }
 .lockup-word { white-space: nowrap; }
-/* Phones: the bar holds the mark, the button and EN/ES on one line. Where
-   "Buscar mi camino" can't fit, the button steps aside; the hero has the same one. */
+/* Phones: the bar keeps everything on one line. Where Start can't fit, it
+   steps aside; the hero has the same button. */
 @media (max-width: 400px) { .top-inner { gap: 6px; } .nav-cta { padding: 4px 10px !important; } }
-/* With the Aa button, "Buscar mi camino" needs about 430px; narrower, it
-   pushed Aa into the right gutter. */
+/* With the Aa button, "Buscar mi camino" needs about 430px. Any narrower and
+   it would push Aa into the right gutter. */
 @media (max-width: 429px) { :root[lang="es"] .nav-cta { display: none; } }
-@media (max-width: 349px) { .nav-cta { display: none; } }
 .lang { display: inline-flex; gap: 2px; padding: 2px; border-radius: 980px; background: var(--tile); }
 .lang button { min-width: 44px; min-height: 32px; border: 0; border-radius: 980px; background: transparent; font-size: 13px; font-weight: 500; color: var(--text-2); }
 .lang button[aria-checked="true"] { background: var(--panel); color: var(--ink); box-shadow: 0 1px 3px rgb(0 0 0 / .12); }
 .lang button:not([aria-checked="true"]):hover { color: var(--ink); }
-/* Wider screens have room: Start and EN/ES read at 14px, Start a little wider. */
 @media (min-width: 640px) {
   .nav-cta { padding: 4px 16px !important; font-size: 14px !important; }
   .lang button { min-width: 46px; font-size: 14px; }
@@ -216,7 +202,6 @@ h1.display .bracketed .num { color: var(--on-c); background: var(--hl); padding:
 .pill:active { transform: scale(.96); }
 .pill:hover { background: var(--wash); }
 .pill[aria-pressed="true"] { background: var(--ink); color: var(--on-ink); box-shadow: inset 0 0 0 1px var(--ink); }
-.pill-num { font-size: 0.7813rem; font-weight: 500; opacity: .6; font-variant-numeric: tabular-nums; }
 /* Short answers (Yes / No / Not sure, the age bands) share the row in equal
    widths, like a segmented control, while every label fits on one line; a
    label that doesn't fit (Spanish, larger text) moves to the next row whole. */
@@ -275,7 +260,7 @@ h1.display .bracketed .num { color: var(--on-c); background: var(--hl); padding:
 .notice-title { display: block; margin-bottom: 4px; color: var(--ink); font-size: 1rem; font-weight: 600; line-height: 1.35; } /* never smaller than the note under it */
 .notice p { margin: 0 0 6px; }
 
-/* ---------- home: hero, centred, with the card on a stage ---------- */
+/* ---------- home: hero, centred, with Maria's path summary on a stage ---------- */
 /* Phones: less air above the headline, so Maria's summary fits in the first screenful. */
 .hero { text-align: center; padding: 16px 0 8px; }
 @media (min-width: 640px) { .hero { padding-top: 40px; } }
@@ -342,7 +327,7 @@ h1.display .bracketed .num { color: var(--on-c); background: var(--hl); padding:
 .orb-label { font-size: 13px; font-weight: 600; padding: 2px 9px; border-radius: 980px; background: var(--tile); color: var(--ink); white-space: nowrap; }
 .st-0 .orb-bc .orb-label, .st-1 .orb-id .orb-label { color: var(--text-2); }
 .st-2 .orbit { opacity: .15; scale: .72; }
-/* Behind the card the ring is only texture: its words go, rather than stay as faint, unreadable text. */
+/* Behind the breakout card the ring is only texture: its words go, rather than stay as faint, unreadable text. */
 .orb-label { transition: color .5s, opacity .4s; }
 .st-2 .orb-label { opacity: 0; }
 .breakout { position: absolute; inset: 0; display: grid; place-items: center; opacity: 0; transform: scale(.55) rotate(-24deg); transition: opacity .6s, transform .9s var(--ease); }
@@ -365,8 +350,7 @@ h1.display .bracketed .num { color: var(--on-c); background: var(--hl); padding:
 }
 .tile-big { font-size: 60px; font-weight: 600; letter-spacing: -0.05em; line-height: 1; }
 .tile-sub { font-size: 1.125rem; line-height: 1.35; color: var(--text-2); max-width: 18em; text-wrap: pretty; }
-/* The scale behind Maria's path: the highlighter yellow, the numbers set big and tight.
-   (Not black: the forms band right below is black.) */
+/* The scale behind Maria's path: the highlighter yellow, the numbers set big and tight. */
 .t-scale { background: var(--hl); color: var(--on-c); }
 .scale-rows { display: flex; flex-direction: column; }
 /* Side by side with Maria's tile (wide screens), the three numbers spread
@@ -423,7 +407,7 @@ h1.display .bracketed .num { color: var(--on-c); background: var(--hl); padding:
 .step-paper { max-width: 440px; }
 .step-paper .paper-sheet { transform: rotate(-1.2deg); }
 
-/* ---------- home: the real forms on a light grey band (Adrian: white, never black) ---------- */
+/* ---------- home: the real forms on a light grey band ---------- */
 .forms-band { background: var(--tile); color: var(--ink); margin-left: calc(50% - 50vw); margin-right: calc(50% - 50vw); padding: 88px var(--gutter) 104px; }
 .paper-stage { max-width: var(--wide); margin: 0 auto; }
 .paper-head { max-width: 780px; margin: 0 auto; }
@@ -474,12 +458,11 @@ h2.display.h2.center { max-width: 20ch; margin-left: auto; margin-right: auto; }
 /* ---------- home: sections ---------- */
 .home-sec { margin-top: 72px; }
 h2.display.h2 { font-size: 34px; margin: 0 0 16px; text-wrap: balance; }
-h2.display.wide { max-width: 20ch; margin-bottom: 28px; }
 .how > li { display: grid; grid-template-columns: 30px minmax(0, 1fr); gap: 12px; padding: 16px 18px; }
 .how strong { display: block; font-weight: 600; font-size: 1.0625rem; line-height: 1.3; letter-spacing: -0.015em; margin-bottom: 2px; }
 
 
-/* old link rows (no-path help) */
+/* ---------- link rows: who can help when there is no path ---------- */
 .link-row {
   width: 100%; display: grid; grid-template-columns: minmax(0, 1fr) 18px; gap: 14px; align-items: center; /* text, then the icon at the right edge */
   min-height: 64px; padding: 14px 18px; border: 0; background: transparent; color: var(--ink); text-align: left; text-decoration: none;
@@ -500,7 +483,6 @@ h2.display.wide { max-width: 20ch; margin-bottom: 28px; }
 @media (hover: hover) { .check-row:hover { background: var(--wash); } }
 .check-row:active { background: var(--wash); }
 .check-row[aria-checked="true"] { background: var(--pick); }
-/* A ticked row answers the pointer too: its grey deepens a little. */
 @media (hover: hover) { .check-row[aria-checked="true"]:hover { background: color-mix(in srgb, var(--pick) 75%, var(--line)); } }
 /* Grey on the picked grey is 4.2:1; a little more ink brings the hint back over 4.5. */
 .check-row[aria-checked="true"] .row-sub { color: color-mix(in srgb, var(--text-2) 80%, var(--ink)); }
@@ -552,8 +534,8 @@ h2.display.wide { max-width: 20ch; margin-bottom: 28px; }
    strip with a hairline, edge to edge on phones, so a question going under
    it reads as scrolling under a bar, not as cut off, and no faded words show
    through around the button.
-   At rest below the last question it is clear. Slimmer than before, so it
-   hides less of the question behind it. */
+   At rest below the last question it is clear. Its padding is kept slim, so
+   it hides less of the question behind it. */
 .actions.sticky.q-bar { padding-top: 12px; padding-bottom: calc(12px + env(safe-area-inset-bottom, 0px)); background: transparent; transition: background-color .2s, box-shadow .2s; }
 .actions.sticky.q-bar.floating {
   background: var(--ground); box-shadow: 0 -1px 0 var(--line);
@@ -1002,15 +984,16 @@ h2.display.wide { max-width: 20ch; margin-bottom: 28px; }
 }
 .actions + .block-label, .notice + .block-label { margin-top: 32px; } /* no-path screen: room above "Who can help today" with or without the what-if button */
 
-/* ==== Card and shared-component accessibility (a11y pass) ================
-   Kept together at the end of the file on purpose. */
+/* ==== Shared accessibility: screen-reader text and the focus ring ========
+   This comes after the rules above on purpose: its focus ring has to win
+   over the plain one in base. */
 /* Text for screen readers only, such as the path summary's one-line version. */
 .sr-only {
   position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
   overflow: hidden; clip: rect(0 0 0 0); clip-path: inset(50%); white-space: nowrap; border: 0;
 }
 /* Keyboard focus: the brand's black ring inside a yellow halo, so it shows on
-   white, on black (a picked pill, the dark theme) and on the card. The black
+   white and on black (a picked pill, the dark theme). The black
    carries it on light grounds, the yellow on dark ones (npm run contrast).
    Inside a panel, which clips, the ring and halo are drawn inward instead. */
 :root { --focus-ink: #0a0a0a; --focus-halo: var(--c1); }
@@ -1024,7 +1007,7 @@ h2.display.wide { max-width: 20ch; margin-bottom: 28px; }
 .brand:focus-visible { border-radius: 6px; }
 main h1:focus { box-shadow: none !important; } /* headings take focus on a new screen, quietly */
 @media (forced-colors: active) { :focus-visible { outline-color: Highlight; } }
-/* ==== end card accessibility ============================================ */
+/* ==== end shared accessibility ========================================== */
 
 /* ===== Say this tools: Show the clerk + Read aloud (src/screens/SayTools.tsx) ===== */
 .say-tools { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 12px; }
@@ -1057,9 +1040,8 @@ main h1:focus { box-shadow: none !important; } /* headings take focus on a new s
 
 /* ===== Text size: the "Aa" menu in the top bar (TextSizeMenu, src/components.tsx) =====
    data-text-size on <html> scales the root font size; body text is in rem, so
-   it follows. The top bar, the ID card (it scales with its own width) and the
-   big display headings stay in px. Print ignores the setting, so the packet
-   stays one page. */
+   it follows. The top bar and the big display headings stay in px. Print
+   ignores the setting, so the packet stays one page. */
 :root[data-text-size="larger"] { font-size: 115%; }
 :root[data-text-size="largest"] { font-size: 130%; }
 @media print { :root[data-text-size] { font-size: 100%; } }
@@ -1068,13 +1050,13 @@ main h1:focus { box-shadow: none !important; } /* headings take focus on a new s
 .ts-toggle {
   /* A real 44px box to tap, drawn as a 36px grey circle like Back (the circle
      is the content box). The -4px margins give the bar back the extra width,
-     so it takes the same room as before and the circle ends on the gutter. */
+     so it takes only the circle's room and the circle ends on the gutter. */
   position: relative; display: grid; place-items: center; width: 44px; height: 44px; padding: 4px; margin: 0 -4px;
   border: 0; border-radius: 50%; background: var(--tile); background-clip: content-box; color: var(--ink);
   font-family: var(--font); font-size: 13px; font-weight: 600; line-height: 1; letter-spacing: -0.02em;
 }
 .ts-toggle:focus-visible { outline-offset: -4px; box-shadow: inset 0 0 0 2px var(--focus-halo), 0 0 0 2px var(--focus-halo) !important; }
-/* Phones: the bar gets 4px tighter per gap so "Aa" fits next to EN/ES at 375px.
+/* Phones: the bar's gaps shrink to 4px so "Aa" fits next to EN/ES at 375px.
    Narrower than that, the home page's Start pill gives way (the hero has one). */
 @media (max-width: 400px) {
   .top-inner { gap: 4px; }

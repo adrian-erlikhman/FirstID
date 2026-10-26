@@ -5,6 +5,7 @@ import { plan, whatHelps } from "./engine/planner";
 import type { Facts, Mode, Person, Plan, RuleSet } from "./engine/types";
 import { examples } from "./examples";
 import { withImplied } from "./person";
+import { clearTicks } from "./progress";
 import { t, type Lang } from "./i18n";
 import { go, parse, useRoute, type Route } from "./router";
 import { HaveScreen } from "./screens/HaveScreen";
@@ -20,8 +21,8 @@ import { WhatIfScreen } from "./screens/WhatIfScreen";
 const rules = rulesJson as unknown as RuleSet;
 
 // Answers are kept in this tab's sessionStorage, so a phone that reloads the
-// page in the background doesn't wipe them. It never leaves the phone, and it
-// is gone when the tab closes. If storage is blocked, the app still works.
+// page in the background doesn't wipe them. They never leave the phone, and
+// they are gone when the tab closes. If storage is blocked, the app still works.
 const SAVE_KEY = "first-id:v1";
 interface Saved { have: string[]; facts: Facts; unsure: string[]; answered: boolean; mode: Mode; lang: Lang }
 const saved: Partial<Saved> = (() => {
@@ -68,7 +69,8 @@ export default function App() {
   }, [result, person, mode]);
 
   const load = (p: Person) => { setHave([...p.have]); setFacts({ ...p.facts }); setUnsure([]); setAnswered(true); };
-  const reset = () => { setHave([]); setFacts({}); setUnsure([]); setAnswered(false); setMode("cheapest"); };
+  // Start over also forgets the ticks, so the next person on a shared phone starts clean.
+  const reset = () => { setHave([]); setFacts({}); setUnsure([]); setAnswered(false); setMode("cheapest"); clearTicks(); };
 
   // Deep links (#/example/maria) and screens that need answers first.
   useEffect(() => {

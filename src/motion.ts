@@ -1,9 +1,9 @@
 import { useEffect, useRef, useState } from "react";
 
-// The site's motion, in three small hooks. Everything here is
-// decoration: it switches itself off for people who ask for reduced motion,
-// and on phones that are likely slow or saving data (light mode). The tilt
-// only runs with a real mouse (never on touch screens).
+// The site's motion. All of it is decoration, so it switches itself off for
+// people who ask for reduced motion, and on phones that are likely slow or
+// saving data (light mode). The tilt only runs with a real mouse, never on
+// touch screens.
 
 type Nav = Navigator & { connection?: { saveData?: boolean }; deviceMemory?: number };
 
@@ -12,15 +12,15 @@ type Nav = Navigator & { connection?: { saveData?: boolean }; deviceMemory?: num
  *  Android). Core counts are not used: Safari on iOS reports a clamped
  *  hardwareConcurrency, which would turn every iPhone into light mode.
  *  Browsers that don't say count as fast. */
-export function liteDevice() {
+function liteDevice() {
   if (typeof navigator === "undefined") return false;
   const n = navigator as Nav;
   const mem = n.deviceMemory;
   return n.connection?.saveData === true || (typeof mem === "number" && mem > 0 && mem <= 2);
 }
 
-// Light mode is one flag on <html>, so the CSS (the pinned story, the card's
-// float and sheen, every animation) switches off exactly as it does for
+// Light mode is one flag on <html>, so the CSS (the pinned story, the orbit,
+// every animation and transition) switches off exactly as it does for
 // prefers-reduced-motion. Anything else that wants to know reads data-motion.
 if (typeof document !== "undefined" && liteDevice()) document.documentElement.dataset.motion = "lite";
 
@@ -29,8 +29,9 @@ const reduced = () =>
   (typeof document !== "undefined" && document.documentElement.dataset.motion === "lite");
 const finePointer = () => typeof window !== "undefined" && !!window.matchMedia?.("(hover: hover) and (pointer: fine)").matches;
 
-/** Tilts whatever is inside toward the mouse. Sets --rx and --ry (degrees)
- *  and --gx and --gy (where the light hits, in %) on the element. */
+/** Tilts the element toward the mouse by setting --rx and --ry (degrees) on
+ *  it. It also sets --gx and --gy (the pointer's position, in %) and
+ *  data-tilt, which no stylesheet reads. */
 export function useTilt<T extends HTMLElement>(max = 10) {
   const ref = useRef<T>(null);
   useEffect(() => {
@@ -190,7 +191,7 @@ export function usePresence(show: boolean, ms = 450) {
   return { mounted: phase !== "closed", open: phase === "expanding" || phase === "open", settled: phase === "open" };
 }
 
-export type Row<T> = { item: T; key: string; phase: "first" | "enter" | "in" | "leave"; num: number };
+type Row<T> = { item: T; key: string; phase: "first" | "enter" | "in" | "leave"; num: number };
 
 /** A list whose rows slide in and out instead of popping: a removed row stays
  *  where it was while it collapses, a new row starts collapsed and opens. */

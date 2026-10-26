@@ -7,10 +7,7 @@ import certificateImg from "./forms/certificate-of-identity.jpg";
 import applicationStrip from "./forms/strip-application.jpg";
 import certificateStrip from "./forms/strip-certificate.jpg";
 
-// Small shared pieces. Every screen is built from these, so a style change
-// here changes it everywhere. The look is First ID's own: black on white,
-// Instrument Sans, and one recurring object, an ID card set down at a slight
-// angle: the logo. The path you get is shown as a plain summary panel.
+// Small pieces shared by every screen.
 
 const paths: Record<string, string> = {
   back: "M15 5l-7 7 7 7",
@@ -21,7 +18,6 @@ const paths: Record<string, string> = {
   phone: "M6 3h4l2 5-2.5 1.5a11 11 0 0 0 5 5L16 12l5 2v4a2 2 0 0 1-2 2C10 20 4 14 4 5a2 2 0 0 1 2-2z",
   arrow: "M5 12h14 M13 6l6 6-6 6",
   alert: "M12 3a9 9 0 1 0 0 18a9 9 0 1 0 0-18 M12 7.5v5.5 M12 16.5v.5",
-  left: "M15 5l-7 7 7 7",
   right: "M9 5l7 7-7 7",
 };
 
@@ -41,12 +37,12 @@ const BUST = "M13.5 42 V 37.93 H 14 C 14 35.13 17.3 34.33 20.5 34.33 C 23.7 34.3
 
 /** The mark: the card, set down at a slight angle. It is cut out of
  *  currentColor with a mask, so it sits on any background. */
-export function Mark({ size = 22, tilt = -10, className = "" }: { size?: number; tilt?: number; className?: string }) {
+export function Mark({ size = 22, className = "" }: { size?: number; className?: string }) {
   const id = "m" + useId().replace(/[^a-zA-Z0-9]/g, "");
   return (
     <svg viewBox="6 13 52 38" height={size} width={(size * 52) / 38} aria-hidden="true" focusable="false" className={`mark ${className}`}>
       <mask id={id} maskUnits="userSpaceOnUse" x="0" y="0" width="64" height="64">
-        <g transform={`rotate(${tilt} 32 32)`}>
+        <g transform="rotate(-10 32 32)">
           <rect x="9" y="17.5" width="46" height="29" rx="2.5" fill="#fff" />
           <rect x="14" y="22.5" width="13" height="19" fill="#000" />
           <circle cx="20.5" cy="29.53" r="3.3" fill="#fff" />
@@ -61,7 +57,6 @@ export function Mark({ size = 22, tilt = -10, className = "" }: { size?: number;
   );
 }
 
-/** The mark, then the name. */
 export function Lockup() {
   return (
     <span className="lockup">
@@ -119,8 +114,8 @@ export function Tween({ value, format = String }: { value: number; format?: (n: 
   return <>{format(Math.round(useTween(value)))}</>;
 }
 
-/** The path you get, as a plain summary: the total after fee waivers, what it
- *  would have cost without them, then steps, trips and time. */
+/** The path's totals: the cost after fee waivers, what it would have cost
+ *  without them, then steps, trips and time. */
 export function PathCard({ plan, lang, mode, name, className = "" }: {
   plan: Plan; lang: Lang; mode: Mode; name?: string; className?: string;
 }) {
@@ -149,15 +144,15 @@ export function PathCard({ plan, lang, mode, name, className = "" }: {
   );
 }
 
-// Photos live in src/photos/. Drop a file named office, papers, counter or
-// phone (.jpg, .png or .webp) in there and it shows up; until then the page
-// simply has no photo in that spot. They are shown in black and white.
+// Optional photos in src/photos/, named office, papers, counter or phone
+// (.jpg, .jpeg, .png or .webp). A missing one leaves no photo in that spot.
+// The stylesheet shows them in black and white.
 const photoFiles = import.meta.glob("./photos/*.{jpg,jpeg,png,webp}", { eager: true, import: "default" }) as Record<string, string>;
 export const photoUrl = (name: string) =>
   Object.entries(photoFiles).find(([p]) => p.replace(/^.*\//, "").replace(/\.\w+$/, "") === name)?.[1];
 
-// The real LA County forms on Maria's path, rendered from lavote.gov's PDF
-// with our highlighter marks on the lines that matter.
+// The two LA County forms on Maria's path, rendered from lavote.gov's PDF,
+// with the line that matters on each highlighted.
 export const FORM_PDF = "https://www.lavote.gov/docs/rrcc/documents/birth-record-app-cerificate-of-identity.pdf?v=3";
 const formImages: Record<string, string> = { application: applicationImg, certificate: certificateImg };
 // A close-up of the highlighted line, laid over the page where that line is.
@@ -198,7 +193,7 @@ export function Photo({ name, alt, caption, className = "" }: { name: string; al
   );
 }
 
-/** A white panel with a small header: what it is, and what the planner found. */
+/** A panel with a small header: a title, and a short note beside it. */
 export function Solver({ title, readout, children, className = "" }: { title?: string; readout?: ReactNode; children: ReactNode; className?: string }) {
   return (
     <div className={`panel solver ${className}`}>
@@ -238,8 +233,8 @@ export function TopBar(props: { lang: Lang; onLang: (l: Lang) => void; onHome: (
   );
 }
 
-/** A radio group is one Tab stop: the arrow keys move between EN and ES,
- *  picking as they go, the way screen readers say radios work. */
+/** The language radios are one Tab stop. The arrow keys move between EN and
+ *  ES and pick as they go, as screen reader users expect of a radio group. */
 const langKeys = (onLang: (l: Lang) => void) => (e: ReactKeyboardEvent<HTMLButtonElement>) => {
   if (!["ArrowLeft", "ArrowRight", "ArrowUp", "ArrowDown"].includes(e.key)) return;
   e.preventDefault();
@@ -317,12 +312,12 @@ export const money = (d: number) => `$${d}`;
 
 /** What the same steps would cost with no fee waivers. */
 export const fullPrice = (p: Plan) => p.steps.reduce((sum, st) => sum + st.action.dollars, 0);
-export const waiverCount = (p: Plan) => p.steps.filter((st) => st.waiver && st.dollars < st.action.dollars).length;
+const waiverCount = (p: Plan) => p.steps.filter((st) => st.waiver && st.dollars < st.action.dollars).length;
 
 /** What to say at the counter: the waiver's line if one applies, else the step's own. */
 export const sayFor = (st: Step) => st.waiver?.say ?? st.action.say;
 
-/** One "not confirmed" tag. Dashed, because the rule is still a draft. */
+/** The "Call ahead" tag on a step whose rule hasn't been checked against its sources. */
 export function Unconfirmed({ lang }: { lang: Lang }) {
   const s = t[lang];
   return <span className="tag draft" title={s.notConfirmed}>{s.callAhead}</span>;
@@ -337,14 +332,12 @@ export function Notice({ tone = "info", title, children }: { tone?: "info" | "dr
   );
 }
 
-/** Pick one answer. Pills with aria-pressed, so screen readers announce the
- *  choice. `numbered` adds 01, 02… in mono. */
-export function Pills<V>(props: { label: string; options: readonly (readonly [V, string])[]; value: V | null; onChange: (v: V) => void; numbered?: boolean; className?: string }) {
+/** Pick one answer. Pills with aria-pressed, so screen readers announce the choice. */
+export function Pills<V>(props: { label: string; options: readonly (readonly [V, string])[]; value: V | null; onChange: (v: V) => void; className?: string }) {
   return (
     <div className={`pills ${props.className ?? ""}`} role="group" aria-label={props.label}>
-      {props.options.map(([v, text], i) => (
+      {props.options.map(([v, text]) => (
         <button key={text} className="pill" aria-pressed={props.value === v} onClick={() => props.onChange(v)}>
-          {props.numbered && <span className="pill-num" aria-hidden="true">{String(i + 1).padStart(2, "0")}</span>}
           {text}
         </button>
       ))}
@@ -352,13 +345,13 @@ export function Pills<V>(props: { label: string; options: readonly (readonly [V,
   );
 }
 
-/** One official source. Until a person verifies the rule, it never claims a "checked" date.
- *  Source pages are in English, so the Spanish title says "(en inglés)". */
+/** One official source. Until a person verifies the rule, it never claims a
+ *  "checked" date. Titles and quotes are the source's own English words, so
+ *  screen readers say them in English on the Spanish screens too, where the
+ *  title adds " (en inglés)". */
 export function SourceCard({ src, lang, verified }: { src: Source; lang: Lang; verified: boolean }) {
   const s = t[lang];
   const missing = /^TODO/i.test(src.quote);
-  // Titles and quotes are the source's own English words, so screen readers
-  // say them in English on the Spanish screens too; " (en inglés)" stays Spanish.
   let host = "";
   try { host = new URL(src.url).hostname.replace(/^www\./, ""); } catch { /* not a URL */ }
   return (

@@ -1,8 +1,7 @@
 // Invented people (no real names, addresses or numbers) that cover the main
-// ways someone ends up without ID. Each one's plan is worked out BY HAND from
+// ways someone ends up without ID. Each one's plan is worked out by hand from
 // the sources first, then written into personas.test.ts. If the planner ever
-// disagrees with the hand-worked plan, one of them is wrong, and we find out
-// which before a real person does.
+// disagrees with the hand-worked plan, one of the two is wrong.
 import type { Person } from "../src/engine/types";
 
 export const personas: Record<string, Person & { story: string }> = {

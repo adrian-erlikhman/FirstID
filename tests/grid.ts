@@ -6,7 +6,7 @@ import type { DocId, Facts, Person } from "../src/engine/types";
 import { withImplied } from "../src/person";
 
 export const BORN = ["la_county", "california", "us_state", "abroad"] as const;
-export const AGES = [16, 19, 30, 62]; // one per band on the questions screen
+const AGES = [16, 19, 30, 62]; // one per band on the questions screen
 const YES_NO = ["unhoused", "fireSurvivor", "hasWitnesses", "publicAssistance", "fosterYouth"];
 const ANSWERS = [true, false, undefined]; // undefined = "Not sure"
 

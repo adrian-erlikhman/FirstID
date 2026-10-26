@@ -6,13 +6,12 @@ import { href } from "../router";
 import { flipsThatMatter, helpOptions, noPathNotes, type NoPathNote } from "../whatif";
 import { useEffect, useMemo, useState } from "react";
 import { under18 } from "../person";
-import { loadTicks, reminderFor, reminderIcs, saveTicks, ticksInPlan, toggleTick, type Ticks } from "../progress";
+import { clearTicks as forgetTicks, loadTicks, reminderFor, reminderIcs, saveTicks, ticksInPlan, toggleTick, type Ticks } from "../progress";
 
-// The hero screen: the total first, in brackets because the
-// planner computed it, then the steps in a solver panel. Each step is one
-// tappable row that opens its detail screen with the proof.
+// The path: the total in the heading and the cost summary, then the steps.
+// Each step is one row that opens its own screen with the sources.
 
-export function whenLine(rules: RuleSet, steps: Step[], i: number, lang: Lang): string {
+function whenLine(rules: RuleSet, steps: Step[], i: number, lang: Lang): string {
   const s = t[lang];
   const st = steps[i];
   const place = placeOf(rules, st);
@@ -46,7 +45,7 @@ function ReminderLink({ rules, lang, step, n }: { rules: RuleSet; lang: Lang; st
   );
 }
 
-export function StepList({ rules, lang, plan, done, onDone }: {
+function StepList({ rules, lang, plan, done, onDone }: {
   rules: RuleSet; lang: Lang; plan: Plan; done?: Set<string>; onDone?: (id: string, on: boolean) => void;
 }) {
   const s = t[lang];
@@ -98,7 +97,7 @@ export function StepList({ rules, lang, plan, done, onDone }: {
 export function NoPath({ rules, lang, person, onBack }: { rules: RuleSet; lang: Lang; person: Person; onBack: () => void }) {
   const s = t[lang];
   const text: Record<NoPathNote, string> = {
-    bornCA: s.noPathBornCA, bornElsewhere: s.noPathBornElsewhere,
+    bornCA: s.noPathBornCA, bornElsewhere: s.noPathBornElsewhere, bornAbroad: s.noPathBornAbroad,
     allUnsure: s.noPathAllUnsure, needAddress: s.noPathNeedAddress, needWitnesses: s.noPathNeedWitnesses, needSsn: s.noPathNeedSsn,
   };
   const notes = noPathNotes(rules, person);
@@ -144,7 +143,7 @@ export function PathScreen(props: {
   const [ticks, setTicks] = useState<Ticks>(() => loadTicks());
   const setTick = (id: string, on: boolean) => setTicks((prev) => { const next = toggleTick(prev, id, on); saveTicks(next); return next; });
   // The link goes away once there is nothing to clear, so hand focus to the heading.
-  const clearTicks = () => { setTicks({}); saveTicks({}); document.querySelector<HTMLElement>("main h1")?.focus(); };
+  const clearTicks = () => { setTicks({}); forgetTicks(); document.querySelector<HTMLElement>("main h1")?.focus(); };
   const done = useMemo(() => ticksInPlan(ticks, result ? result.steps.map((st) => st.action.id) : []), [ticks, result]);
   if (!result) return <NoPath rules={rules} lang={lang} person={props.person} onBack={props.onChangeAnswers} />;
 
@@ -159,7 +158,7 @@ export function PathScreen(props: {
           <p className="progress-line">
             <span className="progress-count" aria-live="polite">{s.progressDone(done.size, result.steps.length)}</span>
             <span className="progress-note">{s.progressNote}</span>
-            {done.size > 0 && <button type="button" className="progress-clear" onClick={clearTicks}>{s.clearProgress}</button>}
+            {Object.keys(ticks).length > 0 && <button type="button" className="progress-clear" onClick={clearTicks}>{s.clearProgress}</button>}
           </p>
           <div className="actions stack head-actions">
             <a className="btn primary" href={href({ name: "packet" })}><Icon name="print" size={18} /> {s.printPacket}</a>

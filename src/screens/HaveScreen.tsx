@@ -3,9 +3,9 @@ import type { RuleSet } from "../engine/types";
 import { t, type Lang } from "../i18n";
 import { clearPapers } from "../person";
 
-// A plain checklist, like a paper form: big rows, one tap each,
-// readable on a cracked screen. "I know my SSN" is its own group because it
-// isn't a paper, and it's the thing people most often don't realise is enough.
+// The papers a person has, as a checklist with one tap per row. "I know my
+// SSN" is its own list because it isn't a paper, and people often don't
+// realise the number alone is enough.
 export function HaveScreen(props: {
   rules: RuleSet; lang: Lang; have: string[];
   onChange: (h: string[]) => void; onNext: () => void;

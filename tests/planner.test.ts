@@ -16,7 +16,7 @@ describe("planner mechanics (toy rules)", () => {
     expect(p!.total).toEqual({ dollars: 40, trips: 1, days: 14, steps: 1 });
   });
 
-  it("an unhoused person born here gets the free path through the shelter", () => {
+  it("an unhoused person born here takes the fee-waiver path through the shelter, paying only the notary", () => {
     const p = plan(toy, { facts: { unhoused: true, bornHere: true, hasWitnesses: true }, have: [] });
     expect(new Set(ids(p))).toEqual(new Set(["notarize", "cert_mail", "waiver", "apply"]));
     expect(ids(p)!.at(-1)).toBe("apply");
@@ -47,9 +47,9 @@ describe("planner mechanics (toy rules)", () => {
 });
 
 /**
- * The guarantee the app makes: having MORE documents can never make your
- * plan worse. We check it for every persona and every single document they
- * could add. If a rule ever breaks it, this test fails before a person sees it.
+ * Adding any one document a person doesn't have must never leave them with
+ * no plan or make their plan cost more. Checked for each person given and
+ * every document in the rules.
  */
 export function checkMonotone(rules: RuleSet, personas: Person[]) {
   for (const person of personas) {

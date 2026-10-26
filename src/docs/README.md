@@ -3,7 +3,8 @@
 The real papers on the home page (the loop and Maria's path). The ID and the
 birth certificate are the state's own published samples, not anyone's
 documents, and both carry the word SAMPLE; the affidavit is the state's blank
-form. We show them unaltered apart from cropping and resizing.
+form. We show them unaltered apart from cropping, resizing and, for the birth
+certificate and the affidavit, greyscale.
 
 - `ca-id-sample.jpg`: the California DMV's sample card, 2025 design ("Sample
   Janice"), from the DMV's news release of 1 Oct 2025, "DMV to Release New

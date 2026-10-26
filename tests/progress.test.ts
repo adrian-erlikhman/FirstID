@@ -3,7 +3,7 @@ import rulesJson from "../data/rules.json";
 import type { RuleSet } from "../src/engine/types";
 import { plan } from "../src/engine/planner";
 import {
-  PROGRESS_KEY, addDays, icsDate, icsFold, icsUnescape, loadTicks, parseIcs, reminderFor, reminderIcs, saveTicks, ticksInPlan, toggleTick,
+  PROGRESS_KEY, addDays, clearTicks, icsDate, icsFold, icsUnescape, loadTicks, parseIcs, reminderFor, reminderIcs, saveTicks, ticksInPlan, toggleTick,
 } from "../src/progress";
 import { personas } from "./personas";
 
@@ -41,6 +41,14 @@ describe("progress ticks", () => {
     saveTicks({ a: true }, st);
     saveTicks({}, st);
     expect(st.m.has(PROGRESS_KEY)).toBe(false);
+  });
+
+  it("Start over forgets every tick, including steps outside the current plan", () => {
+    const st = memStore();
+    saveTicks({ program_bc_affidavit: true, dcfs_documents: true }, st);
+    clearTicks(st);
+    expect(st.m.has(PROGRESS_KEY)).toBe(false);
+    expect(loadTicks(st)).toEqual({});
   });
 
   it("survives blocked storage and junk", () => {

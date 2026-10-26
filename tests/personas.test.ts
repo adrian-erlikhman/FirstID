@@ -1,4 +1,4 @@
-// Each expected plan below was worked out BY HAND from the sources before it
+// Each expected plan below was worked out by hand from the sources before it
 // was written here. If the planner disagrees, either the rules file or the
 // planner is wrong, and CI stops the deploy until we know which.
 import { describe, expect, it } from "vitest";
@@ -46,14 +46,14 @@ describe("personas (hand-worked plans)", () => {
     expect(total("jayden")!.dollars).toBe(40);
   });
 
-  it("Luis, born in Texas with no witnesses: no full path yet, so the app sends him to a caseworker", () => {
+  it("Luis, born in Texas with no witnesses: without his earlier California ID there is no path", () => {
     const { have, facts } = personas.luis;
     // He had a CA ID before, so the replacement path exists; without that, nothing does.
     expect(plan(rules, { facts, have: have.filter((d) => d !== "dmv_record") })).toBeNull();
   });
 });
 
-describe("Maria in detail (feedback item 4: the homeless affidavit, not the fire waiver)", () => {
+describe("Maria in detail: the homeless affidavit, not the fire waiver", () => {
   const MODES: Mode[] = ["cheapest", "fewestTrips", "fastest"];
   const FIRE_SOURCES = ["rrcc_fire", "lafires_docs"];
 
@@ -73,7 +73,7 @@ describe("Maria in detail (feedback item 4: the homeless affidavit, not the fire
     expect(dmv.waiver?.if).toEqual({ doc: "dl933" });
   });
 
-  it("the shelter forms come before the mail order, and the notary before the mail order", () => {
+  it("the affidavit and the notary come before the mail order, and the DL 933 before the DMV", () => {
     const ids = steps("maria")!;
     expect(ids.indexOf("program_bc_affidavit")).toBeLessThan(ids.indexOf("rrcc_mail"));
     expect(ids.indexOf("notary_witnesses")).toBeLessThan(ids.indexOf("rrcc_mail"));

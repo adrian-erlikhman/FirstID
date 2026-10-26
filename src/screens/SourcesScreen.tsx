@@ -3,8 +3,8 @@ import { Block, Icon, SourceCard } from "../components";
 import type { RuleSet } from "../engine/types";
 import { t, type Lang } from "../i18n";
 
-// The model card: every rule, its sources, when we checked it, which ones we
-// couldn't confirm, and plainly what's real and what's made up.
+// "How we know": every rule with its sources and when we checked them, which
+// rules we couldn't confirm, and what in the app is real and what's made up.
 const REPO_ISSUES = "https://github.com/adrian-erlikhman/FirstID/issues/new?template=wrong-rule.yml";
 
 export function SourcesScreen({ rules, lang }: { rules: RuleSet; lang: Lang }) {

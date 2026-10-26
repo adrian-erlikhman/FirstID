@@ -1,4 +1,3 @@
-// Documents a person holds without ticking them separately.
 import type { Facts } from "./engine/types";
 
 /** A California ID from the last five years also means the DMV has a record of you. */

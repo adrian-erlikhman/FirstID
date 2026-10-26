@@ -14,9 +14,9 @@ const sourcesOf = (a: Action): SourceId[] => [...a.sources, ...(a.waivers ?? [])
 const isTodo = (quote: string) => !quote.trim() || /\bTODO\b/i.test(quote);
 
 /**
- * Rules marked verified whose sources still have a TODO quote. Only Michael
- * marks a rule verified, after reading every source; a TODO quote means that
- * hasn't happened yet, so the two can't both be true.
+ * Rules marked verified whose sources still have a TODO quote. A teammate
+ * marks a rule verified only after reading every source (CONTRIBUTING.md); a
+ * TODO quote means that hasn't happened yet, so the two can't both be true.
  */
 function verifiedWithoutQuotes(r: RuleSet): string[] {
   const bad: string[] = [];
