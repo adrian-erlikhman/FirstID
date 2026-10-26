@@ -45,7 +45,7 @@ export function WhatIfScreen(props: {
                 return (
                   <li key={k}>
                     <button className={`toggle-row${on.includes(k) ? " changed" : ""}`} role="switch" aria-checked={yes} onClick={() => toggle(k)}>
-                      <span>{label}</span>
+                      <span className="toggle-label">{label}</span>
                       <span aria-hidden="true"><Swap className="switch-text" text={yes ? s.yes : s.no} /></span>
                       <span className="switch" aria-hidden="true"><span /></span>
                     </button>
@@ -67,7 +67,7 @@ export function WhatIfScreen(props: {
                     <div className="mini-clip">
                       <div className="mini-in">
                         <span className="row-num" aria-hidden="true">{num}</span>
-                        <span>{st.action.label[lang]}</span>
+                        <span className="mini-label">{st.action.label[lang]}</span>
                         <Swap className={`num${st.dollars === 0 ? " free" : ""}`} text={st.dollars === 0 ? s.free : money(st.dollars)} />
                       </div>
                     </div>

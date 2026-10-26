@@ -609,6 +609,8 @@ h2.display.wide { max-width: 20ch; margin-bottom: 28px; }
   font-size: 1rem; line-height: 1.35;
 }
 .mini-steps li + li .mini-in { border-top: 1px solid var(--line); }
+/* No single word left alone on the last line ("costo)", "Ángeles") where the browser can avoid it. */
+.toggle-label, .mini-label { text-wrap: balance; }
 .mini-steps .num { font-size: 1rem; font-weight: 600; justify-self: end; align-self: start; } /* "Free" keeps its own height on a two-line step */
 @keyframes step-in { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
 .whatif-none { padding: 24px 18px; margin: 0; font-size: 1.125rem; }
