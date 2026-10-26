@@ -27,7 +27,7 @@ data/rules.json ──► npm run lint:rules ──► planner (in the browser) 
 1. **Rules are data.** [`data/rules.json`](data/rules.json) holds each rule's requirements, the documents it gives you, fees, fee waivers, time, place, what to bring and say, and its sources, in English and Spanish.
 2. **A linter guards them.** [`src/engine/lint.ts`](src/engine/lint.ts) fails the build if a rule has no source, names an unknown document or place, or is missing its Spanish.
 3. **The planner is exact.** [`src/engine/planner.ts`](src/engine/planner.ts) runs Dijkstra's algorithm over the documents you hold. No step costs less than zero, so it finds the exact best order: fewest dollars, then trips, then days, then steps. Rules only ever add documents, so having more can never make your plan worse, and the same answers always give the same path.
-4. **Every step cites its source**, with the exact supporting sentence once we've copied it. The "How we know" screen lists them all.
+4. **Every step cites its source** and quotes the sentence that supports it; a teammate checks each quote against its source when verifying the rule. The "How we know" screen lists them all.
 5. **What-if and dead ends.** The app shows which answers would change your path, and when there's no path it says what's blocking it and who can help.
 
 The tests ([`tests/`](tests/)) cover the planner, four invented people checked against hand-worked plans, the "more documents never hurts" guarantee, the what-if and no-path logic, the links between screens, the office list and the progress logic. `npm run check` runs all of it plus the build, and nothing deploys unless it passes.
@@ -46,7 +46,7 @@ First ID is a static site with no accounts, server or database. Your answers sta
 ## Spanish and accessibility
 
 - The whole app, including the packet, works in English and Spanish, and the linter fails the build if a rule is missing its Spanish. The Spanish was drafted with AI help and hasn't had a full native-speaker review yet.
-- Everything works by keyboard with a visible focus ring; there's a text-size control; motion switches off for reduced-motion users, with Data Saver on, and on phones with 2 GB of memory or less; `npm run contrast` checks colour contrast. We haven't yet done a full screen-reader pass.
+- Everything works by keyboard with a visible focus ring; there's a text-size control; motion switches off for reduced-motion users, with Data Saver on, and on phones with 2 GB of memory or less; `npm run contrast` checks colour contrast, and `scripts/a11y-audit.js` runs axe-core plus 16px-text and 44px-tap-target checks on every screen in both languages. We haven't yet done a full screen-reader pass.
 
 ## Run it locally
 
@@ -66,7 +66,7 @@ Vercel builds the main site from `vercel.json`; GitHub Pages builds the mirror f
 
 ## How rules get verified
 
-A teammate opens every source a rule cites, copies the exact supporting sentence in place of any `TODO`, re-checks statutes on leginfo.legislature.ca.gov, checks the rule's fees and plain-language lines, and only then sets `"verified": true` ([checklist](CONTRIBUTING.md#verifying-a-rule)). What each check changed goes in [`data/CHANGES.md`](data/CHANGES.md). The "How we know" screen shows how many rules are verified so far. Found a rule that's wrong? [Report it](https://github.com/adrian-erlikhman/FirstID/issues/new?template=wrong-rule.yml).
+A teammate opens every source a rule cites, checks that each quoted sentence appears in the source, re-checks statutes on leginfo.legislature.ca.gov, checks the rule's fees and plain-language lines, and only then sets `"verified": true` ([checklist](CONTRIBUTING.md#verifying-a-rule)). What each check changed goes in [`data/CHANGES.md`](data/CHANGES.md). The "How we know" screen shows how many rules are verified so far. Found a rule that's wrong? [Report it](https://github.com/adrian-erlikhman/FirstID/issues/new?template=wrong-rule.yml).
 
 ## Project structure
 
@@ -75,9 +75,9 @@ data/          rules, DMV offices and ZIP centres, each with sources
 src/engine/    types, rule linter and the planner (Dijkstra)
 src/screens/   every screen, from home to the printed packet
 src/           app state, routes, what-if, progress, strings (EN/ES), styles
-tests/         planner, persona, what-if, office and progress tests (Vitest)
+tests/         planner, persona, what-if, no-path, packet, translation, rules-data, office and progress tests (Vitest)
 public/        icons, manifest and the offline service worker
-scripts/       the rule linter's command line and the colour contrast check
+scripts/       the rule linter's command line, the colour contrast check and a browser accessibility audit
 docs/          background research and team notes
 ```
 
