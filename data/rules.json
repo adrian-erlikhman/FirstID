@@ -6,7 +6,7 @@
     "ca_id": {
       "label": {
         "en": "California ID card",
-        "es": "Identificación de California"
+        "es": "Tarjeta de identificación de California"
       },
       "askAtIntake": false
     },
@@ -76,7 +76,7 @@
     "residency_doc": {
       "label": {
         "en": "A bill, lease, benefits letter or medical paper with my California address",
-        "es": "Una factura, contrato, carta de beneficios o papel médico con mi dirección en California"
+        "es": "Una factura, contrato de renta, carta de beneficios o papel médico con mi dirección en California"
       },
       "askAtIntake": true
     },
@@ -97,14 +97,14 @@
     "bc_waiver_homeless": {
       "label": {
         "en": "Homeless affidavit for a free birth certificate",
-        "es": "Declaración jurada de persona sin hogar para acta gratuita"
+        "es": "Declaración jurada de persona sin hogar para un acta gratuita"
       },
       "askAtIntake": false
     },
     "bc_waiver_foster": {
       "label": {
         "en": "Foster-youth affidavit for a free birth certificate",
-        "es": "Declaración jurada de joven en cuidado de crianza para acta gratuita"
+        "es": "Declaración jurada de joven en cuidado de crianza para un acta gratuita"
       },
       "askAtIntake": false
     },
@@ -349,11 +349,11 @@
       "bring": [
         {
           "en": "Nothing. The program has the form; it can't be photocopied or downloaded.",
-          "es": "Nada. El programa tiene el formulario; no se puede copiar ni descargar."
+          "es": "Nada. El programa tiene el formulario; no se puede fotocopiar ni descargar."
         },
         {
           "en": "The signed form is good for 90 days. Use it at the DMV within 90 days of the date it's signed.",
-          "es": "El formulario firmado vale por 90 días. Úsalo en el DMV dentro de los 90 días desde que lo firmen."
+          "es": "El formulario firmado vale por 90 días. Úsalo en el DMV dentro de los 90 días siguientes a la fecha en que lo firmen."
         }
       ],
       "why": {
@@ -432,7 +432,7 @@
       "id": "dcfs_documents",
       "label": {
         "en": "Ask your social worker for the documents the county must give you before you leave care",
-        "es": "Pide a tu trabajador social los documentos que el condado debe darte antes de salir"
+        "es": "Pide a tu trabajador social los documentos que el condado debe darte antes de salir del cuidado"
       },
       "place": "dcfs",
       "requires": {
@@ -479,7 +479,7 @@
       "bring": [
         {
           "en": "The signed form is good for 90 days. Use it at the DMV within 90 days of the date it's signed.",
-          "es": "El formulario firmado vale por 90 días. Úsalo en el DMV dentro de los 90 días desde que lo firmen."
+          "es": "El formulario firmado vale por 90 días. Úsalo en el DMV dentro de los 90 días siguientes a la fecha en que lo firmen."
         }
       ],
       "why": {
@@ -499,7 +499,7 @@
       "id": "notary_witnesses",
       "label": {
         "en": "Get the Certificate of Identity notarized, with two credible witnesses",
-        "es": "Lleva el Certificado de Identidad a un notario público, con dos testigos"
+        "es": "Lleva el Certificado de Identidad a un notario público, con dos testigos fidedignos"
       },
       "place": "notary",
       "requires": {
@@ -525,7 +525,7 @@
       "bring": [
         {
           "en": "Two adults who know you, each with a photo ID that's current or was issued in the last 5 years (for example a California license or ID card, a U.S. passport, another state's license or a U.S. military ID). They can't be named on the form or gain anything from it, and each swears you can't easily get an ID.",
-          "es": "Dos adultos que te conozcan, cada uno con una identificación con foto vigente o emitida en los últimos 5 años (por ejemplo, licencia o identificación de California, pasaporte de EE. UU., licencia de otro estado o identificación militar de EE. UU.). No pueden aparecer en el formulario ni beneficiarse de él, y cada uno jura que no puedes obtener identificación fácilmente."
+          "es": "Dos adultos que te conozcan, cada uno con una identificación con foto vigente o emitida en los últimos 5 años (por ejemplo, licencia o identificación de California, pasaporte de EE. UU., licencia de otro estado o identificación militar de EE. UU.). No pueden aparecer en el formulario ni beneficiarse de él, y cada uno jura que no puedes obtener una identificación fácilmente."
         },
         {
           "en": "The Certificate of Identity, not yet signed",
@@ -534,7 +534,7 @@
       ],
       "why": {
         "en": "This is the step that breaks the loop. A notary can't check an ID you don't have, but California lets two people who know you vouch for who you are.",
-        "es": "Este es el paso que rompe el círculo. Un notario no puede revisar una identificación que no tienes, pero California permite que dos personas que te conocen confirmen quién eres."
+        "es": "Este es el paso que rompe el círculo. Un notario no puede revisar una identificación que no tienes, pero California permite que dos personas que te conocen den fe de quién eres."
       },
       "say": {
         "en": "I don't have an ID. These two people will identify me as credible witnesses under Civil Code 1185.",
@@ -605,7 +605,7 @@
       "id": "rrcc_mail",
       "label": {
         "en": "Mail the birth certificate request to LA County",
-        "es": "Envía por correo la solicitud del acta al Condado de Los Ángeles"
+        "es": "Envía por correo la solicitud de tu acta de nacimiento al condado de Los Ángeles"
       },
       "place": "mail",
       "requires": {
@@ -654,7 +654,7 @@
           "dollars": 0,
           "label": {
             "en": "free for fire-impacted residents",
-            "es": "gratis para afectados por los incendios"
+            "es": "gratis para personas afectadas por los incendios"
           },
           "sources": [
             "rrcc_fire",
@@ -666,7 +666,7 @@
       "bring": [
         {
           "en": "The notarized Certificate of Identity and the request form",
-          "es": "El Certificado de Identidad notariado y el formulario"
+          "es": "El Certificado de Identidad notariado y el formulario de solicitud"
         },
         {
           "en": "The signed homeless or foster-youth affidavit, if you have one, instead of a check",
@@ -687,7 +687,7 @@
       ],
       "why": {
         "en": "By mail, LA County asks for a notarized Certificate of Identity instead of a photo ID. That's why the notary step comes first.",
-        "es": "Por correo, el Condado de Los Ángeles pide un Certificado de Identidad notariado en lugar de una identificación con foto. Por eso el paso del notario va primero."
+        "es": "Por correo, el condado de Los Ángeles pide un Certificado de Identidad notariado en lugar de una identificación con foto. Por eso el paso del notario va primero."
       },
       "sources": [
         "lavote_mail",
@@ -735,7 +735,7 @@
       },
       "say": {
         "en": "I need a replacement Social Security card. I don't have a photo ID, so here's what I do have.",
-        "es": "Necesito un reemplazo de mi tarjeta de Seguro Social. No tengo identificación con foto, así que esto es lo que tengo."
+        "es": "Necesito un reemplazo de mi tarjeta de Seguro Social. No tengo identificación con foto, pero aquí está lo que sí tengo."
       },
       "sources": [
         "ssa_replace",
@@ -799,7 +799,7 @@
           "dollars": 0,
           "label": {
             "en": "no fee with DL 933",
-            "es": "sin costo con DL 933"
+            "es": "sin costo con el DL 933"
           },
           "sources": [
             "dmv_orgs",
@@ -835,7 +835,7 @@
           "dollars": 11,
           "label": {
             "en": "reduced fee with DL 937",
-            "es": "costo reducido con DL 937"
+            "es": "costo reducido con el DL 937"
           },
           "sources": [
             "dmv_fees"
@@ -866,7 +866,7 @@
         },
         {
           "en": "DMV mails the card in about 3 to 4 weeks. Keep the paper receipt.",
-          "es": "El DMV envía la tarjeta en 3 a 4 semanas. Guarda el recibo."
+          "es": "El DMV te envía la tarjeta por correo en unas 3 a 4 semanas. Guarda el recibo de papel."
         }
       ],
       "why": {
@@ -922,7 +922,7 @@
           "dollars": 0,
           "label": {
             "en": "no fee with DL 933",
-            "es": "sin costo con DL 933"
+            "es": "sin costo con el DL 933"
           },
           "sources": [
             "dmv_orgs",
@@ -958,7 +958,7 @@
           "dollars": 11,
           "label": {
             "en": "reduced fee with DL 937",
-            "es": "costo reducido con DL 937"
+            "es": "costo reducido con el DL 937"
           },
           "sources": [
             "dmv_fees"
@@ -1002,12 +1002,12 @@
         },
         {
           "en": "DMV mails the card in about 3 to 4 weeks. Keep the paper receipt.",
-          "es": "El DMV envía la tarjeta en 3 a 4 semanas. Guarda el recibo."
+          "es": "El DMV te envía la tarjeta por correo en unas 3 a 4 semanas. Guarda el recibo de papel."
         }
       ],
       "why": {
         "en": "If the DMV has a record of a license or ID you had before, you can ask for a replacement instead of applying from scratch.",
-        "es": "Si el DMV tiene registro de una licencia o identificación que tuviste antes, puedes pedir un reemplazo en vez de empezar desde cero."
+        "es": "Si el DMV tiene un registro de una licencia o identificación que tuviste antes, puedes pedir un reemplazo en vez de empezar desde cero."
       },
       "say": {
         "en": "I had a California ID before and I'd like to replace it.",
