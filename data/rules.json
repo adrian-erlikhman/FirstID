@@ -333,8 +333,15 @@
       "id": "ssa_poms",
       "title": "SSA POMS RM 10210.420: evidence of identity",
       "url": "https://secure.ssa.gov/poms.nsf/lnx/0110210420",
-      "quote": "TODO: copy the secondary-evidence line covering Medicaid cards and school records",
-      "checked": "2026-10-18"
+      "quote": "Health insurance or U.S. Medicaid card showing, the applicant’s name and: – a photograph, or – age or DOB.",
+      "checked": "2026-10-25"
+    },
+    "ssa_poms_school": {
+      "id": "ssa_poms_school",
+      "title": "SSA POMS RM 10210.420: school records for adults",
+      "url": "https://secure.ssa.gov/poms.nsf/lnx/0110210420",
+      "quote": "School/student identification card or certified school record or transcript (for current school year) showing, the applicant’s name and either a photograph of the applicant or the applicant’s DOB).",
+      "checked": "2026-10-25"
     },
     "lafires_docs": {
       "id": "lafires_docs",
@@ -769,7 +776,8 @@
       },
       "sources": [
         "ssa_replace",
-        "ssa_poms"
+        "ssa_poms",
+        "ssa_poms_school"
       ],
       "verified": false
     },
