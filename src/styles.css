@@ -345,9 +345,13 @@ h1.display .bracketed .num { color: var(--on-c); background: var(--hl); padding:
 
 /* ---------- home: the loop, as a story that pins while you scroll ---------- */
 .story { position: relative; height: 300vh; margin-top: 56px; }
-.story-pin { position: sticky; top: 0; height: 100vh; height: 100svh; display: grid; grid-template-rows: auto 1fr auto; align-items: center; justify-items: center; gap: 12px; padding: 76px 0 24px; overflow: hidden; }
-.story-text { position: relative; width: 100%; max-width: 640px; min-height: 190px; text-align: center; }
-.story-line { position: absolute; inset: 0; opacity: 0; transform: translateY(28px); transition: opacity .6s var(--ease), transform .7s var(--ease); }
+/* Phones: words, ring and dots sit together in the middle of the screen
+   instead of the ring floating in a tall empty band. */
+.story-pin { position: sticky; top: 0; height: 100vh; height: 100svh; display: grid; grid-template-rows: auto auto auto; align-content: center; align-items: center; justify-items: center; gap: 28px 12px; padding: 76px 0 24px; overflow: hidden; }
+/* The three lines share one grid cell, so the box is as tall as the longest
+   one in either language and at any text size: nothing runs into the ring. */
+.story-text { position: relative; display: grid; width: 100%; max-width: 640px; text-align: center; }
+.story-line { grid-area: 1 / 1; opacity: 0; transform: translateY(28px); transition: opacity .6s var(--ease), transform .7s var(--ease); }
 .story-line.on { opacity: 1; transform: none; }
 .story-line h2 { font-size: 32px; margin: 0 0 12px; text-wrap: balance; }
 .story-line p { font-size: 1.125rem; color: var(--text-2); margin: 0 auto; max-width: 30em; text-wrap: pretty; }
@@ -375,6 +379,9 @@ h1.display .bracketed .num { color: var(--on-c); background: var(--hl); padding:
 .story-dots { display: flex; gap: 6px; }
 .story-dots i { display: block; width: 26px; height: 4px; border-radius: 2px; background: var(--line); transition: background .4s; }
 .story-dots i.on { background: var(--ink); }
+/* With motion off the lines stand one under another, not stacked in one cell. */
+@media (prefers-reduced-motion: reduce) { .story-text { display: block; } }
+:root[data-motion="lite"] .story-text { display: block; }
 
 /* ---------- home: bento tiles ---------- */
 .bento { display: grid; gap: 14px; margin-top: 8px; }
