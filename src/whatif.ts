@@ -2,9 +2,9 @@ import { plan, suggestable } from "./engine/planner";
 import type { Mode, Person, Plan, RuleSet } from "./engine/types";
 
 // "What if" = change one answer and re-plan. The toggles shown are only the
-// answers that would actually change this person's path, worked out by
-// re-running the planner once per candidate. (A few dozen plans; each takes
-// well under a millisecond.)
+// answers that would change this person's path, found by re-running the
+// planner once per candidate document or yes/no fact. Each plan takes well
+// under a millisecond.
 
 export type Flip = { kind: "doc"; doc: string } | { kind: "fact"; fact: string };
 
@@ -52,7 +52,7 @@ export function flipsThatMatter(rules: RuleSet, person: Person, mode: Mode, max 
     .filter((o) => !samePlan(o.plan, base))
     .map((o) => ({ ...o, better: cmp(score(o.plan), score(base)) < 0 }));
 
-  // Improvements first (biggest saving first), then the answers that would make it worse.
+  // Improvements first, then the other changes; in each group, the cheapest plan first.
   options.sort((a, b) => Number(b.better) - Number(a.better) || cmp(score(a.plan), score(b.plan)));
 
   // Several documents often help in exactly the same way (a birth certificate
@@ -78,8 +78,8 @@ export function noPathNotes(rules: RuleSet, person: Person, mode: Mode = "cheape
   const { facts, have } = person;
   if (facts.born === "california") notes.push("bornCA");
   if (facts.born === "us_state" || facts.born === "abroad") notes.push("bornElsewhere");
-  // What's blocking: ask the planner whether one missing piece would open a path.
   if (FLIPPABLE_FACTS.every((f) => facts[f] === undefined)) { notes.push("allUnsure"); return notes; }
+  // What's blocking: ask the planner whether one missing piece would open a path.
   type Fix = [NoPathNote, boolean, (p: Person) => Person];
   const missing = ([
     ["needAddress", !have.includes("residency_doc"), (p) => ({ ...p, have: [...p.have, "residency_doc"] })],
