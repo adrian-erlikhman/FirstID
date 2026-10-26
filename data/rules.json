@@ -276,16 +276,16 @@
     "hsc103577": {
       "id": "hsc103577",
       "title": "Health & Safety Code 103577 (homeless fee waiver)",
-      "url": "https://california.public.law/codes/ca_health_and_safety_code_section_103577",
-      "quote": "TODO: copy the affidavit sentence (signed by both the requester and a homeless services provider)",
-      "checked": "2026-10-18"
+      "url": "https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?lawCode=HSC&sectionNum=103577",
+      "quote": "unless it is signed by both the person making a request for a certified record of live birth pursuant to subdivision (a) and a homeless services provider",
+      "checked": "2026-10-25"
     },
     "hsc103578": {
       "id": "hsc103578",
       "title": "Health & Safety Code 103578 (foster youth fee waiver)",
-      "url": "https://california.public.law/codes/ca_health_and_safety_code_section_103578",
-      "quote": "TODO: copy the sentence naming youth placed in foster care",
-      "checked": "2026-10-18"
+      "url": "https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?lawCode=HSC&sectionNum=103578",
+      "quote": "without a fee, issue a certified record of live birth to any person who demonstrates that he or she is a youth who has been placed in foster care",
+      "checked": "2026-10-25"
     },
     "wic391": {
       "id": "wic391",
