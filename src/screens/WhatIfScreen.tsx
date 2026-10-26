@@ -60,7 +60,7 @@ export function WhatIfScreen(props: {
             <Collapse show={!!result}>
               {result && <PathCard plan={result} lang={lang} mode={mode} className="path-card" />}
             </Collapse>
-            <Solver title={s.secWhatIf} readout={<Swap text={on.length ? s.withChange : s.nowLabel} />}>
+            <Solver title={s.secWhatIf} className={on.length ? "changed" : ""} readout={<Swap text={on.length ? s.withChange : s.nowLabel} />}>
               <ol className="mini-steps">
                 {rows.map(({ item: st, key, phase, num }) => (
                   <li key={key} className={phase} style={{ ["--i" as string]: num - 1 }}>

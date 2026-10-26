@@ -597,6 +597,8 @@ h2.display.wide { max-width: 20ch; margin-bottom: 28px; }
    path screen's wider card margins would leave 20px above the total, 28px below). */
 .whatif-result .path-card { margin: 0 0 16px; }
 @media (min-width: 640px) { .whatif-result { margin-top: 20px; } .whatif-result .path-card { margin-bottom: 20px; } }
+/* "With your changes" is said in ink, "Now" stays grey: the panel tells you which path you are looking at. */
+.whatif-result .solver.changed .solver-readout { color: var(--ink); font-weight: 600; }
 .mini-steps { padding: 4px 0 6px; }
 .mini-steps li { display: grid; grid-template-rows: 1fr; transition: grid-template-rows .45s var(--ease), opacity .35s var(--ease); }
 .mini-steps li.first { animation: step-in .35s var(--ease) both; animation-delay: calc(var(--i) * 45ms); }
