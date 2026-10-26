@@ -485,6 +485,8 @@ h2.display.wide { max-width: 20ch; margin-bottom: 28px; }
 @media (hover: hover) { .check-row:hover { background: var(--wash); } }
 .check-row:active { background: var(--wash); }
 .check-row[aria-checked="true"] { background: var(--pick); }
+/* A ticked row answers the pointer too: its grey deepens a little. */
+@media (hover: hover) { .check-row[aria-checked="true"]:hover { background: color-mix(in srgb, var(--pick) 75%, var(--line)); } }
 /* Grey on the picked grey is 4.2:1; a little more ink brings the hint back over 4.5. */
 .check-row[aria-checked="true"] .row-sub { color: color-mix(in srgb, var(--text-2) 80%, var(--ink)); }
 .box {
