@@ -64,8 +64,8 @@ export function StepList({ rules, lang, plan, done, onDone }: {
             <div className="slide-clip"><div className="slide-body">
             <a className="step-row" href={href({ name: "step", n: i + 1 })} tabIndex={phase === "leave" ? -1 : undefined}>
               <Swap className="row-num" text={String(i + 1)} />
+              <span className="label step-place">{placeOf(rules, st).label[lang]}</span>
               <span className="step-main">
-                <span className="label step-place">{placeOf(rules, st).label[lang]}</span>
                 <span className="step-title">{a.label[lang]}</span>
                 {was !== null && <span className="step-waiver">{st.waiver!.label[lang]}</span>}
                 <span className="step-when">{when}</span>
@@ -105,7 +105,7 @@ export function NoPath({ rules, lang, person, onBack }: { rules: RuleSet; lang: 
   // Only offer "what if" when changing one answer would open a path; otherwise it leads to a dead end too.
   const canOpen = flipsThatMatter(rules, person, "cheapest").length > 0;
   return (
-    <section className="screen">
+    <section className="screen no-path">
       <div className="split">
         <div className="head">
           <h1 tabIndex={-1} className="display">{s.noPathTitle}</h1>
