@@ -1,4 +1,4 @@
-// The shared contract. Rules data, the planner and the UI all speak these types.
+// Types shared by the rules data, the planner and the UI.
 // Change this file only with the whole team: every module depends on it.
 
 export type DocId = string;    // a document or status the person can hold, e.g. "birth_cert_ca"
@@ -58,7 +58,7 @@ export interface Source {
   id: SourceId;
   title: string;
   url: string;
-  quote: string;   // short excerpt that supports the rule, under 25 words
+  quote: string;   // short excerpt that supports the rule, 30 words at most
   checked: string; // ISO date a person last checked it
 }
 
@@ -70,7 +70,7 @@ export interface Place {
 
 export interface Doc {
   label: { en: string; es: string };
-  /** Shown on the intake checklist ("Do you have this?"). */
+  /** Asked about on the Have screen. */
   askAtIntake: boolean;
 }
 
@@ -101,7 +101,7 @@ export interface Step {
   action: Action;
   dollars: number;          // after the best waiver
   waiver?: Waiver;          // which waiver applied, if any
-  newTrip: boolean;         // false when it happens on the same visit as the previous step
+  newTrip: boolean;         // false for a step not done in person, or on the same visit as the previous one
   startDay: number;
   endDay: number;
 }
