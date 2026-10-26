@@ -20,8 +20,8 @@ import { WhatIfScreen } from "./screens/WhatIfScreen";
 const rules = rulesJson as unknown as RuleSet;
 
 // Answers are kept in this tab's sessionStorage, so a phone that reloads the
-// page in the background doesn't wipe them. It never leaves the phone, and it
-// is gone when the tab closes. If storage is blocked, the app still works.
+// page in the background doesn't wipe them. They never leave the phone, and
+// they are gone when the tab closes. If storage is blocked, the app still works.
 const SAVE_KEY = "first-id:v1";
 interface Saved { have: string[]; facts: Facts; unsure: string[]; answered: boolean; mode: Mode; lang: Lang }
 const saved: Partial<Saved> = (() => {
