@@ -1,4 +1,4 @@
-import { Br, Collapse, Icon, Notice, PathCard, Pills, Solver, Swap, Tween, Unconfirmed, money, placeOf } from "../components";
+import { Br, Collapse, Icon, LiveNote, Notice, PathCard, Pills, Solver, Swap, Tween, Unconfirmed, WasPrice, fullPrice, money, placeOf } from "../components";
 import { useListPresence } from "../motion";
 import type { Facts, Mode, Person, Plan, RuleSet, Step } from "../engine/types";
 import { t, type Lang } from "../i18n";
@@ -72,7 +72,7 @@ export function StepList({ rules, lang, plan, done, onDone }: {
               </span>
               <span className="step-cost">
                 <Swap className={`num${st.dollars === 0 ? " free" : ""}`} text={st.dollars === 0 ? s.free : money(st.dollars)} />
-                {was !== null && <s className="num">{money(was)}</s>}
+                {was !== null && <WasPrice dollars={was} lang={lang} />}
               </span>
               <Icon name="chevron" size={16} />
             </a>
@@ -173,6 +173,7 @@ export function PathScreen(props: {
               <Pills label={s.modesLabel} value={mode} onChange={onMode}
                 options={[["cheapest", s.modeCheapest], ["fewestTrips", s.modeTrips], ["fastest", s.modeFastest]] as const} />
               <p className="mode-hint"><Swap text={s.modeHint[mode]} /></p>
+              <LiveNote text={`${{ cheapest: s.modeCheapest, fewestTrips: s.modeTrips, fastest: s.modeFastest }[mode]}. ${s.cardSummary({ total: result.total.dollars, full: fullPrice(result), steps: result.total.steps, trips: result.total.trips, days: result.total.days })}`} />
             </div>
             <StepList rules={rules} lang={lang} plan={result} done={done} onDone={setTick} />
           </Solver>

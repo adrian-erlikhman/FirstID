@@ -141,6 +141,25 @@ export function Swap({ text, className = "" }: { text: string; className?: strin
   return <span key={text} className={`swap ${className}`}>{text}</span>;
 }
 
+/** Says `text` to screen readers when it changes, not when the screen opens
+ *  (the heading already says it then). For totals that change in place: the
+ *  numbers on screen count up and down, so they can't be live themselves. */
+export function LiveNote({ text }: { text: string }) {
+  const [said, setSaid] = useState("");
+  const last = useRef(text);
+  useEffect(() => {
+    if (last.current === text) return;
+    last.current = text;
+    setSaid(text);
+  }, [text]);
+  return <p className="sr-only" role="status">{said}</p>;
+}
+
+/** A crossed-out price, read as "instead of $34" rather than a bare second number. */
+export function WasPrice({ dollars, lang }: { dollars: number; lang: Lang }) {
+  return <><s className="num" aria-hidden="true">{money(dollars)}</s><span className="sr-only"> {t[lang].insteadOf(dollars)}</span></>;
+}
+
 /** A number that counts to its new value. `format` turns it into text. */
 export function Tween({ value, format = String }: { value: number; format?: (n: number) => string }) {
   return <>{format(Math.round(useTween(value)))}</>;
