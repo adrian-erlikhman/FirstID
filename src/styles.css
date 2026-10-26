@@ -76,7 +76,7 @@ p { margin: 0 0 8px; }
 
 /* ---------- type roles ---------- */
 .display { font-family: var(--font); font-weight: 600; letter-spacing: -0.045em; line-height: 1; }
-h1.display { font-size: 40px; margin: 0 0 18px; text-wrap: balance; }
+h1.display { font-size: 40px; font-size: clamp(32px, 10.7vw, 40px); margin: 0 0 18px; text-wrap: balance; } /* 40px from 375px; a little smaller on 320px phones so a long word doesn't strand the one before it */
 .second { display: block; color: var(--slate); }
 .label { font-size: 0.8438rem; font-weight: 500; letter-spacing: -0.005em; color: var(--text-2); }
 .num, .mono { font-variant-numeric: tabular-nums; }
@@ -218,7 +218,7 @@ h1.display .bracketed .num { color: var(--on-c); background: var(--hl); padding:
 .path-card { margin-bottom: 16px; }
 /* A step's title is a long instruction, so it is set a size down from the other screens' titles at every width;
    on a phone that leaves Where / Cost / Time on the first screen. */
-.route-step h1.display { overflow-wrap: anywhere; font-size: 34px; }
+.route-step h1.display { overflow-wrap: anywhere; font-size: 34px; font-size: clamp(28px, 9.1vw, 34px); }
 
 /* ---------- tags and notices ---------- */
 .tag {
