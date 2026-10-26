@@ -607,7 +607,7 @@ h2.display.wide { max-width: 20ch; margin-bottom: 28px; }
 
 /* ---------- how we know ---------- */
 .rule-head {
-  width: 100%; display: grid; grid-template-columns: 24px minmax(0, 1fr) auto 18px; gap: 4px 12px; align-items: start;
+  width: 100%; display: grid; grid-template-columns: 30px minmax(0, 1fr) auto 18px; gap: 4px 12px; align-items: start;
   text-align: left; padding: 14px 18px; border: 0; background: transparent; color: var(--ink); min-height: 60px;
 }
 .rule-head:hover { background: var(--wash); }
@@ -622,7 +622,7 @@ h2.display.wide { max-width: 20ch; margin-bottom: 28px; }
 /* Phones: the tag sits under the sources, so the rule's name gets the whole
    line instead of a narrow column (Spanish names ran to five lines). */
 @media (max-width: 639px) {
-  .rule-head { grid-template-columns: 24px minmax(0, 1fr) 18px; }
+  .rule-head { grid-template-columns: 30px minmax(0, 1fr) 18px; }
   .rule-chev { grid-column: 3; }
   .rule-head .tag { grid-column: 2; grid-row: 3; margin-top: 4px; }
 }
