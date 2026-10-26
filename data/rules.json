@@ -735,7 +735,7 @@
       },
       "say": {
         "en": "I need a replacement Social Security card. I don't have a photo ID, so here's what I do have.",
-        "es": "Necesito un reemplazo de mi tarjeta de Seguro Social. No tengo identificación con foto, pero aquí está lo que sí tengo."
+        "es": "Necesito un reemplazo de mi tarjeta de Seguro Social. No tengo identificación con foto, pero esto es lo que sí tengo."
       },
       "sources": [
         "ssa_replace",
