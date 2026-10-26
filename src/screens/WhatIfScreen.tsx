@@ -8,6 +8,8 @@ import { applyFlips, flipKey, flipsThatMatter, samePlan, type Flip } from "../wh
 
 // "5 steps", "~7 wks": a number and its unit wrap as one piece, never "~7" / "sem.".
 const keep = (x: string) => x.replace(/ /g, "\u00a0");
+// A form name such as "DL 933" stays on one line in a step label.
+const formNames = (x: string) => x.replace(/\bDL (\d)/g, "DL\u00a0$1");
 
 // Flip an answer, the planner runs again, and the steps that drop out
 // slide away while the card counts to the new total. The only motion in the app is here and on the brackets, because
@@ -67,7 +69,7 @@ export function WhatIfScreen(props: {
                     <div className="mini-clip">
                       <div className="mini-in">
                         <span className="row-num" aria-hidden="true">{num}</span>
-                        <span className="mini-label">{st.action.label[lang]}</span>
+                        <span className="mini-label">{formNames(st.action.label[lang])}</span>
                         <Swap className={`num${st.dollars === 0 ? " free" : ""}`} text={st.dollars === 0 ? s.free : money(st.dollars)} />
                       </div>
                     </div>
