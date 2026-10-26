@@ -208,6 +208,8 @@ h1.display .bracketed .num { color: var(--on-c); background: var(--hl); padding:
 .solver-readout { flex: 0 1 auto; min-width: 0; font-variant-numeric: tabular-nums; }
 .solver-tabs { padding: 14px 18px; border-bottom: 1px solid var(--line); }
 .mode-hint { font-size: 0.875rem; color: var(--text-2); margin: 10px 0 0; }
+/* Phones: "Tap a step for details" is an instruction, so it gets body size. */
+@media (max-width: 639px) { .solver-head { font-size: 1rem; } }
 
 /* ---------- the path summary's place on a screen ---------- */
 .path-card { margin-bottom: 16px; }
