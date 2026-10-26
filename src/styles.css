@@ -757,8 +757,12 @@ h2.display.wide { max-width: 20ch; margin-bottom: 28px; }
 .sheet { background: #fff; color: #111; border-radius: 6px; box-shadow: 0 0 0 1px var(--line); padding: 22px 18px; font-size: 0.8125rem; line-height: 1.4; letter-spacing: 0; }
 .sheet h1 { font-size: 1.5rem; font-weight: 600; letter-spacing: -0.035em; margin: 0 0 4px; color: #111; line-height: 1.1; }
 .sheet p { margin: 0; }
-.sheet-head { display: flex; justify-content: space-between; align-items: flex-end; gap: 12px; border-bottom: 3px solid #111; padding-bottom: 10px; }
-.sheet-meta { font-size: 0.6563rem; text-align: right; line-height: 1.5; text-transform: uppercase; letter-spacing: .06em; }
+/* The title gets the full width; the rules note sits under the subtitle on
+   phones and beside it on wider screens and paper, never squeezing the title. */
+.sheet-head { display: grid; grid-template-columns: minmax(0, 1fr); gap: 8px 16px; align-items: end; border-bottom: 3px solid #111; padding-bottom: 10px; }
+.sheet-head > div:first-child { display: contents; }
+.sheet-head h1 { grid-column: 1 / -1; margin-bottom: -4px; }
+.sheet-meta { font-size: 0.6563rem; line-height: 1.5; text-transform: uppercase; letter-spacing: .06em; }
 .sheet-sum { display: flex; flex-wrap: wrap; gap: 12px 24px; align-items: flex-end; margin: 14px 0; }
 .name-line { flex: 1 1 220px; display: flex; flex-direction: column; gap: 4px; font-size: 0.7188rem; }
 .name-line i { display: block; border-bottom: 1.5px solid #111; height: 24px; }
@@ -782,6 +786,8 @@ h2.display.wide { max-width: 20ch; margin-bottom: 28px; }
 @media (min-width: 640px) {
   .sheet { padding: 48px 56px; font-size: 0.9063rem; }
   .sheet h1 { font-size: 30px; }
+  .sheet-head { grid-template-columns: minmax(0, 1fr) auto; }
+  .sheet-meta { text-align: right; }
   .sheet-row, .sheet-row.head { display: grid; grid-template-columns: 26px minmax(0, 2.1fr) minmax(0, 2fr) 70px minmax(0, 1.3fr); gap: 12px; }
   .sheet-row > * { grid-column: auto !important; grid-row: auto !important; text-align: left !important; }
   .sheet-row.head { font-size: 0.6563rem; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; border-bottom: 1.5px solid #111; padding: 6px 0; }
@@ -800,10 +806,9 @@ h2.display.wide { max-width: 20ch; margin-bottom: 28px; }
   .sheet { box-shadow: none; padding: 0; font-size: 8.8pt; line-height: 1.28; border-radius: 0; max-width: none !important; }
   .sheet h1 { font-size: 17pt; }
   /* Title on one line, the rules note beside the subtitle: two lines of Spanish title pushed the footer onto a second page. */
-  .sheet-head { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 0 16px; align-items: end; padding-bottom: 6px; }
-  .sheet-head > div:first-child { display: contents; }
-  .sheet-head h1 { grid-column: 1 / -1; white-space: nowrap; }
-  .sheet-meta { line-height: 1.35; white-space: nowrap; }
+  .sheet-head { grid-template-columns: minmax(0, 1fr) auto; gap: 0 16px; padding-bottom: 6px; }
+  .sheet-head h1 { white-space: nowrap; margin-bottom: 4px; }
+  .sheet-meta { text-align: right; line-height: 1.35; white-space: nowrap; }
   .sheet-sum { margin: 8px 0; }
   .name-line i { height: 18px; }
   .sheet-row, .sheet-row.head { display: grid; grid-template-columns: 18px minmax(0, 1.8fr) minmax(0, 2.5fr) 52px minmax(0, 1.4fr); gap: 8px; padding: 4px 0; break-inside: avoid; }
