@@ -1,6 +1,6 @@
 // English and Spanish, always. TypeScript already makes the Spanish object
 // have every top-level key the English one has; these tests check what the
-// compiler can't: the keys INSIDE the lookup tables (step names, fact labels,
+// compiler can't: the keys inside the lookup tables (step names, fact labels,
 // form captions...), list lengths, empty strings, and that every string
 // function gives readable text in both languages.
 import { describe, expect, it } from "vitest";
@@ -24,7 +24,7 @@ function leaves(x: unknown, path = ""): Map<string, unknown> {
 const enLeaves = leaves(en);
 const esLeaves = leaves(es);
 
-// Sample arguments for string functions that don't take numbers.
+// Sample arguments for string functions that can't take the default (1, 2, 3, 4).
 const ARGS: Record<string, unknown[]> = {
   cardSummary: [{ name: "Maria", total: 15, full: 89, steps: 5, trips: 3, days: 49 }],
   checkedOn: ["2026-10-25"],
@@ -90,7 +90,7 @@ describe("i18n: no blank or broken text", () => {
     }
   });
 
-  it("number-taking functions read right for 0, 1 and many in both languages", () => {
+  it("number-taking functions give no undefined or NaN for 0, 1 and many, in both languages", () => {
     for (const lang of ["en", "es"] as Lang[]) {
       const s = t[lang];
       for (const n of [0, 1, 2, 6, 7, 30, 49]) {
@@ -123,7 +123,7 @@ describe("i18n: lookup tables cover what the app looks up", () => {
     }
   });
 
-  it("every age band and every rules document label exists in both languages", () => {
+  it("age bands, document labels and place labels exist in both languages", () => {
     expect(es.ageBands).toHaveLength(en.ageBands.length);
     for (const [id, d] of Object.entries(rules.docs)) {
       expect(d.label.en.trim(), id).not.toBe("");
