@@ -30,7 +30,7 @@ data/rules.json ──► npm run lint:rules ──► planner (in the browser) 
 4. **Every step cites its source**, with the exact supporting sentence once we've copied it. The "How we know" screen lists them all.
 5. **What-if and dead ends.** The app shows which answers would change your path, and when there's no path it says what's blocking it and who can help.
 
-The tests ([`tests/`](tests/)) cover the planner, four invented people checked against hand-worked plans, the "more documents never hurts" guarantee, the office list and the progress logic. `npm run check` runs all of it plus the build, and nothing deploys unless it passes.
+The tests ([`tests/`](tests/)) cover the planner, four invented people checked against hand-worked plans, the "more documents never hurts" guarantee, the what-if and no-path logic, the links between screens, the office list and the progress logic. `npm run check` runs all of it plus the build, and nothing deploys unless it passes.
 
 ## What's real and what's made up
 
@@ -66,7 +66,7 @@ Vercel builds the main site from `vercel.json`; GitHub Pages builds the mirror f
 
 ## How rules get verified
 
-A teammate opens every source a rule cites, copies the exact supporting sentence in place of any `TODO`, re-checks statutes on leginfo.legislature.ca.gov, checks the rule's fees and plain-language lines, and only then sets `"verified": true` ([checklist](CONTRIBUTING.md#verifying-a-rule)). The "How we know" screen shows the live count. Found a rule that's wrong? [Report it](https://github.com/adrian-erlikhman/FirstID/issues/new?template=wrong-rule.yml).
+A teammate opens every source a rule cites, copies the exact supporting sentence in place of any `TODO`, re-checks statutes on leginfo.legislature.ca.gov, checks the rule's fees and plain-language lines, and only then sets `"verified": true` ([checklist](CONTRIBUTING.md#verifying-a-rule)). What each check changed goes in [`data/CHANGES.md`](data/CHANGES.md). The "How we know" screen shows how many rules are verified so far. Found a rule that's wrong? [Report it](https://github.com/adrian-erlikhman/FirstID/issues/new?template=wrong-rule.yml).
 
 ## Project structure
 
@@ -75,8 +75,9 @@ data/          rules, DMV offices and ZIP centres, each with sources
 src/engine/    types, rule linter and the planner (Dijkstra)
 src/screens/   every screen, from home to the printed packet
 src/           app state, routes, what-if, progress, strings (EN/ES), styles
-tests/         planner, persona, office and progress tests (Vitest)
+tests/         planner, persona, what-if, office and progress tests (Vitest)
 public/        icons, manifest and the offline service worker
+scripts/       the rule linter's command line and the colour contrast check
 docs/          background research and team notes
 ```
 
