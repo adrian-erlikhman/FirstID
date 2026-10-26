@@ -223,7 +223,7 @@ h1.display .bracketed .num { color: var(--on-c); background: var(--hl); padding:
 .notice { margin: 16px 0 0; padding: 16px 18px; border-radius: var(--r); background: var(--panel); box-shadow: 0 0 0 1px var(--line); font-size: 0.9688rem; line-height: 1.5; }
 .notice.draft { box-shadow: none; border: 1px dashed var(--control); background: transparent; }
 .notice.accent { box-shadow: none; background: var(--c2); color: var(--on-c); }
-.notice-title { display: block; margin-bottom: 4px; color: var(--ink); font-weight: 600; }
+.notice-title { display: block; margin-bottom: 4px; color: var(--ink); font-size: 1rem; font-weight: 600; line-height: 1.35; } /* never smaller than the note under it */
 .notice p { margin: 0 0 6px; }
 
 /* ---------- home: hero, centred, with the card on a stage ---------- */
