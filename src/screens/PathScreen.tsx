@@ -64,8 +64,8 @@ export function StepList({ rules, lang, plan, done, onDone }: {
             <div className="slide-clip"><div className="slide-body">
             <a className="step-row" href={href({ name: "step", n: i + 1 })} tabIndex={phase === "leave" ? -1 : undefined}>
               <Swap className="row-num" text={String(i + 1)} />
+              <span className="label step-place">{placeOf(rules, st).label[lang]}</span>
               <span className="step-main">
-                <span className="label step-place">{placeOf(rules, st).label[lang]}</span>
                 <span className="step-title">{a.label[lang]}</span>
                 {was !== null && <span className="step-waiver">{st.waiver!.label[lang]}</span>}
                 <span className="step-when">{when}</span>
