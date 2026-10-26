@@ -521,8 +521,12 @@ h2.display.wide { max-width: 20ch; margin-bottom: 28px; }
 /* No one-word last lines ("18?", "CFAP?") under a long question. */
 .q legend > span:last-child { min-width: 0; text-wrap: pretty; }
 /* What to do before "Show my path" works: an icon and words, not colour alone. */
-.q-error { display: flex; gap: 8px; align-items: flex-start; margin: 12px 0 0; font-size: 1rem; font-weight: 500; line-height: 1.4; color: var(--ink); }
-.q-error .icon { margin-top: 1px; }
+.q-error {
+  display: flex; gap: 8px; align-items: flex-start; margin: 14px 0 0; padding: 10px 12px; border-radius: var(--r-sm);
+  background: color-mix(in srgb, var(--hl) 35%, var(--panel)); font-size: 1rem; font-weight: 500; line-height: 1.4; color: var(--ink);
+}
+.q-error .icon { margin-top: 2px; }
+@media (min-width: 640px) { .q-error { margin-left: 34px; } }
 /* The "Show my path" bar. While it floats over the questions it is a frosted
    strip with a hairline, like the top bar, edge to edge on phones, so a
    question going under it reads as scrolling under a bar, not as cut off.
