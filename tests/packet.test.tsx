@@ -1,5 +1,5 @@
 // The printed packet must fit one Letter page, in English and in Spanish.
-// A test can't print, so this is a PROXY: it renders the real packet (as
+// A test can't print, so this is a proxy: it renders the real packet (as
 // HTML, no browser) for every distinct path the planner can give, and checks
 // the amount of text, the number of table rows and the number of "Say this"
 // boxes stay within what the longest path had on Oct 25 2026. The print
@@ -21,10 +21,10 @@ import { personas } from "./personas";
 
 const rules = rulesJson as unknown as RuleSet;
 
-/** Characters of text on the printed sheet (spaces collapsed). */
-// Raised from es 4300 on Oct 25 2026 for the "Nothing listed" line in empty
-// Bring cells, after a Chrome print of LONGEST in Spanish measured 958px of
-// the 979px page.
+/** Characters of text on the printed sheet (spaces collapsed). Spanish was
+ *  raised from 4300 on Oct 25 2026 for the "Nothing listed" line in empty
+ *  Bring cells, after a Chrome print of LONGEST in Spanish measured 958px of
+ *  the 979px page. */
 const BUDGET: Record<Lang, number> = { en: 3600, es: 4330 };
 /** Rows in the steps table. */
 const MAX_ROWS = 6;
