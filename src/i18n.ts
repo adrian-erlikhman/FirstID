@@ -201,7 +201,7 @@ const en = {
   inEnglish: "",
   checkedOn: (iso: string) => `Checked ${dateFmt(iso, "en")}`,
   quoteMissing: "We haven't copied the exact sentence from this page yet.",
-  notCheckedYet: "Not checked by our team yet",
+  notCheckedYet: "We haven't checked it yet",
   draftRules: "Steps marked “call ahead” aren't confirmed yet",
   prevStep: "Previous step",
   nextStep: "Next step",
@@ -246,7 +246,7 @@ const en = {
 
   // 7. How we know
   sourcesTitle: "Every step comes from a rule you can read.",
-  sourcesIntro: "We drafted these rules with help from AI. A rule only counts as verified once someone on our team has checked it against every source it cites and copied the exact sentence that supports it. Until then it shows “call ahead”.",
+  sourcesIntro: "We drafted these rules with help from AI. A rule only counts as verified once we have checked it against every source it cites and copied the exact sentence that supports it. Until then it shows “call ahead”.",
   verifiedSoFar: (n: number, total: number) => `So far ${n} of ${total} rules are verified.`,
   verified: "Verified",
   howPlanTitle: "How your path is worked out",
@@ -509,7 +509,7 @@ const es: Strings = {
   inEnglish: " (en inglés)",
   checkedOn: (iso) => `Revisado el ${dateFmt(iso, "es")}`,
   quoteMissing: "Todavía no copiamos la frase exacta de esta página.",
-  notCheckedYet: "Nuestro equipo aún no la revisa",
+  notCheckedYet: "Aún no la revisamos",
   draftRules: "Los pasos marcados “llama antes” aún no están confirmados",
   prevStep: "Paso anterior",
   nextStep: "Paso siguiente",
@@ -551,7 +551,7 @@ const es: Strings = {
   packetFoot: (url) => `No es asesoría legal. Las reglas cambian. Cada regla y sus fuentes: ${url}`,
 
   sourcesTitle: "Cada paso viene de una regla que puedes leer.",
-  sourcesIntro: "Redactamos estas reglas con ayuda de IA. Una regla solo cuenta como verificada cuando alguien de nuestro equipo la revisa con cada fuente que cita y copia la frase exacta que la respalda. Mientras tanto aparece como “llama antes”.",
+  sourcesIntro: "Redactamos estas reglas con ayuda de IA. Una regla solo cuenta como verificada una vez que la hemos revisado con cada fuente que cita y hemos copiado la frase exacta que la respalda. Mientras tanto aparece como “llama antes”.",
   verifiedSoFar: (n, total) => `Por ahora ${n} de ${total} reglas están verificadas.`,
   verified: "Verificada",
   howPlanTitle: "Cómo se calcula tu camino",
