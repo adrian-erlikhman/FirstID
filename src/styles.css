@@ -809,7 +809,9 @@ h2.display.wide { max-width: 20ch; margin-bottom: 28px; }
    and totals a step down. Print sets its own sizes below. */
 @media (max-width: 639px) {
   .sheet { font-size: 1rem; line-height: 1.4; }
-  .sheet-small, .sheet-where, .sheet-totals, .name-line { font-size: 0.875rem; }
+  .sheet-small, .sheet-where, .sheet-totals, .name-line, .sheet-foot { font-size: 0.875rem; }
+  .sheet-meta { font-size: 0.75rem; }
+  .sheet-foot { flex-direction: column; gap: 4px; }
   .sheet-small .bring-line { font-size: 1rem; }
   .bring-line + .bring-line { margin-top: 6px; }
 }
