@@ -53,13 +53,18 @@ function Tile({ className = "", children }: { className?: string; children: Reac
   return <li ref={ref} className={`tile ${className}`}>{children}</li>;
 }
 
+/** Distinct fee waivers: the DL 933, 62-and-over and DL 937 waivers apply to
+ *  both DMV rules but are one waiver each. */
+export const waiverKinds = (rules: RuleSet) =>
+  new Set(rules.actions.flatMap((a) => (a.waivers ?? []).map((w) => w.label.en))).size;
+
 /** Two tiles: Maria's total with the fee waivers that bring it down, and the
  *  size of the rule set. Maria's total comes from the planner and the counts
  *  from the rules; they count up the first time the grid scrolls into view. */
 export function Bento({ rules, lang, maria }: { rules: RuleSet; lang: Lang; maria: Plan | null }) {
   const s = t[lang];
   const [ref, seen] = useInView<HTMLUListElement>();
-  const nWaivers = rules.actions.reduce((n, a) => n + (a.waivers?.length ?? 0), 0);
+  const nWaivers = waiverKinds(rules);
   // Distinct pages cited by a rule or a fee waiver (two ids can share one page).
   const cited = rules.actions.flatMap((a) => [...a.sources, ...(a.waivers ?? []).flatMap((w) => w.sources)]);
   const nSources = new Set(cited.map((id) => rules.sources[id]?.url).filter(Boolean)).size;
