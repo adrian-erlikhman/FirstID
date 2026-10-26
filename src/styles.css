@@ -497,6 +497,14 @@ h2.display.wide { max-width: 20ch; margin-bottom: 28px; }
 .box .icon path, .tick-box .icon path { stroke-dasharray: 22; stroke-dashoffset: 22; transition: stroke-dashoffset .35s var(--ease) .05s; }
 .check-row[aria-checked="true"] .box .icon path, .tick input:checked + .tick-box .icon path { stroke-dashoffset: 0; }
 .check-list.single { margin-top: 12px; }
+/* Phones: "Next" takes the full width, like "Show my path" on the next screen,
+   and the two quiet links share the row below it in English and Spanish alike,
+   their words lined up with the list's left edge. */
+@media (max-width: 639px) {
+  .have-actions { column-gap: 14px; }
+  .have-actions > .btn.primary { flex: 1 1 100%; }
+  .have-actions > .btn.text { margin-left: -10px; }
+}
 
 /* ---------- questions ---------- */
 .q { border: 0; margin: 0; padding: 18px 18px 20px; min-width: 0; }
