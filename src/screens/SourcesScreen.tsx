@@ -25,12 +25,13 @@ export function SourcesScreen({ rules, lang }: { rules: RuleSet; lang: Lang }) {
             {rules.actions.map((a, i) => {
               const isOpen = open === a.id;
               return (
-                <li key={a.id} className="rule">
+                <li key={a.id} className={`rule${isOpen ? " is-open" : ""}`}>
                   <button className="rule-head" aria-expanded={isOpen} onClick={() => setOpen(isOpen ? null : a.id)}>
                     <span className="row-num" aria-hidden="true">{i + 1}</span>
                     <span className="rule-name">{a.label[lang]}</span>
                     <span className={`tag ${a.verified ? "ok" : "draft"}`}>{a.verified ? s.verified : s.callAhead}</span>
-                    <span className="rule-src"><span lang="en">{a.sources.map((id) => rules.sources[id].title.split(" (")[0]).join("; ")}</span>{s.inEnglish}</span>
+                    <span className="rule-src"><span lang="en">{a.sources.map((id) => rules.sources[id].title.split(" (")[0]).join("; ")}</span>{s.inEnglish && <> <span className="rule-src-lang">{s.inEnglish.trim()}</span></>}</span>
+                    <span className="rule-chev"><Icon name="chevron" size={18} /></span>
                   </button>
                   {isOpen && (
                     <div className="rule-body sources">

@@ -739,14 +739,41 @@ h2.display.wide { max-width: 20ch; margin-bottom: 28px; }
 
 /* ---------- how we know ---------- */
 .rule-head {
-  width: 100%; display: grid; grid-template-columns: 24px minmax(0, 1fr) auto; gap: 4px 12px; align-items: start;
+  width: 100%; display: grid; grid-template-columns: 30px minmax(0, 1fr) auto 18px; gap: 4px 12px; align-items: start;
   text-align: left; padding: 14px 18px; border: 0; background: transparent; color: var(--ink); min-height: 60px;
 }
 .rule-head:hover { background: var(--wash); }
+/* Points down while closed, up while open, so the row reads as something that opens. */
+.rule-chev { grid-column: 4; grid-row: 1; display: flex; padding-top: 2px; color: var(--text-2); }
+.rule-chev .icon { transform: rotate(90deg); transition: transform .25s var(--ease); }
+.rule-head[aria-expanded="true"] .rule-chev .icon { transform: rotate(-90deg); }
+/* An open rule sits on a light grey band, its source cards white on it, so
+   while scrolling a long list of quotes it stays clear whose sources they are. */
+.rule.is-open { background: var(--wash); }
+.rule-body > .row-sub { color: var(--ink); }
 .rule-name { font-weight: 600; font-size: 1rem; line-height: 1.35; letter-spacing: -0.01em; }
 .rule-head .tag { margin-top: 1px; }
 .rule-src { grid-column: 2 / -1; font-size: 0.875rem; line-height: 1.4; color: var(--text-2); }
+.rule-src-lang { white-space: nowrap; } /* "(en inglés)" never breaks after "(en" */
+/* Phones: the tag sits under the sources, so the rule's name gets the whole
+   line instead of a narrow column (Spanish names ran to five lines). */
+@media (max-width: 639px) {
+  .rule-head { grid-template-columns: 30px minmax(0, 1fr) 18px; }
+  .rule-chev { grid-column: 3; }
+  .rule-head .tag { grid-column: 2; grid-row: 3; margin-top: 4px; }
+}
 .rule-body { padding: 0 18px 18px; }
+/* Phones: the source cards sit inside the rule's panel, so two sets of
+   padding ate the quote's line. Trim both to give long quotes ~20px more. */
+@media (max-width: 639px) {
+  .rule-body { padding: 0 12px 14px; }
+  .rule-body > .row-sub { padding: 0 6px; }
+  .rule-body .source { padding: 14px 14px 16px; }
+  .rule-body .source-meta { font-size: 1rem; } /* "Not checked by our team yet" is a sentence: 16px */
+}
+/* Wider screens: an open rule's explanation and sources start under its name,
+   not under its number, and long quotes get a shorter line. */
+@media (min-width: 640px) { .rule-body { padding: 2px 48px 22px 60px; } }
 .how > li > span:last-child { line-height: 1.5; }
 .honesty { display: grid; gap: 12px; margin-top: 32px; }
 .honesty .panel { padding: 16px 18px 18px; }
@@ -1065,9 +1092,14 @@ main h1:focus { box-shadow: none !important; } /* headings take focus on a new s
   border: 1px solid var(--control); background: var(--panel); color: var(--ink);
   font: 500 1.25rem/1.2 var(--font); letter-spacing: 0.08em; font-variant-numeric: tabular-nums;
 }
-.offices-zip .row-sub { margin-top: 8px; }
+.offices-zip .row-sub { margin-top: 8px; text-wrap: pretty; }
+/* A ZIP we can't place: the note turns to ink with a mark, and the box's
+   outline matches, so it reads as "this didn't work", not as the usual hint. */
+.offices-zip .zip-unknown { display: flex; gap: 8px; align-items: flex-start; color: var(--ink); }
+.offices-zip .zip-unknown .icon { margin-top: 2px; }
+.offices-zip input[aria-invalid="true"] { border-color: var(--ink); border-width: 2px; padding: 9px 13px; }
 .office-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 12px; }
-.office { padding: 16px 18px; }
+.office { padding: 16px 18px; display: flex; flex-direction: column; }
 .office-name { margin: 0 0 4px; font-size: 1.125rem; font-weight: 600; line-height: 1.3; }
 .office-mi { font-weight: 400; color: var(--text-2); }
 .office-addr { margin: 0 0 10px; font-size: 1rem; line-height: 1.45; }
@@ -1075,10 +1107,20 @@ main h1:focus { box-shadow: none !important; } /* headings take focus on a new s
 .office-hours > div { display: grid; grid-template-columns: 6.5em minmax(0, 1fr); gap: 8px; }
 .office-hours dt { color: var(--text-2); }
 .office-hours dd { margin: 0; font-variant-numeric: tabular-nums; }
-.office-actions { display: flex; flex-wrap: wrap; gap: 8px; }
+/* Today's row, in ink on a grey band and labelled, so a glance answers "is it open today?" */
+.office-hours > .is-today { margin: 0 -8px; padding: 0 8px; border-radius: 6px; background: var(--wash); }
+.office-hours > .is-today dt { color: var(--ink); font-weight: 600; }
+.office-hours > .is-today dd { font-weight: 600; }
+.office-today { font-weight: 400; color: var(--text-2); }
+/* An office the snapshot shows closed all week (Inglewood): say so plainly instead of "Mon–Sun Closed". */
+.office-closed { margin: 0 0 12px; padding: 10px 12px; border: 1px dashed var(--control); border-radius: var(--r-sm); font-size: 1rem; line-height: 1.45; }
+.office-actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: auto; } /* side by side, the buttons line up along the bottom */
 .office-actions .btn.small { min-height: 44px; font-size: 1rem; padding: 8px 16px; }
+/* Equal widths side by side; when a label is too long (Spanish), each takes its own full row. */
+.office-actions .btn { flex: 1 1 0; min-width: fit-content; }
 .office-note { margin: 20px 0 8px; font-size: 1rem; line-height: 1.5; color: var(--text-2); }
 @media (min-width: 760px) { .office-list { grid-template-columns: 1fr 1fr; } }
+@media (min-width: 1100px) { .office-list { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
 /* ===== end Offices ===== */
 
 /* ===== Progress ticks + calendar reminders (src/screens/PathScreen.tsx, src/progress.ts) ===== */
