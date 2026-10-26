@@ -432,7 +432,7 @@ const es: Strings = {
   fire: "¿Perdiste documentos en los incendios de enero de 2025 en Los Ángeles?",
   witnesses: "¿Te conocen dos adultos con identificación, como el personal de un albergue o programa?",
   seePath: "Ver mi camino",
-  bornNeeded: "Primero responde esta. Tu camino depende de ella.",
+  bornNeeded: "Primero responde esta pregunta. Tu camino depende de ella.",
 
   pathTitle: "Tu camino a una identificación de California",
   totalCost: "Costo total",
