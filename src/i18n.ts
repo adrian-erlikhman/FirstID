@@ -261,6 +261,7 @@ const en = {
   madeUpTitle: "What's made up",
   madeUpItems: ["Maria, DeShawn, Luis and Jayden are invented people we use to test the app."],
   notYetTitle: "Not covered yet",
+  notYetUnder18: "Applying with a parent or guardian when you're under 18. With their help your path may be shorter, so ask them before you start.",
   notYetItems: [
     "Birth certificates from other states or countries.",
     "Birth certificates from other California counties.",
@@ -560,6 +561,7 @@ const es: Strings = {
   madeUpTitle: "Qué es inventado",
   madeUpItems: ["María, DeShawn, Luis y Jayden son personas inventadas que usamos para probar la aplicación."],
   notYetTitle: "Todavía no cubrimos",
+  notYetUnder18: "Solicitar con tu padre, madre o tutor si tienes menos de 18 años. Con su ayuda tu camino puede ser más corto, así que pregúntales antes de empezar.",
   notYetItems: [
     "Actas de nacimiento de otros estados o países.",
     "Actas de nacimiento de otros condados de California.",

@@ -4,7 +4,7 @@ import type { RuleSet } from "../src/engine/types";
 import { examples } from "../src/examples";
 import { parse, href } from "../src/router";
 import { applyFlips, flipsThatMatter, helpOptions, noPathNotes } from "../src/whatif";
-import { NOT_PAPERS, clearPapers, readyForPath, withImplied } from "../src/person";
+import { NOT_PAPERS, clearPapers, readyForPath, under18, withImplied } from "../src/person";
 import { plan, suggestable, whatHelps } from "../src/engine/planner";
 import { personas } from "./personas";
 
@@ -213,5 +213,15 @@ describe("Have and Questions screens", () => {
     expect(readyForPath({})).toBe(false);
     expect(readyForPath({ unhoused: true, hasWitnesses: true, age: 30 })).toBe(false);
     expect(readyForPath({ born: "abroad" })).toBe(true);
+  });
+});
+
+describe("not covered yet", () => {
+  it("the path screen flags under-18s (a parent or guardian may make the path shorter), including Jayden", () => {
+    expect(under18(personas.jayden.facts)).toBe(true);
+    expect(under18({ age: 16 })).toBe(true);
+    expect(under18({ age: 19 })).toBe(false);
+    expect(under18(personas.maria.facts)).toBe(false);
+    expect(under18({})).toBe(false); // no age given: say nothing
   });
 });

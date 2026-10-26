@@ -5,6 +5,7 @@ import { t, type Lang } from "../i18n";
 import { href } from "../router";
 import { flipsThatMatter, helpOptions, noPathNotes, type NoPathNote } from "../whatif";
 import { useEffect, useMemo, useState } from "react";
+import { under18 } from "../person";
 import { loadTicks, reminderFor, reminderIcs, saveTicks, ticksInPlan, toggleTick, type Ticks } from "../progress";
 
 // The hero screen: the total first, in brackets because the
@@ -112,6 +113,7 @@ export function NoPath({ rules, lang, person, onBack }: { rules: RuleSet; lang: 
         </div>
         <div className="body">
           {notes.map((n) => <Notice key={n}>{text[n]}</Notice>)}
+          {under18(person.facts) && <Notice title={s.notYetTitle}>{s.notYetUnder18}</Notice>}
           {canOpen && (
             <div className="actions row">
               <a className="btn primary" href={href({ name: "whatif" })}>{s.tryWhatIf} <Icon name="arrow" size={18} /></a>
@@ -180,6 +182,7 @@ export function PathScreen(props: {
           {unverified > 0
             ? <Notice tone="draft" title={s.callAhead}>{s.unverifiedNote(unverified, result.steps.length)}</Notice>
             : <Notice tone="accent">{s.allVerified}</Notice>}
+          {under18(props.person.facts) && <Notice title={s.notYetTitle}>{s.notYetUnder18}</Notice>}
 
           <Collapse show={!!help}>{help && (
             <div className="panel help">

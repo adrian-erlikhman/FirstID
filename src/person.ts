@@ -14,3 +14,7 @@ export const clearPapers = (have: string[]) => have.filter((id) => NOT_PAPERS.in
 /** The rules can't pick a birth certificate office without a birthplace, so
  *  "Show my path" waits for that answer. */
 export const readyForPath = (facts: Facts) => facts.born !== undefined;
+
+/** Under 18: a parent or guardian may be able to make the path shorter, and
+ *  First ID doesn't plan that yet, so the path screen says so. */
+export const under18 = (facts: Facts) => typeof facts.age === "number" && facts.age < 18;
