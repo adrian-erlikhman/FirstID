@@ -241,9 +241,16 @@
     "lavote_mail": {
       "id": "lavote_mail",
       "title": "LA County RR/CC: Birth record by mail",
-      "url": "https://lavote.gov/home/records/birth-records/birth-records-request/mail-request",
-      "quote": "TODO: copy the line saying the Certificate of Identity must be notarized",
-      "checked": "2026-10-18"
+      "url": "https://www.lavote.gov/home/records/birth-records/birth-records-request/mail-request",
+      "quote": "The Certificate of Identity must be notarized or it will delay the process",
+      "checked": "2026-10-25"
+    },
+    "lavote_fees": {
+      "id": "lavote_fees",
+      "title": "LA County RR/CC: Birth record fees by mail",
+      "url": "https://www.lavote.gov/home/records/birth-records/birth-records-request/mail-request",
+      "quote": "Authorized Certified Birth Record Copy: $34",
+      "checked": "2026-10-25"
     },
     "lavote_inperson": {
       "id": "lavote_inperson",
@@ -255,9 +262,9 @@
     "hsc103526": {
       "id": "hsc103526",
       "title": "Health & Safety Code 103526 (who may get a certified copy)",
-      "url": "https://california.public.law/codes/ca_health_and_safety_code_section_103526",
-      "quote": "TODO: copy the notarized sworn statement requirement for mail requests from leginfo",
-      "checked": "2026-10-18"
+      "url": "https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?lawCode=HSC&sectionNum=103526",
+      "quote": "a request for a certified copy of a birth, death, or marriage record pursuant to Section 103525 that is accompanied by a notarized statement sworn under penalty of perjury",
+      "checked": "2026-10-25"
     },
     "ab1733": {
       "id": "ab1733",
@@ -698,6 +705,7 @@
       },
       "sources": [
         "lavote_mail",
+        "lavote_fees",
         "hsc103526"
       ],
       "verified": false
