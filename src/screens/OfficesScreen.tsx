@@ -40,7 +40,9 @@ export function OfficesScreen({ lang, kind }: { lang: Lang; kind: string }) {
           <li key={o.id} className="panel office">
             <h2 className="office-name">{o.name}{mi !== undefined && <span className="office-mi num"> · {s.officesMiles(mi)}</span>}</h2>
             <p className="office-addr">{o.address}<br />{o.city}, CA {o.zip}</p>
-            {o.hours && (
+            {o.hours && Object.values(o.hours).every((h) => h === "closed") ? (
+              <p className="office-closed">{s.officesClosedAll}</p>
+            ) : o.hours && (
               <dl className="office-hours" aria-label={s.officesHours}>
                 {groupHours(o.hours).map((g) => (
                   <div key={g.from}>

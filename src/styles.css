@@ -953,6 +953,8 @@ main h1:focus { box-shadow: none !important; } /* headings take focus on a new s
 .office-hours > div { display: grid; grid-template-columns: 6.5em minmax(0, 1fr); gap: 8px; }
 .office-hours dt { color: var(--text-2); }
 .office-hours dd { margin: 0; font-variant-numeric: tabular-nums; }
+/* An office the snapshot shows closed all week (Inglewood): say so plainly instead of "Mon–Sun Closed". */
+.office-closed { margin: 0 0 12px; padding: 10px 12px; border: 1px dashed var(--control); border-radius: var(--r-sm); font-size: 1rem; line-height: 1.45; }
 .office-actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: auto; } /* side by side, the buttons line up along the bottom */
 .office-actions .btn.small { min-height: 44px; font-size: 1rem; padding: 8px 16px; }
 /* Equal widths side by side; when a label is too long (Spanish), each takes its own full row. */
