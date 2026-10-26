@@ -514,8 +514,8 @@ h2.display.wide { max-width: 20ch; margin-bottom: 28px; }
    and the two quiet links share the row below it in English and Spanish alike,
    their words lined up with the list's left edge. */
 @media (max-width: 639px) {
-  .have-actions { column-gap: 14px; }
-  .have-actions > .btn.primary { flex: 1 1 100%; }
+  .have-actions { column-gap: 14px; row-gap: 0; }
+  .have-actions > .btn.primary { flex: 1 1 100%; margin-bottom: 8px; }
   .have-actions > .btn.text { margin-left: -10px; }
 }
 
