@@ -5,7 +5,7 @@ import { examples } from "../src/examples";
 import { parse, href } from "../src/router";
 import { applyFlips, flipsThatMatter, noPathNotes } from "../src/whatif";
 import { withImplied } from "../src/person";
-import { plan, whatHelps } from "../src/engine/planner";
+import { plan, suggestable, whatHelps } from "../src/engine/planner";
 import { personas } from "./personas";
 
 const rules = rulesJson as unknown as RuleSet;
@@ -40,6 +40,28 @@ describe("what-if toggles", () => {
     const docs = flipsThatMatter(rules, person, "cheapest", 99).flatMap((o) => (o.flip.kind === "doc" ? [o.flip.doc] : []));
     expect(docs).not.toContain("birth_cert_ca");
     expect(docs).toContain("us_passport");
+  });
+
+  it("never suggests a green card or naturalization certificate to someone born in the U.S.", () => {
+    // suggestable() is the candidate list both what-if and "what would help" draw from.
+    for (const born of ["la_county", "california", "us_state"]) {
+      const person = { facts: { born, age: 30, unhoused: true, hasWitnesses: true }, have: ["ssn_known"] };
+      expect(suggestable(rules, person, plan(rules, person)), born).not.toContain("immigration_doc");
+    }
+    // Someone born abroad can still be offered one.
+    const abroad = { facts: { born: "abroad", age: 30, unhoused: true }, have: ["ssn_known"] };
+    expect(suggestable(rules, abroad, plan(rules, abroad))).toContain("immigration_doc");
+  });
+
+  it("for every example person, what-if and 'what would help' never offer a document their path already produces", () => {
+    for (const [name, p] of Object.entries(personas)) {
+      const produced = plan(rules, p)?.steps.flatMap((s) => s.action.produces) ?? [];
+      const offered = [
+        ...flipsThatMatter(rules, p, "cheapest", 99).flatMap((o) => (o.flip.kind === "doc" ? [o.flip.doc] : [])),
+        ...whatHelps(rules, p).map((h) => h.doc),
+      ];
+      for (const d of produced) expect(offered, `${name}: ${d}`).not.toContain(d);
+    }
   });
 
   it("only shows answers that change the plan", () => {
