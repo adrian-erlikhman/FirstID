@@ -68,8 +68,8 @@
     },
     "school_record": {
       "label": {
-        "en": "School ID this year, or a school transcript",
-        "es": "Identificación escolar de este año o un certificado de estudios"
+        "en": "School ID card from this year",
+        "es": "Credencial escolar de este año"
       },
       "askAtIntake": true
     },
@@ -725,13 +725,13 @@
       "days": 14,
       "bring": [
         {
-          "en": "Your Medi-Cal card or school record. A birth certificate alone doesn't prove identity to SSA.",
-          "es": "Tu tarjeta de Medi-Cal o tu certificado de estudios. El acta de nacimiento sola no comprueba tu identidad ante el Seguro Social."
+          "en": "Your Medi-Cal card or school ID card. A birth certificate alone doesn't prove identity to SSA.",
+          "es": "Tu tarjeta de Medi-Cal o tu credencial escolar. El acta de nacimiento sola no comprueba tu identidad ante el Seguro Social."
         }
       ],
       "why": {
-        "en": "A replacement Social Security card is free. Without a photo ID, Social Security can accept other records, like a Medi-Cal card or a school record, to prove who you are.",
-        "es": "El reemplazo de la tarjeta de Seguro Social es gratis. Sin identificación con foto, el Seguro Social puede aceptar otros documentos, como la tarjeta de Medi-Cal o un certificado de estudios, para comprobar quién eres."
+        "en": "A replacement Social Security card is free. Without a photo ID, Social Security can accept other records, like a Medi-Cal card or a school ID card, to prove who you are.",
+        "es": "El reemplazo de la tarjeta de Seguro Social es gratis. Sin identificación con foto, el Seguro Social puede aceptar otros documentos, como la tarjeta de Medi-Cal o una credencial escolar, para comprobar quién eres."
       },
       "say": {
         "en": "I need a replacement Social Security card. I don't have a photo ID, so here's what I do have.",

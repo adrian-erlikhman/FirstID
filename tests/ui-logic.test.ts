@@ -130,6 +130,14 @@ describe("rule copy", () => {
       expect(say.es).toMatch(/estándar/);
     }
   });
+
+  it("the school paper is a school ID card, not a transcript (SSA takes transcripts for children; unconfirmed for adults)", () => {
+    const texts = [rules.docs.school_record.label, ...rules.actions.filter((a) => a.id === "ssa_card").flatMap((a) => [a.why!, ...(a.bring ?? [])])];
+    for (const x of texts) {
+      expect(x.en).not.toMatch(/transcript|school record/i);
+      expect(x.es).not.toMatch(/certificado de estudios|registro escolar/i);
+    }
+  });
 });
 
 describe("documents you hold without ticking them", () => {
