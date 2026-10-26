@@ -16,8 +16,10 @@ export function HomeScreen({ rules, lang, onStart, onExample }: {
 }) {
   const s = t[lang];
   // Maria's numbers come from the planner, not typed in.
-  const exPlans = useMemo(() => examples.map((e) => plan(rules, { ...e.person, have: withImplied(e.person.have) }, "cheapest")), [rules]);
-  const maria = exPlans[examples.findIndex((e) => e.id === "maria")];
+  const maria = useMemo(() => {
+    const e = examples.find((x) => x.id === "maria");
+    return e ? plan(rules, { ...e.person, have: withImplied(e.person.have) }, "cheapest") : null;
+  }, [rules]);
   const band = (["office", "papers", "counter"] as const).filter((n) => photoUrl(n));
 
   return (
