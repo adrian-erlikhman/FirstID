@@ -627,6 +627,9 @@ h2.display.wide { max-width: 20ch; margin-bottom: 28px; }
   .rule-head .tag { grid-column: 2; grid-row: 3; margin-top: 4px; }
 }
 .rule-body { padding: 0 18px 18px; }
+/* Wider screens: an open rule's explanation and sources start under its name,
+   not under its number, and long quotes get a shorter line. */
+@media (min-width: 640px) { .rule-body { padding: 2px 48px 22px 60px; } }
 .how > li > span:last-child { line-height: 1.5; }
 .honesty { display: grid; gap: 12px; margin-top: 32px; }
 .honesty .panel { padding: 16px 18px 18px; }
