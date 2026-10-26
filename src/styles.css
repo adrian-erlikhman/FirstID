@@ -618,6 +618,7 @@ h2.display.wide { max-width: 20ch; margin-bottom: 28px; }
 .rule-name { font-weight: 600; font-size: 1rem; line-height: 1.35; letter-spacing: -0.01em; }
 .rule-head .tag { margin-top: 1px; }
 .rule-src { grid-column: 2 / -1; font-size: 0.875rem; line-height: 1.4; color: var(--text-2); }
+.rule-src-lang { white-space: nowrap; } /* "(en inglés)" never breaks after "(en" */
 /* Phones: the tag sits under the sources, so the rule's name gets the whole
    line instead of a narrow column (Spanish names ran to five lines). */
 @media (max-width: 639px) {
