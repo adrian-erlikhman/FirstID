@@ -304,6 +304,7 @@ const en = {
   officesCall: (phone: string) => `Call ${phone}`,
   officesDirections: "Directions",
   officesTo: (name: string) => `to ${name} (opens maps)`,
+  officesPage: "Office page",
   officesFrom: ["Office details from ", ", checked Oct 25, 2026. Call ahead."] as [string, string],
   // Progress ticks and calendar reminders (src/progress.ts, PathScreen)
   progressDone: (n: number, total: number) => `${n} of ${total} done`,
@@ -605,6 +606,7 @@ const es: Strings = {
   officesCall: (phone) => `Llamar al ${phone}`,
   officesDirections: "Cómo llegar",
   officesTo: (name) => `a ${name} (abre el mapa)`,
+  officesPage: "Página de la oficina",
   officesFrom: ["Datos de las oficinas tomados de ", ", revisados el 25 de octubre de 2026. Llama antes de ir."],
   // Progreso y recordatorios (src/progress.ts, PathScreen)
   progressDone: (n, total) => `${n} de ${total} pasos hechos`,

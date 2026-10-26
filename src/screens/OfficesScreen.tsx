@@ -55,6 +55,9 @@ export function OfficesScreen({ lang, kind }: { lang: Lang; kind: string }) {
               <a className="btn ghost small" href={directionsUrl(o)} target="_blank" rel="noopener noreferrer">
                 {s.officesDirections}<span className="sr-only"> {s.officesTo(o.name)}</span> <Icon name="external" size={16} />
               </a>
+              <a className="btn ghost small" href={o.source} target="_blank" rel="noopener noreferrer">
+                {s.officesPage}<span className="sr-only">, {o.name}</span> <Icon name="external" size={16} />
+              </a>
             </div>
           </li>
         ))}
