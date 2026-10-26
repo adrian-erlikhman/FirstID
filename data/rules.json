@@ -870,12 +870,12 @@
         }
       ],
       "why": {
-        "en": "For a first standard California ID (the card marked “Federal Limits Apply”), the DMV asks for three things: proof of who you are (like a birth certificate), your Social Security number, and proof of a California address. This path doesn't plan a REAL ID, which needs two papers with your address.",
-        "es": "Para una primera identificación estándar de California (la que dice “Federal Limits Apply”), el DMV pide tres cosas: comprobante de identidad (como el acta de nacimiento), tu número de Seguro Social y comprobante de domicilio en California. Este camino no incluye la REAL ID, que pide dos papeles con tu dirección."
+        "en": "For a first standard California ID (the card marked “Federal Limits Apply”), the DMV asks for three things: proof of who you are (like a birth certificate), your Social Security number, and proof of a California address. This path doesn't plan a REAL ID.",
+        "es": "Para una primera identificación estándar de California (la que dice “Federal Limits Apply”), el DMV pide tres cosas: comprobante de identidad (como el acta de nacimiento), tu número de Seguro Social y comprobante de domicilio en California. Este camino no incluye la REAL ID."
       },
       "say": {
         "en": "I'm applying for a standard California ID card, not a REAL ID.",
-        "es": "Vengo a solicitar una identificación de California estándar, no la REAL ID."
+        "es": "Vengo a solicitar una identificación estándar de California, no la REAL ID."
       },
       "sources": [
         "dmv_id_page",
