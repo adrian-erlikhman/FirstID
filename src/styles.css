@@ -534,15 +534,15 @@ h2.display.wide { max-width: 20ch; margin-bottom: 28px; }
 }
 .q-error .icon { margin-top: 2px; }
 @media (min-width: 640px) { .q-error { margin-left: 34px; } }
-/* The "Show my path" bar. While it floats over the questions it is a frosted
-   strip with a hairline, like the top bar, edge to edge on phones, so a
-   question going under it reads as scrolling under a bar, not as cut off.
+/* The "Show my path" bar. While it floats over the questions it is a solid
+   strip with a hairline, edge to edge on phones, so a question going under
+   it reads as scrolling under a bar, not as cut off, and no faded words show
+   through around the button.
    At rest below the last question it is clear. Slimmer than before, so it
    hides less of the question behind it. */
 .actions.sticky.q-bar { padding-top: 12px; padding-bottom: calc(12px + env(safe-area-inset-bottom, 0px)); background: transparent; transition: background-color .2s, box-shadow .2s; }
 .actions.sticky.q-bar.floating {
-  background: color-mix(in srgb, var(--ground) 86%, transparent); box-shadow: 0 -1px 0 var(--line);
-  backdrop-filter: saturate(1.8) blur(20px); -webkit-backdrop-filter: saturate(1.8) blur(20px);
+  background: var(--ground); box-shadow: 0 -1px 0 var(--line);
 }
 @media (max-width: 979px) { .actions.sticky.q-bar { margin-left: calc(-1 * var(--gutter)); margin-right: calc(-1 * var(--gutter)); padding-left: var(--gutter); padding-right: var(--gutter); } }
 .q-bar-end { height: 1px; margin-top: -1px; }
