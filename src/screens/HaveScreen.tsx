@@ -42,7 +42,7 @@ export function HaveScreen(props: {
             <ul className="panel check-list single">{row("ssn_known", rules.docs.ssn_known.label[lang], s.ssnHint)}</ul>
           )}
 
-          <div className="actions row">
+          <div className="actions row have-actions">
             <button className="btn primary" onClick={onNext}>{s.toQuestions} <Icon name="arrow" size={18} /></button>
             <button className="btn text" onClick={() => { onChange(clearPapers(have)); onNext(); }}>{s.noneOfThese}</button>
             {onStartOver && <button className="btn text" onClick={() => {

@@ -470,8 +470,15 @@ h2.display.wide { max-width: 20ch; margin-bottom: 28px; }
   width: 100%; display: flex; align-items: center; gap: 14px; text-align: left;
   min-height: 58px; padding: 13px 18px; border: 0; background: transparent; color: var(--ink); font-size: 1.0313rem; line-height: 1.35;
 }
-.check-row:hover { background: var(--wash); }
+/* No one word left alone on a label's last line ("state)", "pasaporte"). */
+.check-text { min-width: 0; text-wrap: pretty; }
+/* Only where there is a real pointer: on a phone :hover sticks after a tap,
+   so a row just unticked stayed grey and still looked picked. */
+@media (hover: hover) { .check-row:hover { background: var(--wash); } }
+.check-row:active { background: var(--wash); }
 .check-row[aria-checked="true"] { background: var(--pick); }
+/* A ticked row answers the pointer too: its grey deepens a little. */
+@media (hover: hover) { .check-row[aria-checked="true"]:hover { background: color-mix(in srgb, var(--pick) 75%, var(--line)); } }
 /* Grey on the picked grey is 4.2:1; a little more ink brings the hint back over 4.5. */
 .check-row[aria-checked="true"] .row-sub { color: color-mix(in srgb, var(--text-2) 80%, var(--ink)); }
 .box {
@@ -479,6 +486,10 @@ h2.display.wide { max-width: 20ch; margin-bottom: 28px; }
   display: grid; place-items: center; color: var(--on-ink);
 }
 .check-row[aria-checked="true"] .box { background: var(--cta); box-shadow: none; color: #fff; }
+/* The box and its tick grow with the "Aa" text size (22px and 15px at normal size),
+   so at the largest size they still match the words beside them. */
+.check-row .box { width: 1.3333em; height: 1.3333em; border-radius: .3em; }
+.check-row .box .icon { width: .9091em; height: .9091em; }
 .check-row[aria-checked="true"] { box-shadow: inset 4px 0 0 var(--cta); }
 /* The tick draws itself in, the box fills and gives a little on press. */
 .check-row { transition: background-color .3s var(--ease), box-shadow .3s var(--ease); -webkit-tap-highlight-color: transparent; }
@@ -487,6 +498,18 @@ h2.display.wide { max-width: 20ch; margin-bottom: 28px; }
 .box .icon path, .tick-box .icon path { stroke-dasharray: 22; stroke-dashoffset: 22; transition: stroke-dashoffset .35s var(--ease) .05s; }
 .check-row[aria-checked="true"] .box .icon path, .tick input:checked + .tick-box .icon path { stroke-dashoffset: 0; }
 .check-list.single { margin-top: 12px; }
+/* The first and last rows take the panel's round corners, so the keyboard
+   focus ring follows them instead of being cut off square at the corners. */
+.check-list > li:first-child > .check-row { border-top-left-radius: var(--r); border-top-right-radius: var(--r); }
+.check-list > li:last-child > .check-row { border-bottom-left-radius: var(--r); border-bottom-right-radius: var(--r); }
+/* Phones: "Next" takes the full width, like "Show my path" on the next screen,
+   and the two quiet links share the row below it in English and Spanish alike,
+   their words lined up with the list's left edge. */
+@media (max-width: 639px) {
+  .have-actions { column-gap: 14px; row-gap: 0; }
+  .have-actions > .btn.primary { flex: 1 1 100%; margin-bottom: 8px; }
+  .have-actions > .btn.text { margin-left: -10px; }
+}
 
 /* ---------- questions ---------- */
 .q { border: 0; margin: 0; padding: 18px 18px 20px; min-width: 0; }
