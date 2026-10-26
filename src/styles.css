@@ -279,8 +279,11 @@ h1.display .bracketed .num { color: var(--on-c); background: var(--hl); padding:
 .hero { text-align: center; padding: 40px 0 8px; }
 .hero-eyebrow { font-size: 1rem; font-weight: 600; color: var(--text-2); margin: 0 0 14px; }
 .hero h1.hero-title { margin: 0 auto; max-width: 15em; text-wrap: balance; }
-.hero-a { display: block; font-size: 44px; line-height: 1.02; }
-.hero-b { display: block; font-size: 44px; line-height: 1.1; margin-top: 0.08em; }
+/* 44px, or smaller on narrow phones so the longest word group ("Sin
+   identificación.", about 7.7em) keeps one line instead of leaving "Sin" alone. */
+.hero-a, .hero-b { font-size: min(44px, calc((100vw - 2 * var(--gutter)) / 7.8)); }
+.hero-a { display: block; line-height: 1.02; }
+.hero-b { display: block; line-height: 1.1; margin-top: 0.08em; }
 .hero-lede { font-size: 1.1875rem; line-height: 1.42; color: var(--text-2); max-width: 30em; margin: 20px auto 0; text-wrap: pretty; }
 .hero .actions { justify-content: center; margin-top: 26px; }
 .hero-note { font-size: 1rem; color: var(--text-2); margin: 28px 0 0; }
