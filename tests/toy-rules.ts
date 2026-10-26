@@ -1,4 +1,4 @@
-// A TOY rule set for testing the planner's mechanics only. These are not real
+// A toy rule set for testing the planner's mechanics only. These are not real
 // California rules. The real ones live in data/rules.json with sources.
 import type { RuleSet } from "../src/engine/types";
 
