@@ -473,7 +473,7 @@ const es: Strings = {
   noPathAllUnsure: "Contestaste “No sé” o dejaste sin contestar todas las preguntas de sí o no, así que First ID no puede contar con ningún camino que dependa de ellas, como los formularios del albergue, los testigos o las exenciones de pago. Si un albergue o un trabajador social te ayuda a contestar, cambia tus respuestas y vuelve a intentarlo.",
   noPathNeedAddress: "Lo que falta: un papel con tu dirección en California, como una factura, un contrato de renta, una carta de beneficios o un papel médico. Si te quedas en un albergue o programa, pregunta si te pueden firmar un DL 933 en su lugar.",
   noPathNeedWitnesses: "Lo que falta: dos adultos con identificación que te conozcan. Con ellos, un notario público puede notarizar tu Certificado de Identidad, y así puedes pedir tu acta de nacimiento sin identificación. Muchas veces el personal de un albergue o programa puede hacerlo.",
-  noPathNeedSsn: "Lo que falta: tu número de Seguro Social. El DMV necesita el número, no la tarjeta. Si no lo sabes, una tarjeta de Medi-Cal o una identificación escolar te pueden ayudar a pedir gratis una tarjeta nueva al Seguro Social. Márcalas en la primera pantalla si las tienes.",
+  noPathNeedSsn: "Lo que falta: tu número de Seguro Social. El DMV necesita el número, no la tarjeta. Si no lo sabes, una tarjeta de Medi-Cal o una credencial escolar te pueden ayudar a pedir gratis una tarjeta nueva al Seguro Social. Márcalas en la primera pantalla si las tienes.",
   noPathWho: "Quién puede ayudarte hoy",
   help211: "211 del Condado de Los Ángeles",
   help211Line: "Para adultos y familias: marca 2-1-1 a cualquier hora y pide ayuda para reponer tus documentos de identidad.",
