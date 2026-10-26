@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { Fragment, useMemo } from "react";
 import { FORM_PDF, Icon, PathCard, Photo, photoUrl } from "../components";
 import { plan } from "../engine/planner";
 import type { RuleSet } from "../engine/types";
@@ -26,7 +26,9 @@ export function HomeScreen({ rules, lang, onStart, onExample }: {
       <div className="hero">
         <p className="hero-eyebrow">{s.heroEyebrow}</p>
         <h1 tabIndex={-1} className="display hero-title">
-          <span className="hero-a">{s.heroA}</span>{" "}
+          <span className="hero-a">{sentences(s.heroA).map((x, i) => (
+            <Fragment key={i}>{i > 0 && " "}<span className="hero-s">{x}</span></Fragment>
+          ))}</span>{" "}
           <span className="hero-b"><span className="hl">{s.heroB}.</span></span>
         </h1>
         <p className="hero-lede">{s.heroLede}</p>
@@ -100,3 +102,7 @@ export function HomeScreen({ rules, lang, onStart, onExample }: {
     </section>
   );
 }
+
+/** "No ID. No birth certificate." -> ["No ID.", "No birth certificate."], so
+ *  wide screens can keep each sentence on its own line (styles.css, hero). */
+const sentences = (text: string) => text.split(/(?<=[.!?])\s+/);
