@@ -971,7 +971,7 @@ main h1:focus { box-shadow: none !important; } /* headings take focus on a new s
 .progress-count { font-weight: 600; color: var(--ink); font-variant-numeric: tabular-nums; }
 .progress-note { font-size: 0.875rem; }
 .progress-clear {
-  min-height: 44px; padding: 0 2px; border: 0; background: none; font: inherit; font-size: 0.875rem;
+  min-height: 44px; padding: 0; border: 0; background: none; font: inherit; font-size: 0.875rem;
   color: var(--link); cursor: pointer; text-decoration: underline; text-underline-offset: 3px;
 }
 .step-track { display: flex; flex-wrap: wrap; align-items: center; gap: 0 18px; padding: 0 16px 10px 46px; margin-top: -8px; }
