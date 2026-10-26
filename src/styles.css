@@ -547,7 +547,9 @@ h2.display.wide { max-width: 20ch; margin-bottom: 28px; }
   background: var(--panel); box-shadow: 0 0 0 1px var(--line); color: var(--ink); text-decoration: none;
   transition: box-shadow .25s var(--ease), transform .25s var(--ease);
 }
-.source:hover { box-shadow: 0 0 0 1px var(--control); transform: translateY(-1px); }
+/* Only where there is a real pointer: on a phone a tap would leave the card lifted after you come back. */
+@media (hover: hover) { .source:hover { box-shadow: 0 0 0 1px var(--control); transform: translateY(-1px); } }
+.source:active { box-shadow: 0 0 0 1px var(--control); }
 .source-host { display: inline-flex; align-items: center; gap: 6px; font-size: 0.8125rem; color: var(--text-2); }
 .source-title { font-weight: 600; font-size: 1rem; line-height: 1.3; letter-spacing: -0.015em; }
 .source-quote { font-size: 0.9375rem; line-height: 1.5; padding-left: 12px; border-left: 2px solid var(--ink); }
