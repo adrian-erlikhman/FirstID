@@ -35,10 +35,10 @@ export function QuestionsScreen(props: {
 
   // A plain function, not a component: a component defined inside render
   // would remount on every tap and drop keyboard focus.
-  const question = (k: string, q: string, opts: readonly (readonly [Facts[string] | typeof NOT_SURE, string])[], error?: ReactNode) => (
+  const question = (k: string, q: string, opts: readonly (readonly [Facts[string] | typeof NOT_SURE, string])[], error?: ReactNode, shape = "pills-even") => (
     <fieldset className="q" key={k} ref={k === "born" ? bornRef : undefined} aria-describedby={error ? `${k}-error` : undefined}>
       <legend><span className="row-num" aria-hidden="true">{++num}</span><span>{q}</span></legend>
-      <Pills label={q} options={opts} value={valueOf(k)} onChange={(v) => set(k, v)} />
+      <Pills label={q} options={opts} value={valueOf(k)} onChange={(v) => set(k, v)} className={shape} />
       {error && <p id={`${k}-error`} className="q-error" role="alert"><Icon name="alert" size={18} stroke={2} /> {error}</p>}
     </fieldset>
   );
@@ -65,14 +65,14 @@ export function QuestionsScreen(props: {
         <div className="body">
           <div className="panel questions">
             {question("born", s.bornWhere, [["la_county", s.bornLA], ["california", s.bornCA], ["us_state", s.bornUS], ["abroad", s.bornAbroad]] as const,
-              tried && blocked ? s.bornNeeded : undefined)}
+              tried && blocked ? s.bornNeeded : undefined, "pills-stack")}
             {question("unhoused", s.unhoused, yesNo)}
             {question("fireSurvivor", s.fire, yesNo)}
             {question("hasWitnesses", s.witnesses, yesNo)}
             <fieldset className="q">
               <legend><span className="row-num" aria-hidden="true">{++num}</span><span>{s.age}</span></legend>
               <Pills label={s.age} options={s.ageBands.map((label, i) => [i, label] as const)} value={bandOf(facts.age)}
-                onChange={(i) => set("age", AGE_BANDS[i])} />
+                onChange={(i) => set("age", AGE_BANDS[i])} className="pills-even pills-age" />
             </fieldset>
             {question("fosterYouth", s.foster, yesNo)}
             {question("publicAssistance", s.benefits, yesNo)}

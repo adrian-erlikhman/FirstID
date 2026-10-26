@@ -194,6 +194,23 @@ h1.display .bracketed .num { color: var(--on-c); background: var(--hl); padding:
 .pill:hover { background: var(--wash); }
 .pill[aria-pressed="true"] { background: var(--ink); color: var(--on-ink); box-shadow: inset 0 0 0 1px var(--ink); }
 .pill-num { font-size: 0.7813rem; font-weight: 500; opacity: .6; font-variant-numeric: tabular-nums; }
+/* Short answers (Yes / No / Not sure, the age bands) share the row in equal
+   widths, like a segmented control, while every label fits on one line; a
+   label that doesn't fit (Spanish, larger text) moves to the next row whole. */
+.pills-even { max-width: 400px; }
+.pills-even > .pill { flex: 1 1 0; min-width: fit-content; }
+/* Ages: two by two on a phone, so "62 or older" isn't left alone on a row. */
+.pills-age > .pill { flex-basis: calc(50% - 4px); }
+/* Longer answers (where you were born) stack full width on a phone: one
+   clean column of equal targets instead of four ragged rows. */
+@media (max-width: 639px) {
+  .pills-stack { flex-direction: column; }
+  .pills-stack > .pill { justify-content: flex-start; padding-left: 18px; padding-right: 18px; }
+}
+@media (min-width: 640px) {
+  .pills-age { max-width: 520px; }
+  .pills-age > .pill { flex-basis: 0; }
+}
 
 /* ---------- panel with a small header ---------- */
 .solver-head {
