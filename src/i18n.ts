@@ -18,7 +18,7 @@ const en = {
   homeLabel: "home",
   langLabel: "Language",
 
-  // Section openings (the § lines) and their readouts
+  // Section and panel names, and the path panel's readout
   secLoop: "the loop",
   secWhatIf: "your path",
   solvedIn: (_n: number, _ms: number) => "Tap a step for details",
@@ -30,7 +30,7 @@ const en = {
   heroNote: "It's free, there's no account, and your answers stay on your phone.",
   heroEyebrow: "For Los Angeles County",
   mariaName: "Maria",
-  // Short names for the back of the card, where each step gets one line.
+  // Short step names. The app doesn't show them; tests/i18n.test.ts checks that every rule has one.
   stepShort: {
     program_dl933: "DL 933 from your program",
     program_bc_affidavit: "Homeless affidavit",
@@ -84,7 +84,7 @@ const en = {
   trailCreditAff: "Form: California Department of Public Health",
   trailCreditId: "Sample: California DMV",
 
-  // Screen headlines: say it in ink, finish it in the lighter weight
+  // The path screen's headline, around the total: "Your California ID for $15."
   pathHeadPre: "Your California ID for",
   pathHeadPost: ".",
 
@@ -269,7 +269,7 @@ const en = {
   ],
   reportWrong: "Found a rule that's wrong or out of date? Tell us and we'll check it again.",
   reportLink: "Report it on GitHub",
-  // Card accessibility: what a screen reader hears instead of the card's design.
+  // What a screen reader hears for the path summary (PathCard), and when the path changes.
   cardSummary: (o: { name?: string; total: number; full: number; steps: number; trips: number; days: number }) =>
     `Your path${o.name ? ` for ${o.name}` : ""}: total cost $${o.total}${o.full > o.total ? ` instead of $${o.full}` : ""}, ` +
     `${o.steps} ${plural(o.steps, "step", "steps")}, ${o.trips} ${plural(o.trips, "trip", "trips")}, ` +
@@ -571,7 +571,7 @@ const es: Strings = {
   ],
   reportWrong: "¿Encontraste una regla equivocada o desactualizada? Avísanos y la revisamos otra vez.",
   reportLink: "Repórtala en GitHub",
-  // Card accessibility: what a screen reader hears instead of the card's design.
+  // What a screen reader hears for the path summary (PathCard), and when the path changes.
   cardSummary: (o) =>
     `Tu camino${o.name ? ` para ${o.name}` : ""}: costo total $${o.total}${o.full > o.total ? ` en vez de $${o.full}` : ""}, ` +
     `${o.steps} ${plural(o.steps, "paso", "pasos")}, ${o.trips} ${plural(o.trips, "viaje", "viajes")}, ` +
