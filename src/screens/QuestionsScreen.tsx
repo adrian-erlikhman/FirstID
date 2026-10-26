@@ -80,8 +80,8 @@ export function QuestionsScreen(props: {
 
           <div className="actions sticky">
             {/* The rules can't pick a birth certificate office without this one. */}
-            <button className="btn primary" onClick={next} aria-disabled={blocked || undefined}
-              style={blocked ? { opacity: 0.45, cursor: "not-allowed" } : undefined}>{s.seePath} <Icon name="arrow" size={18} /></button>
+            <button className="btn primary q-next" onClick={next} aria-disabled={blocked || undefined}>
+              {s.seePath} <Icon name="arrow" size={18} /></button>
           </div>
         </div>
       </div>

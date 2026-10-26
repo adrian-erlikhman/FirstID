@@ -504,6 +504,12 @@ h2.display.wide { max-width: 20ch; margin-bottom: 28px; }
 /* What to do before "Show my path" works: an icon and words, not colour alone. */
 .q-error { display: flex; gap: 8px; align-items: flex-start; margin: 12px 0 0; font-size: 1rem; font-weight: 500; line-height: 1.4; color: var(--ink); }
 .q-error .icon { margin-top: 1px; }
+/* "Show my path" before question 1 is answered: still a blue pill, but pale
+   with blue words (5:1), not white words faded to 1.9:1. */
+.btn.q-next[aria-disabled="true"], .btn.q-next[aria-disabled="true"]:hover {
+  background: color-mix(in srgb, var(--cta) 8%, var(--ground)); color: var(--link);
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--cta) 35%, var(--ground)); cursor: not-allowed;
+}
 
 /* ---------- path ---------- */
 .steps > li + li .slide-body { border-top: 1px solid var(--line); }
