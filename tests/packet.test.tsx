@@ -22,7 +22,10 @@ import { personas } from "./personas";
 const rules = rulesJson as unknown as RuleSet;
 
 /** Characters of text on the printed sheet (spaces collapsed). */
-const BUDGET: Record<Lang, number> = { en: 3600, es: 4300 };
+// Raised from es 4300 on Oct 25 2026 for the "Nothing listed" line in empty
+// Bring cells, after a Chrome print of LONGEST in Spanish measured 958px of
+// the 979px page.
+const BUDGET: Record<Lang, number> = { en: 3600, es: 4330 };
 /** Rows in the steps table. */
 const MAX_ROWS = 6;
 /** "Say this" boxes: three to a row when printed, so six is two rows. */
