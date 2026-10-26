@@ -179,7 +179,7 @@ const voicePrefs: Record<Lang, string[]> = { es: ["es-US", "es-MX", "es-ES"], en
 const norm = (tag: string) => tag.replace("_", "-").toLowerCase();
 
 /** Pick the best on-device voice for the language: preferred regions first, then any of that language. */
-export function pickVoice(voices: SpeechSynthesisVoice[], lang: Lang): SpeechSynthesisVoice | null {
+function pickVoice(voices: SpeechSynthesisVoice[], lang: Lang): SpeechSynthesisVoice | null {
   const local = voices.filter((v) => v.localService);
   for (const pool of [local, voices]) {
     for (const tag of voicePrefs[lang]) {
@@ -193,7 +193,7 @@ export function pickVoice(voices: SpeechSynthesisVoice[], lang: Lang): SpeechSyn
 }
 
 /** speechSynthesis as Play/Stop. `supported` is false where the API is missing. */
-export function useSpeech(lang: Lang) {
+function useSpeech(lang: Lang) {
   const supported = typeof window !== "undefined" && "speechSynthesis" in window && typeof window.SpeechSynthesisUtterance === "function";
   const [speaking, setSpeaking] = useState(false);
   const [voices, setVoices] = useState<SpeechSynthesisVoice[]>([]);
