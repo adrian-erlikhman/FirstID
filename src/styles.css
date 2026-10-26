@@ -798,8 +798,8 @@ h2.display.wide { max-width: 20ch; margin-bottom: 28px; }
 @media (min-width: 640px) {
   .sheet { padding: 48px 56px; font-size: 0.9063rem; }
   .sheet h1 { font-size: 30px; }
-  .sheet-head { grid-template-columns: minmax(0, 1fr) auto; }
-  .sheet-meta { text-align: right; }
+  .sheet-head { grid-template-columns: minmax(0, 1fr) fit-content(55%); } /* a long note can't squeeze the subtitle */
+  .sheet-meta { text-align: right; text-wrap: balance; }
   .sheet-row, .sheet-row.head { display: grid; grid-template-columns: 26px minmax(0, 2.1fr) minmax(0, 2fr) 70px minmax(0, 1.3fr); gap: 12px; }
   .sheet-row > * { grid-column: auto !important; grid-row: auto !important; text-align: left !important; }
   .sheet-row.head { font-size: 0.6563rem; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; border-bottom: 1.5px solid #111; padding: 6px 0; }
