@@ -63,7 +63,7 @@ export function icsDate(d: Date): string {
 }
 
 /** A UTC timestamp as YYYYMMDDTHHMMSSZ. */
-export function icsStamp(d: Date): string {
+function icsStamp(d: Date): string {
   return `${d.getUTCFullYear()}${pad(d.getUTCMonth() + 1)}${pad(d.getUTCDate())}T${pad(d.getUTCHours())}${pad(d.getUTCMinutes())}${pad(d.getUTCSeconds())}Z`;
 }
 
@@ -73,7 +73,7 @@ export function addDays(from: Date, days: number): Date {
 }
 
 /** RFC 5545 TEXT escaping. */
-export function icsEscape(s: string): string {
+function icsEscape(s: string): string {
   return s.replace(/\\/g, "\\\\").replace(/;/g, "\\;").replace(/,/g, "\\,").replace(/\r?\n/g, "\\n");
 }
 

@@ -30,7 +30,7 @@ export const officesFor = (kind: string) => officeData.offices.filter((o) => o.k
 export const hasOffices = (kind: string) => officeData.offices.some((o) => o.kind === kind);
 
 /** Straight-line miles between two points. */
-export function miles(a: [number, number], b: [number, number]): number {
+function miles(a: [number, number], b: [number, number]): number {
   const r = (d: number) => (d * Math.PI) / 180;
   const dLat = r(b[0] - a[0]), dLon = r(b[1] - a[1]);
   const h = Math.sin(dLat / 2) ** 2 + Math.cos(r(a[0])) * Math.cos(r(b[0])) * Math.sin(dLon / 2) ** 2;

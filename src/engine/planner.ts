@@ -40,7 +40,7 @@ function less(a: Key, b: Key): boolean {
 }
 
 /** The fee for an action after the cheapest waiver this person qualifies for. */
-export function priceOf(a: Action, have: ReadonlySet<DocId>, facts: Person["facts"]): { dollars: number; waiver?: Waiver } {
+function priceOf(a: Action, have: ReadonlySet<DocId>, facts: Person["facts"]): { dollars: number; waiver?: Waiver } {
   let best: { dollars: number; waiver?: Waiver } = { dollars: a.dollars };
   for (const w of a.waivers ?? []) {
     if (w.dollars < best.dollars && holds(w.if, have, facts)) best = { dollars: w.dollars, waiver: w };
