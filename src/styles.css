@@ -603,7 +603,8 @@ h2.display.wide { max-width: 20ch; margin-bottom: 28px; }
 .mini-steps .num { font-size: 1rem; font-weight: 600; justify-self: end; align-self: start; } /* "Free" keeps its own height on a two-line step */
 @keyframes step-in { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
 .whatif-none { padding: 24px 18px; margin: 0; font-size: 1.125rem; }
-.compare { font-size: 0.8438rem; color: var(--text-2); margin: 10px 4px 0; font-variant-numeric: tabular-nums; }
+/* Indented like the panel's own text ("Your path", the step numbers), so it reads as that panel's footnote. */
+.compare { font-size: 0.8438rem; color: var(--text-2); margin: 10px 18px 0; font-variant-numeric: tabular-nums; }
 /* "Your path now: ..." is the sentence you compare against, so it reads at body size on phones. */
 @media (max-width: 639px) { .compare { font-size: 1rem; line-height: 1.45; } }
 
