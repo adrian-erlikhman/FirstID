@@ -186,8 +186,15 @@
       "id": "dmv_fees",
       "title": "DMV: Licensing fees",
       "url": "https://www.dmv.ca.gov/portal/driver-licenses-identification-cards/licensing-fees/",
-      "quote": "TODO: copy the exact ID card fee line ($40 regular, $11 reduced)",
-      "checked": "2026-10-18"
+      "quote": "Regular ID card | – Original – Renewal – Replacement (lost or stolen) – Change DL/ID Information – Emancipated minor | $40",
+      "checked": "2026-10-25"
+    },
+    "dmv_fees_reduced": {
+      "id": "dmv_fees_reduced",
+      "title": "DMV: Licensing fees, reduced-fee ID card",
+      "url": "https://www.dmv.ca.gov/portal/driver-licenses-identification-cards/licensing-fees/",
+      "quote": "Reduced-fee ID card | – Original – Renewal – Replacement (lost or stolen) – Change DL/ID Information | $11",
+      "checked": "2026-10-25"
     },
     "dmv_ssn": {
       "id": "dmv_ssn",
@@ -227,9 +234,9 @@
     "vc14902": {
       "id": "vc14902",
       "title": "Vehicle Code 14902 (no-fee and reduced-fee IDs)",
-      "url": "https://codes.findlaw.com/ca/vehicle-code/veh-sect-14902/",
-      "quote": "TODO: copy the no-fee sentence for homeless applicants from leginfo",
-      "checked": "2026-10-18"
+      "url": "https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?lawCode=VEH&sectionNum=14902",
+      "quote": "A fee shall not be charged for an original or replacement identification card issued to any person who can verify their status as a homeless person",
+      "checked": "2026-10-25"
     },
     "dmv_replace": {
       "id": "dmv_replace",
@@ -241,9 +248,16 @@
     "lavote_mail": {
       "id": "lavote_mail",
       "title": "LA County RR/CC: Birth record by mail",
-      "url": "https://lavote.gov/home/records/birth-records/birth-records-request/mail-request",
-      "quote": "TODO: copy the line saying the Certificate of Identity must be notarized",
-      "checked": "2026-10-18"
+      "url": "https://www.lavote.gov/home/records/birth-records/birth-records-request/mail-request",
+      "quote": "The Certificate of Identity must be notarized or it will delay the process",
+      "checked": "2026-10-25"
+    },
+    "lavote_fees": {
+      "id": "lavote_fees",
+      "title": "LA County RR/CC: Birth record fees by mail",
+      "url": "https://www.lavote.gov/home/records/birth-records/birth-records-request/mail-request",
+      "quote": "Authorized Certified Birth Record Copy: $34",
+      "checked": "2026-10-25"
     },
     "lavote_inperson": {
       "id": "lavote_inperson",
@@ -255,9 +269,9 @@
     "hsc103526": {
       "id": "hsc103526",
       "title": "Health & Safety Code 103526 (who may get a certified copy)",
-      "url": "https://california.public.law/codes/ca_health_and_safety_code_section_103526",
-      "quote": "TODO: copy the notarized sworn statement requirement for mail requests from leginfo",
-      "checked": "2026-10-18"
+      "url": "https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?lawCode=HSC&sectionNum=103526",
+      "quote": "a request for a certified copy of a birth, death, or marriage record pursuant to Section 103525 that is accompanied by a notarized statement sworn under penalty of perjury",
+      "checked": "2026-10-25"
     },
     "ab1733": {
       "id": "ab1733",
@@ -269,16 +283,16 @@
     "hsc103577": {
       "id": "hsc103577",
       "title": "Health & Safety Code 103577 (homeless fee waiver)",
-      "url": "https://california.public.law/codes/ca_health_and_safety_code_section_103577",
-      "quote": "TODO: copy the affidavit sentence (signed by both the requester and a homeless services provider)",
-      "checked": "2026-10-18"
+      "url": "https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?lawCode=HSC&sectionNum=103577",
+      "quote": "unless it is signed by both the person making a request for a certified record of live birth pursuant to subdivision (a) and a homeless services provider",
+      "checked": "2026-10-25"
     },
     "hsc103578": {
       "id": "hsc103578",
       "title": "Health & Safety Code 103578 (foster youth fee waiver)",
-      "url": "https://california.public.law/codes/ca_health_and_safety_code_section_103578",
-      "quote": "TODO: copy the sentence naming youth placed in foster care",
-      "checked": "2026-10-18"
+      "url": "https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?lawCode=HSC&sectionNum=103578",
+      "quote": "without a fee, issue a certified record of live birth to any person who demonstrates that he or she is a youth who has been placed in foster care",
+      "checked": "2026-10-25"
     },
     "wic391": {
       "id": "wic391",
@@ -290,16 +304,23 @@
     "civ1185": {
       "id": "civ1185",
       "title": "Civil Code 1185 (notary: credible witnesses)",
-      "url": "https://california.public.law/codes/ca_civ_code_section_1185",
-      "quote": "TODO: copy (b)(2), two credible witnesses each presenting ID, from leginfo",
-      "checked": "2026-10-18"
+      "url": "https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?lawCode=CIV&sectionNum=1185",
+      "quote": "The oath or affirmation under penalty of perjury of two credible witnesses, whose identities are proven to the officer upon the presentation of a document",
+      "checked": "2026-10-25"
     },
     "gov8211": {
       "id": "gov8211",
       "title": "Government Code 8211 (notary fees)",
-      "url": "https://codes.findlaw.com/ca/government-code/gov-sect-8211/",
-      "quote": "TODO: copy the $15 per signature line. Rises to $20 on Jan 1, 2027 (AB 1597).",
-      "checked": "2026-10-18"
+      "url": "https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?lawCode=GOV&sectionNum=8211",
+      "quote": "acknowledgment or proof of a deed, or other instrument, to include the seal and the writing of the certificate, the sum of fifteen dollars ($15) for each signature taken.",
+      "checked": "2026-10-25"
+    },
+    "ab1597": {
+      "id": "ab1597",
+      "title": "AB 1597 (2026): notary fee rises to $20",
+      "url": "https://leginfo.legislature.ca.gov/faces/billTextClient.xhtml?bill_id=202520260AB1597",
+      "quote": "acknowledgment or proof of a deed, or other instrument, to include the seal and the writing of the certificate, the sum of twenty dollars ($20) for each signature taken.",
+      "checked": "2026-10-25"
     },
     "ssa_replace": {
       "id": "ssa_replace",
@@ -312,22 +333,36 @@
       "id": "ssa_poms",
       "title": "SSA POMS RM 10210.420: evidence of identity",
       "url": "https://secure.ssa.gov/poms.nsf/lnx/0110210420",
-      "quote": "TODO: copy the secondary-evidence line covering Medicaid cards and school records",
-      "checked": "2026-10-18"
+      "quote": "Health insurance or U.S. Medicaid card showing, the applicant’s name and: – a photograph, or – age or DOB.",
+      "checked": "2026-10-25"
+    },
+    "ssa_poms_school": {
+      "id": "ssa_poms_school",
+      "title": "SSA POMS RM 10210.420: school records for adults",
+      "url": "https://secure.ssa.gov/poms.nsf/lnx/0110210420",
+      "quote": "School/student identification card or certified school record or transcript (for current school year) showing, the applicant’s name and either a photograph of the applicant or the applicant’s DOB).",
+      "checked": "2026-10-25"
     },
     "lafires_docs": {
       "id": "lafires_docs",
       "title": "State of California: Replace personal documents (LA fires)",
-      "url": "https://ca.gov/lafires/help-for-you/replace-personal-documents/",
-      "quote": "TODO: copy the RR/CC no-cost records line and the DMV no-fee line for cards lost in the fires",
-      "checked": "2026-10-18"
+      "url": "https://www.ca.gov/lafires/help-for-you/replace-personal-documents/",
+      "quote": "Driver's license or California ID card (no fee for cards lost in the fires)",
+      "checked": "2026-10-25"
     },
     "rrcc_fire": {
       "id": "rrcc_fire",
       "title": "LA County: no-cost replacement records for fire-impacted residents",
       "url": "https://recovery.lacounty.gov/2025/01/16/registrar-recorder-county-clerk-offers-no-cost-replacement-records-to-fire-impacted-residents/",
-      "quote": "TODO: copy who qualifies and how long the program runs",
-      "checked": "2026-10-18"
+      "quote": "The Registrar-Recorder/County Clerk (RR/CC) is providing replacement vital records (i.e., birth, death, marriage), real estate/property records, and business filing/registration records at no cost to those impacted by recent wildfires.",
+      "checked": "2026-10-25"
+    },
+    "lavote_recovery": {
+      "id": "lavote_recovery",
+      "title": "LA County RR/CC: Fire recovery records",
+      "url": "https://www.lavote.gov/recovery",
+      "quote": "Los Angeles County residents directly impacted by fires can request property and vital records (i.e., birth, death, marriage) at no cost to support their recovery efforts.",
+      "checked": "2026-10-25"
     }
   },
   "actions": [
@@ -658,7 +693,7 @@
           },
           "sources": [
             "rrcc_fire",
-            "lafires_docs"
+            "lavote_recovery"
           ]
         }
       ],
@@ -691,6 +726,7 @@
       },
       "sources": [
         "lavote_mail",
+        "lavote_fees",
         "hsc103526"
       ],
       "verified": false
@@ -739,7 +775,8 @@
       },
       "sources": [
         "ssa_replace",
-        "ssa_poms"
+        "ssa_poms",
+        "ssa_poms_school"
       ],
       "verified": false
     },
@@ -838,7 +875,7 @@
             "es": "costo reducido con DL 937"
           },
           "sources": [
-            "dmv_fees"
+            "dmv_fees_reduced"
           ],
           "say": {
             "en": "I'm applying for a reduced-fee ID card. Here is my signed DL 937.",
@@ -961,7 +998,7 @@
             "es": "costo reducido con DL 937"
           },
           "sources": [
-            "dmv_fees"
+            "dmv_fees_reduced"
           ],
           "say": {
             "en": "I'm replacing my ID at the reduced fee. Here is my signed DL 937.",
@@ -1015,7 +1052,8 @@
       },
       "sources": [
         "dmv_replace",
-        "dmv_id_page"
+        "dmv_id_page",
+        "dmv_fees"
       ],
       "verified": false
     }
