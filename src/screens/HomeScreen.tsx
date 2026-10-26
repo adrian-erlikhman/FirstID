@@ -8,15 +8,14 @@ import { t, type Lang } from "../i18n";
 import { Bento, LoopStory, PaperStage } from "./HomeParts";
 import { MariaTrail } from "./MariaTrail";
 
-// The first thing anyone sees, laid out like a product page:
-// one big line and the product itself (Maria's real computed path, as an ID
-// card you can tilt and flip), then the problem told as a scroll story, the
-// numbers, the real forms, how it works, and Maria's path on real paper.
+// The home page: the headline and the summary of Maria's path, then the
+// problem as a scroll story, photos if there are any, the numbers, the real
+// forms, how it works, and Maria's path step by step.
 export function HomeScreen({ rules, lang, onStart, onExample }: {
   rules: RuleSet; lang: Lang; onStart: () => void; onExample: (id: string) => void;
 }) {
   const s = t[lang];
-  // The example cards show each person's real computed path, not typed numbers.
+  // Maria's numbers come from the planner, not typed in.
   const exPlans = useMemo(() => examples.map((e) => plan(rules, { ...e.person, have: withImplied(e.person.have) }, "cheapest")), [rules]);
   const maria = exPlans[examples.findIndex((e) => e.id === "maria")];
   const band = (["office", "papers", "counter"] as const).filter((n) => photoUrl(n));
