@@ -25,7 +25,7 @@ export function SourcesScreen({ rules, lang }: { rules: RuleSet; lang: Lang }) {
             {rules.actions.map((a, i) => {
               const isOpen = open === a.id;
               return (
-                <li key={a.id} className="rule">
+                <li key={a.id} className={`rule${isOpen ? " is-open" : ""}`}>
                   <button className="rule-head" aria-expanded={isOpen} onClick={() => setOpen(isOpen ? null : a.id)}>
                     <span className="row-num" aria-hidden="true">{i + 1}</span>
                     <span className="rule-name">{a.label[lang]}</span>

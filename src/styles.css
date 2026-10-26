@@ -615,6 +615,10 @@ h2.display.wide { max-width: 20ch; margin-bottom: 28px; }
 .rule-chev { grid-column: 4; grid-row: 1; display: flex; padding-top: 2px; color: var(--text-2); }
 .rule-chev .icon { transform: rotate(90deg); transition: transform .25s var(--ease); }
 .rule-head[aria-expanded="true"] .rule-chev .icon { transform: rotate(-90deg); }
+/* An open rule sits on a light grey band, its source cards white on it, so
+   while scrolling a long list of quotes it stays clear whose sources they are. */
+.rule.is-open { background: var(--wash); }
+.rule-body > .row-sub { color: var(--ink); }
 .rule-name { font-weight: 600; font-size: 1rem; line-height: 1.35; letter-spacing: -0.01em; }
 .rule-head .tag { margin-top: 1px; }
 .rule-src { grid-column: 2 / -1; font-size: 0.875rem; line-height: 1.4; color: var(--text-2); }
