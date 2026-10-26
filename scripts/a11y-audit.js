@@ -18,7 +18,7 @@ const SCREENS = ["#/", "#/have", "#/questions", "#/example/maria", "#/step/1", "
 // Kept short on purpose: anything new that is small shows up in the report.
 const SMALL_OK = [".label", ".tag", ".row-num", ".source-host", ".source-meta", ".switch-text", ".step-place", ".cc-mode",
   ".lang", ".nav-cta", ".ts-toggle", ".ts-menu", ".foot", ".sheet", ".pill-num", ".facts dt", ".cc-fields dt", ".orb-label",
-  ".solver-head", ".sr-only", ".step-cost s"];
+  ".solver-head", ".sr-only", ".step-cost s", ".trail-n"];
 
 const wait = (ms) => new Promise((r) => setTimeout(r, ms));
 
