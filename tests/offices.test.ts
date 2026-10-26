@@ -57,7 +57,7 @@ describe("office sorting", () => {
     expect(g.map((x) => `${x.from}-${x.to}`)).toEqual(["mon-tue", "wed-wed", "thu-fri", "sat-sun"]);
   });
 
-  it("has a route that round-trips", () => {
+  it("the offices route round-trips, and parses without a step number", () => {
     expect(parse(href({ name: "offices", kind: "dmv", n: 3 }))).toEqual({ name: "offices", kind: "dmv", n: 3 });
     expect(parse("#/offices/dmv")).toEqual({ name: "offices", kind: "dmv" });
   });
