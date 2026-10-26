@@ -515,9 +515,11 @@ h2.display.wide { max-width: 20ch; margin-bottom: 28px; }
 .step-row > .icon { align-self: center; color: var(--text-2); }
 .step-main { display: flex; flex-direction: column; gap: 3px; min-width: 0; }
 .step-place { font-size: 0.8125rem; margin-bottom: 1px; }
-.step-title { font-size: 1.0625rem; font-weight: 600; line-height: 1.3; letter-spacing: -0.015em; }
+.step-title { font-size: 1.0625rem; font-weight: 600; line-height: 1.3; letter-spacing: -0.015em; text-wrap: pretty; }
 .step-waiver { font-size: 0.875rem; line-height: 1.4; color: var(--text-2); }
 .step-when { font-size: 0.875rem; line-height: 1.4; color: var(--text-2); }
+/* No word left alone on the last line ("same visit as step / 2", "sin / costo)"). */
+.step-place, .step-waiver, .step-when { text-wrap: pretty; }
 .step-cost { display: flex; flex-direction: column; align-items: flex-end; gap: 1px; font-size: 1rem; font-weight: 600; padding-top: 18px; }
 .step-cost s { color: var(--text-2); font-size: 0.8438rem; font-weight: 400; }
 .help { margin-top: 16px; padding: 18px; display: flex; flex-direction: column; align-items: flex-start; gap: 6px; }
