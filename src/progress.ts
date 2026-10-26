@@ -36,6 +36,13 @@ export function saveTicks(ticks: Ticks, store: Pick<Storage, "setItem" | "remove
   } catch { /* storage blocked or full: keep going without it */ }
 }
 
+/** Forget every stored tick, including ticks for steps not in the current plan.
+ *  "Start over" and "Clear my progress" both call this, so the next person on a
+ *  shared phone starts with none. */
+export function clearTicks(store: Pick<Storage, "setItem" | "removeItem"> | null = safeLocal()): void {
+  saveTicks({}, store);
+}
+
 export function toggleTick(ticks: Ticks, id: string, done: boolean): Ticks {
   const next = { ...ticks };
   if (done) next[id] = true;
@@ -44,7 +51,8 @@ export function toggleTick(ticks: Ticks, id: string, done: boolean): Ticks {
 }
 
 /** Only the ticks for steps in the current plan. Ticks for steps that left the
- *  plan stay stored (they come back if the plan does) but are never shown. */
+ *  plan stay stored (they come back if the plan does) until "Start over" or
+ *  "Clear my progress" removes them. */
 export function ticksInPlan(ticks: Ticks, stepIds: string[]): Set<string> {
   return new Set(stepIds.filter((id) => ticks[id] === true));
 }
