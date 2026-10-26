@@ -186,8 +186,15 @@
       "id": "dmv_fees",
       "title": "DMV: Licensing fees",
       "url": "https://www.dmv.ca.gov/portal/driver-licenses-identification-cards/licensing-fees/",
-      "quote": "TODO: copy the exact ID card fee line ($40 regular, $11 reduced)",
-      "checked": "2026-10-18"
+      "quote": "Regular ID card | – Original – Renewal – Replacement (lost or stolen) – Change DL/ID Information – Emancipated minor | $40",
+      "checked": "2026-10-25"
+    },
+    "dmv_fees_reduced": {
+      "id": "dmv_fees_reduced",
+      "title": "DMV: Licensing fees, reduced-fee ID card",
+      "url": "https://www.dmv.ca.gov/portal/driver-licenses-identification-cards/licensing-fees/",
+      "quote": "Reduced-fee ID card | – Original – Renewal – Replacement (lost or stolen) – Change DL/ID Information | $11",
+      "checked": "2026-10-25"
     },
     "dmv_ssn": {
       "id": "dmv_ssn",
@@ -227,9 +234,9 @@
     "vc14902": {
       "id": "vc14902",
       "title": "Vehicle Code 14902 (no-fee and reduced-fee IDs)",
-      "url": "https://codes.findlaw.com/ca/vehicle-code/veh-sect-14902/",
-      "quote": "TODO: copy the no-fee sentence for homeless applicants from leginfo",
-      "checked": "2026-10-18"
+      "url": "https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?lawCode=VEH&sectionNum=14902",
+      "quote": "A fee shall not be charged for an original or replacement identification card issued to any person who can verify their status as a homeless person",
+      "checked": "2026-10-25"
     },
     "dmv_replace": {
       "id": "dmv_replace",
@@ -861,7 +868,7 @@
             "es": "costo reducido con DL 937"
           },
           "sources": [
-            "dmv_fees"
+            "dmv_fees_reduced"
           ],
           "say": {
             "en": "I'm applying for a reduced-fee ID card. Here is my signed DL 937.",
@@ -984,7 +991,7 @@
             "es": "costo reducido con DL 937"
           },
           "sources": [
-            "dmv_fees"
+            "dmv_fees_reduced"
           ],
           "say": {
             "en": "I'm replacing my ID at the reduced fee. Here is my signed DL 937.",
@@ -1038,7 +1045,8 @@
       },
       "sources": [
         "dmv_replace",
-        "dmv_id_page"
+        "dmv_id_page",
+        "dmv_fees"
       ],
       "verified": false
     }
