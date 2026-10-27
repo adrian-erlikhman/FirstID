@@ -109,6 +109,13 @@ describe("i18n: lookup tables cover what the app looks up", () => {
     }
   });
 
+  it("every rule has a question to ask when you call ahead, in both languages", () => {
+    for (const a of rules.actions) {
+      expect(en.callAsk[a.id], a.id).toBeTruthy();
+      expect(es.callAsk[a.id], a.id).toBeTruthy();
+    }
+  });
+
   it("every yes/no answer the what-if screen can flip has a label in both languages", () => {
     for (const f of FLIPPABLE_FACTS) {
       expect(en.factLabels[f], f).toBeTruthy();
