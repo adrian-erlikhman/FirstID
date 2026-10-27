@@ -85,7 +85,9 @@ export function Bento({ rules, lang, maria }: { rules: RuleSet; lang: Lang; mari
           <span className="tile-rows">
             {maria.steps.filter((st) => st.waiver).map((st, i) => (
               <span key={st.action.id} className="tile-row" style={{ ["--i" as string]: i }}>
-                <span className="hs-label">{rules.docs[st.action.produces[0]]?.label[lang] ?? st.action.label[lang]}</span>
+                {/* Birth certificates here always come from LA County by mail, and the
+                    price beside it is LA County's fee, so the tile names the county. */}
+                <span className="hs-label">{st.action.produces[0] === "birth_cert_ca" ? s.laBirthCert : rules.docs[st.action.produces[0]]?.label[lang] ?? st.action.label[lang]}</span>
                 <s className="num">{money(st.action.dollars)}</s>
                 <span className="row-sub">{st.waiver!.label[lang]}</span>
               </span>

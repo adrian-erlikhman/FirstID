@@ -1,9 +1,9 @@
 import { Br, Collapse, Icon, LiveNote, Notice, PathCard, Pills, Solver, Swap, Tween, Unconfirmed, WasPrice, fullPrice, money, placeOf } from "../components";
 import { useListPresence } from "../motion";
-import type { Facts, Mode, Person, Plan, RuleSet, Step } from "../engine/types";
+import type { Action, Facts, Mode, Person, Plan, RuleSet, Step } from "../engine/types";
 import { t, type Lang } from "../i18n";
 import { href } from "../router";
-import { flipsThatMatter, helpOptions, noPathNotes, type NoPathNote } from "../whatif";
+import { flipsThatMatter, helpOptions, noPathNotes, sameUnder, type NoPathNote } from "../whatif";
 import { useEffect, useMemo, useState } from "react";
 import { under18 } from "../person";
 import { clearTicks as forgetTicks, loadTicks, reminderFor, reminderIcs, saveTicks, ticksInPlan, toggleTick, type Ticks } from "../progress";
@@ -94,7 +94,21 @@ function StepList({ rules, lang, plan, done, onDone }: {
   );
 }
 
-export function NoPath({ rules, lang, person, onBack }: { rules: RuleSet; lang: Lang; person: Person; onBack: () => void }) {
+/** The steps the person said they can't do, with a way to put them back. */
+function Skipped({ lang, skipped, onUnskip }: { lang: Lang; skipped: Action[]; onUnskip: () => void }) {
+  const s = t[lang];
+  if (!skipped.length) return null;
+  return (
+    <Notice title={s.skippedTitle(skipped.length)}>
+      <ul className="skipped-list">{skipped.map((a) => <li key={a.id}>{a.label[lang]}</li>)}</ul>
+      <button type="button" className="btn ghost" onClick={onUnskip}>{s.skippedUndo(skipped.length)}</button>
+    </Notice>
+  );
+}
+
+export function NoPath({ rules, lang, person, onBack, skipped = [], onUnskip = () => {} }: {
+  rules: RuleSet; lang: Lang; person: Person; onBack: () => void; skipped?: Action[]; onUnskip?: () => void;
+}) {
   const s = t[lang];
   const text: Record<NoPathNote, string> = {
     bornCA: s.noPathBornCA, bornElsewhere: s.noPathBornElsewhere, bornAbroad: s.noPathBornAbroad,
@@ -111,6 +125,7 @@ export function NoPath({ rules, lang, person, onBack }: { rules: RuleSet; lang: 
           <p className="lede">{s.noPathBody}</p>
         </div>
         <div className="body">
+          <Skipped lang={lang} skipped={skipped} onUnskip={onUnskip} />
           {notes.map((n) => <Notice key={n}>{text[n]}</Notice>)}
           {under18(person.facts) && <Notice title={s.notYetTitle}>{s.notYetUnder18}</Notice>}
           {canOpen && (
@@ -135,6 +150,7 @@ export function NoPath({ rules, lang, person, onBack }: { rules: RuleSet; lang: 
 export function PathScreen(props: {
   rules: RuleSet; lang: Lang; result: Plan | null; mode: Mode; onMode: (m: Mode) => void; person: Person;
   help: { doc: string; plan: Plan } | null; facts: Facts; onChangeAnswers: () => void; ms: number;
+  skipped: Action[]; onUnskip: () => void;
 }) {
   const { rules, lang, result, mode, onMode, help, ms } = props;
   const s = t[lang];
@@ -145,7 +161,9 @@ export function PathScreen(props: {
   // The link goes away once there is nothing to clear, so hand focus to the heading.
   const clearTicks = () => { setTicks({}); forgetTicks(); document.querySelector<HTMLElement>("main h1")?.focus(); };
   const done = useMemo(() => ticksInPlan(ticks, result ? result.steps.map((st) => st.action.id) : []), [ticks, result]);
-  if (!result) return <NoPath rules={rules} lang={lang} person={props.person} onBack={props.onChangeAnswers} />;
+  // Sorts that land on this same path, so switching to them doesn't look broken.
+  const same = useMemo(() => (result ? sameUnder(rules, props.person, mode, result) : []), [rules, props.person, mode, result]);
+  if (!result) return <NoPath rules={rules} lang={lang} person={props.person} onBack={props.onChangeAnswers} skipped={props.skipped} onUnskip={props.onUnskip} />;
 
   const unverified = result.steps.filter((st) => !st.action.verified).length;
   return (
@@ -168,12 +186,19 @@ export function PathScreen(props: {
         </div>
 
         <div className="body">
+          <Skipped lang={lang} skipped={props.skipped} onUnskip={props.onUnskip} />
           <PathCard plan={result} lang={lang} mode={mode} className="path-card" />
+          <p className="path-est">{s.estimateNote}</p>
           <Solver title={s.cardLabel} readout={result.explored !== undefined ? s.solvedIn(result.explored, ms) : undefined}>
             <div className="solver-tabs">
               <Pills label={s.modesLabel} value={mode} onChange={onMode}
                 options={[["cheapest", s.modeCheapest], ["fewestTrips", s.modeTrips], ["fastest", s.modeFastest]] as const} />
               <p className="mode-hint"><Swap text={s.modeHint[mode]} /></p>
+              {same.length > 0 && <p className="mode-same"><Swap text={same.length === 2 ? s.modeSameAll : s.modeAlso[same[0]]} /></p>}
+              <details className="how-chosen">
+                <summary>{s.howChosen}</summary>
+                <p>{s.howChosenBody(rules.actions.length + props.skipped.length)}</p>
+              </details>
               <LiveNote text={`${{ cheapest: s.modeCheapest, fewestTrips: s.modeTrips, fastest: s.modeFastest }[mode]}. ${s.cardSummary({ total: result.total.dollars, full: fullPrice(result), steps: result.total.steps, trips: result.total.trips, days: result.total.days })}`} />
             </div>
             <StepList rules={rules} lang={lang} plan={result} done={done} onDone={setTick} />

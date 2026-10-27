@@ -25,6 +25,20 @@ export function applyFlips(person: Person, flips: Flip[]): Person {
   return { facts, have: [...have] };
 }
 
+/** The rules without the steps a person said they can't do, so the planner
+ *  looks for another way. */
+export function withoutSteps(rules: RuleSet, ids: string[]): RuleSet {
+  return ids.length ? { ...rules, actions: rules.actions.filter((a) => !ids.includes(a.id)) } : rules;
+}
+
+export const MODES: Mode[] = ["cheapest", "fewestTrips", "fastest"];
+
+/** The other sorts that give exactly this path, so the path screen can say so
+ *  instead of letting a sort button look broken. */
+export function sameUnder(rules: RuleSet, person: Person, mode: Mode, current: Plan): Mode[] {
+  return MODES.filter((m) => m !== mode && samePlan(plan(rules, person, m), current));
+}
+
 /** Same steps, same totals? Then the flip changed nothing worth showing. */
 export function samePlan(a: Plan | null, b: Plan | null): boolean {
   if (!a || !b) return a === b;

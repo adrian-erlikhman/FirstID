@@ -3,7 +3,9 @@ import rulesJson from "../data/rules.json";
 import { Lockup, TopBar } from "./components";
 import { plan, whatHelps } from "./engine/planner";
 import type { Facts, Mode, Person, Plan, RuleSet } from "./engine/types";
+import { restoreOwn, setAside, type Answers } from "./answers";
 import { examples } from "./examples";
+import { withoutSteps } from "./whatif";
 import { withImplied } from "./person";
 import { clearTicks } from "./progress";
 import { t, type Lang } from "./i18n";
@@ -24,7 +26,9 @@ const rules = rulesJson as unknown as RuleSet;
 // page in the background doesn't wipe them. They never leave the phone, and
 // they are gone when the tab closes. If storage is blocked, the app still works.
 const SAVE_KEY = "first-id:v1";
-interface Saved { have: string[]; facts: Facts; unsure: string[]; answered: boolean; mode: Mode; lang: Lang }
+/** `example` is set while an example (Maria) is on screen; the person's own
+ *  answers wait in `own` and come back when they tap "Find my path". */
+interface Saved extends Answers { mode: Mode; lang: Lang; example: boolean; own: Answers | null }
 const saved: Partial<Saved> = (() => {
   try { return JSON.parse(sessionStorage.getItem(SAVE_KEY) ?? "{}"); } catch { return {}; }
 })();
@@ -42,41 +46,65 @@ export default function App() {
   const [unsure, setUnsure] = useState<string[]>(saved.unsure ?? []);
   const [answered, setAnswered] = useState(saved.answered ?? false);
   const [mode, setMode] = useState<Mode>(saved.mode ?? "cheapest");
+  const [skip, setSkip] = useState<string[]>(saved.skip ?? []);
+  const [example, setExample] = useState(saved.example ?? false);
+  const [own, setOwn] = useState<Answers | null>(saved.own ?? null);
   const s = t[lang];
   const person: Person = useMemo(() => ({ facts, have: withImplied(have) }), [facts, have]);
+  // The rules this person can use: all of them, minus the steps they said they can't do.
+  const live = useMemo(() => withoutSteps(rules, skip), [skip]);
 
   useEffect(() => {
-    try { sessionStorage.setItem(SAVE_KEY, JSON.stringify({ have, facts, unsure, answered, mode, lang } satisfies Saved)); } catch { /* storage blocked */ }
-  }, [have, facts, unsure, answered, mode, lang]);
+    try { sessionStorage.setItem(SAVE_KEY, JSON.stringify({ have, facts, unsure, answered, skip, mode, lang, example, own } satisfies Saved)); } catch { /* storage blocked */ }
+  }, [have, facts, unsure, answered, skip, mode, lang, example, own]);
 
   const { result, ms } = useMemo(() => {
     if (!answered) return { result: null as Plan | null, ms: 0 };
     const t0 = performance.now();
-    const p = plan(rules, person, mode);
+    const p = plan(live, person, mode);
     return { result: p, ms: performance.now() - t0 };
-  }, [answered, person, mode]);
+  }, [answered, person, mode, live]);
 
   // "What would help most": only ever suggest something that makes the path
   // cheaper or shorter, never one that saves a trip by costing more.
   const help = useMemo(() => {
     if (!result) return null;
-    const top = whatHelps(rules, person, mode)[0];
-    const p = top && plan(rules, { ...person, have: [...person.have, top.doc] }, mode);
+    const top = whatHelps(live, person, mode)[0];
+    const p = top && plan(live, { ...person, have: [...person.have, top.doc] }, mode);
     if (!top || !p) return null;
     const a = p.total, b = result.total;
     const better = a.dollars <= b.dollars && a.steps <= b.steps && (a.dollars < b.dollars || a.steps < b.steps);
     return better ? { doc: top.doc, plan: p } : null;
-  }, [result, person, mode]);
+  }, [result, person, mode, live]);
 
   const load = (p: Person) => { setHave([...p.have]); setFacts({ ...p.facts }); setUnsure([]); setAnswered(true); };
   // Start over also forgets the ticks, so the next person on a shared phone starts clean.
-  const reset = () => { setHave([]); setFacts({}); setUnsure([]); setAnswered(false); setMode("cheapest"); clearTicks(); };
+  const reset = () => {
+    setHave([]); setFacts({}); setUnsure([]); setAnswered(false); setSkip([]); setMode("cheapest"); clearTicks();
+    setExample(false); setOwn(null);
+  };
+  // Opening an example sets the person's own answers aside instead of overwriting them.
+  const showExample = (p: Person) => {
+    setOwn(setAside(example, own, { have, facts, unsure, answered, skip }));
+    setExample(true);
+    setSkip([]);
+    load(p);
+  };
+  // "Find my path": after an example, bring back the person's own answers (or a blank start).
+  const start = () => {
+    if (example) {
+      const a = restoreOwn(own);
+      setHave(a.have); setFacts(a.facts); setUnsure(a.unsure); setAnswered(a.answered); setSkip(a.skip);
+      setExample(false); setOwn(null);
+    }
+    go({ name: "have" });
+  };
 
   // Deep links (#/example/maria) and screens that need answers first.
   useEffect(() => {
     if (route.name === "example") {
       const ex = examples.find((e) => e.id === route.id);
-      if (ex) load(ex.person);
+      if (ex) showExample(ex.person);
       go(ex ? { name: "path" } : { name: "home" }, true);
       return;
     }
@@ -111,14 +139,14 @@ export default function App() {
 
   const bar = (back?: Route) => (
     <TopBar lang={lang} onLang={setLang} onBack={back ? () => go(back) : undefined} onHome={() => go({ name: "home" })}
-      onStart={route.name === "home" ? () => go({ name: "have" }) : undefined} />
+      onStart={route.name === "home" ? start : undefined} />
   );
 
   let screen: JSX.Element | null = null;
   let top = bar();
   switch (route.name) {
     case "home":
-      screen = <HomeScreen rules={rules} lang={lang} onStart={() => go({ name: "have" })} onExample={(id) => go({ name: "example", id })} />;
+      screen = <HomeScreen rules={rules} lang={lang} onStart={start} onExample={(id) => go({ name: "example", id })} />;
       break;
     case "have":
       top = bar({ name: "home" });
@@ -134,18 +162,20 @@ export default function App() {
       break;
     case "path":
       top = bar({ name: "questions" });
-      screen = answered ? <PathScreen rules={rules} lang={lang} result={result} mode={mode} onMode={setMode} ms={ms} person={person}
-        help={help} facts={facts} onChangeAnswers={() => go({ name: "questions" })} /> : null;
+      screen = answered ? <PathScreen rules={live} lang={lang} result={result} mode={mode} onMode={setMode} ms={ms} person={person}
+        help={help} facts={facts} onChangeAnswers={() => go({ name: "questions" })}
+        skipped={rules.actions.filter((a) => skip.includes(a.id))} onUnskip={() => setSkip([])} /> : null;
       break;
     case "step":
       if (result?.steps[route.n - 1]) {
         top = bar({ name: "path" });
-        screen = <StepScreen rules={rules} lang={lang} plan={result} n={route.n} />;
+        screen = <StepScreen rules={live} lang={lang} plan={result} n={route.n} person={person} mode={mode}
+          onSkip={(id) => { setSkip([...skip, id]); go({ name: "path" }); }} />;
       }
       break;
     case "whatif":
       top = bar({ name: "path" });
-      screen = answered ? <WhatIfScreen rules={rules} lang={lang} person={person} mode={mode}
+      screen = answered ? <WhatIfScreen rules={live} lang={lang} person={person} mode={mode}
         onApply={(p) => { load(p); go({ name: "path" }); }} /> : null;
       break;
     case "packet":
