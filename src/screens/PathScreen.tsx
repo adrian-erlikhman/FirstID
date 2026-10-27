@@ -191,7 +191,7 @@ export function PathScreen(props: {
           <p className="path-est">{s.estimateNote}</p>
           <Solver title={s.cardLabel} readout={result.explored !== undefined ? s.solvedIn(result.explored, ms) : undefined}>
             <div className="solver-tabs">
-              <Pills label={s.modesLabel} value={mode} onChange={onMode}
+              <Pills label={s.modesLabel} value={mode} onChange={onMode} className="pills-modes"
                 options={[["cheapest", s.modeCheapest], ["fewestTrips", s.modeTrips], ["fastest", s.modeFastest]] as const} />
               <p className="mode-hint"><Swap text={s.modeHint[mode]} /></p>
               {same.length > 0 && <p className="mode-same"><Swap text={same.length === 2 ? s.modeSameAll : s.modeAlso[same[0]]} /></p>}

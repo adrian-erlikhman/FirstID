@@ -140,6 +140,15 @@ export function useCountUp(to: number, go: boolean, ms = 900) {
 /** A number that glides to its new value instead of jumping: the card's total
  *  counts down from $89 to $15 when an answer changes. Snaps straight there
  *  for reduced motion and light mode. */
+/** Where a count-up is after `elapsed` ms, easing out. A frame's timestamp can
+ *  come from just before the animation started, so `elapsed` can be negative:
+ *  clamped, the number never passes either end ($15 counting up from $0 never
+ *  shows "$-1" for a frame). */
+export function tweenAt(start: number, end: number, elapsed: number, ms: number): number {
+  const p = Math.max(0, Math.min(1, elapsed / ms));
+  return start + (end - start) * (1 - Math.pow(1 - p, 4));
+}
+
 export function useTween(value: number, ms = 700) {
   const [shown, setShown] = useState(value);
   const from = useRef(value);
@@ -148,11 +157,10 @@ export function useTween(value: number, ms = 700) {
     const start = from.current, t0 = performance.now();
     let raf = 0;
     const frame = (now: number) => {
-      const p = Math.min(1, (now - t0) / ms);
-      const v = start + (value - start) * (1 - Math.pow(1 - p, 4));
+      const v = tweenAt(start, value, now - t0, ms);
       from.current = v;
       setShown(v);
-      if (p < 1) raf = requestAnimationFrame(frame);
+      if (now - t0 < ms) raf = requestAnimationFrame(frame);
     };
     raf = requestAnimationFrame(frame);
     return () => cancelAnimationFrame(raf);

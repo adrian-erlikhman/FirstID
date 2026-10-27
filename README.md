@@ -30,7 +30,7 @@ data/rules.json ──► npm run lint:rules ──► planner (in the browser) 
 4. **Every step cites its source** and quotes the sentence that supports it; we check each quote against its source when we verify the rule. The "How we know" screen lists every rule with its sources; a fee waiver's sources show on the step where it applies.
 5. **What-if and dead ends.** The app shows which answers would change your path, and when there's no path it says what's blocking it and who can help.
 
-The tests ([`tests/`](tests/)) cover the planner, four invented people checked against hand-worked plans, the "more documents never hurts" guarantee, the what-if and no-path logic, the links between screens, the office list and the progress logic. `npm run check` runs all of it plus the build, and nothing deploys unless it passes.
+The tests ([`tests/`](tests/)) cover the planner, four invented people checked against hand-worked plans, the "more documents never hurts" guarantee, the what-if and no-path logic, the links between screens, the office list, the progress logic, that Read aloud never picks an online voice, and that the offline copy is always the app. [`tests/every-person.test.ts`](tests/every-person.test.ts) checks a fixed sample of every answer the screens allow (about 5 million people: birthplace, age band or skipped, yes / no / not sure on five questions, any set of the intake papers): each path is replayed step by step and must add up and waste nothing, matches a brute-force search of every order of steps, and "Not sure" gives the same path as "No"; a dead end always says what is blocking. [`scripts/check-every-person.ts`](scripts/check-every-person.ts) runs the same checks on all of them. `npm run check` runs the tests plus the build, and nothing deploys unless it passes.
 
 ## What's real and what's made up
 
@@ -75,9 +75,9 @@ data/          rules, DMV offices and ZIP centres, each with sources
 src/engine/    types, rule linter and the planner (Dijkstra)
 src/screens/   every screen, from home to the printed packet
 src/           app state, routes, what-if, progress, strings (EN/ES), styles
-tests/         planner, persona, what-if, no-path, packet, translation, rules-data, office and progress tests (Vitest)
+tests/         planner, persona, every-person, what-if, no-path, packet, translation, rules-data, office, progress, Read aloud and offline tests (Vitest)
 public/        icons, manifest and the offline service worker
-scripts/       the rule linter's command line, the colour contrast check and a browser accessibility audit
+scripts/       the rule linter's command line, the colour contrast check, a browser accessibility audit and the every-person check
 docs/          background research and team notes
 ```
 

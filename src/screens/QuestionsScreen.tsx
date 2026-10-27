@@ -1,5 +1,5 @@
-import { useEffect, useRef, useState, type ReactNode } from "react";
-import { Icon, Pills } from "../components";
+import { useRef, useState, type ReactNode } from "react";
+import { Icon, Pills, useFloatingBar } from "../components";
 import type { Facts } from "../engine/types";
 import { t, type Lang } from "../i18n";
 import { readyForPath } from "../person";
@@ -56,18 +56,7 @@ export function QuestionsScreen(props: {
     bornRef.current?.querySelector<HTMLButtonElement>("button")?.focus({ preventScroll: true });
   };
 
-  // The bar only gets its frosted ground while it floats over the questions;
-  // at rest under the last one it stays clear. A marker just after the bar
-  // is on screen exactly when the bar is at rest.
-  const barEnd = useRef<HTMLDivElement>(null);
-  const [floating, setFloating] = useState(false);
-  useEffect(() => {
-    const el = barEnd.current;
-    if (!el || typeof IntersectionObserver === "undefined") return;
-    const io = new IntersectionObserver(([e]) => setFloating(!e.isIntersecting && e.boundingClientRect.top > 0));
-    io.observe(el);
-    return () => io.disconnect();
-  }, []);
+  const { ref: barEnd, floating } = useFloatingBar();
 
   return (
     <section className="screen">
