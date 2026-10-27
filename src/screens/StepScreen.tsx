@@ -1,16 +1,24 @@
+import { useMemo } from "react";
 import { Block, FormPaper, Icon, Notice, SourceCard, WasPrice, formFor, money, placeOf, sayFor } from "../components";
-import type { Plan, RuleSet } from "../engine/types";
+import { plan as planFor } from "../engine/planner";
+import type { Mode, Person, Plan, RuleSet } from "../engine/types";
 import { t, type Lang } from "../i18n";
 import { href } from "../router";
+import { withoutSteps } from "../whatif";
 import { OfficesLink } from "./OfficesScreen";
 import { SayTools } from "./SayTools";
 
 // One step, with the proof: where to go, what to bring, what to
 // say, and the official sentence that makes it legal. This is the screen a
 // person shows the clerk when the clerk says no.
-export function StepScreen({ rules, lang, plan, n }: { rules: RuleSet; lang: Lang; plan: Plan; n: number }) {
+export function StepScreen({ rules, lang, plan, n, person, mode, onSkip }: {
+  rules: RuleSet; lang: Lang; plan: Plan; n: number; person: Person; mode: Mode; onSkip: (id: string) => void;
+}) {
   const s = t[lang];
   const st = plan.steps[n - 1];
+  // "Can't do this step?": the same search with this step taken out.
+  const id = st?.action.id;
+  const alt = useMemo(() => (id ? planFor(withoutSteps(rules, [id]), person, mode) : null), [rules, id, person, mode]);
   if (!st) return null;
   const a = st.action;
   const place = placeOf(rules, st);
@@ -45,7 +53,12 @@ export function StepScreen({ rules, lang, plan, n }: { rules: RuleSet; lang: Lan
             <div><dt>{s.time}</dt><dd>{timeText}</dd></div>
           </dl>
 
-          {!a.verified && <Notice tone="draft" title={s.callAhead}>{place.inPerson ? s.callAheadLong : s.callAheadLongMail}</Notice>}
+          {!a.verified && (
+            <Notice tone="draft" title={s.callAhead}>
+              <p>{place.inPerson ? s.callAheadLong : s.callAheadLongMail}</p>
+              {s.callAsk[a.id] && <p className="call-ask"><strong>{s.callAskLabel}</strong> “{s.callAsk[a.id]}”</p>}
+            </Notice>
+          )}
 
           {a.bring?.length ? (
             <Block label={place.inPerson ? s.bring : s.bringMail}>
@@ -75,6 +88,37 @@ export function StepScreen({ rules, lang, plan, n }: { rules: RuleSet; lang: Lan
               <div className="sources">{waiverSources.map((id) => <SourceCard key={id} src={rules.sources[id]} lang={lang} verified={a.verified} />)}</div>
             </Block>
           )}
+
+          <details className="panel cant-do">
+            <summary>{s.cantDo}</summary>
+            <div className="cant-body">
+              {alt ? (
+                <>
+                  <p>{s.cantDoAlt}</p>
+                  <p className="cant-sum num">
+                    {[money(alt.total.dollars), `${alt.total.steps} ${s.unitSteps(alt.total.steps)}`, `${alt.total.trips} ${s.unitTrips(alt.total.trips)}`, s.timeShort(alt.total.days)].join(" · ")}
+                  </p>
+                  <ol className="mini-steps">
+                    {alt.steps.map((x, i) => (
+                      <li key={x.action.id}>
+                        <div className="mini-in">
+                          <span className="row-num" aria-hidden="true">{i + 1}</span>
+                          <span className="mini-label">{x.action.label[lang]}</span>
+                          <span className={`num${x.dollars === 0 ? " free" : ""}`}>{x.dollars === 0 ? s.free : money(x.dollars)}</span>
+                        </div>
+                      </li>
+                    ))}
+                  </ol>
+                  <button type="button" className="btn ghost" onClick={() => onSkip(a.id)}>{s.cantDoUse}</button>
+                </>
+              ) : (
+                <>
+                  <p>{s.cantDoNone}</p>
+                  <a className="link-row" href="tel:211"><span className="link-main"><strong>{s.help211}</strong><span className="row-sub">{s.help211Line}</span></span><Icon name="phone" size={18} /></a>
+                </>
+              )}
+            </div>
+          </details>
 
           <nav className="actions pair" aria-label={s.backToPath}>
             {n > 1
