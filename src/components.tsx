@@ -333,6 +333,23 @@ export function Notice({ tone = "info", title, children }: { tone?: "info" | "dr
 }
 
 /** Pick one answer. Pills with aria-pressed, so screen readers announce the choice. */
+/** The bar pinned to the bottom of a long form ("Next", "Show my path"). It only
+ *  gets its own ground while it floats over the form; at rest under the form it
+ *  stays clear. A marker just after the bar is on screen exactly when the bar is
+ *  at rest. Put `ref` on an empty element right after the bar. */
+export function useFloatingBar() {
+  const ref = useRef<HTMLDivElement>(null);
+  const [floating, setFloating] = useState(false);
+  useEffect(() => {
+    const el = ref.current;
+    if (!el || typeof IntersectionObserver === "undefined") return;
+    const io = new IntersectionObserver(([e]) => setFloating(!e.isIntersecting && e.boundingClientRect.top > 0));
+    io.observe(el);
+    return () => io.disconnect();
+  }, []);
+  return { ref, floating };
+}
+
 export function Pills<V>(props: { label: string; options: readonly (readonly [V, string])[]; value: V | null; onChange: (v: V) => void; className?: string }) {
   return (
     <div className={`pills ${props.className ?? ""}`} role="group" aria-label={props.label}>

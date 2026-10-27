@@ -7,6 +7,7 @@ import { restoreOwn, setAside, type Answers } from "./answers";
 import { examples } from "./examples";
 import { withoutSteps } from "./whatif";
 import { withImplied } from "./person";
+import { hasOffices } from "./offices";
 import { clearTicks } from "./progress";
 import { t, type Lang } from "./i18n";
 import { go, parse, useRoute, type Route } from "./router";
@@ -112,6 +113,8 @@ export default function App() {
     if (needsAnswers && !answered) go({ name: "have" }, true);
     else if (route.name === "step" && (!result || route.n > result.steps.length)) go({ name: "path" }, true);
     else if (route.name === "packet" && !result) go({ name: "path" }, true);
+    // An old or mistyped office link: back to the path, or home, never a blank screen.
+    else if (route.name === "offices" && !hasOffices(route.kind)) go(answered ? { name: "path" } : { name: "home" }, true);
   }, [route, answered, result]);
 
   // New screen: start at the top and move focus to its heading, so a screen

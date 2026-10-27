@@ -237,6 +237,12 @@ h1.display .bracketed .num { color: var(--on-c); background: var(--hl); padding:
 .solver-cmd::first-letter { text-transform: uppercase; }
 .solver-readout { flex: 0 1 auto; min-width: 0; font-variant-numeric: tabular-nums; }
 .solver-tabs { padding: 14px 18px; border-bottom: 1px solid var(--line); }
+/* The three sorts stay on one row, in equal widths, like a segmented control.
+   On a narrow phone, in Spanish or at a larger text size, a label breaks onto
+   two lines inside its own button instead of leaving one button alone below. */
+.pills-modes { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 6px; max-width: 440px; }
+.pills-modes > .pill { justify-content: center; text-align: center; padding-left: 8px; padding-right: 8px; text-wrap: balance; }
+@media (max-width: 639px) { .pills-modes > .pill { border-radius: 14px; } }
 .mode-hint { font-size: 0.875rem; color: var(--text-2); margin: 10px 0 0; }
 /* Phones: "Tap a step for details" is an instruction, so it gets body size. */
 @media (max-width: 639px) { .solver-head { font-size: 1rem; } }

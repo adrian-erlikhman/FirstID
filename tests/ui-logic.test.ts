@@ -6,6 +6,7 @@ import { parse, href } from "../src/router";
 import { applyFlips, flipsThatMatter, helpOptions, noPathNotes } from "../src/whatif";
 import { NOT_PAPERS, clearPapers, readyForPath, under18, withImplied } from "../src/person";
 import { plan, suggestable, whatHelps } from "../src/engine/planner";
+import { tweenAt } from "../src/motion";
 import { personas } from "./personas";
 
 const rules = rulesJson as unknown as RuleSet;
@@ -225,5 +226,20 @@ describe("not covered yet", () => {
     expect(under18({ age: 19 })).toBe(false);
     expect(under18(personas.maria.facts)).toBe(false);
     expect(under18({})).toBe(false); // no age given: say nothing
+  });
+});
+
+describe("count-up numbers", () => {
+  it("never pass either end, even on a frame stamped before the animation started", () => {
+    // A frame's timestamp can be a few ms older than the start; unclamped, $0 -> $15 showed "$-1".
+    for (const [a, b] of [[0, 15], [15, 0], [89, 15], [0, 0]]) {
+      for (const elapsed of [-50, -16, -1, 0, 1, 100, 350, 699, 700, 2000]) {
+        const v = Math.round(tweenAt(a, b, elapsed, 700));
+        expect(v, `${a}->${b} at ${elapsed}ms`).toBeGreaterThanOrEqual(Math.min(a, b));
+        expect(v, `${a}->${b} at ${elapsed}ms`).toBeLessThanOrEqual(Math.max(a, b));
+      }
+    }
+    expect(tweenAt(0, 15, 700, 700)).toBe(15);
+    expect(tweenAt(0, 15, -16, 700)).toBe(0);
   });
 });

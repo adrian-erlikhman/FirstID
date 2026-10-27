@@ -1,4 +1,4 @@
-import { Icon } from "../components";
+import { Icon, useFloatingBar } from "../components";
 import type { RuleSet } from "../engine/types";
 import { t, type Lang } from "../i18n";
 import { clearPapers } from "../person";
@@ -12,6 +12,7 @@ export function HaveScreen(props: {
   onStartOver?: () => void;
 }) {
   const { rules, lang, have, onChange, onNext, onStartOver } = props;
+  const { ref: barEnd, floating } = useFloatingBar();
   const s = t[lang];
   const docs = Object.entries(rules.docs).filter(([id, d]) => d.askAtIntake && id !== "ssn_known");
   const toggle = (id: string) => onChange(have.includes(id) ? have.filter((x) => x !== id) : [...have, id]);
@@ -42,8 +43,12 @@ export function HaveScreen(props: {
             <ul className="panel check-list single">{row("ssn_known", rules.docs.ssn_known.label[lang], s.ssnHint)}</ul>
           )}
 
-          <div className="actions row have-actions">
+          {/* "Next" stays in reach while the list scrolls, as "Show my path" does on the questions. */}
+          <div className={`actions sticky q-bar${floating ? " floating" : ""}`}>
             <button className="btn primary" onClick={onNext}>{s.toQuestions} <Icon name="arrow" size={18} /></button>
+          </div>
+          <div ref={barEnd} className="q-bar-end" aria-hidden="true" />
+          <div className="actions row have-actions">
             <button className="btn text" onClick={() => { onChange(clearPapers(have)); onNext(); }}>{s.noneOfThese}</button>
             {onStartOver && <button className="btn text" onClick={() => {
               onStartOver();
