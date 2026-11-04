@@ -61,6 +61,11 @@ All seven screens now exist as an AI-drafted first build (logged in `AI-USE.md`)
 - [ ] **User test at lunch:** 5–8 LACES students run Maria on their own phones without help. Write down how many finish and what confuses them, then fix the top three. Those fixes are yours, in your own commits.
 - [ ] **Spanish:** a native speaker reviews every string in `src/i18n.ts` and every `es` line in `data/rules.json`.
 - [ ] **Screen reader pass:** VoiceOver (iPhone) or TalkBack (Android) through Maria's whole path. The automated check (axe) is clean on every screen in light and dark, but a real screen reader test is what counts.
+- [ ] **Real-phone check** (added 3 Nov 2026 by Claude: what headless Chrome could only imitate). Write down the phone, its iOS or Android version, and what happened:
+  - An old iPhone (6s, 7 or first SE, on iOS 15): the home page draws, and "Show my path" reads clearly before question 1 is answered.
+  - Add a reminder on an iPhone and on an Android phone: it opens the calendar, and the event alerts at 9 am on its day.
+  - On the deployed site, `/es` shows the "This page doesn't exist" page, not Vercel's plain 404.
+  - On shelter or library Wi-Fi, or with one bar: the page opens within a few seconds, and works again in airplane mode.
 - [ ] Stretch: make it work offline after the first visit (web app manifest + service worker), for people on library or shelter Wi-Fi.
 
 **Saturday**
