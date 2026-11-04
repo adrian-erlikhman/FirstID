@@ -1,4 +1,4 @@
-import { useEffect, useId, useRef, useState, type KeyboardEvent as ReactKeyboardEvent, type ReactNode } from "react";
+import { useEffect, useId, useRef, useState, type FocusEvent as ReactFocusEvent, type KeyboardEvent as ReactKeyboardEvent, type ReactNode } from "react";
 import { usePresence, useTween } from "./motion";
 import type { Mode, Plan, RuleSet, Source, Step } from "./engine/types";
 import { t, type Lang } from "./i18n";
@@ -297,9 +297,18 @@ function TextSizeMenu({ lang }: { lang: Lang }) {
     return () => { document.removeEventListener("pointerdown", onDown); document.removeEventListener("keydown", onKey); };
   }, [open]);
 
+  // Tabbing out of the open menu closes it, so it never sits over the control
+  // that now has focus. Only when focus lands on something else: a click on
+  // nothing focusable (or on a button, in Safari) blurs with no relatedTarget,
+  // and the pointerdown handler above already deals with clicks.
+  const onBlur = (e: ReactFocusEvent) => {
+    const to = e.relatedTarget as Node | null;
+    if (open && to && !wrap.current?.contains(to)) setOpen(false);
+  };
+
   const names: Record<TextSize, string> = { default: s.textSizeDefault, larger: s.textSizeLarger, largest: s.textSizeLargest };
   return (
-    <div className="ts" ref={wrap}>
+    <div className="ts" ref={wrap} onBlur={onBlur}>
       <button ref={toggle} className="ts-toggle" aria-expanded={open} aria-controls={`${id}-menu`} aria-label={s.textSizeLabel}
         onClick={() => setOpen((o) => !o)}><span aria-hidden="true">A<span className="ts-big">A</span></span></button>
       <div id={`${id}-menu`} className="ts-menu" hidden={!open}>
