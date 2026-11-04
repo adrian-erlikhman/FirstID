@@ -3,7 +3,7 @@ import rulesJson from "../data/rules.json";
 import type { RuleSet } from "../src/engine/types";
 import { plan } from "../src/engine/planner";
 import {
-  PROGRESS_KEY, addDays, clearTicks, daysLeft, icsDate, icsFold, icsUnescape, loadTicks, parseIcs, reminderFor, reminderIcs, remindersFor, remindersIcs, saveTicks, ticksInPlan, toggleTick,
+  PROGRESS_KEY, addDays, clearTicks, daysLeft, icsDate, icsFold, icsUnescape, lastWaitBefore, loadTicks, parseIcs, reminderFor, reminderIcs, remindersFor, remindersIcs, saveTicks, ticksInPlan, toggleTick,
 } from "../src/progress";
 import { personas } from "./personas";
 import { t } from "../src/i18n";
@@ -268,5 +268,30 @@ describe("the progress line says how long is left", () => {
     }
     expect(t.en.progressLeft(21)).toBe("about 3 weeks until the card");
     expect(t.es.progressLeft(28)).toBe("unas 4 semanas hasta la tarjeta");
+  });
+});
+
+describe("a step's own screen says when it can start", () => {
+  it("names the wait it is queued behind, and drops it once that wait is ticked done", async () => {
+    const { renderToStaticMarkup } = await import("react-dom/server");
+    const { createElement } = await import("react");
+    const { StepScreen } = await import("../src/screens/StepScreen");
+    const { vi } = await import("vitest");
+    const p = plan(rules, personas.maria)!;
+    const last = p.steps.length; // the DMV, after the mailed birth certificate
+    const wait = lastWaitBefore(p.steps, last - 1);
+    expect(wait).toBeGreaterThanOrEqual(0);
+    expect(lastWaitBefore(p.steps, last - 1, new Set([p.steps[wait].action.id]))).toBe(-1);
+    const render = (lang: "en" | "es", ticked: string[]) => {
+      vi.stubGlobal("localStorage", { getItem: () => JSON.stringify(Object.fromEntries(ticked.map((id) => [id, true]))), setItem: () => {}, removeItem: () => {} });
+      try {
+        return renderToStaticMarkup(createElement(StepScreen, { rules, lang, plan: p, n: last, person: personas.maria, mode: "cheapest", onSkip: () => {} }));
+      } finally { vi.unstubAllGlobals(); }
+    };
+    for (const lang of ["en", "es"] as const) {
+      const s = t[lang];
+      expect(render(lang, [])).toContain(`<dt>${s.when}</dt><dd>${s.startsAround(p.steps[last - 1].startDay)}, ${s.afterStep(wait + 1)}</dd>`);
+      expect(render(lang, [p.steps[wait].action.id])).toContain(`<dt>${s.when}</dt><dd>${s.startsToday}</dd>`);
+    }
   });
 });

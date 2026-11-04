@@ -5,7 +5,7 @@ import type { Mode, Person, Plan, RuleSet } from "../engine/types";
 import { t, type Lang } from "../i18n";
 import { href } from "../router";
 import { withoutSteps } from "../whatif";
-import { loadTicks, saveTicks, toggleTick, type Ticks } from "../progress";
+import { daysLeft, lastWaitBefore, loadTicks, saveTicks, toggleTick, ticksInPlan, type Ticks } from "../progress";
 import { OfficesLink } from "./OfficesScreen";
 import { SayTools } from "./SayTools";
 
@@ -33,6 +33,12 @@ export function StepScreen({ rules, lang, plan, n, person, mode, onSkip }: {
   const total = plan.steps.length;
   const cost = st.dollars === 0 ? s.free : money(st.dollars);
 
+  // When it can start: the waits before it that aren't ticked done, as on the path list.
+  const done = ticksInPlan(ticks, plan.steps.map((x) => x.action.id));
+  const startDay = daysLeft(plan.steps, n - 2, done);
+  const after = lastWaitBefore(plan.steps, n - 1, done);
+  const when = startDay === 0 ? s.startsToday : after >= 0 ? `${s.startsAround(startDay)}, ${s.afterStep(after + 1)}` : s.startsAround(startDay);
+
   const time = a.days > 0 ? s.readyIn(a.days) : !st.newTrip && n > 1 ? s.sameVisit(n - 1) : (place.inPerson ? s.timeVisit : s.timeMail);
   const timeText = time.charAt(0).toUpperCase() + time.slice(1);
 
@@ -55,6 +61,7 @@ export function StepScreen({ rules, lang, plan, n, person, mode, onSkip }: {
                 {was !== null && <> <WasPrice dollars={was} lang={lang} /><span className="row-sub"> {st.waiver!.label[lang]}</span></>}
               </dd>
             </div>
+            <div><dt>{s.when}</dt><dd>{when}</dd></div>
             <div><dt>{s.time}</dt><dd>{timeText}</dd></div>
           </dl>
 

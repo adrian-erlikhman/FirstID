@@ -217,3 +217,10 @@ export function remindersFor(rules: RuleSet, steps: Step[], lang: Lang, done: Re
     return r ? [r] : [];
   });
 }
+
+/** The last step before step i (0-based) that still has a wait ahead of it,
+ *  not ticked done, or -1: the wait this step is queued behind. */
+export function lastWaitBefore(steps: Step[], i: number, done: ReadonlySet<string> = new Set()): number {
+  for (let j = i - 1; j >= 0; j--) if (steps[j].action.days > 0 && !done.has(steps[j].action.id)) return j;
+  return -1;
+}
