@@ -100,7 +100,7 @@ export function plan(rules: RuleSet, person: Person, mode: Mode = "cheapest"): P
     const n = heap.pop()!;
     if (done.has(n.key)) continue;
     done.add(n.key);
-    if (n.have.has(rules.goal)) return unwind(n, mode, done.size);
+    if (n.have.has(rules.goal)) return settle(rules, person, unwind(n, mode, done.size));
 
     for (const a of rules.actions) {
       if (a.produces.every((d) => n.have.has(d))) continue;          // nothing new to gain
@@ -135,6 +135,57 @@ function unwind(n: Node, mode: Mode, explored: number): Plan {
   const steps: Step[] = [];
   for (let x: Node | null = n; x && x.step; x = x.prev) steps.unshift(x.step);
   return { steps, total: n.cost, mode, allVerified: steps.every((s) => s.action.verified), explored };
+}
+
+/**
+ * Step order. The search returns *a* cheapest order, and since days add up,
+ * a same-day step placed after a mailed request (the shelter signing a DL 933,
+ * after a birth certificate request that takes four weeks) shows "around week
+ * 4" when the person could do it today. This pass moves such a step to just
+ * before the wait, only when that changes nothing else: every step can still
+ * happen where it now stands, every price and fee waiver is the same, and there
+ * are no more trips. The totals stay exactly the search's.
+ */
+function settle(rules: RuleSet, person: Person, p: Plan): Plan {
+  const trips = (steps: Step[]) => steps.filter((s) => s.newTrip).length;
+  let steps = p.steps;
+  for (let moved = true; moved;) {
+    moved = false;
+    for (let j = 0; j < steps.length && !moved; j++) {
+      const st = steps[j];
+      if (st.action.days !== 0 || st.startDay === 0) continue;
+      // As late as possible, so the rest keeps its order: the first spot,
+      // walking back, where it starts sooner and everything still holds.
+      for (let i = j - 1; i >= 0; i--) {
+        const order = [...steps.slice(0, i), st, ...steps.slice(i, j), ...steps.slice(j + 1)];
+        const r = replay(rules, person, order);
+        if (r && r[i].startDay < st.startDay && trips(r) <= trips(steps)) { steps = r; moved = true; break; }
+      }
+    }
+  }
+  return steps === p.steps ? p : { ...p, steps, total: { ...p.total, trips: trips(steps) } };
+}
+
+/** The steps in this order, counted the way the search counts them, or null if
+ *  one can't happen there or would cost something different. */
+function replay(rules: RuleSet, person: Person, order: Step[]): Step[] | null {
+  const have = new Set(person.have);
+  let at: string | null = null;
+  let days = 0;
+  const out: Step[] = [];
+  for (const st of order) {
+    const a = st.action;
+    if (a.eligible && !holds(a.eligible, have, person.facts)) return null;
+    if (!holds(a.requires, have, person.facts)) return null;
+    const { dollars, waiver } = priceOf(a, have, person.facts);
+    if (dollars !== st.dollars || waiver !== st.waiver) return null;
+    const inPerson = rules.places[a.place]?.inPerson ?? true;
+    out.push({ ...st, newTrip: inPerson && at !== a.place, startDay: days, endDay: days + a.days });
+    days += a.days;
+    a.produces.forEach((d) => have.add(d));
+    at = inPerson && a.days === 0 ? a.place : null;
+  }
+  return out;
 }
 
 const BORN_IN_US = new Set(["la_county", "california", "us_state"]);

@@ -11,7 +11,7 @@ Open one GitHub issue per line and assign it.
 
 **Thursday**
 - [ ] Read `planner.ts` until you can explain every line. Keep it and extend it, or rewrite `plan()` yourself against the tests. Either way, log the choice in `AI-USE.md`.
-- [ ] **Step order (do this first, it shows on screen).** Dijkstra returns *a* valid order: Maria's path currently shows the shelter's DL 933 as step 3, "around week 4", when it could happen today. Add a pass that puts free, same-day steps first and groups steps at the same place, without breaking any requirement. Add a test.
+- [x] **Step order (do this first, it shows on screen).** Dijkstra returns *a* valid order: Maria's path currently shows the shelter's DL 933 as step 3, "around week 4", when it could happen today. Add a pass that puts free, same-day steps first and groups steps at the same place, without breaking any requirement. Add a test. (Done 3 Nov 2026 by Claude: `settle` in `src/engine/planner.ts`, `tests/step-order.test.ts`; see AI-USE.md.)
 
 **Friday**
 - [ ] **Waiting in parallel.** Today, days just add up. A mailed birth certificate request shouldn't block steps that don't need it. Model the overlap and test it.
