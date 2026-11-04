@@ -39,11 +39,13 @@ function ReminderLink({ rules, lang, step, n, done, days }: { rules: RuleSet; la
   }, [rules, step, n, lang, done, days]);
   if (!url) return null;
   return (
-    <a className="remind-link" href={url} download={`first-id-step-${n}-reminder.ics`}>
+    // One name for the link, "Add a reminder to my calendar, step 4": with the
+    // step in a separate hidden span, screen readers paused before its comma.
+    <a className="remind-link" href={url} download={`first-id-step-${n}-reminder.ics`} aria-label={`${s.addReminder}${s.forStep(n)}`}>
       <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" focusable="false" className="icon">
         <rect x="4" y="5" width="16" height="15" rx="2" /><path d="M4 10h16 M9 3v4 M15 3v4" />
       </svg>
-      {s.addReminder}<span className="sr-only">{s.forStep(n)}</span>
+      {s.addReminder}
     </a>
   );
 }
