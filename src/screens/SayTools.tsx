@@ -76,13 +76,19 @@ function ClerkView({ lang, say, onClose, returnTo }: { lang: Lang; say: Record<L
   useWakeLock();
 
   // Focus the Close button, lock the page behind, and give focus back on close.
+  // The app behind is made inert while this is open: Tab and screen readers
+  // can't wander into it, even after a tap on the dialog's text has left
+  // focus on nothing (the dialog is portaled outside #root, so it stays live).
   useEffect(() => {
     const back = returnTo.current;
+    const app = document.getElementById("root");
     const prevOverflow = document.body.style.overflow;
     document.body.style.overflow = "hidden";
+    app?.setAttribute("inert", "");
     closeBtn.current?.focus();
     return () => {
       document.body.style.overflow = prevOverflow;
+      app?.removeAttribute("inert"); // before giving focus back: nothing inert can take it
       back?.focus();
     };
   }, [returnTo]);
@@ -107,7 +113,7 @@ function ClerkView({ lang, say, onClose, returnTo }: { lang: Lang; say: Record<L
   };
 
   return createPortal(
-    <div ref={dialog} className="clerk" role="dialog" aria-modal="true" aria-labelledby="clerk-title" aria-describedby="clerk-say" lang={shown} onKeyDown={trap}>
+    <div ref={dialog} className="clerk" role="dialog" aria-modal="true" aria-labelledby="clerk-title" aria-describedby="clerk-say" lang={shown} onKeyDown={trap} tabIndex={-1}>
       <div className="clerk-bar">
         <h2 id="clerk-title" className="clerk-title">{t[shown].showClerkTitle}</h2>
         <div className="clerk-actions">
