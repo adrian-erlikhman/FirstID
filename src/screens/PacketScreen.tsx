@@ -9,7 +9,9 @@ import { t, type Lang } from "../i18n";
 export function PacketScreen({ rules, lang, result }: { rules: RuleSet; lang: Lang; result: Plan }) {
   const s = t[lang];
   const { total } = result;
-  const checked = Object.values(rules.sources).map((x) => x.checked).sort().at(-1) ?? "";
+  // The newest date: [length - 1], not .at(-1), which Safari before 15.4 lacks.
+  const dates = Object.values(rules.sources).map((x) => x.checked).sort();
+  const checked = dates[dates.length - 1] ?? "";
   // Printed, the page points to How we know, as text and as a QR code. A copy
   // opened from a file (the one-file build we email) points to the live site:
   // a file path on someone's computer is no use to the clerk.

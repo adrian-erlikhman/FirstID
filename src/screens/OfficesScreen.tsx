@@ -16,7 +16,9 @@ export function OfficesScreen({ lang, kind }: { lang: Lang; kind: string }) {
   const full = /^\d{5}$/.test(zip);
   const known = full && !!zipCentroids[zip];
   const rows = sortOffices(list, known ? zip : "");
-  const checked = list.map((o) => o.lastChecked).sort().at(-1) ?? "";
+  // The newest date: [length - 1], not .at(-1), which Safari before 15.4 lacks.
+  const dates = list.map((o) => o.lastChecked).sort();
+  const checked = dates[dates.length - 1] ?? "";
   // Los Angeles time, where the offices are, not the phone's time zone.
   const now = new Date();
   const today = DAYS.indexOf(laNow(now).day);
