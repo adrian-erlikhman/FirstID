@@ -179,6 +179,8 @@ export function FormPaper({ form, lang, className = "" }: { form: string; lang: 
       <div className="paper-desk">
         <a href={FORM_PDF} target="_blank" rel="noreferrer" className="paper-sheet">
           <img src={formImages[form]} alt={alt} loading="lazy" decoding="async" width={1105} height={1430} />
+          {/* The picture's alt says what is on the page; this says where the link goes. */}
+          <span className="sr-only"> {s.openForm}</span>
         </a>
         <span className="paper-zoom" aria-hidden="true" style={{ top: formZoom[form].top, width: formZoom[form].width, ["--zl" as string]: formZoom[form].left }}>
           <img src={formZoom[form].src} alt="" loading="lazy" decoding="async" />
