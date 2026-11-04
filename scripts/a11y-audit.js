@@ -1,6 +1,6 @@
 // Accessibility check for every screen, in English and Spanish, with axe-core
 // (WCAG 2.0 and 2.1 A and AA, WCAG 2.2 AA, and axe's best practices) plus
-// three checks of our own that axe doesn't make: text under 16px, tap targets
+// three checks of our own that axe doesn't make: text under 16px (on phones), tap targets
 // under 44px, and an <html lang> that matches the language picked.
 //
 // It runs in the browser, against the dev server:
@@ -123,7 +123,9 @@ export async function audit({ langs = ["en", "es"], screens = SCREENS } = {}) {
         for (const n of v.nodes) if (!(v.id === "target-size" && await clearWhenFocused(n))) nodes.push(n);
         if (nodes.length) problems.push(`${where}: axe ${v.id} (${v.impact}): ${v.help} -> ${nodes.slice(0, 4).map((n) => n.target.join(" ")).join(" | ")}`);
       }
-      for (const t of smallText()) problems.push(`${where}: small text ${t}`);
+      // The 16px rule is for phones, as in styles.css ("Phones: nothing a person reads
+      // as a sentence is under 16px", max-width 639px); wider screens keep 15px hints.
+      if (matchMedia("(max-width: 639px)").matches) for (const t of smallText()) problems.push(`${where}: small text ${t}`);
       for (const t of smallTargets()) problems.push(`${where}: small target ${t}`);
     }
   }
