@@ -23,6 +23,12 @@ describe("animated numbers read their final value", () => {
     expect(html).toBe(`<span aria-hidden="true">$0</span>${read("$15")}`);
   });
 
+  // Once it has arrived there is nothing to hide, and writing it twice would
+  // put "$15$15" in a copied heading and two hits in find-in-page.
+  it("Counted at rest is the number once, as plain text", () => {
+    expect(renderToStaticMarkup(<Counted shown="$15" final="$15" />)).toBe("$15");
+  });
+
   it("the home page's counts read their real values before they have counted up", () => {
     const html = renderToStaticMarkup(<Bento rules={rules} lang="en" maria={maria} />);
     expect(html).toContain(`<span aria-hidden="true">${money(0)}</span>${read(money(maria.total.dollars))}`);
@@ -31,9 +37,10 @@ describe("animated numbers read their final value", () => {
     expect(html).not.toContain(read(money(0)));
   });
 
-  it("the path card's totals read their values too", () => {
+  it("the path card's totals, at rest, are plain text with nothing hidden", () => {
     const html = renderToStaticMarkup(<PathCard plan={maria} lang="en" mode="cheapest" />);
-    expect(html).toContain(read(money(maria.total.dollars)));
-    expect(html).toContain(read(String(maria.total.steps)));
+    expect(html).toContain(money(maria.total.dollars));
+    expect(html).not.toContain(read(money(maria.total.dollars)));
+    expect(html).not.toMatch(/<span aria-hidden="true">\$?\d+<\/span>/);
   });
 });

@@ -116,8 +116,11 @@ export function Tween({ value, format = String }: { value: number; format?: (n: 
   return <Counted shown={format(Math.round(useTween(value)))} final={format(value)} />;
 }
 
-/** An animated number, seen as `shown` and read as `final`. */
+/** An animated number, seen as `shown` and read as `final`. Once it has
+ *  arrived it is plain text, written once, so copying a heading or finding
+ *  "$15" on the page doesn't meet it twice. */
 export function Counted({ shown, final }: { shown: string; final: string }) {
+  if (shown === final) return <>{final}</>;
   return <><span aria-hidden="true">{shown}</span><span className="sr-only">{final}</span></>;
 }
 
