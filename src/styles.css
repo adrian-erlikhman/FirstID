@@ -1088,6 +1088,16 @@ main h1:focus { box-shadow: none !important; } /* headings take focus on a new s
 :root[data-text-size="larger"] { font-size: 115%; }
 :root[data-text-size="largest"] { font-size: 130%; }
 @media print { :root[data-text-size] { font-size: 100%; } }
+/* Printing another screen (Ctrl+P on a step or the path): what is on the page,
+   without the buttons that do nothing on paper, and the "Say this" line outlined
+   rather than inked solid black. The packet above has its own layout. */
+@media print {
+  .head-actions, .body-actions, .actions.pair, .pills-modes, .how-chosen, .say-tools, .cant-do,
+  .help .btn, .step-row > .icon { display: none !important; }
+  .say { background: #fff; color: #000; border: 2px solid #000; box-shadow: none; }
+  /* A step, a source or a note is never cut in half by a page break. */
+  ol.steps > li, .source, .notice, .facts, .say, .paper { break-inside: avoid; }
+}
 
 .ts { position: relative; flex: none; }
 .ts-toggle {
