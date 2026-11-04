@@ -5,6 +5,8 @@
 // files.
 // v2: drops any copy of a non-app page that v1 may have stored as the app.
 const CACHE = "first-id-v2";
+/** How long a page waits for the network before opening the stored copy. */
+const SLOW_MS = 3000;
 
 self.addEventListener("install", (event) => {
   // The first visit loads the script and stylesheet before this worker runs,
@@ -54,20 +56,30 @@ self.addEventListener("fetch", (event) => {
   if (req.method !== "GET" || new URL(req.url).origin !== self.location.origin) return;
 
   if (req.mode === "navigate") {
-    event.respondWith(
-      fetch(req)
-        .then((res) => {
-          // Only the app's own page becomes the offline copy: not a 404 page,
-          // and not an image or other file opened directly in the browser.
-          const type = res.headers.get("content-type") || "";
-          if (res.ok && type.includes("text/html")) {
-            const copy = res.clone();
-            caches.open(CACHE).then((c) => c.put("./index.html", copy));
-          }
-          return res;
-        })
-        .catch(() => caches.match("./index.html")),
-    );
+    const network = fetch(req).then((res) => {
+      // Only the app's own page becomes the offline copy: not a 404 page,
+      // and not an image or other file opened directly in the browser.
+      const type = res.headers.get("content-type") || "";
+      if (res.ok && type.includes("text/html")) {
+        const copy = res.clone();
+        caches.open(CACHE).then((c) => c.put("./index.html", copy));
+      }
+      return res;
+    });
+    // The network first, but on one bar of signal nobody should wait on it:
+    // after a few seconds the stored copy opens, and the network answer still
+    // refreshes it for next time.
+    event.respondWith((async () => {
+      const slow = new Promise((resolve) => setTimeout(resolve, SLOW_MS, "slow"));
+      try {
+        const first = await Promise.race([network, slow]);
+        if (first !== "slow") return first;
+        return (await caches.match("./index.html")) || (await network);
+      } catch {
+        return caches.match("./index.html");
+      }
+    })());
+    event.waitUntil(network.catch(() => {}));
     return;
   }
 
