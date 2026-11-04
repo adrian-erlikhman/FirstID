@@ -3,7 +3,7 @@ import rulesJson from "../data/rules.json";
 import type { RuleSet } from "../src/engine/types";
 import { plan } from "../src/engine/planner";
 import {
-  PROGRESS_KEY, addDays, clearTicks, daysLeft, icsDate, icsFold, icsUnescape, lastWaitBefore, loadTicks, parseIcs, reminderFor, reminderIcs, remindersFor, remindersIcs, saveTicks, ticksInPlan, toggleTick,
+  PACKED_KEY, PROGRESS_KEY, addDays, clearTicks, daysLeft, icsDate, icsFold, icsUnescape, lastWaitBefore, loadPacked, loadTicks, parseIcs, savePacked, togglePacked, reminderFor, reminderIcs, remindersFor, remindersIcs, saveTicks, ticksInPlan, toggleTick,
 } from "../src/progress";
 import { personas } from "./personas";
 import { t } from "../src/i18n";
@@ -292,6 +292,39 @@ describe("a step's own screen says when it can start", () => {
       const s = t[lang];
       expect(render(lang, [])).toContain(`<dt>${s.when}</dt><dd>${s.startsAround(p.steps[last - 1].startDay)}, ${s.afterStep(wait + 1)}</dd>`);
       expect(render(lang, [p.steps[wait].action.id])).toContain(`<dt>${s.when}</dt><dd>${s.startsToday}</dd>`);
+    }
+  });
+});
+
+describe("the Bring list is a checklist", () => {
+  it("stores what's packed per step, survives junk, and Start over clears it with the ticks", () => {
+    const mem = new Map<string, string>();
+    const store = { getItem: (k: string) => mem.get(k) ?? null, setItem: (k: string, v: string) => { mem.set(k, v); }, removeItem: (k: string) => { mem.delete(k); } };
+    let p = togglePacked({}, "dmv_original", "Your birth certificate (or passport)", true);
+    p = togglePacked(p, "dmv_original", "Your birth certificate (or passport)", true); // twice is still once
+    savePacked(p, store);
+    expect(loadPacked(store)).toEqual({ dmv_original: ["Your birth certificate (or passport)"] });
+    savePacked(togglePacked(p, "dmv_original", "Your birth certificate (or passport)", false), store);
+    expect(mem.has(PACKED_KEY)).toBe(false); // nothing packed: nothing stored
+    savePacked(p, store); saveTicks({ dmv_original: true }, store);
+    clearTicks(store);
+    expect([mem.has(PACKED_KEY), mem.has(PROGRESS_KEY)]).toEqual([false, false]);
+    mem.set(PACKED_KEY, "{not json"); expect(loadPacked(store)).toEqual({});
+    mem.set(PACKED_KEY, JSON.stringify({ a: "x", b: [1, "ok"] })); expect(loadPacked(store)).toEqual({ b: ["ok"] });
+  });
+
+  it("each thing to bring is a checkbox named by its own words, in both languages", async () => {
+    const { renderToStaticMarkup } = await import("react-dom/server");
+    const { createElement } = await import("react");
+    const { StepScreen } = await import("../src/screens/StepScreen");
+    const p = plan(rules, personas.maria)!;
+    const n = p.steps.length;
+    const bring = p.steps[n - 1].action.bring ?? [];
+    expect(bring.length).toBeGreaterThan(0);
+    for (const lang of ["en", "es"] as const) {
+      const html = renderToStaticMarkup(createElement(StepScreen, { rules, lang, plan: p, n, person: personas.maria, mode: "cheapest", onSkip: () => {} }));
+      const items = [...html.matchAll(/<label class="bring-item"><input type="checkbox"\/>[\s\S]*?<span>([^<]*)<\/span><\/label>/g)].map((m) => m[1].replace(/&#x27;/g, "'"));
+      expect(items).toEqual(bring.map((b) => b[lang]));
     }
   });
 });

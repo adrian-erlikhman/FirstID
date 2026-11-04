@@ -5,7 +5,7 @@ import type { Mode, Person, Plan, RuleSet } from "../engine/types";
 import { t, type Lang } from "../i18n";
 import { href } from "../router";
 import { withoutSteps } from "../whatif";
-import { daysLeft, lastWaitBefore, loadTicks, saveTicks, toggleTick, ticksInPlan, type Ticks } from "../progress";
+import { daysLeft, lastWaitBefore, loadPacked, loadTicks, savePacked, saveTicks, toggleTick, togglePacked, ticksInPlan, type Packed, type Ticks } from "../progress";
 import { OfficesLink } from "./OfficesScreen";
 import { SayTools } from "./SayTools";
 
@@ -24,6 +24,9 @@ export function StepScreen({ rules, lang, plan, n, person, mode, onSkip }: {
   // can be ticked off right here; the list reads them again when you go back.
   const [ticks, setTicks] = useState<Ticks>(() => loadTicks());
   const setDone = (on: boolean) => { if (id) setTicks((prev) => { const next = toggleTick(prev, id, on); saveTicks(next); return next; }); };
+  // The Bring list is a checklist: what's already in the bag, kept on this phone.
+  const [packed, setPackedState] = useState<Packed>(() => loadPacked());
+  const setPacked = (item: string, on: boolean) => { if (id) setPackedState((prev) => { const next = togglePacked(prev, id, item, on); savePacked(next); return next; }); };
   if (!st) return null;
   const a = st.action;
   const place = placeOf(rules, st);
@@ -74,7 +77,15 @@ export function StepScreen({ rules, lang, plan, n, person, mode, onSkip }: {
 
           {a.bring?.length ? (
             <Block label={place.inPerson ? s.bring : s.bringMail}>
-              <ul className="panel bring">{a.bring.map((b) => <li key={b.en}><span className="box" aria-hidden="true" />{b[lang]}</li>)}</ul>
+              <ul className="panel bring">{a.bring.map((b) => (
+                <li key={b.en}>
+                  <label className="bring-item">
+                    <input type="checkbox" checked={(packed[a.id] ?? []).includes(b.en)} onChange={(e) => setPacked(b.en, e.target.checked)} />
+                    <span className="box" aria-hidden="true"><Icon name="check" size={14} stroke={3} /></span>
+                    <span>{b[lang]}</span>
+                  </label>
+                </li>
+              ))}</ul>
             </Block>
           ) : null}
 

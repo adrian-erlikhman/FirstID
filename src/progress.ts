@@ -36,11 +36,47 @@ export function saveTicks(ticks: Ticks, store: Pick<Storage, "setItem" | "remove
   } catch { /* storage blocked or full: keep going without it */ }
 }
 
-/** Forget every stored tick, including ticks for steps not in the current plan.
- *  "Start over" and "Clear my progress" both call this, so the next person on a
- *  shared phone starts with none. */
+/** Forget every stored tick, including ticks for steps not in the current plan,
+ *  and what was packed for each step. "Start over" and "Clear my progress" both
+ *  call this, so the next person on a shared phone starts with none. */
 export function clearTicks(store: Pick<Storage, "setItem" | "removeItem"> | null = safeLocal()): void {
   saveTicks({}, store);
+  savePacked({}, store);
+}
+
+// What's already packed from a step's Bring list, ticked on the step's screen.
+// Kept by step id, each item by its English text so a language switch keeps it.
+
+export const PACKED_KEY = "firstid.packed.v1";
+
+export type Packed = Record<string, string[]>;
+
+export function loadPacked(store: Pick<Storage, "getItem"> | null = safeLocal()): Packed {
+  try {
+    const raw = store?.getItem(PACKED_KEY);
+    if (!raw) return {};
+    const parsed: unknown = JSON.parse(raw);
+    if (!parsed || typeof parsed !== "object" || Array.isArray(parsed)) return {};
+    const out: Packed = {};
+    for (const [k, v] of Object.entries(parsed)) if (Array.isArray(v)) out[k] = v.filter((x): x is string => typeof x === "string");
+    return out;
+  } catch {
+    return {};
+  }
+}
+
+export function savePacked(packed: Packed, store: Pick<Storage, "setItem" | "removeItem"> | null = safeLocal()): void {
+  try {
+    const kept = Object.fromEntries(Object.entries(packed).filter(([, v]) => v.length));
+    if (Object.keys(kept).length === 0) store?.removeItem(PACKED_KEY);
+    else store?.setItem(PACKED_KEY, JSON.stringify(kept));
+  } catch { /* storage blocked or full: keep going without it */ }
+}
+
+export function togglePacked(packed: Packed, stepId: string, item: string, on: boolean): Packed {
+  const now = new Set(packed[stepId] ?? []);
+  if (on) now.add(item); else now.delete(item);
+  return { ...packed, [stepId]: [...now] };
 }
 
 export function toggleTick(ticks: Ticks, id: string, done: boolean): Ticks {
