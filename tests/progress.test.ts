@@ -241,3 +241,32 @@ describe("every reminder in one calendar file", () => {
     expect(parseIcs(reminderIcs(r, now, "fixed")).filter((c) => c.name === "VEVENT")).toHaveLength(1);
   });
 });
+
+describe("the progress line says how long is left", () => {
+  it("with some steps ticked, adds the waits still ahead, in both languages; nothing when none or all are ticked", async () => {
+    const { renderToStaticMarkup } = await import("react-dom/server");
+    const { createElement } = await import("react");
+    const { PathScreen } = await import("../src/screens/PathScreen");
+    const { vi } = await import("vitest");
+    const p = plan(rules, personas.maria)!;
+    const mail = p.steps.find((st) => st.action.id === "rrcc_mail")!;
+    const render = (ticked: string[], lang: "en" | "es") => {
+      const stored = JSON.stringify(Object.fromEntries(ticked.map((id) => [id, true])));
+      vi.stubGlobal("localStorage", { getItem: () => (ticked.length ? stored : null), setItem: () => {}, removeItem: () => {} });
+      try {
+        return renderToStaticMarkup(createElement(PathScreen, {
+          rules, lang, result: p, mode: "cheapest", onMode: () => {}, person: personas.maria, help: null,
+          facts: personas.maria.facts, onChangeAnswers: () => {}, ms: 0, skipped: [], onUnskip: () => {},
+        }));
+      } finally { vi.unstubAllGlobals(); }
+    };
+    const left = daysLeft(p.steps, p.steps.length - 1, new Set([mail.action.id]));
+    for (const lang of ["en", "es"] as const) {
+      expect(render([mail.action.id], lang)).toContain(`, ${t[lang].progressLeft(left)}</span>`);
+      expect(render([], lang)).not.toContain('class="progress-left"');
+      expect(render(p.steps.map((st) => st.action.id), lang)).not.toContain('class="progress-left"');
+    }
+    expect(t.en.progressLeft(21)).toBe("about 3 weeks until the card");
+    expect(t.es.progressLeft(28)).toBe("unas 4 semanas hasta la tarjeta");
+  });
+});

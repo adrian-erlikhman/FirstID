@@ -345,6 +345,8 @@ const en = {
   officesFrom: ["Office details from ", ", checked Oct 25, 2026. Call ahead."] as [string, string],
   // Progress ticks and calendar reminders (src/progress.ts, PathScreen)
   progressDone: (n: number, total: number) => `${n} of ${total} done`,
+  // With some steps ticked: the waits still ahead, as in the reminders (daysLeft).
+  progressLeft: (d: number) => (d === 0 ? "no waiting left" : d < 7 ? `about ${d} ${plural(d, "day", "days")} until the card` : `about ${weeksOf(d)} ${plural(weeksOf(d), "week", "weeks")} until the card`),
   progressNote: "Saved on this phone only.",
   clearProgress: "Clear my progress",
   markDone: (n: number) => `Mark step ${n} done`,
@@ -683,6 +685,7 @@ const es: Strings = {
   officesFrom: ["Datos de las oficinas tomados de ", ", revisados el 25 de octubre de 2026. Llama antes de ir."],
   // Progreso y recordatorios (src/progress.ts, PathScreen)
   progressDone: (n, total) => `${n} de ${total} pasos hechos`,
+  progressLeft: (d) => (d === 0 ? "sin esperas pendientes" : d < 7 ? `unos ${d} ${plural(d, "día", "días")} hasta la tarjeta` : `unas ${weeksOf(d)} ${plural(weeksOf(d), "semana", "semanas")} hasta la tarjeta`),
   progressNote: "Se guarda solo en este teléfono.",
   clearProgress: "Borrar mi progreso",
   markDone: (n) => `Marcar el paso ${n} como hecho`,

@@ -207,7 +207,10 @@ export function PathScreen(props: {
             {s.pathHeadPre} <Br><Tween value={result.total.dollars} format={money} /></Br>{s.pathHeadPost}
           </h1>
           <p className="progress-line">
-            <span className="progress-count" aria-live="polite">{s.progressDone(done.size, result.steps.length)}</span>
+            <span className="progress-count" aria-live="polite">
+              {s.progressDone(done.size, result.steps.length)}
+              {done.size > 0 && done.size < result.steps.length && <span className="progress-left">, {s.progressLeft(daysLeft(result.steps, result.steps.length - 1, done))}</span>}
+            </span>
             <span className="progress-note">{s.progressNote}</span>
             {Object.keys(ticks).length > 0 && <button type="button" className="progress-clear" onClick={clearTicks}>{s.clearProgress}</button>}
           </p>
