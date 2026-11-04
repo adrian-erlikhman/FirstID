@@ -635,7 +635,9 @@ h2.display.h2 { font-size: 34px; margin: 0 0 16px; text-wrap: balance; }
 .bring > li { display: flex; gap: 12px; padding: 14px 18px; line-height: 1.45; font-size: 1rem; }
 .bring .box { width: 20px; height: 20px; margin-top: 1px; }
 /* Each thing to bring is a real checkbox (packed or not); the whole row is the target. */
-.bring-item { position: relative; display: flex; gap: 12px; flex: 1; cursor: pointer; }
+/* The label takes the row's padding, so the target is the whole row (44px and up), not just the words. */
+.bring > li.bring-row { padding: 0; } /* a class, not :has(): older iPhones don't support it */
+.bring-item { position: relative; display: flex; gap: 12px; flex: 1; min-height: 44px; padding: 14px 18px; cursor: pointer; }
 .bring-item input { position: absolute; inset: 0; width: 100%; height: 100%; margin: 0; opacity: 0; cursor: pointer; }
 .bring-item input:checked + .box { background: var(--cta); box-shadow: none; color: #fff; }
 .bring-item input:checked + .box .icon path { stroke-dashoffset: 0; }

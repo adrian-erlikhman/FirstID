@@ -323,7 +323,7 @@ describe("the Bring list is a checklist", () => {
     expect(bring.length).toBeGreaterThan(0);
     for (const lang of ["en", "es"] as const) {
       const html = renderToStaticMarkup(createElement(StepScreen, { rules, lang, plan: p, n, person: personas.maria, mode: "cheapest", onSkip: () => {} }));
-      const items = [...html.matchAll(/<label class="bring-item"><input type="checkbox"\/>[\s\S]*?<span>([^<]*)<\/span><\/label>/g)].map((m) => m[1].replace(/&#x27;/g, "'"));
+      const items = [...html.matchAll(/<li class="bring-row"><label class="bring-item"><input type="checkbox"\/>[\s\S]*?<span>([^<]*)<\/span><\/label>/g)].map((m) => m[1].replace(/&#x27;/g, "'"));
       expect(items).toEqual(bring.map((b) => b[lang]));
     }
   });

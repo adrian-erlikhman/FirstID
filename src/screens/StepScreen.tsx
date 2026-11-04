@@ -78,7 +78,7 @@ export function StepScreen({ rules, lang, plan, n, person, mode, onSkip }: {
           {a.bring?.length ? (
             <Block label={place.inPerson ? s.bring : s.bringMail}>
               <ul className="panel bring">{a.bring.map((b) => (
-                <li key={b.en}>
+                <li key={b.en} className="bring-row">
                   <label className="bring-item">
                     <input type="checkbox" checked={(packed[a.id] ?? []).includes(b.en)} onChange={(e) => setPacked(b.en, e.target.checked)} />
                     <span className="box" aria-hidden="true"><Icon name="check" size={14} stroke={3} /></span>
