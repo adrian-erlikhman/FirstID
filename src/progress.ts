@@ -117,23 +117,33 @@ export interface Reminder {
 
 /** One all-day VEVENT on today + days, as a complete VCALENDAR with CRLF line endings. */
 export function reminderIcs(r: Reminder, now: Date = new Date(), uid: string = randomId()): string {
-  const day = addDays(now, r.days);
-  const next = addDays(day, 1);
+  return remindersIcs([r], now, uid);
+}
+
+/** Several reminders in one calendar file, one all-day VEVENT each, so a path
+ *  with more than one wait is a single download. */
+export function remindersIcs(rs: Reminder[], now: Date = new Date(), uid: string = randomId()): string {
+  const event = (r: Reminder) => {
+    const day = addDays(now, r.days);
+    return [
+      "BEGIN:VEVENT",
+      `UID:${uid}-${r.id}@first-id`,
+      `DTSTAMP:${icsStamp(now)}`,
+      `DTSTART;VALUE=DATE:${icsDate(day)}`,
+      `DTEND;VALUE=DATE:${icsDate(addDays(day, 1))}`,
+      `SUMMARY:${icsEscape(r.summary)}`,
+      `DESCRIPTION:${icsEscape(r.description)}`,
+      "TRANSP:TRANSPARENT",
+      "END:VEVENT",
+    ];
+  };
   const lines = [
     "BEGIN:VCALENDAR",
     "VERSION:2.0",
     "PRODID:-//First ID//Reminders//EN",
     "CALSCALE:GREGORIAN",
     "METHOD:PUBLISH",
-    "BEGIN:VEVENT",
-    `UID:${uid}-${r.id}@first-id`,
-    `DTSTAMP:${icsStamp(now)}`,
-    `DTSTART;VALUE=DATE:${icsDate(day)}`,
-    `DTEND;VALUE=DATE:${icsDate(next)}`,
-    `SUMMARY:${icsEscape(r.summary)}`,
-    `DESCRIPTION:${icsEscape(r.description)}`,
-    "TRANSP:TRANSPARENT",
-    "END:VEVENT",
+    ...rs.flatMap(event),
     "END:VCALENDAR",
   ];
   return lines.map(icsFold).join("\r\n") + "\r\n";
@@ -197,4 +207,13 @@ export function reminderFor(rules: RuleSet, step: Step, n: number, lang: Lang, d
   const doc = a.produces.find((d) => d === rules.goal) ?? a.produces[0];
   const what = (doc && s.remindWhat[doc]) || (doc && rules.docs[doc]?.label[lang]) || a.label[lang];
   return { id: a.id, days, summary: s.remindSummary(what), description: s.remindDescription(n, a.label[lang], a.days) };
+}
+
+/** Every reminder still to come on a path: each step that waits and isn't ticked
+ *  done, with its date counted as in daysLeft. */
+export function remindersFor(rules: RuleSet, steps: Step[], lang: Lang, done: ReadonlySet<string> = new Set()): Reminder[] {
+  return steps.flatMap((st, i) => {
+    const r = reminderFor(rules, st, i + 1, lang, done.has(st.action.id), daysLeft(steps, i, done));
+    return r ? [r] : [];
+  });
 }

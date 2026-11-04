@@ -3,7 +3,7 @@ import rulesJson from "../data/rules.json";
 import type { RuleSet } from "../src/engine/types";
 import { plan } from "../src/engine/planner";
 import {
-  PROGRESS_KEY, addDays, clearTicks, daysLeft, icsDate, icsFold, icsUnescape, loadTicks, parseIcs, reminderFor, reminderIcs, saveTicks, ticksInPlan, toggleTick,
+  PROGRESS_KEY, addDays, clearTicks, daysLeft, icsDate, icsFold, icsUnescape, loadTicks, parseIcs, reminderFor, reminderIcs, remindersFor, remindersIcs, saveTicks, ticksInPlan, toggleTick,
 } from "../src/progress";
 import { personas } from "./personas";
 import { t } from "../src/i18n";
@@ -198,5 +198,46 @@ describe("a step's own screen can tick it off", () => {
         const html = renderToStaticMarkup(createElement(StepScreen, { rules, lang, plan: p, n, person: personas.maria, mode: "cheapest", onSkip: () => {} }));
         expect(html).toMatch(new RegExp(`<input type="checkbox" aria-label="${t[lang].markDone(n)}"`));
       }
+  });
+});
+
+describe("every reminder in one calendar file", () => {
+  const now = new Date(2026, 9, 25, 10, 30, 0);
+  const p = plan(rules, personas.maria)!;
+
+  it("lists each step that waits, in order, with the same dates as their own links", () => {
+    const rs = remindersFor(rules, p.steps, "en");
+    const waits = p.steps.filter((st) => st.action.days > 0);
+    expect(rs.map((r) => r.id)).toEqual(waits.map((st) => st.action.id));
+    for (const r of rs) expect(r.days).toBe(p.steps.find((st) => st.action.id === r.id)!.endDay);
+  });
+
+  it("leaves out a step ticked done and moves the ones after it up", () => {
+    const [first, later] = p.steps.flatMap((st, i) => (st.action.days > 0 ? [i] : []));
+    const done = new Set([p.steps[first].action.id]);
+    const rs = remindersFor(rules, p.steps, "en", done);
+    expect(rs.map((r) => r.id)).not.toContain(p.steps[first].action.id);
+    expect(rs.find((r) => r.id === p.steps[later].action.id)!.days).toBe(daysLeft(p.steps, later, done));
+  });
+
+  it("is one valid calendar with one event per reminder, each with its own UID and date", () => {
+    for (const lang of ["en", "es"] as const) {
+      const rs = remindersFor(rules, p.steps, lang);
+      const comps = parseIcs(remindersIcs(rs, now, "fixed"));
+      const events = comps.filter((c) => c.name === "VEVENT");
+      expect(comps.filter((c) => c.name === "VCALENDAR")).toHaveLength(1);
+      expect(events).toHaveLength(rs.length);
+      expect(new Set(events.map((e) => e.props.UID.value)).size).toBe(rs.length);
+      events.forEach((e, i) => {
+        expect(e.props.DTSTART.value).toBe(icsDate(addDays(now, rs[i].days)));
+        expect(icsUnescape(e.props.SUMMARY.value)).toBe(rs[i].summary);
+      });
+    }
+  });
+
+  it("a single reminder's file is the same as before: one event", () => {
+    const r = remindersFor(rules, p.steps, "en")[0];
+    expect(reminderIcs(r, now, "fixed")).toBe(remindersIcs([r], now, "fixed"));
+    expect(parseIcs(reminderIcs(r, now, "fixed")).filter((c) => c.name === "VEVENT")).toHaveLength(1);
   });
 });

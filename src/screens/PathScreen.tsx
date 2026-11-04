@@ -6,7 +6,7 @@ import { href } from "../router";
 import { flipsThatMatter, helpOptions, noPathNotes, sameUnder, type NoPathNote } from "../whatif";
 import { useEffect, useMemo, useState } from "react";
 import { under18 } from "../person";
-import { clearTicks as forgetTicks, daysLeft, loadTicks, reminderFor, reminderIcs, saveTicks, ticksInPlan, toggleTick, type Ticks } from "../progress";
+import { clearTicks as forgetTicks, daysLeft, loadTicks, reminderFor, reminderIcs, remindersFor, remindersIcs, saveTicks, ticksInPlan, toggleTick, type Ticks } from "../progress";
 
 // The path: the total in the heading and the cost summary, then the steps.
 // Each step is one row that opens its own screen with the sources.
@@ -44,6 +44,29 @@ function ReminderLink({ rules, lang, step, n, done, days }: { rules: RuleSet; la
         <rect x="4" y="5" width="16" height="15" rx="2" /><path d="M4 10h16 M9 3v4 M15 3v4" />
       </svg>
       {s.addReminder}<span className="sr-only">{s.forStep(n)}</span>
+    </a>
+  );
+}
+
+/** One calendar file with every reminder still to come, when there is more
+ *  than one (with one, that step's own link does the same). */
+function AllReminders({ rules, lang, plan, done }: { rules: RuleSet; lang: Lang; plan: Plan; done: Set<string> }) {
+  const s = t[lang];
+  const rs = useMemo(() => remindersFor(rules, plan.steps, lang, done), [rules, plan, lang, done]);
+  const [url, setUrl] = useState<string | null>(null);
+  useEffect(() => {
+    let u: string | null = null;
+    try { if (rs.length > 1) u = URL.createObjectURL(new Blob([remindersIcs(rs)], { type: "text/calendar;charset=utf-8" })); } catch { u = null; }
+    setUrl(u);
+    return () => { if (u) URL.revokeObjectURL(u); };
+  }, [rs]);
+  if (!url || rs.length < 2) return null;
+  return (
+    <a className="remind-link remind-all" href={url} download="first-id-reminders.ics">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" focusable="false" className="icon">
+        <rect x="4" y="5" width="16" height="15" rx="2" /><path d="M4 10h16 M9 3v4 M15 3v4" />
+      </svg>
+      {s.addAllReminders(rs.length)}
     </a>
   );
 }
@@ -210,6 +233,7 @@ export function PathScreen(props: {
               <LiveNote text={`${{ cheapest: s.modeCheapest, fewestTrips: s.modeTrips, fastest: s.modeFastest }[mode]}. ${s.cardSummary({ total: result.total.dollars, full: fullPrice(result), steps: result.total.steps, trips: result.total.trips, days: result.total.days })}`} />
             </div>
             <StepList rules={rules} lang={lang} plan={result} done={done} onDone={setTick} />
+            <AllReminders rules={rules} lang={lang} plan={result} done={done} />
           </Solver>
 
           {unverified > 0
