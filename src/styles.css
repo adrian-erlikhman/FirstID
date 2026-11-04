@@ -10,6 +10,10 @@
  * tap use --control, which clears 3:1.
  */
 
+/* Older iPhones (Safari before 16.2) skip a colour written with color-mix(),
+   and before 15.4 a height in dvh. Each such value has a plain one of the
+   same property just before it, which those phones keep instead
+   (tests/old-phones.test.ts checks). */
 @font-face { font-family: "Instrument Sans"; src: url("./fonts/instrument-sans.woff2") format("woff2"); font-weight: 400 700; font-display: swap; }
 
 :root {
@@ -51,7 +55,7 @@ body {
   -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility;
 }
 ::selection { background: var(--hl); color: var(--on-c); }
-.app { min-height: 100dvh; display: flex; flex-direction: column; overflow-x: clip; }
+.app { min-height: 100vh; min-height: 100dvh; display: flex; flex-direction: column; overflow-x: clip; }
 main { flex: 1; width: 100%; max-width: var(--wide); margin: 0 auto; padding: 0 var(--gutter); }
 main h1:focus { outline: none; }
 a { color: var(--link); text-underline-offset: 3px; text-decoration-thickness: 1px; }
@@ -186,6 +190,7 @@ h1.display .bracketed .num { color: var(--on-c); background: var(--hl); padding:
 .actions.sticky {
   position: sticky; bottom: 0; z-index: 2; margin-top: 8px;
   padding: 16px 0 calc(14px + env(safe-area-inset-bottom, 0px));
+  background: linear-gradient(to bottom, rgba(255, 255, 255, 0), var(--ground) 18px);
   background: linear-gradient(to bottom, color-mix(in srgb, var(--ground) 0%, transparent), var(--ground) 18px);
 }
 .actions.sticky .btn { width: 100%; }
@@ -489,9 +494,9 @@ h2.display.h2 { font-size: 34px; margin: 0 0 16px; text-wrap: balance; }
 @media (hover: hover) { .check-row:hover { background: var(--wash); } }
 .check-row:active { background: var(--wash); }
 .check-row[aria-checked="true"] { background: var(--pick); }
-@media (hover: hover) { .check-row[aria-checked="true"]:hover { background: color-mix(in srgb, var(--pick) 75%, var(--line)); } }
+@media (hover: hover) { .check-row[aria-checked="true"]:hover { background: #e3e3e8; background: color-mix(in srgb, var(--pick) 75%, var(--line)); } }
 /* Grey on the picked grey is 4.2:1; a little more ink brings the hint back over 4.5. */
-.check-row[aria-checked="true"] .row-sub { color: color-mix(in srgb, var(--text-2) 80%, var(--ink)); }
+.check-row[aria-checked="true"] .row-sub { color: #5e5e62; color: color-mix(in srgb, var(--text-2) 80%, var(--ink)); }
 .box {
   width: 22px; height: 22px; flex: none; border-radius: 5px; background: var(--panel); box-shadow: inset 0 0 0 1.5px var(--control);
   display: grid; place-items: center; color: var(--on-ink);
@@ -532,7 +537,7 @@ h2.display.h2 { font-size: 34px; margin: 0 0 16px; text-wrap: balance; }
 /* What to do before "Show my path" works: an icon and words, not colour alone. */
 .q-error {
   display: flex; gap: 8px; align-items: flex-start; margin: 14px 0 0; padding: 10px 12px; border-radius: var(--r-sm);
-  background: color-mix(in srgb, var(--hl) 35%, var(--panel)); font-size: 1rem; font-weight: 500; line-height: 1.4; color: var(--ink);
+  background: #fff5c1; background: color-mix(in srgb, var(--hl) 35%, var(--panel)); font-size: 1rem; font-weight: 500; line-height: 1.4; color: var(--ink);
 }
 .q-error .icon { margin-top: 2px; }
 @media (min-width: 640px) { .q-error { margin-left: 34px; } }
@@ -551,8 +556,8 @@ h2.display.h2 { font-size: 34px; margin: 0 0 16px; text-wrap: balance; }
 /* "Show my path" before question 1 is answered: still a blue pill, but pale
    with blue words (5:1), not white words faded to 1.9:1. */
 .btn.q-next[aria-disabled="true"], .btn.q-next[aria-disabled="true"]:hover {
-  background: color-mix(in srgb, var(--cta) 8%, var(--ground)); color: var(--link);
-  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--cta) 35%, var(--ground)); cursor: not-allowed;
+  background: #ebf4fd; background: color-mix(in srgb, var(--cta) 8%, var(--ground)); color: var(--link);
+  box-shadow: inset 0 0 0 1px #a6cdf5; box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--cta) 35%, var(--ground)); cursor: not-allowed;
 }
 
 /* ---------- path ---------- */
