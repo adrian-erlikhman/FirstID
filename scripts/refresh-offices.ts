@@ -22,7 +22,8 @@ const file = new URL("../data/offices.json", import.meta.url);
 const data: { note: string; sources: Record<string, { name: string; url: string; page: string }>; offices: Office[] } = JSON.parse(readFileSync(file, "utf8"));
 const zips = new Set(Object.keys(JSON.parse(readFileSync(new URL("../data/zip-centroids.json", import.meta.url), "utf8"))));
 const write = process.argv.includes("--write");
-const today = new Date().toISOString().slice(0, 10);
+// Today in Los Angeles, where the offices are (toISOString would give the UTC date, a day ahead every evening).
+const today = new Intl.DateTimeFormat("en-CA", { timeZone: "America/Los_Angeles", year: "numeric", month: "2-digit", day: "2-digit" }).format(new Date());
 const UA = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0 Safari/537.36";
 
 const DAYS: [Day, string][] = [["mon", "monday"], ["tue", "tuesday"], ["wed", "wednesday"], ["thu", "thursday"], ["fri", "friday"], ["sat", "saturday"], ["sun", "sunday"]];
@@ -90,7 +91,8 @@ async function main() {
   if (gone.length) console.log(`\nIn our snapshot but not in the DMV's data any more (check by hand, then remove):\n  ${gone.join("\n  ")}`);
   if (missing.length) console.log(`\nIn Los Angeles County ZIPs but not in our snapshot (decide by hand; express offices and business or test centers were left out on purpose):\n  ${missing.join("\n  ")}`);
   if (write) {
-    writeFileSync(file, JSON.stringify({ ...data, offices: next }, null, 2) + "\n");
+    // One-space indent, as the snapshot is written, so a refresh only changes the lines that changed.
+    writeFileSync(file, JSON.stringify({ ...data, offices: next }, null, 1) + "\n");
     console.log(`\nWrote data/offices.json: ${next.length} offices, checked ${today}.`);
   } else {
     console.log("\nNothing written. Run with --write to update data/offices.json.");
