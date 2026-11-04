@@ -16,10 +16,30 @@ self.addEventListener("install", (event) => {
       const html = await (await c.match("./index.html")).text();
       const assets = [...html.matchAll(/(?:src|href)="(\.\/assets\/[^"]+)"/g)].map((m) => m[1]);
       await c.addAll([...new Set(assets)]);
+      await storeLater(c, assets);
     } catch { /* they will be cached on the next visit instead */ }
     await self.skipWaiting();
   })());
 });
+
+// The pictures and the font load only when they come near the screen, so a
+// visit that never scrolled to them would leave them out of the offline copy.
+// Their hashed names are in the script and the stylesheet (next to them in
+// ./assets/); store any not stored yet. Skipped when the phone asks to save
+// data, and one that fails doesn't stop the rest.
+async function storeLater(c, assets) {
+  if (self.navigator && self.navigator.connection && self.navigator.connection.saveData) return;
+  const names = new Set();
+  for (const a of assets.filter((x) => /\.(js|css)$/.test(x))) {
+    const hit = await c.match(a);
+    if (!hit) continue;
+    const text = await hit.text();
+    for (const m of text.matchAll(/["(]\.?\/?([\w.-]+\.(?:png|jpe?g|webp|svg|woff2))["')]/g)) names.add("./assets/" + m[1]);
+  }
+  await Promise.all([...names].map(async (u) => {
+    try { if (!(await c.match(u))) await c.add(u); } catch { /* fetched when it's shown instead */ }
+  }));
+}
 
 self.addEventListener("activate", (event) => {
   event.waitUntil(

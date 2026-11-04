@@ -28,3 +28,43 @@ describe("service worker", () => {
     expect(await navigate(200, "image/png")).toEqual([]);
   });
 });
+
+// Pictures and the font load only near the screen, so the worker stores them
+// at install: a page seen online once shows them offline too.
+function install({ saveData = false, already = [] as string[] } = {}) {
+  const handlers: Record<string, (e: unknown) => void> = {};
+  const stored = new Set<string>(already);
+  const added: string[] = [];
+  const files: Record<string, string> = {
+    "./index.html": '<script type="module" src="./assets/index-abc.js"></script><link rel="stylesheet" href="./assets/index-def.css">',
+    "./assets/index-abc.js": 'const a=new URL("certificate-of-identity-X1.jpg",import.meta.url),b="ca-id-sample-small-Y2.jpg";',
+    "./assets/index-def.css": "@font-face{src:url(./instrument-sans-Z3.woff2)}",
+  };
+  const res = (body: string) => ({ text: async () => body });
+  const cache = {
+    addAll: async (urls: string[]) => { urls.forEach((u) => stored.add(u)); },
+    add: async (u: string) => { added.push(u); stored.add(u); },
+    match: async (u: string) => (stored.has(u) && files[u] !== undefined ? res(files[u]) : stored.has(u) ? res("") : undefined),
+  };
+  const self = { location: { origin: "https://first-id.vercel.app" }, navigator: { connection: { saveData } }, skipWaiting: async () => {}, addEventListener: (n: string, fn: (e: unknown) => void) => { handlers[n] = fn; } };
+  runInNewContext(readFileSync("public/sw.js", "utf8"), { self, caches: { open: async () => cache, match: async () => undefined, keys: async () => [] }, fetch: async () => ({}), URL });
+  let done: Promise<unknown> = Promise.resolve();
+  handlers.install({ waitUntil: (p: Promise<unknown>) => { done = p; } });
+  return done.then(() => ({ added: added.sort(), stored }));
+}
+
+describe("service worker: install", () => {
+  it("stores the pictures and the font that the script and stylesheet name", async () => {
+    const { added } = await install();
+    expect(added).toEqual(["./assets/ca-id-sample-small-Y2.jpg", "./assets/certificate-of-identity-X1.jpg", "./assets/instrument-sans-Z3.woff2"]);
+  });
+  it("doesn't fetch again what is already stored", async () => {
+    const { added } = await install({ already: ["./assets/ca-id-sample-small-Y2.jpg"] });
+    expect(added).not.toContain("./assets/ca-id-sample-small-Y2.jpg");
+  });
+  it("stores nothing extra when the phone asks to save data", async () => {
+    const { added, stored } = await install({ saveData: true });
+    expect(added).toEqual([]);
+    expect(stored.has("./assets/index-abc.js")).toBe(true);
+  });
+});
