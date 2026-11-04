@@ -18,6 +18,8 @@
     "build": "tsc --noEmit && vite build",
     "test": "vitest run",
     "lint:rules": "tsx scripts/lint-rules.ts",
+    "check:links": "tsx scripts/check-links.ts",
+    "refresh:offices": "tsx scripts/refresh-offices.ts",
     "check": "npm run lint:rules && npm test && npm run build",
     "contrast": "node scripts/contrast.mjs"
   },

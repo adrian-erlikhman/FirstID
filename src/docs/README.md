@@ -29,3 +29,8 @@ certificate and the affidavit, greyscale.
 
 The DL 933 is never shown anywhere in the app: the DMV says that form must not
 be shared or uploaded online.
+
+The `-small` files (`ca-id-sample-small.jpg`, 360 px; `birth-certificate-sample-small.png` and
+`homeless-affidavit-small.png`, 540 px, 16 greys) are the same pictures resized for where they are drawn small: the
+home page's orbit and Maria's walk-through. `../forms/certificate-of-identity-small.jpg` is the same for the
+Certificate of Identity. The full-size files stay the source.

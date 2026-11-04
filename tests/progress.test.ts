@@ -3,9 +3,11 @@ import rulesJson from "../data/rules.json";
 import type { RuleSet } from "../src/engine/types";
 import { plan } from "../src/engine/planner";
 import {
-  PROGRESS_KEY, addDays, clearTicks, icsDate, icsFold, icsUnescape, loadTicks, parseIcs, reminderFor, reminderIcs, saveTicks, ticksInPlan, toggleTick,
+  PACKED_KEY, PROGRESS_KEY, addDays, clearTicks, daysLeft, icsDate, icsFold, icsUnescape, lastWaitBefore, loadPacked, loadTicks, parseIcs, savePacked, togglePacked, reminderFor, reminderIcs, remindersFor, remindersIcs, saveTicks, ticksInPlan, toggleTick,
 } from "../src/progress";
 import { personas } from "./personas";
+import { t } from "../src/i18n";
+import { whenLine } from "../src/screens/PathScreen";
 
 const rules = rulesJson as unknown as RuleSet;
 
@@ -96,6 +98,55 @@ describe("calendar reminders", () => {
     expect(reminderFor(rules, p.steps[i], i + 1, "es")!.summary).toMatch(/acta de nacimiento/);
   });
 
+  it("offers no reminder for a step already ticked done", () => {
+    const p = plan(rules, personas.maria)!;
+    const i = p.steps.findIndex((st) => st.action.days > 0);
+    expect(reminderFor(rules, p.steps[i], i + 1, "en")).not.toBeNull();
+    expect(reminderFor(rules, p.steps[i], i + 1, "en", true)).toBeNull();
+    expect(reminderFor(rules, p.steps[i], i + 1, "es", true)).toBeNull();
+  });
+
+  it("with nothing ticked, the days left to each step are the planner's endDay", () => {
+    for (const person of Object.values(personas)) {
+      const p = plan(rules, person);
+      if (!p) continue;
+      for (const [i, st] of p.steps.entries()) expect(daysLeft(p.steps, i), st.action.id).toBe(st.endDay);
+    }
+  });
+
+  it("a wait ticked done no longer pushes back the reminders after it", () => {
+    const p = plan(rules, personas.maria)!;
+    const waits = p.steps.flatMap((st, i) => (st.action.days > 0 ? [i] : []));
+    expect(waits.length, "Maria's path has two steps that wait").toBeGreaterThanOrEqual(2);
+    const [first, later] = waits;
+    const st = p.steps[later];
+    // Nothing ticked: the later reminder counts both waits.
+    expect(reminderFor(rules, st, later + 1, "en", false, daysLeft(p.steps, later))!.days).toBe(st.endDay);
+    // The first wait is over: only the later step's own wait (and any other
+    // unticked wait before it) is left.
+    const done = new Set([p.steps[first].action.id]);
+    const left = daysLeft(p.steps, later, done);
+    expect(left).toBe(st.endDay - p.steps[first].action.days);
+    expect(reminderFor(rules, st, later + 1, "en", false, left)!.days).toBe(left);
+    // Ticking a step after it changes nothing for it.
+    expect(daysLeft(p.steps, first, new Set([st.action.id]))).toBe(p.steps[first].endDay);
+  });
+
+  it("the path screen's start line also drops a wait ticked done, so it agrees with the reminder", () => {
+    const p = plan(rules, personas.maria)!;
+    const waits = p.steps.flatMap((st, i) => (st.action.days > 0 ? [i] : []));
+    const [first, later] = waits;
+    for (const lang of ["en", "es"] as const) {
+      const s = t[lang];
+      // Nothing ticked: the planner's own startDay.
+      expect(whenLine(rules, p.steps, later, lang)).toContain(s.startsAround(p.steps[later].startDay));
+      // The wait before it is over: it can start today.
+      const done = new Set([p.steps[first].action.id]);
+      expect(daysLeft(p.steps, later - 1, done)).toBe(0);
+      expect(whenLine(rules, p.steps, later, lang, done).startsWith(s.startsToday)).toBe(true);
+    }
+  });
+
   it("writes a valid iCalendar file that parses back", () => {
     const p = plan(rules, personas.maria)!;
     const i = p.steps.findIndex((st) => st.action.id === "rrcc_mail");
@@ -121,6 +172,13 @@ describe("calendar reminders", () => {
       expect(icsUnescape(ev.props.SUMMARY.value)).toBe(r.summary);
       expect(icsUnescape(ev.props.DESCRIPTION.value)).toBe(r.description);
       expect(icsUnescape(ev.props.DESCRIPTION.value)).toContain(p.steps[i].action.label[lang]);
+      // It alerts: 9 am on that day, with the step's own words.
+      const alarm = comps.find((c) => c.name === "VALARM")!;
+      expect(alarm.props.ACTION.value).toBe("DISPLAY");
+      expect(alarm.props.TRIGGER.value).toBe("PT9H");
+      expect(icsUnescape(alarm.props.DESCRIPTION.value)).toBe(r.summary);
+      expect(text.indexOf("BEGIN:VALARM")).toBeGreaterThan(text.indexOf("BEGIN:VEVENT"));
+      expect(text.indexOf("END:VALARM")).toBeLessThan(text.indexOf("END:VEVENT"));
       // Only one event, and no deadline beyond the step's own wait.
       expect(comps.filter((c) => c.name === "VEVENT")).toHaveLength(1);
       expect(text).not.toMatch(/90/);
@@ -133,5 +191,148 @@ describe("calendar reminders", () => {
     expect(ev.props.SUMMARY.value).toBe("a\\, b\\; c\\\\d");
     expect(icsUnescape(ev.props.DESCRIPTION.value)).toBe("ñ".repeat(100));
     expect(icsFold("x".repeat(200)).split("\r\n ").map((l) => l.length)).toEqual([75, 74, 51]);
+  });
+});
+
+describe("a step's own screen can tick it off", () => {
+  it("shows the same Done tick as the path list, named for its step, in both languages", async () => {
+    const { renderToStaticMarkup } = await import("react-dom/server");
+    const { createElement } = await import("react");
+    const { StepScreen } = await import("../src/screens/StepScreen");
+    const p = plan(rules, personas.maria)!;
+    for (const lang of ["en", "es"] as const)
+      for (const n of [1, p.steps.length]) {
+        const html = renderToStaticMarkup(createElement(StepScreen, { rules, lang, plan: p, n, person: personas.maria, mode: "cheapest", onSkip: () => {} }));
+        expect(html).toMatch(new RegExp(`<input type="checkbox" aria-label="${t[lang].markDone(n)}"`));
+      }
+  });
+});
+
+describe("every reminder in one calendar file", () => {
+  const now = new Date(2026, 9, 25, 10, 30, 0);
+  const p = plan(rules, personas.maria)!;
+
+  it("lists each step that waits, in order, with the same dates as their own links", () => {
+    const rs = remindersFor(rules, p.steps, "en");
+    const waits = p.steps.filter((st) => st.action.days > 0);
+    expect(rs.map((r) => r.id)).toEqual(waits.map((st) => st.action.id));
+    for (const r of rs) expect(r.days).toBe(p.steps.find((st) => st.action.id === r.id)!.endDay);
+  });
+
+  it("leaves out a step ticked done and moves the ones after it up", () => {
+    const [first, later] = p.steps.flatMap((st, i) => (st.action.days > 0 ? [i] : []));
+    const done = new Set([p.steps[first].action.id]);
+    const rs = remindersFor(rules, p.steps, "en", done);
+    expect(rs.map((r) => r.id)).not.toContain(p.steps[first].action.id);
+    expect(rs.find((r) => r.id === p.steps[later].action.id)!.days).toBe(daysLeft(p.steps, later, done));
+  });
+
+  it("is one valid calendar with one event per reminder, each with its own UID and date", () => {
+    for (const lang of ["en", "es"] as const) {
+      const rs = remindersFor(rules, p.steps, lang);
+      const comps = parseIcs(remindersIcs(rs, now, "fixed"));
+      const events = comps.filter((c) => c.name === "VEVENT");
+      expect(comps.filter((c) => c.name === "VCALENDAR")).toHaveLength(1);
+      expect(events).toHaveLength(rs.length);
+      expect(comps.filter((c) => c.name === "VALARM")).toHaveLength(rs.length); // each one alerts
+      expect(new Set(events.map((e) => e.props.UID.value)).size).toBe(rs.length);
+      events.forEach((e, i) => {
+        expect(e.props.DTSTART.value).toBe(icsDate(addDays(now, rs[i].days)));
+        expect(icsUnescape(e.props.SUMMARY.value)).toBe(rs[i].summary);
+      });
+    }
+  });
+
+  it("a single reminder's file is the same as before: one event", () => {
+    const r = remindersFor(rules, p.steps, "en")[0];
+    expect(reminderIcs(r, now, "fixed")).toBe(remindersIcs([r], now, "fixed"));
+    expect(parseIcs(reminderIcs(r, now, "fixed")).filter((c) => c.name === "VEVENT")).toHaveLength(1);
+  });
+});
+
+describe("the progress line says how long is left", () => {
+  it("with some steps ticked, adds the waits still ahead, in both languages; nothing when none or all are ticked", async () => {
+    const { renderToStaticMarkup } = await import("react-dom/server");
+    const { createElement } = await import("react");
+    const { PathScreen } = await import("../src/screens/PathScreen");
+    const { vi } = await import("vitest");
+    const p = plan(rules, personas.maria)!;
+    const mail = p.steps.find((st) => st.action.id === "rrcc_mail")!;
+    const render = (ticked: string[], lang: "en" | "es") => {
+      const stored = JSON.stringify(Object.fromEntries(ticked.map((id) => [id, true])));
+      vi.stubGlobal("localStorage", { getItem: () => (ticked.length ? stored : null), setItem: () => {}, removeItem: () => {} });
+      try {
+        return renderToStaticMarkup(createElement(PathScreen, {
+          rules, lang, result: p, mode: "cheapest", onMode: () => {}, person: personas.maria, help: null,
+          facts: personas.maria.facts, onChangeAnswers: () => {}, ms: 0, skipped: [], onUnskip: () => {},
+        }));
+      } finally { vi.unstubAllGlobals(); }
+    };
+    const left = daysLeft(p.steps, p.steps.length - 1, new Set([mail.action.id]));
+    for (const lang of ["en", "es"] as const) {
+      expect(render([mail.action.id], lang)).toContain(`, ${t[lang].progressLeft(left)}</span>`);
+      expect(render([], lang)).not.toContain('class="progress-left"');
+      expect(render(p.steps.map((st) => st.action.id), lang)).not.toContain('class="progress-left"');
+    }
+    expect(t.en.progressLeft(21)).toBe("about 3 weeks until the card");
+    expect(t.es.progressLeft(28)).toBe("unas 4 semanas hasta la tarjeta");
+  });
+});
+
+describe("a step's own screen says when it can start", () => {
+  it("names the wait it is queued behind, and drops it once that wait is ticked done", async () => {
+    const { renderToStaticMarkup } = await import("react-dom/server");
+    const { createElement } = await import("react");
+    const { StepScreen } = await import("../src/screens/StepScreen");
+    const { vi } = await import("vitest");
+    const p = plan(rules, personas.maria)!;
+    const last = p.steps.length; // the DMV, after the mailed birth certificate
+    const wait = lastWaitBefore(p.steps, last - 1);
+    expect(wait).toBeGreaterThanOrEqual(0);
+    expect(lastWaitBefore(p.steps, last - 1, new Set([p.steps[wait].action.id]))).toBe(-1);
+    const render = (lang: "en" | "es", ticked: string[]) => {
+      vi.stubGlobal("localStorage", { getItem: () => JSON.stringify(Object.fromEntries(ticked.map((id) => [id, true]))), setItem: () => {}, removeItem: () => {} });
+      try {
+        return renderToStaticMarkup(createElement(StepScreen, { rules, lang, plan: p, n: last, person: personas.maria, mode: "cheapest", onSkip: () => {} }));
+      } finally { vi.unstubAllGlobals(); }
+    };
+    for (const lang of ["en", "es"] as const) {
+      const s = t[lang];
+      expect(render(lang, [])).toContain(`<dt>${s.when}</dt><dd>${s.startsAround(p.steps[last - 1].startDay)}, ${s.afterStep(wait + 1)}</dd>`);
+      expect(render(lang, [p.steps[wait].action.id])).toContain(`<dt>${s.when}</dt><dd>${s.startsToday}</dd>`);
+    }
+  });
+});
+
+describe("the Bring list is a checklist", () => {
+  it("stores what's packed per step, survives junk, and Start over clears it with the ticks", () => {
+    const mem = new Map<string, string>();
+    const store = { getItem: (k: string) => mem.get(k) ?? null, setItem: (k: string, v: string) => { mem.set(k, v); }, removeItem: (k: string) => { mem.delete(k); } };
+    let p = togglePacked({}, "dmv_original", "Your birth certificate (or passport)", true);
+    p = togglePacked(p, "dmv_original", "Your birth certificate (or passport)", true); // twice is still once
+    savePacked(p, store);
+    expect(loadPacked(store)).toEqual({ dmv_original: ["Your birth certificate (or passport)"] });
+    savePacked(togglePacked(p, "dmv_original", "Your birth certificate (or passport)", false), store);
+    expect(mem.has(PACKED_KEY)).toBe(false); // nothing packed: nothing stored
+    savePacked(p, store); saveTicks({ dmv_original: true }, store);
+    clearTicks(store);
+    expect([mem.has(PACKED_KEY), mem.has(PROGRESS_KEY)]).toEqual([false, false]);
+    mem.set(PACKED_KEY, "{not json"); expect(loadPacked(store)).toEqual({});
+    mem.set(PACKED_KEY, JSON.stringify({ a: "x", b: [1, "ok"] })); expect(loadPacked(store)).toEqual({ b: ["ok"] });
+  });
+
+  it("each thing to bring is a checkbox named by its own words, in both languages", async () => {
+    const { renderToStaticMarkup } = await import("react-dom/server");
+    const { createElement } = await import("react");
+    const { StepScreen } = await import("../src/screens/StepScreen");
+    const p = plan(rules, personas.maria)!;
+    const n = p.steps.length;
+    const bring = p.steps[n - 1].action.bring ?? [];
+    expect(bring.length).toBeGreaterThan(0);
+    for (const lang of ["en", "es"] as const) {
+      const html = renderToStaticMarkup(createElement(StepScreen, { rules, lang, plan: p, n, person: personas.maria, mode: "cheapest", onSkip: () => {} }));
+      const items = [...html.matchAll(/<li class="bring-row"><label class="bring-item"><input type="checkbox"\/>[\s\S]*?<span>([^<]*)<\/span><\/label>/g)].map((m) => m[1].replace(/&#x27;/g, "'"));
+      expect(items).toEqual(bring.map((b) => b[lang]));
+    }
   });
 });

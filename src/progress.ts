@@ -36,11 +36,47 @@ export function saveTicks(ticks: Ticks, store: Pick<Storage, "setItem" | "remove
   } catch { /* storage blocked or full: keep going without it */ }
 }
 
-/** Forget every stored tick, including ticks for steps not in the current plan.
- *  "Start over" and "Clear my progress" both call this, so the next person on a
- *  shared phone starts with none. */
+/** Forget every stored tick, including ticks for steps not in the current plan,
+ *  and what was packed for each step. "Start over" and "Clear my progress" both
+ *  call this, so the next person on a shared phone starts with none. */
 export function clearTicks(store: Pick<Storage, "setItem" | "removeItem"> | null = safeLocal()): void {
   saveTicks({}, store);
+  savePacked({}, store);
+}
+
+// What's already packed from a step's Bring list, ticked on the step's screen.
+// Kept by step id, each item by its English text so a language switch keeps it.
+
+export const PACKED_KEY = "firstid.packed.v1";
+
+export type Packed = Record<string, string[]>;
+
+export function loadPacked(store: Pick<Storage, "getItem"> | null = safeLocal()): Packed {
+  try {
+    const raw = store?.getItem(PACKED_KEY);
+    if (!raw) return {};
+    const parsed: unknown = JSON.parse(raw);
+    if (!parsed || typeof parsed !== "object" || Array.isArray(parsed)) return {};
+    const out: Packed = {};
+    for (const [k, v] of Object.entries(parsed)) if (Array.isArray(v)) out[k] = v.filter((x): x is string => typeof x === "string");
+    return out;
+  } catch {
+    return {};
+  }
+}
+
+export function savePacked(packed: Packed, store: Pick<Storage, "setItem" | "removeItem"> | null = safeLocal()): void {
+  try {
+    const kept = Object.fromEntries(Object.entries(packed).filter(([, v]) => v.length));
+    if (Object.keys(kept).length === 0) store?.removeItem(PACKED_KEY);
+    else store?.setItem(PACKED_KEY, JSON.stringify(kept));
+  } catch { /* storage blocked or full: keep going without it */ }
+}
+
+export function togglePacked(packed: Packed, stepId: string, item: string, on: boolean): Packed {
+  const now = new Set(packed[stepId] ?? []);
+  if (on) now.add(item); else now.delete(item);
+  return { ...packed, [stepId]: [...now] };
 }
 
 export function toggleTick(ticks: Ticks, id: string, done: boolean): Ticks {
@@ -117,23 +153,40 @@ export interface Reminder {
 
 /** One all-day VEVENT on today + days, as a complete VCALENDAR with CRLF line endings. */
 export function reminderIcs(r: Reminder, now: Date = new Date(), uid: string = randomId()): string {
-  const day = addDays(now, r.days);
-  const next = addDays(day, 1);
+  return remindersIcs([r], now, uid);
+}
+
+/** Several reminders in one calendar file, one all-day VEVENT each, so a path
+ *  with more than one wait is a single download. */
+export function remindersIcs(rs: Reminder[], now: Date = new Date(), uid: string = randomId()): string {
+  const event = (r: Reminder) => {
+    const day = addDays(now, r.days);
+    return [
+      "BEGIN:VEVENT",
+      `UID:${uid}-${r.id}@first-id`,
+      `DTSTAMP:${icsStamp(now)}`,
+      `DTSTART;VALUE=DATE:${icsDate(day)}`,
+      `DTEND;VALUE=DATE:${icsDate(addDays(day, 1))}`,
+      `SUMMARY:${icsEscape(r.summary)}`,
+      `DESCRIPTION:${icsEscape(r.description)}`,
+      "TRANSP:TRANSPARENT",
+      // An alert, so the reminder reminds: 9 am on the day, as the phone's
+      // calendar sets its own all-day alerts (an all-day day starts at midnight).
+      "BEGIN:VALARM",
+      "ACTION:DISPLAY",
+      `DESCRIPTION:${icsEscape(r.summary)}`,
+      "TRIGGER:PT9H",
+      "END:VALARM",
+      "END:VEVENT",
+    ];
+  };
   const lines = [
     "BEGIN:VCALENDAR",
     "VERSION:2.0",
     "PRODID:-//First ID//Reminders//EN",
     "CALSCALE:GREGORIAN",
     "METHOD:PUBLISH",
-    "BEGIN:VEVENT",
-    `UID:${uid}-${r.id}@first-id`,
-    `DTSTAMP:${icsStamp(now)}`,
-    `DTSTART;VALUE=DATE:${icsDate(day)}`,
-    `DTEND;VALUE=DATE:${icsDate(next)}`,
-    `SUMMARY:${icsEscape(r.summary)}`,
-    `DESCRIPTION:${icsEscape(r.description)}`,
-    "TRANSP:TRANSPARENT",
-    "END:VEVENT",
+    ...rs.flatMap(event),
     "END:VCALENDAR",
   ];
   return lines.map(icsFold).join("\r\n") + "\r\n";
@@ -179,12 +232,38 @@ export function icsUnescape(s: string): string {
 
 // ---------- the reminder for a step ----------
 
-/** The reminder for step `n` (1-based), or null when the step has no wait. */
-export function reminderFor(rules: RuleSet, step: Step, n: number, lang: Lang): Reminder | null {
+/** Days from today until step `i` (0-based) should be done. The planner's
+ *  endDay adds up the waits of every step up to this one, counted from the day
+ *  the path starts; a step already ticked done has no wait left, so its days
+ *  drop out. With nothing ticked this is exactly endDay. */
+export function daysLeft(steps: Step[], i: number, done: ReadonlySet<string> = new Set()): number {
+  return steps.slice(0, i + 1).reduce((d, st) => d + (done.has(st.action.id) ? 0 : st.action.days), 0);
+}
+
+/** The reminder for step `n` (1-based), or null when the step has no wait or
+ *  is already ticked done: there is nothing left to wait for in the mail.
+ *  `days` is when it should be done, from today: see daysLeft. */
+export function reminderFor(rules: RuleSet, step: Step, n: number, lang: Lang, done = false, days = step.endDay): Reminder | null {
   const a = step.action;
-  if (!(a.days > 0)) return null;
+  if (done || !(a.days > 0)) return null;
   const s = t[lang];
   const doc = a.produces.find((d) => d === rules.goal) ?? a.produces[0];
   const what = (doc && s.remindWhat[doc]) || (doc && rules.docs[doc]?.label[lang]) || a.label[lang];
-  return { id: a.id, days: step.endDay, summary: s.remindSummary(what), description: s.remindDescription(n, a.label[lang], a.days) };
+  return { id: a.id, days, summary: s.remindSummary(what), description: s.remindDescription(n, a.label[lang], a.days) };
+}
+
+/** Every reminder still to come on a path: each step that waits and isn't ticked
+ *  done, with its date counted as in daysLeft. */
+export function remindersFor(rules: RuleSet, steps: Step[], lang: Lang, done: ReadonlySet<string> = new Set()): Reminder[] {
+  return steps.flatMap((st, i) => {
+    const r = reminderFor(rules, st, i + 1, lang, done.has(st.action.id), daysLeft(steps, i, done));
+    return r ? [r] : [];
+  });
+}
+
+/** The last step before step i (0-based) that still has a wait ahead of it,
+ *  not ticked done, or -1: the wait this step is queued behind. */
+export function lastWaitBefore(steps: Step[], i: number, done: ReadonlySet<string> = new Set()): number {
+  for (let j = i - 1; j >= 0; j--) if (steps[j].action.days > 0 && !done.has(steps[j].action.id)) return j;
+  return -1;
 }

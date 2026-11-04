@@ -59,6 +59,39 @@ export function groupHours(hours: Record<Day, string>): { from: Day; to: Day; va
   return out;
 }
 
+/** The day and minute of the day in Los Angeles, where the offices are,
+ *  whatever time zone the phone is set to. */
+export function laNow(now: Date = new Date()): { day: Day; minutes: number } {
+  try {
+    const parts = new Intl.DateTimeFormat("en-US", { timeZone: "America/Los_Angeles", weekday: "short", hour: "numeric", minute: "numeric", hourCycle: "h23" }).formatToParts(now);
+    const get = (type: string) => parts.find((p) => p.type === type)?.value ?? "";
+    const day = get("weekday").slice(0, 3).toLowerCase() as Day;
+    if (DAYS.includes(day)) return { day, minutes: (Number(get("hour")) % 24) * 60 + Number(get("minute")) };
+  } catch { /* a browser without time zones: use the phone's own clock below */ }
+  return { day: DAYS[(now.getDay() + 6) % 7], minutes: now.getHours() * 60 + now.getMinutes() };
+}
+
+/** "8:00 am–5:00 pm" as minutes after midnight, or null for "closed" or anything else. */
+export function parseHours(value: string): { open: number; close: number } | null {
+  const m = value.trim().match(/^(\d{1,2}):(\d{2})\s*(am|pm)\s*[–-]\s*(\d{1,2}):(\d{2})\s*(am|pm)$/i);
+  if (!m) return null;
+  const at = (h: string, min: string, ap: string) => ((Number(h) % 12) + (ap.toLowerCase() === "pm" ? 12 : 0)) * 60 + Number(min);
+  const open = at(m[1], m[2], m[3]), close = at(m[4], m[5], m[6]);
+  return close > open ? { open, close } : null;
+}
+
+/** Whether an office is usually open at this moment, going by its listed hours
+ *  (holidays aren't in them), and until when. Null when today's hours can't be read. */
+export function openNow(hours: Record<Day, string>, now: Date = new Date()): { open: true; until: string } | { open: false } | null {
+  const { day, minutes } = laNow(now);
+  const today = hours[day];
+  if (today === undefined) return null;
+  if (today.trim().toLowerCase() === "closed") return { open: false };
+  const h = parseHours(today);
+  if (!h) return null;
+  return minutes >= h.open && minutes < h.close ? { open: true, until: today.split(/[–-]/)[1].trim() } : { open: false };
+}
+
 /** A plain outbound maps search for the office's own address. */
 export const directionsUrl = (o: Office) =>
   `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(`${o.address}, ${o.city}, CA ${o.zip}`)}`;

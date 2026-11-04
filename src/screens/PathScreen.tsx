@@ -6,16 +6,19 @@ import { href } from "../router";
 import { flipsThatMatter, helpOptions, noPathNotes, sameUnder, type NoPathNote } from "../whatif";
 import { useEffect, useMemo, useState } from "react";
 import { under18 } from "../person";
-import { clearTicks as forgetTicks, loadTicks, reminderFor, reminderIcs, saveTicks, ticksInPlan, toggleTick, type Ticks } from "../progress";
+import { clearTicks as forgetTicks, daysLeft, loadTicks, reminderFor, reminderIcs, remindersFor, remindersIcs, saveTicks, ticksInPlan, toggleTick, type Ticks } from "../progress";
 
 // The path: the total in the heading and the cost summary, then the steps.
 // Each step is one row that opens its own screen with the sources.
 
-function whenLine(rules: RuleSet, steps: Step[], i: number, lang: Lang): string {
+export function whenLine(rules: RuleSet, steps: Step[], i: number, lang: Lang, done?: ReadonlySet<string>): string {
   const s = t[lang];
   const st = steps[i];
   const place = placeOf(rules, st);
-  const start = st.startDay === 0 ? s.startsToday : s.startsAround(st.startDay);
+  // When it can start: the waits before it, less any already ticked done (the
+  // same count as its reminder). With nothing ticked this is the planner's startDay.
+  const startDay = daysLeft(steps, i - 1, done);
+  const start = startDay === 0 ? s.startsToday : s.startsAround(startDay);
   if (!place.inPerson) return `${start}, ${s.byMail}, ${s.readyIn(st.action.days)}`;
   const visit = !st.newTrip && i > 0 ? s.sameVisit(i) : s.oneVisit;
   return st.action.days === 0 ? `${start}, ${visit}` : `${start}, ${visit}, ${s.readyIn(st.action.days)}`;
@@ -23,24 +26,49 @@ function whenLine(rules: RuleSet, steps: Step[], i: number, lang: Lang): string 
 
 /** A download link for a step's calendar reminder. The .ics file is a Blob made
  *  here in the browser; nothing is fetched or sent. */
-function ReminderLink({ rules, lang, step, n }: { rules: RuleSet; lang: Lang; step: Step; n: number }) {
+function ReminderLink({ rules, lang, step, n, done, days }: { rules: RuleSet; lang: Lang; step: Step; n: number; done: boolean; days: number }) {
   const s = t[lang];
   // Made and revoked in one effect, so a remount never leaves a dead link.
   const [url, setUrl] = useState<string | null>(null);
   useEffect(() => {
-    const r = reminderFor(rules, step, n, lang);
+    const r = reminderFor(rules, step, n, lang, done, days);
     let u: string | null = null;
     try { if (r) u = URL.createObjectURL(new Blob([reminderIcs(r)], { type: "text/calendar;charset=utf-8" })); } catch { u = null; }
     setUrl(u);
     return () => { if (u) URL.revokeObjectURL(u); };
-  }, [rules, step, n, lang]);
+  }, [rules, step, n, lang, done, days]);
   if (!url) return null;
   return (
-    <a className="remind-link" href={url} download={`first-id-step-${n}-reminder.ics`}>
+    // One name for the link, "Add a reminder to my calendar, step 4": with the
+    // step in a separate hidden span, screen readers paused before its comma.
+    <a className="remind-link" href={url} download={`first-id-step-${n}-reminder.ics`} aria-label={`${s.addReminder}${s.forStep(n)}`}>
       <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" focusable="false" className="icon">
         <rect x="4" y="5" width="16" height="15" rx="2" /><path d="M4 10h16 M9 3v4 M15 3v4" />
       </svg>
-      {s.addReminder}<span className="sr-only">{s.forStep(n)}</span>
+      {s.addReminder}
+    </a>
+  );
+}
+
+/** One calendar file with every reminder still to come, when there is more
+ *  than one (with one, that step's own link does the same). */
+function AllReminders({ rules, lang, plan, done }: { rules: RuleSet; lang: Lang; plan: Plan; done: Set<string> }) {
+  const s = t[lang];
+  const rs = useMemo(() => remindersFor(rules, plan.steps, lang, done), [rules, plan, lang, done]);
+  const [url, setUrl] = useState<string | null>(null);
+  useEffect(() => {
+    let u: string | null = null;
+    try { if (rs.length > 1) u = URL.createObjectURL(new Blob([remindersIcs(rs)], { type: "text/calendar;charset=utf-8" })); } catch { u = null; }
+    setUrl(u);
+    return () => { if (u) URL.revokeObjectURL(u); };
+  }, [rs]);
+  if (!url || rs.length < 2) return null;
+  return (
+    <a className="remind-link remind-all" href={url} download="first-id-reminders.ics">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" focusable="false" className="icon">
+        <rect x="4" y="5" width="16" height="15" rx="2" /><path d="M4 10h16 M9 3v4 M15 3v4" />
+      </svg>
+      {s.addAllReminders(rs.length)}
     </a>
   );
 }
@@ -51,10 +79,15 @@ function StepList({ rules, lang, plan, done, onDone }: {
   const s = t[lang];
   // When the path changes (a new mode), steps that drop out slide shut where
   // they were and new ones slide open, keeping the wording they had.
-  const rows = useListPresence(plan.steps.map((st, i) => ({ st, i, when: whenLine(rules, plan.steps, i, lang) })), (x) => x.st.action.id);
+  // A row's reminder date is worked out with its wording, from the plan it
+  // belongs to: a row sliding out keeps its old index, which means nothing in
+  // the new plan.
+  const rows = useListPresence(plan.steps.map((st, i) => ({
+    st, i, when: whenLine(rules, plan.steps, i, lang, done), days: daysLeft(plan.steps, i, done),
+  })), (x) => x.st.action.id);
   return (
     <ol className="steps">
-      {rows.map(({ item: { st, i, when }, key, phase }) => {
+      {rows.map(({ item: { st, i, when, days }, key, phase }) => {
         const a = st.action;
         const was = st.dollars < a.dollars ? a.dollars : null;
         const isDone = done?.has(a.id) ?? false;
@@ -83,7 +116,7 @@ function StepList({ rules, lang, plan, done, onDone }: {
                   <span className="tick-box" aria-hidden="true"><Icon name="check" size={16} stroke={2.4} /></span>
                   <span className="tick-text" aria-hidden="true">{s.doneShort}</span>
                 </label>
-                <ReminderLink rules={rules} lang={lang} step={st} n={i + 1} />
+                <ReminderLink rules={rules} lang={lang} step={st} n={i + 1} done={isDone} days={days} />
               </div>
             )}
             </div></div>
@@ -174,7 +207,10 @@ export function PathScreen(props: {
             {s.pathHeadPre} <Br><Tween value={result.total.dollars} format={money} /></Br>{s.pathHeadPost}
           </h1>
           <p className="progress-line">
-            <span className="progress-count" aria-live="polite">{s.progressDone(done.size, result.steps.length)}</span>
+            <span className="progress-count" aria-live="polite">
+              {s.progressDone(done.size, result.steps.length)}
+              {done.size > 0 && done.size < result.steps.length && <span className="progress-left">, {s.progressLeft(daysLeft(result.steps, result.steps.length - 1, done))}</span>}
+            </span>
             <span className="progress-note">{s.progressNote}</span>
             {Object.keys(ticks).length > 0 && <button type="button" className="progress-clear" onClick={clearTicks}>{s.clearProgress}</button>}
           </p>
@@ -202,6 +238,7 @@ export function PathScreen(props: {
               <LiveNote text={`${{ cheapest: s.modeCheapest, fewestTrips: s.modeTrips, fastest: s.modeFastest }[mode]}. ${s.cardSummary({ total: result.total.dollars, full: fullPrice(result), steps: result.total.steps, trips: result.total.trips, days: result.total.days })}`} />
             </div>
             <StepList rules={rules} lang={lang} plan={result} done={done} onDone={setTick} />
+            <AllReminders rules={rules} lang={lang} plan={result} done={done} />
           </Solver>
 
           {unverified > 0

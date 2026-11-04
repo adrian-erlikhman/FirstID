@@ -8,6 +8,7 @@ Background research from Oct 18, 2026, the week before we started building. Clau
 |---|---|
 | [`first_id_rules.md`](first_id_rules.md) | 16 rule questions (ID and residency documents, LA County birth certificates, notary witnesses, DL 933 and DL 937, AB 1733, fees, foster youth, reentry, out-of-state births, Social Security, Safe at Home), each with sources, a confidence level and what is still unconfirmed. The starting point for `data/rules.json`. |
 | [`first_id_landscape.md`](first_id_landscape.md) | Existing tools and guides, the size of the problem, local partners and testers, fit with Rep. Kamlager-Dove's priorities, and where location data could come from. |
+| [`adult-id-help.md`](adult-id-help.md) | Nov 3, 2026: organizations whose own sites say they help adults get ID, as candidates for the no-path screen's "Who can help today" (the open item in `tests/dead-ends.test.tsx`). Quotes and phones checked on their pages; call before adding one. |
 
 ## The contest
 

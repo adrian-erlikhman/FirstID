@@ -11,10 +11,11 @@ Open one GitHub issue per line and assign it.
 
 **Thursday**
 - [ ] Read `planner.ts` until you can explain every line. Keep it and extend it, or rewrite `plan()` yourself against the tests. Either way, log the choice in `AI-USE.md`.
-- [ ] **Step order (do this first, it shows on screen).** Dijkstra returns *a* valid order: Maria's path currently shows the shelter's DL 933 as step 3, "around week 4", when it could happen today. Add a pass that puts free, same-day steps first and groups steps at the same place, without breaking any requirement. Add a test.
+- [x] **Step order (do this first, it shows on screen).** Dijkstra returns *a* valid order: Maria's path currently shows the shelter's DL 933 as step 3, "around week 4", when it could happen today. Add a pass that puts free, same-day steps first and groups steps at the same place, without breaking any requirement. Add a test. (Done 3 Nov 2026 by Claude: `settle` in `src/engine/planner.ts`, `tests/step-order.test.ts`; see AI-USE.md.)
 
 **Friday**
 - [ ] **Waiting in parallel.** Today, days just add up. A mailed birth certificate request shouldn't block steps that don't need it. Model the overlap and test it.
+  - Checked 3 Nov 2026 (Claude): with today's rules no path has two waits that could overlap. Across every answer set the screens allow and all three sorts there are 44 path shapes; 23 have two or more waits, and in every one the later wait needs the earlier one's document (the DMV visit needs the mailed birth certificate). Same-day steps no longer wait behind the mail (see "Step order"). So this changes no path until a rule adds a wait that doesn't depend on another, such as a Social Security card by mail.
 - [ ] **What-if.** `src/whatif.ts` already re-plans once per possible answer change and keeps only the ones that change the path. Review it, move it into `src/engine/` if you'd rather own it there, and add a property test (for example: every toggle it shows really changes the plan).
 - [ ] Draft the technical-difficulty answer, in your own words.
 
@@ -54,12 +55,17 @@ All seven screens now exist as an AI-drafted first build (logged in `AI-USE.md`)
 - [ ] Read every file in `src/screens/` plus `App.tsx`, `router.ts` and `components.tsx` until you can explain them. Change anything you'd do differently.
 - [x] **Fonts:** self-hosted in `src/fonts/` (Instrument Sans; licence in `src/fonts/OFL.txt`). The app makes no third-party requests.
 - [ ] **Photos (Adrian, Ryan, Michael):** take 3–4 of our own and drop them in `src/photos/` (names in `src/photos/README.md`). They show up on the home page in black and white.
-- [ ] **Packet QR code:** add a QR code on the printed page that opens the live site's How-we-know screen, so a clerk can check a rule on the spot.
+- [x] **Packet QR code:** add a QR code on the printed page that opens the live site's How-we-know screen, so a clerk can check a rule on the spot. (Done 3 Nov 2026 by Claude: `src/qr.ts`, in the packet's header; see AI-USE.md.)
 
 **Friday**
 - [ ] **User test at lunch:** 5–8 LACES students run Maria on their own phones without help. Write down how many finish and what confuses them, then fix the top three. Those fixes are yours, in your own commits.
 - [ ] **Spanish:** a native speaker reviews every string in `src/i18n.ts` and every `es` line in `data/rules.json`.
 - [ ] **Screen reader pass:** VoiceOver (iPhone) or TalkBack (Android) through Maria's whole path. The automated check (axe) is clean on every screen in light and dark, but a real screen reader test is what counts.
+- [ ] **Real-phone check** (added 3 Nov 2026 by Claude: what headless Chrome could only imitate). Write down the phone, its iOS or Android version, and what happened:
+  - An old iPhone (6s, 7 or first SE, on iOS 15): the home page draws, and "Show my path" reads clearly before question 1 is answered.
+  - Add a reminder on an iPhone and on an Android phone: it opens the calendar, and the event alerts at 9 am on its day.
+  - On the deployed site, `/es` shows the "This page doesn't exist" page, not Vercel's plain 404.
+  - On shelter or library Wi-Fi, or with one bar: the page opens within a few seconds, and works again in airplane mode.
 - [ ] Stretch: make it work offline after the first visit (web app manifest + service worker), for people on library or shelter Wi-Fi.
 
 **Saturday**

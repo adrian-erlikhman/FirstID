@@ -105,5 +105,7 @@ export function HomeScreen({ rules, lang, onStart, onExample }: {
 }
 
 /** "No ID. No birth certificate." -> ["No ID.", "No birth certificate."], so
- *  wide screens can keep each sentence on its own line (styles.css, hero). */
-const sentences = (text: string) => text.split(/(?<=[.!?])\s+/);
+ *  wide screens can keep each sentence on its own line (styles.css, hero).
+ *  No lookbehind (?<=...): Safari before 16.4 throws on it, and this runs on
+ *  the first screen, so iPhones stuck on iOS 15 got a blank page. */
+export const sentences = (text: string) => text.replace(/([.!?])\s+/g, "$1\u0000").split("\u0000");

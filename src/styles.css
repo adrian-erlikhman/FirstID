@@ -10,6 +10,10 @@
  * tap use --control, which clears 3:1.
  */
 
+/* Older iPhones (Safari before 16.2) skip a colour written with color-mix(),
+   and before 15.4 a height in dvh. Each such value has a plain one of the
+   same property just before it, which those phones keep instead
+   (tests/old-phones.test.ts checks). */
 @font-face { font-family: "Instrument Sans"; src: url("./fonts/instrument-sans.woff2") format("woff2"); font-weight: 400 700; font-display: swap; }
 
 :root {
@@ -51,7 +55,7 @@ body {
   -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility;
 }
 ::selection { background: var(--hl); color: var(--on-c); }
-.app { min-height: 100dvh; display: flex; flex-direction: column; overflow-x: clip; }
+.app { min-height: 100vh; min-height: 100dvh; display: flex; flex-direction: column; overflow-x: clip; }
 main { flex: 1; width: 100%; max-width: var(--wide); margin: 0 auto; padding: 0 var(--gutter); }
 main h1:focus { outline: none; }
 a { color: var(--link); text-underline-offset: 3px; text-decoration-thickness: 1px; }
@@ -186,6 +190,7 @@ h1.display .bracketed .num { color: var(--on-c); background: var(--hl); padding:
 .actions.sticky {
   position: sticky; bottom: 0; z-index: 2; margin-top: 8px;
   padding: 16px 0 calc(14px + env(safe-area-inset-bottom, 0px));
+  background: linear-gradient(to bottom, rgba(255, 255, 255, 0), var(--ground) 18px);
   background: linear-gradient(to bottom, color-mix(in srgb, var(--ground) 0%, transparent), var(--ground) 18px);
 }
 .actions.sticky .btn { width: 100%; }
@@ -213,6 +218,14 @@ h1.display .bracketed .num { color: var(--on-c); background: var(--hl); padding:
 .pills-age { container-type: inline-size; }
 .pills-age > .pill { flex-basis: calc(50% - 4px); }
 @container (max-width: 13.4em) { .pills-age > .pill { flex-basis: 100%; } }
+/* Safari before 16 has no container queries, and the first iPhone SE (320px
+   wide) stopped at iOS 15. The same switch by screen width there: the group
+   is the screen less 76px, so 13.4em is reached at 337px with the larger
+   text and 372px with the largest (the default size never needs it). */
+@supports not (container-type: inline-size) {
+  @media (max-width: 337px) { [data-text-size="larger"] .pills-age > .pill { flex-basis: 100%; } }
+  @media (max-width: 372px) { [data-text-size="largest"] .pills-age > .pill { flex-basis: 100%; } }
+}
 /* Longer answers (where you were born) stack full width on a phone: one
    clean column of equal targets instead of four ragged rows. */
 @media (max-width: 639px) {
@@ -320,7 +333,8 @@ h1.display .bracketed .num { color: var(--on-c); background: var(--hl); padding:
 .story-line h2 { font-size: 32px; margin: 0 0 12px; text-wrap: balance; }
 .story-line p { font-size: 1.125rem; color: var(--text-2); margin: 0 auto; max-width: 30em; text-wrap: pretty; }
 /* Narrow enough on a phone that the two documents, which ride on the ring, never get clipped at the screen edge. */
-.story-art { position: relative; width: min(calc((100vw - 160px) * 1.16), 46vh, 440px); aspect-ratio: 1; }
+/* Square by giving the same size twice, not aspect-ratio, which iOS 14 lacks (the art collapsed to nothing there). */
+.story-art { --art: min(calc((100vw - 160px) * 1.16), 46vh, 440px); position: relative; width: var(--art); height: var(--art); }
 .orbit { position: absolute; inset: 0; transform: rotate(calc(var(--p, 0) * 300deg)); transition: opacity .7s, scale .7s var(--ease); }
 .orbit-ring { position: absolute; inset: 0; width: 100%; height: 100%; }
 .orbit-ring circle { fill: none; stroke: var(--ink); stroke-width: 1.2; stroke-dasharray: 3 5; }
@@ -337,7 +351,7 @@ h1.display .bracketed .num { color: var(--on-c); background: var(--hl); padding:
 .orb-label { transition: color .5s, opacity .4s; }
 .st-2 .orb-label { opacity: 0; }
 .breakout { position: absolute; inset: 0; display: grid; place-items: center; opacity: 0; transform: scale(.55) rotate(-24deg); transition: opacity .6s, transform .9s var(--ease); }
-.breakout::before { content: ""; position: absolute; width: 74%; aspect-ratio: 1.586; border-radius: 22px; background: var(--hl); transform: rotate(9deg); }
+.breakout::before { content: ""; position: absolute; width: 74%; height: 46.66%; /* 74% / 1.586, a card's shape, in a square box */ border-radius: 22px; background: var(--hl); transform: rotate(9deg); }
 .breakout .mark { position: relative; height: auto; width: 68%; color: var(--ink); filter: drop-shadow(0 24px 30px rgb(0 0 0 / .25)); }
 .st-2 .breakout { opacity: 1; transform: none; }
 .story-dots { display: flex; gap: 6px; }
@@ -489,9 +503,9 @@ h2.display.h2 { font-size: 34px; margin: 0 0 16px; text-wrap: balance; }
 @media (hover: hover) { .check-row:hover { background: var(--wash); } }
 .check-row:active { background: var(--wash); }
 .check-row[aria-checked="true"] { background: var(--pick); }
-@media (hover: hover) { .check-row[aria-checked="true"]:hover { background: color-mix(in srgb, var(--pick) 75%, var(--line)); } }
+@media (hover: hover) { .check-row[aria-checked="true"]:hover { background: #e3e3e8; background: color-mix(in srgb, var(--pick) 75%, var(--line)); } }
 /* Grey on the picked grey is 4.2:1; a little more ink brings the hint back over 4.5. */
-.check-row[aria-checked="true"] .row-sub { color: color-mix(in srgb, var(--text-2) 80%, var(--ink)); }
+.check-row[aria-checked="true"] .row-sub { color: #5e5e62; color: color-mix(in srgb, var(--text-2) 80%, var(--ink)); }
 .box {
   width: 22px; height: 22px; flex: none; border-radius: 5px; background: var(--panel); box-shadow: inset 0 0 0 1.5px var(--control);
   display: grid; place-items: center; color: var(--on-ink);
@@ -532,7 +546,7 @@ h2.display.h2 { font-size: 34px; margin: 0 0 16px; text-wrap: balance; }
 /* What to do before "Show my path" works: an icon and words, not colour alone. */
 .q-error {
   display: flex; gap: 8px; align-items: flex-start; margin: 14px 0 0; padding: 10px 12px; border-radius: var(--r-sm);
-  background: color-mix(in srgb, var(--hl) 35%, var(--panel)); font-size: 1rem; font-weight: 500; line-height: 1.4; color: var(--ink);
+  background: #fff5c1; background: color-mix(in srgb, var(--hl) 35%, var(--panel)); font-size: 1rem; font-weight: 500; line-height: 1.4; color: var(--ink);
 }
 .q-error .icon { margin-top: 2px; }
 @media (min-width: 640px) { .q-error { margin-left: 34px; } }
@@ -551,8 +565,8 @@ h2.display.h2 { font-size: 34px; margin: 0 0 16px; text-wrap: balance; }
 /* "Show my path" before question 1 is answered: still a blue pill, but pale
    with blue words (5:1), not white words faded to 1.9:1. */
 .btn.q-next[aria-disabled="true"], .btn.q-next[aria-disabled="true"]:hover {
-  background: color-mix(in srgb, var(--cta) 8%, var(--ground)); color: var(--link);
-  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--cta) 35%, var(--ground)); cursor: not-allowed;
+  background: #ebf4fd; background: color-mix(in srgb, var(--cta) 8%, var(--ground)); color: var(--link);
+  box-shadow: inset 0 0 0 1px #a6cdf5; box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--cta) 35%, var(--ground)); cursor: not-allowed;
 }
 
 /* ---------- path ---------- */
@@ -634,6 +648,14 @@ h2.display.h2 { font-size: 34px; margin: 0 0 16px; text-wrap: balance; }
 .facts .row-sub { display: block; margin-top: 2px; }
 .bring > li { display: flex; gap: 12px; padding: 14px 18px; line-height: 1.45; font-size: 1rem; }
 .bring .box { width: 20px; height: 20px; margin-top: 1px; }
+/* Each thing to bring is a real checkbox (packed or not); the whole row is the target. */
+/* The label takes the row's padding, so the target is the whole row (44px and up), not just the words. */
+.bring > li.bring-row { padding: 0; } /* a class, not :has(): older iPhones don't support it */
+.bring-item { position: relative; display: flex; gap: 12px; flex: 1; min-height: 44px; padding: 14px 18px; cursor: pointer; }
+.bring-item input { position: absolute; inset: 0; width: 100%; height: 100%; margin: 0; opacity: 0; cursor: pointer; }
+.bring-item input:checked + .box { background: var(--cta); box-shadow: none; color: #fff; }
+.bring-item input:checked + .box .icon path { stroke-dashoffset: 0; }
+.bring-item input:focus-visible + .box { outline: 2px solid var(--focus-ink); outline-offset: 2px; box-shadow: inset 0 0 0 1.5px var(--control), 0 0 0 2px var(--focus-halo), 0 0 0 6px var(--focus-halo); }
 .say {
   margin: 0; padding: 22px 22px 24px 28px; border-radius: var(--r-card); background: var(--ink); color: var(--on-ink);
   font-weight: 600; font-size: 1.375rem; line-height: 1.3; letter-spacing: -0.025em;
@@ -778,6 +800,10 @@ h2.display.h2 { font-size: 34px; margin: 0 0 16px; text-wrap: balance; }
 /* Wider screens: an open rule's explanation and sources start under its name,
    not under its number, and long quotes get a shorter line. */
 @media (min-width: 640px) { .rule-body { padding: 2px 48px 22px 60px; } }
+/* A fee waiver and its own sources, under the step's. */
+.rule-waiver { display: grid; gap: 10px; margin-top: 8px; }
+.rule-waiver-head { margin: 0; font-size: 1rem; font-weight: 600; line-height: 1.35; color: var(--ink); }
+@media (max-width: 639px) { .rule-waiver-head { padding: 0 6px; } }
 .how > li > span:last-child { line-height: 1.5; }
 .honesty { display: grid; gap: 12px; margin-top: 32px; }
 .honesty .panel { padding: 16px 18px 18px; }
@@ -934,6 +960,8 @@ h2.display.h2 { font-size: 34px; margin: 0 0 16px; text-wrap: balance; }
 .sheet-head > div:first-child { display: contents; }
 .sheet-head h1 { grid-column: 1 / -1; margin-bottom: -4px; }
 .sheet-meta { font-size: 0.6563rem; line-height: 1.5; text-transform: uppercase; letter-spacing: .06em; }
+/* Phones read the packet on screen, already on the site: the QR code is for paper. */
+.sheet-qr { display: none; }
 .sheet-sum { display: flex; flex-wrap: wrap; gap: 12px 24px; align-items: flex-end; margin: 14px 0; }
 .name-line { flex: 1 1 220px; display: flex; flex-direction: column; gap: 4px; font-size: 0.7188rem; }
 .name-line i { display: block; border-bottom: 1.5px solid #111; height: 24px; }
@@ -947,6 +975,9 @@ h2.display.h2 { font-size: 34px; margin: 0 0 16px; text-wrap: balance; }
   .sheet-row > [data-label]::before { content: attr(data-label); display: block; margin-bottom: 2px; font-size: 0.6563rem; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; color: #111; }
 }
 .sheet .box { width: 16px; height: 16px; box-shadow: inset 0 0 0 2px #111; border-radius: 3px; margin-top: 2px; background: #fff; }
+.sheet .box.done { display: grid; place-items: center; color: #111; } /* a step ticked done in the app */
+.sheet .box.done .icon { width: 80%; height: 80%; }
+.sheet .box.done .icon path { stroke-dashoffset: 0; transition: none; } /* drawn, not animated in like the app's ticks */
 .sheet-where { display: block; margin-top: 2px; font-size: 0.75rem; line-height: 1.35; color: #333; }
 .sheet-flag { white-space: nowrap; font-weight: 600; color: #111; } /* "· CALL AHEAD" never starts a line or splits */
 .sheet-small { font-size: 0.75rem; color: #222; }
@@ -968,6 +999,10 @@ h2.display.h2 { font-size: 34px; margin: 0 0 16px; text-wrap: balance; }
   .sheet { padding: 48px 56px; font-size: 0.9063rem; }
   .sheet h1 { font-size: 30px; }
   .sheet-head { grid-template-columns: minmax(0, 1fr) fit-content(55%); } /* a long note can't squeeze the subtitle */
+  /* The QR code to How we know: a third column beside the title and the note. */
+  .sheet-head { grid-template-columns: minmax(0, 1fr) fit-content(55%) auto; }
+  .sheet-head h1 { grid-column: 1 / 3; }
+  .sheet-qr { display: block; grid-column: 3; grid-row: 1 / span 2; align-self: end; width: 72px; height: 72px; }
   .sheet-meta { text-align: right; text-wrap: balance; }
   .sheet-row, .sheet-row.head { display: grid; grid-template-columns: 26px minmax(0, 2.1fr) minmax(0, 2fr) 70px minmax(0, 1.3fr); gap: 12px; }
   .sheet-row > * { grid-column: auto !important; grid-row: auto !important; text-align: left !important; }
@@ -997,7 +1032,9 @@ h2.display.h2 { font-size: 34px; margin: 0 0 16px; text-wrap: balance; }
   .sheet { box-shadow: none; padding: 0; font-size: 8.8pt; line-height: 1.28; border-radius: 0; max-width: none !important; }
   .sheet h1 { font-size: 17pt; }
   /* Title on one line, the rules note beside the subtitle: two lines of Spanish title pushed the footer onto a second page. */
-  .sheet-head { grid-template-columns: minmax(0, 1fr) auto; gap: 0 16px; padding-bottom: 6px; }
+  .sheet-head { grid-template-columns: minmax(0, 1fr) auto auto; gap: 0 16px; padding-bottom: 6px; }
+  /* 0.6in square: about 0.45mm a module for this link, which phone cameras read at arm's length. */
+  .sheet-qr { display: block; grid-column: 3; grid-row: 1 / span 2; align-self: end; width: 0.6in; height: 0.6in; }
   .sheet-head h1 { white-space: nowrap; margin-bottom: 4px; }
   .sheet-meta { text-align: right; line-height: 1.35; white-space: nowrap; }
   .sheet-sum { margin: 8px 0; }
@@ -1054,14 +1091,22 @@ main h1:focus { box-shadow: none !important; } /* headings take focus on a new s
 @media (min-width: 640px) {
   .clerk { padding: max(24px, env(safe-area-inset-top)) max(48px, env(safe-area-inset-right)) max(40px, env(safe-area-inset-bottom)) max(48px, env(safe-area-inset-left)); }
 }
-.clerk-bar { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex: none; }
-.clerk-title { margin: 0; font-size: 16px; font-weight: 600; color: #000; min-width: 0; }
+.clerk-bar { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px 12px; flex: none; }
+/* Where the two buttons leave it less than ~10em, the title takes its own line above them. */
+.clerk-title { flex: 1 1 10em; margin: 0; font-size: 16px; font-weight: 600; color: #000; min-width: 0; }
 .clerk-close {
   display: inline-flex; align-items: center; gap: 6px; flex: none;
   min-height: 52px; padding: 10px 20px; border-radius: 980px; border: 2px solid #000;
   background: #000; color: #fff; font-size: 18px; font-weight: 600;
 }
 .clerk-close:focus-visible { outline: 2px solid #000; outline-offset: 2px; } /* the app's black ring in its yellow halo, not a third colour */
+.clerk-actions { display: flex; gap: 8px; flex: none; margin-left: auto; }
+/* Shows the line in the other language: outlined, so Close stays the obvious way out. */
+.clerk-lang {
+  display: inline-flex; align-items: center; min-height: 52px; padding: 10px 18px; border-radius: 980px;
+  border: 2px solid #000; background: #fff; color: #000; font-size: 18px; font-weight: 600;
+}
+.clerk-lang:focus-visible { outline: 2px solid #000; outline-offset: 2px; }
 .clerk-box { flex: 1; min-height: 0; overflow: auto; display: flex; align-items: center; margin-top: 12px; }
 .clerk-say {
   margin: auto 0; width: 100%; font-size: 32px; font-weight: 700; line-height: 1.18; letter-spacing: -0.02em;
@@ -1076,6 +1121,16 @@ main h1:focus { box-shadow: none !important; } /* headings take focus on a new s
 :root[data-text-size="larger"] { font-size: 115%; }
 :root[data-text-size="largest"] { font-size: 130%; }
 @media print { :root[data-text-size] { font-size: 100%; } }
+/* Printing another screen (Ctrl+P on a step or the path): what is on the page,
+   without the buttons that do nothing on paper, and the "Say this" line outlined
+   rather than inked solid black. The packet above has its own layout. */
+@media print {
+  .head-actions, .body-actions, .actions.pair, .pills-modes, .how-chosen, .say-tools, .cant-do,
+  .help .btn, .step-row > .icon { display: none !important; }
+  .say { background: #fff; color: #000; border: 2px solid #000; box-shadow: none; }
+  /* A step, a source or a note is never cut in half by a page break. */
+  ol.steps > li, .source, .notice, .facts, .say, .paper { break-inside: avoid; }
+}
 
 .ts { position: relative; flex: none; }
 .ts-toggle {
@@ -1140,6 +1195,13 @@ main h1:focus { box-shadow: none !important; } /* headings take focus on a new s
 .office-name { margin: 0 0 4px; font-size: 1.125rem; font-weight: 600; line-height: 1.3; }
 .office-mi { font-weight: 400; color: var(--text-2); }
 .office-addr { margin: 0 0 10px; font-size: 1rem; line-height: 1.45; }
+/* "Usually open now, until 5:00 pm": a dot for the state, the words in ink, so it
+   isn't colour alone and the text keeps its contrast. */
+.office-now { display: flex; align-items: center; gap: 8px; margin: 0 0 6px; font-size: 1rem; font-weight: 500; color: var(--text-2); }
+.office-now::before { content: ""; flex: none; width: 9px; height: 9px; border-radius: 50%; background: var(--control); }
+.office-now.is-open { color: var(--ink); }
+.office-now.is-open::before { background: #1f8a3c; }
+@media (forced-colors: active) { .office-now::before { background: CanvasText; } .office-now.is-open::before { background: Highlight; } }
 .office-hours { margin: 0 0 12px; font-size: 1rem; line-height: 1.45; }
 .office-hours > div { display: grid; grid-template-columns: 6.5em minmax(0, 1fr); gap: 8px; }
 .office-hours dt { color: var(--text-2); }
@@ -1163,6 +1225,7 @@ main h1:focus { box-shadow: none !important; } /* headings take focus on a new s
 /* ===== Progress ticks + calendar reminders (src/screens/PathScreen.tsx, src/progress.ts) ===== */
 .progress-line { display: flex; flex-wrap: wrap; align-items: center; gap: 2px 12px; margin: 14px 0 0; font-size: 0.9375rem; color: var(--text-2); }
 .progress-count { font-weight: 600; color: var(--ink); font-variant-numeric: tabular-nums; }
+.progress-left { font-weight: 400; }
 .progress-note { font-size: 0.875rem; }
 .progress-clear {
   min-height: 44px; padding: 0; border: 0; background: none; font: inherit; font-size: 0.875rem;
@@ -1187,11 +1250,21 @@ main h1:focus { box-shadow: none !important; } /* headings take focus on a new s
 .remind-link:hover { text-decoration: underline; text-underline-offset: 3px; }
 /* The icon sits on the first line, so a label that wraps (Spanish, larger text) reads as one link. */
 .remind-link .icon { flex: none; margin-top: 2px; }
+/* Every reminder at once: its own row under the list, past a rule, so it reads as for the whole path, not the last step. */
+.remind-all { display: grid; justify-content: start; border-top: 1px solid var(--line); padding: 10px 16px; font-weight: 500; }
+@media (min-width: 640px) { .remind-all { padding-left: 18px; } }
+@media print { .remind-all { display: none !important; } }
 .step-done .step-title { color: var(--text-2); }
 @media (min-width: 640px) { .step-track { padding: 0 18px 10px 56px; } }
+/* The same tick on a step's own screen, above Back and Next. */
+.step-tick-row { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 16px; margin-top: 28px; }
+.step-tick-row .progress-note { color: var(--text-2); }
+/* The page shown if a screen ever fails to draw (src/ErrorBoundary.tsx). */
+.crash .actions { margin-top: 20px; }
+.crash-help { margin: 28px 0 0; font-size: 1rem; line-height: 1.5; }
 @media (prefers-reduced-motion: reduce) { .tick-box { transition: none; } }
 @media (forced-colors: active) { .tick-box { border: 1.5px solid CanvasText; } .tick input:checked + .tick-box { background: Highlight; color: HighlightText; } }
-@media print { .progress-line, .step-track { display: none !important; } }
+@media print { .progress-line, .step-track, .step-tick-row { display: none !important; } }
 /* ===== end Progress ticks + calendar reminders ===== */
 
 /* ===== Phones: nothing a person reads as a sentence is under 16px =====
@@ -1201,6 +1274,43 @@ main h1:focus { box-shadow: none !important; } /* headings take focus on a new s
 @media (max-width: 639px) {
   .row-sub, .fine, .pill, .mode-hint, .step-when, .step-waiver, .notice, .help p, .source-quote,
   .rule-src, .honesty ul, .mini-in, .mini-steps .num, .progress-line, .progress-note, .progress-clear,
-  .tick, .remind-link, .paper figcaption, .paper figcaption strong { font-size: 1rem; }
+  .tick, .remind-link, .paper figcaption, .paper figcaption strong,
+  .tile-row .row-sub, .cant-sum { font-size: 1rem; }
 }
 /* ===== end phones ===== */
+
+/* ===== Rendering: the home page is ~9,700px tall on a phone =====
+   Sections below the story are skipped by layout and paint until they near the
+   screen; the browser keeps each one's real size once drawn ("auto"). The
+   before/after numbers are in AI-USE.md. The story keeps its sticky,
+   scroll-driven panel and is left as it is. */
+.home-sec, .home-cta { content-visibility: auto; contain-intrinsic-size: auto 900px; }
+.home-sec.forms-band { contain-intrinsic-size: auto 1500px; }
+@media print { .home-sec, .home-cta { content-visibility: visible; } }
+/* ===== end Rendering ===== */
+
+/* ===== Windows high contrast (forced colors) =====
+   Forced colors replaces backgrounds and drops box-shadows, which is how most
+   controls here draw their edges and show which option is picked. So in that
+   mode they get real borders, and the picked option takes the system highlight
+   colours, as the step ticks already do. Last in the file, so it wins over each
+   control's own rules. */
+@media (forced-colors: active) {
+  .btn, .pill, .ts-option, .lang button { border: 1px solid ButtonText; }
+  .btn.link, .btn.text { border: 0; }
+  /* forced-color-adjust: none, or the browser draws its text backplate over
+     the highlight and the label disappears; the colours are still the user's. */
+  .pill[aria-pressed="true"], .ts-option[aria-pressed="true"], .lang button[aria-checked="true"] {
+    forced-color-adjust: none; background: Highlight; color: HighlightText; border-color: Highlight;
+  }
+  .box { border: 1.5px solid CanvasText; }
+  .check-row[aria-checked="true"] .box { background: Highlight; color: HighlightText; border-color: Highlight; }
+  .bring-item input:checked + .box { background: Highlight; color: HighlightText; border-color: Highlight; }
+  .switch { border: 1.5px solid CanvasText; }
+  .switch span { border: 1.5px solid CanvasText; top: 1px; left: 1px; }
+  .toggle-row[aria-checked="true"] .switch { background: Highlight; border-color: Highlight; }
+  .toggle-row[aria-checked="true"] .switch span { background: HighlightText; border-color: HighlightText; }
+  .toggle-row.changed { border-left: 6px solid Highlight; padding-left: 12px; }
+  .ts-menu { border: 1px solid CanvasText; }
+}
+/* ===== end Windows high contrast ===== */

@@ -1,4 +1,4 @@
-import { useEffect, useId, useRef, useState, type KeyboardEvent as ReactKeyboardEvent, type ReactNode } from "react";
+import { useEffect, useId, useRef, useState, type FocusEvent as ReactFocusEvent, type KeyboardEvent as ReactKeyboardEvent, type ReactNode } from "react";
 import { usePresence, useTween } from "./motion";
 import type { Mode, Plan, RuleSet, Source, Step } from "./engine/types";
 import { t, type Lang } from "./i18n";
@@ -109,9 +109,19 @@ export function WasPrice({ dollars, lang }: { dollars: number; lang: Lang }) {
   return <><s className="num" aria-hidden="true">{money(dollars)}</s><span className="sr-only"> {t[lang].insteadOf(dollars)}</span></>;
 }
 
-/** A number that counts to its new value. `format` turns it into text. */
+/** A number that counts to its new value. `format` turns it into text. The
+ *  moving number is hidden from screen readers, which get the final value at
+ *  once instead of whichever frame they happen to land on. */
 export function Tween({ value, format = String }: { value: number; format?: (n: number) => string }) {
-  return <>{format(Math.round(useTween(value)))}</>;
+  return <Counted shown={format(Math.round(useTween(value)))} final={format(value)} />;
+}
+
+/** An animated number, seen as `shown` and read as `final`. Once it has
+ *  arrived it is plain text, written once, so copying a heading or finding
+ *  "$15" on the page doesn't meet it twice. */
+export function Counted({ shown, final }: { shown: string; final: string }) {
+  if (shown === final) return <>{final}</>;
+  return <><span aria-hidden="true">{shown}</span><span className="sr-only">{final}</span></>;
 }
 
 /** The path's totals: the cost after fee waivers, what it would have cost
@@ -172,6 +182,8 @@ export function FormPaper({ form, lang, className = "" }: { form: string; lang: 
       <div className="paper-desk">
         <a href={FORM_PDF} target="_blank" rel="noreferrer" className="paper-sheet">
           <img src={formImages[form]} alt={alt} loading="lazy" decoding="async" width={1105} height={1430} />
+          {/* The picture's alt says what is on the page; this says where the link goes. */}
+          <span className="sr-only"> {s.openForm}</span>
         </a>
         <span className="paper-zoom" aria-hidden="true" style={{ top: formZoom[form].top, width: formZoom[form].width, ["--zl" as string]: formZoom[form].left }}>
           <img src={formZoom[form].src} alt="" loading="lazy" decoding="async" />
@@ -288,9 +300,18 @@ function TextSizeMenu({ lang }: { lang: Lang }) {
     return () => { document.removeEventListener("pointerdown", onDown); document.removeEventListener("keydown", onKey); };
   }, [open]);
 
+  // Tabbing out of the open menu closes it, so it never sits over the control
+  // that now has focus. Only when focus lands on something else: a click on
+  // nothing focusable (or on a button, in Safari) blurs with no relatedTarget,
+  // and the pointerdown handler above already deals with clicks.
+  const onBlur = (e: ReactFocusEvent) => {
+    const to = e.relatedTarget as Node | null;
+    if (open && to && !wrap.current?.contains(to)) setOpen(false);
+  };
+
   const names: Record<TextSize, string> = { default: s.textSizeDefault, larger: s.textSizeLarger, largest: s.textSizeLargest };
   return (
-    <div className="ts" ref={wrap}>
+    <div className="ts" ref={wrap} onBlur={onBlur}>
       <button ref={toggle} className="ts-toggle" aria-expanded={open} aria-controls={`${id}-menu`} aria-label={s.textSizeLabel}
         onClick={() => setOpen((o) => !o)}><span aria-hidden="true">A<span className="ts-big">A</span></span></button>
       <div id={`${id}-menu`} className="ts-menu" hidden={!open}>

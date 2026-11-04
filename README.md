@@ -6,7 +6,7 @@
 
 For people in LA County who need an ID and don't have the documents to get one: people without housing, people who lost their papers in the January 2025 fires, young people in or leaving foster care, people leaving jail (on the general rules, since none is specific to reentry yet), and the caseworkers who help them.
 
-Tick the documents you still have and answer seven questions. First ID works out the cheapest legal order of steps: where to go, what to bring, what it costs after fee waivers, what to say at the counter, and the source that allows it. A step's "say this" line can be shown full screen to a clerk or read aloud, DMV steps list nearby offices, the whole path prints on one page, and you can tick steps off and add calendar reminders as you go.
+Tick the documents you still have and answer seven questions. First ID works out the cheapest legal order of steps: where to go, what to bring, what it costs after fee waivers, what to say at the counter, and the source that allows it. A step's "say this" line can be shown full screen to a clerk (in either language, whatever the app is set to) or read aloud, DMV steps list nearby offices, the whole path prints on one page (with a QR code that opens the sources), and you can tick steps off and add calendar reminders as you go (each alerts at 9 am on its day).
 
 Not legal advice. Rules change, and every rule our team hasn't yet checked against its source is marked "call ahead".
 
@@ -30,7 +30,7 @@ data/rules.json ──► npm run lint:rules ──► planner (in the browser) 
 4. **Every step cites its source** and quotes the sentence that supports it; we check each quote against its source when we verify the rule. The "How we know" screen lists every rule with its sources; a fee waiver's sources show on the step where it applies.
 5. **What-if and dead ends.** The app shows which answers would change your path, and when there's no path it says what's blocking it and who can help.
 
-The tests ([`tests/`](tests/)) cover the planner, four invented people checked against hand-worked plans, the "more documents never hurts" guarantee, the what-if and no-path logic, the links between screens, the office list, the progress logic, that Read aloud never picks an online voice, and that the offline copy is always the app. [`tests/every-person.test.ts`](tests/every-person.test.ts) checks a fixed sample of every answer the screens allow (about 5 million people: birthplace, age band or skipped, yes / no / not sure on five questions, any set of the intake papers): each path is replayed step by step and must add up and waste nothing, matches a brute-force search of every order of steps, and "Not sure" gives the same path as "No"; a dead end always says what is blocking. [`scripts/check-every-person.ts`](scripts/check-every-person.ts) runs the same checks on all of them. `npm run check` runs the tests plus the build, and nothing deploys unless it passes.
+The tests ([`tests/`](tests/)) cover the planner, four invented people checked against hand-worked plans, the "more documents never hurts" guarantee, the what-if and no-path logic, the links between screens, the office list, the progress logic and calendar reminders, step order (no same-day step waits behind the mail), offices' open-now in Los Angeles time, the packet's QR code (checked against the QR specification), page titles, what a screen reader hears for the animated numbers and the form pictures, the page shown if a screen fails, that Read aloud never picks an online voice, and that the offline copy is always the app. [`tests/every-person.test.ts`](tests/every-person.test.ts) checks a fixed sample of every answer the screens allow (about 5 million people: birthplace, age band or skipped, yes / no / not sure on five questions, any set of the intake papers): each path is replayed step by step and must add up and waste nothing, matches a brute-force search of every order of steps, and "Not sure" gives the same path as "No"; a dead end always says what is blocking. [`scripts/check-every-person.ts`](scripts/check-every-person.ts) runs the same checks on all of them. `npm run check` runs the tests plus the build, and nothing deploys unless it passes.
 
 ## What's real and what's made up
 
@@ -41,7 +41,7 @@ The tests ([`tests/`](tests/)) cover the planner, four invented people checked a
 
 ## Privacy
 
-First ID is a static site with no accounts, server or database. Your answers stay in the tab and are gone when you close it; the ZIP you type for offices is never saved. Ticked steps and your text-size choice stay on the phone until you clear them (Start over clears the ticks too), calendar reminders are made on the phone, and Read aloud uses only the phone's own voices, never an online one. There are no analytics or third-party requests, [`vercel.json`](vercel.json) enforces that with a Content-Security-Policy, and a service worker ([`public/sw.js`](public/sw.js)) keeps the site working offline without storing any answers.
+First ID is a static site with no accounts, server or database. Your answers stay in the tab and are gone when you close it; the ZIP you type for offices is never saved. Ticked steps and your text-size choice stay on the phone until you clear them (Start over clears the ticks too), calendar reminders are made on the phone, and Read aloud uses only the phone's own voices, never an online one. There are no analytics or third-party requests, [`vercel.json`](vercel.json) enforces that with a Content-Security-Policy, and a service worker ([`public/sw.js`](public/sw.js)) keeps the site working offline without storing any answers: after one visit it holds the whole app, pictures included (unless the phone asks to save data), and on a weak signal it opens that copy after 3 seconds instead of waiting on the network.
 
 ## Spanish and accessibility
 
@@ -75,7 +75,7 @@ data/          rules, DMV offices and ZIP centres, each with sources
 src/engine/    types, rule linter and the planner (Dijkstra)
 src/screens/   every screen, from home to the printed packet
 src/           app state, routes, what-if, progress, strings (EN/ES), styles
-tests/         planner, persona, every-person, what-if, no-path, packet, translation, rules-data, office, progress, Read aloud and offline tests (Vitest)
+tests/         planner, step-order, persona, every-person, what-if, no-path, packet, QR, translation, rules-data, office, progress, screen-reader, title, error-page, Read aloud and offline tests (Vitest)
 public/        icons, manifest and the offline service worker
 scripts/       the rule linter's command line, the colour contrast check, a browser accessibility audit and the every-person check
 docs/          background research and team notes

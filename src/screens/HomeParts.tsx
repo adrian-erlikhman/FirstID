@@ -1,11 +1,12 @@
 import type { ReactNode } from "react";
-import { FormPaper, Mark, money, fullPrice } from "../components";
+import { Counted, FormPaper, Mark, money, fullPrice } from "../components";
 import type { Plan, RuleSet } from "../engine/types";
 import { t, type Lang } from "../i18n";
 import { useCountUp, useInView, useScrollProgress, useTilt } from "../motion";
 // The state's own sample documents (sources in src/docs/README.md).
-import caIdImg from "../docs/ca-id-sample.jpg";
-import birthCertImg from "../docs/birth-certificate-sample.png";
+// Drawn 116px and 84px wide in the orbit: small copies, 3x that and more.
+import caIdImg from "../docs/ca-id-sample-small.jpg";
+import birthCertImg from "../docs/birth-certificate-sample-small.png";
 
 // Parts of the home page: the scroll story that pins while it plays, the
 // tiles whose numbers count up, and the real forms that lie flat as you reach
@@ -32,11 +33,11 @@ export function LoopStory({ lang }: { lang: Lang }) {
           <div className="orbit">
             <svg className="orbit-ring" viewBox="0 0 200 200"><circle cx="100" cy="100" r="86" /></svg>
             <div className="orb orb-id">
-              <img className="orb-card" src={caIdImg} alt="" width={752} height={474} decoding="async" />
+              <img className="orb-card" src={caIdImg} alt="" width={752} height={474} loading="lazy" decoding="async" />
               <span className="orb-label">{s.storyId}</span>
             </div>
             <div className="orb orb-bc">
-              <img className="orb-sheet" src={birthCertImg} alt="" width={1105} height={1200} decoding="async" />
+              <img className="orb-sheet" src={birthCertImg} alt="" width={1105} height={1200} loading="lazy" decoding="async" />
               <span className="orb-label">{s.storyBc}</span>
             </div>
           </div>
@@ -69,16 +70,19 @@ export function Bento({ rules, lang, maria }: { rules: RuleSet; lang: Lang; mari
   const cited = rules.actions.flatMap((a) => [...a.sources, ...(a.waivers ?? []).flatMap((w) => w.sources)]);
   const nSources = new Set(cited.map((id) => rules.sources[id]?.url).filter(Boolean)).size;
   const dollars = useCountUp(maria?.total.dollars ?? 0, seen);
-  const scale: [number, string][] = [
-    [useCountUp(nWaivers, seen), s.statsWaivers],
-    [useCountUp(rules.actions.length, seen), s.statsRules],
-    [useCountUp(nSources, seen), s.statsSources],
+  // Each count is [what is on screen now, where it ends, label]. The counts
+  // only start once the grid scrolls into view, so a screen reader that gets
+  // there without scrolling would otherwise read "$0" and "0 rules".
+  const scale: [number, number, string][] = [
+    [useCountUp(nWaivers, seen), nWaivers, s.statsWaivers],
+    [useCountUp(rules.actions.length, seen), rules.actions.length, s.statsRules],
+    [useCountUp(nSources, seen), nSources, s.statsSources],
   ];
   return (
     <ul ref={ref} className={`bento${seen ? " seen" : ""}`}>
       {maria && (
         <Tile className="t-maria">
-          <span className="tile-big num">{money(dollars)}</span>
+          <span className="tile-big num"><Counted shown={money(dollars)} final={money(maria.total.dollars)} /></span>
           <span className="tile-sub">{s.statsMaria(fullPrice(maria))}</span>
           {/* The fee waivers that take her path down to this total. Her steps
               themselves are listed once, in Maria's path further down. */}
@@ -97,8 +101,8 @@ export function Bento({ rules, lang, maria }: { rules: RuleSet; lang: Lang; mari
       )}
       <Tile className="t-scale">
         <span className="scale-rows">
-          {scale.map(([n, label]) => (
-            <span key={label} className="scale-row"><span className="scale-n num">{n}</span><span className="scale-label">{label}</span></span>
+          {scale.map(([n, end, label]) => (
+            <span key={label} className="scale-row"><span className="scale-n num"><Counted shown={String(n)} final={String(end)} /></span><span className="scale-label">{label}</span></span>
           ))}
         </span>
         <span className="scale-foot">{s.statsReach}</span>

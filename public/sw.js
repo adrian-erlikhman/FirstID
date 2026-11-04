@@ -5,6 +5,8 @@
 // files.
 // v2: drops any copy of a non-app page that v1 may have stored as the app.
 const CACHE = "first-id-v2";
+/** How long a page waits for the network before opening the stored copy. */
+const SLOW_MS = 3000;
 
 self.addEventListener("install", (event) => {
   // The first visit loads the script and stylesheet before this worker runs,
@@ -16,10 +18,30 @@ self.addEventListener("install", (event) => {
       const html = await (await c.match("./index.html")).text();
       const assets = [...html.matchAll(/(?:src|href)="(\.\/assets\/[^"]+)"/g)].map((m) => m[1]);
       await c.addAll([...new Set(assets)]);
+      await storeLater(c, assets);
     } catch { /* they will be cached on the next visit instead */ }
     await self.skipWaiting();
   })());
 });
+
+// The pictures and the font load only when they come near the screen, so a
+// visit that never scrolled to them would leave them out of the offline copy.
+// Their hashed names are in the script and the stylesheet (next to them in
+// ./assets/); store any not stored yet. Skipped when the phone asks to save
+// data, and one that fails doesn't stop the rest.
+async function storeLater(c, assets) {
+  if (self.navigator && self.navigator.connection && self.navigator.connection.saveData) return;
+  const names = new Set();
+  for (const a of assets.filter((x) => /\.(js|css)$/.test(x))) {
+    const hit = await c.match(a);
+    if (!hit) continue;
+    const text = await hit.text();
+    for (const m of text.matchAll(/["(]\.?\/?([\w.-]+\.(?:png|jpe?g|webp|svg|woff2))["')]/g)) names.add("./assets/" + m[1]);
+  }
+  await Promise.all([...names].map(async (u) => {
+    try { if (!(await c.match(u))) await c.add(u); } catch { /* fetched when it's shown instead */ }
+  }));
+}
 
 self.addEventListener("activate", (event) => {
   event.waitUntil(
@@ -34,20 +56,30 @@ self.addEventListener("fetch", (event) => {
   if (req.method !== "GET" || new URL(req.url).origin !== self.location.origin) return;
 
   if (req.mode === "navigate") {
-    event.respondWith(
-      fetch(req)
-        .then((res) => {
-          // Only the app's own page becomes the offline copy: not a 404 page,
-          // and not an image or other file opened directly in the browser.
-          const type = res.headers.get("content-type") || "";
-          if (res.ok && type.includes("text/html")) {
-            const copy = res.clone();
-            caches.open(CACHE).then((c) => c.put("./index.html", copy));
-          }
-          return res;
-        })
-        .catch(() => caches.match("./index.html")),
-    );
+    const network = fetch(req).then((res) => {
+      // Only the app's own page becomes the offline copy: not a 404 page,
+      // and not an image or other file opened directly in the browser.
+      const type = res.headers.get("content-type") || "";
+      if (res.ok && type.includes("text/html")) {
+        const copy = res.clone();
+        caches.open(CACHE).then((c) => c.put("./index.html", copy));
+      }
+      return res;
+    });
+    // The network first, but on one bar of signal nobody should wait on it:
+    // after a few seconds the stored copy opens, and the network answer still
+    // refreshes it for next time.
+    event.respondWith((async () => {
+      const slow = new Promise((resolve) => setTimeout(resolve, SLOW_MS, "slow"));
+      try {
+        const first = await Promise.race([network, slow]);
+        if (first !== "slow") return first;
+        return (await caches.match("./index.html")) || (await network);
+      } catch {
+        return caches.match("./index.html");
+      }
+    })());
+    event.waitUntil(network.catch(() => {}));
     return;
   }
 

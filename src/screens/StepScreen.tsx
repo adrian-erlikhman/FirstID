@@ -1,10 +1,11 @@
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import { Block, FormPaper, Icon, Notice, SourceCard, WasPrice, formFor, money, placeOf, sayFor } from "../components";
 import { plan as planFor } from "../engine/planner";
 import type { Mode, Person, Plan, RuleSet } from "../engine/types";
 import { t, type Lang } from "../i18n";
 import { href } from "../router";
 import { withoutSteps } from "../whatif";
+import { daysLeft, lastWaitBefore, loadPacked, loadTicks, savePacked, saveTicks, toggleTick, togglePacked, ticksInPlan, type Packed, type Ticks } from "../progress";
 import { OfficesLink } from "./OfficesScreen";
 import { SayTools } from "./SayTools";
 
@@ -19,6 +20,13 @@ export function StepScreen({ rules, lang, plan, n, person, mode, onSkip }: {
   // "Can't do this step?": the same search with this step taken out.
   const id = st?.action.id;
   const alt = useMemo(() => (id ? planFor(withoutSteps(rules, [id]), person, mode) : null), [rules, id, person, mode]);
+  // The same ticks as the path screen's list, so a step finished at the counter
+  // can be ticked off right here; the list reads them again when you go back.
+  const [ticks, setTicks] = useState<Ticks>(() => loadTicks());
+  const setDone = (on: boolean) => { if (id) setTicks((prev) => { const next = toggleTick(prev, id, on); saveTicks(next); return next; }); };
+  // The Bring list is a checklist: what's already in the bag, kept on this phone.
+  const [packed, setPackedState] = useState<Packed>(() => loadPacked());
+  const setPacked = (item: string, on: boolean) => { if (id) setPackedState((prev) => { const next = togglePacked(prev, id, item, on); savePacked(next); return next; }); };
   if (!st) return null;
   const a = st.action;
   const place = placeOf(rules, st);
@@ -27,6 +35,12 @@ export function StepScreen({ rules, lang, plan, n, person, mode, onSkip }: {
   const waiverSources = was !== null ? st.waiver?.sources ?? [] : [];
   const total = plan.steps.length;
   const cost = st.dollars === 0 ? s.free : money(st.dollars);
+
+  // When it can start: the waits before it that aren't ticked done, as on the path list.
+  const done = ticksInPlan(ticks, plan.steps.map((x) => x.action.id));
+  const startDay = daysLeft(plan.steps, n - 2, done);
+  const after = lastWaitBefore(plan.steps, n - 1, done);
+  const when = startDay === 0 ? s.startsToday : after >= 0 ? `${s.startsAround(startDay)}, ${s.afterStep(after + 1)}` : s.startsAround(startDay);
 
   const time = a.days > 0 ? s.readyIn(a.days) : !st.newTrip && n > 1 ? s.sameVisit(n - 1) : (place.inPerson ? s.timeVisit : s.timeMail);
   const timeText = time.charAt(0).toUpperCase() + time.slice(1);
@@ -50,6 +64,7 @@ export function StepScreen({ rules, lang, plan, n, person, mode, onSkip }: {
                 {was !== null && <> <WasPrice dollars={was} lang={lang} /><span className="row-sub"> {st.waiver!.label[lang]}</span></>}
               </dd>
             </div>
+            <div><dt>{s.when}</dt><dd>{when}</dd></div>
             <div><dt>{s.time}</dt><dd>{timeText}</dd></div>
           </dl>
 
@@ -62,14 +77,22 @@ export function StepScreen({ rules, lang, plan, n, person, mode, onSkip }: {
 
           {a.bring?.length ? (
             <Block label={place.inPerson ? s.bring : s.bringMail}>
-              <ul className="panel bring">{a.bring.map((b) => <li key={b.en}><span className="box" aria-hidden="true" />{b[lang]}</li>)}</ul>
+              <ul className="panel bring">{a.bring.map((b) => (
+                <li key={b.en} className="bring-row">
+                  <label className="bring-item">
+                    <input type="checkbox" checked={(packed[a.id] ?? []).includes(b.en)} onChange={(e) => setPacked(b.en, e.target.checked)} />
+                    <span className="box" aria-hidden="true"><Icon name="check" size={14} stroke={3} /></span>
+                    <span>{b[lang]}</span>
+                  </label>
+                </li>
+              ))}</ul>
             </Block>
           ) : null}
 
           {say && (
             <Block label={s.sayThis} className="say-block">
               <blockquote className="say">“{say[lang]}”</blockquote>
-              <SayTools lang={lang} name={a.label[lang]} where={place.label[lang]} bring={a.bring?.map((b) => b[lang]) ?? []} say={say[lang]} />
+              <SayTools lang={lang} name={a.label[lang]} where={place.label[lang]} bring={a.bring?.map((b) => b[lang]) ?? []} say={say} />
             </Block>
           )}
 
@@ -119,6 +142,15 @@ export function StepScreen({ rules, lang, plan, n, person, mode, onSkip }: {
               )}
             </div>
           </details>
+
+          <div className="step-tick-row">
+            <label className="tick">
+              <input type="checkbox" checked={ticks[a.id] === true} onChange={(e) => setDone(e.target.checked)} aria-label={s.markDone(n)} />
+              <span className="tick-box" aria-hidden="true"><Icon name="check" size={16} stroke={2.4} /></span>
+              <span className="tick-text" aria-hidden="true">{s.doneShort}</span>
+            </label>
+            <span className="progress-note">{s.progressNote}</span>
+          </div>
 
           <nav className="actions pair" aria-label={s.backToPath}>
             {n > 1

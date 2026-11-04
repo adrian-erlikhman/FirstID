@@ -1,4 +1,6 @@
 import { Icon, money, placeOf, sayFor } from "../components";
+import { encodeQr, qrPath } from "../qr";
+import { loadTicks } from "../progress";
 import type { Plan, RuleSet } from "../engine/types";
 import { t, type Lang } from "../i18n";
 
@@ -7,9 +9,17 @@ import { t, type Lang } from "../i18n";
 export function PacketScreen({ rules, lang, result }: { rules: RuleSet; lang: Lang; result: Plan }) {
   const s = t[lang];
   const { total } = result;
-  const checked = Object.values(rules.sources).map((x) => x.checked).sort().at(-1) ?? "";
-  const sourcesUrl = location.href.split("#")[0] + "#/sources";
+  // The newest date: [length - 1], not .at(-1), which Safari before 15.4 lacks.
+  const dates = Object.values(rules.sources).map((x) => x.checked).sort();
+  const checked = dates[dates.length - 1] ?? "";
+  // Printed, the page points to How we know, as text and as a QR code. A copy
+  // opened from a file (the one-file build we email) points to the live site:
+  // a file path on someone's computer is no use to the clerk.
+  const here = location.href.split("#")[0];
+  const sourcesUrl = (/^https?:/.test(here) ? here : LIVE) + "#/sources";
   const says = result.steps.map((st) => ({ st, say: sayFor(st) })).filter((x) => x.say);
+  // Steps ticked done in the app print with their box checked, for a packet printed part way through.
+  const ticks = loadTicks();
 
   return (
     <section className="screen packet-screen">
@@ -30,6 +40,7 @@ export function PacketScreen({ rules, lang, result }: { rules: RuleSet; lang: La
             <p>{s.packetSub}</p>
           </div>
           <div className="mono sheet-meta">{s.rulesVersion(rules.version.split("-")[0])}<br />{result.allVerified ? s.checkedOn(checked) : s.draftRules}</div>
+          <QrCode text={sourcesUrl} label={s.packetQr(sourcesUrl)} />
         </header>
 
         <div className="sheet-sum">
@@ -53,7 +64,9 @@ export function PacketScreen({ rules, lang, result }: { rules: RuleSet; lang: La
             const ruleIds = [...a.sources.slice(0, 2), ...(was !== null ? st.waiver?.sources.slice(0, 1) ?? [] : [])];
             return (
               <div className="sheet-row" role="row" key={a.id}>
-                <span role="cell"><span className="box" aria-hidden="true" /></span>
+                <span role="cell">{ticks[a.id]
+                  ? <><span className="box done" aria-hidden="true"><Icon name="check" size={12} stroke={3} /></span><span className="sr-only">{s.doneShort}</span></>
+                  : <span className="box" aria-hidden="true" />}</span>
                 <span role="cell"><strong>{i + 1}. {a.label[lang]}</strong><span className="sheet-where">{placeOf(rules, st).label[lang]}{!a.verified && <span className="sheet-flag"> · {s.callAhead.toUpperCase()}</span>}</span></span>
                 <span role="cell" className="sheet-small" data-label={s.colBring}>{a.bring?.length
                   ? a.bring.map((b) => <span key={b.en} className="bring-line">{b[lang]}</span>)
@@ -82,5 +95,20 @@ export function PacketScreen({ rules, lang, result }: { rules: RuleSet; lang: La
         </footer>
       </article>
     </section>
+  );
+}
+
+const LIVE = "https://first-id.vercel.app/";
+
+/** The QR code for the How-we-know link, drawn as one SVG path (see src/qr.ts). */
+function QrCode({ text, label }: { text: string; label: string }) {
+  const qr = encodeQr(text);
+  const quiet = 2; // plus the white paper around it
+  const side = qr.size + 2 * quiet;
+  return (
+    <svg className="sheet-qr" viewBox={`0 0 ${side} ${side}`} role="img" aria-label={label} shapeRendering="crispEdges">
+      <rect width={side} height={side} fill="#fff" />
+      <path d={qrPath(qr, quiet)} fill="#000" />
+    </svg>
   );
 }

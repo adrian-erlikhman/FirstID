@@ -88,10 +88,18 @@ describe("no-path notes", () => {
 
   it("no notes when there is a path", () => expect(noPathNotes(rules, personas.maria)).toEqual([]));
 
-  it("every yes/no answer 'Not sure': no path, and the note says so", () => {
+  it("every yes/no answer 'Not sure': no path, the note says so, and still names what's missing", () => {
     const person = { facts: { born: "la_county", age: 30 }, have: ["ssn_known"] };
     expect(plan(rules, person)).toBeNull();
-    expect(noPathNotes(rules, person)).toEqual(["allUnsure"]);
+    expect(noPathNotes(rules, person)).toEqual(["allUnsure", "needAddress", "needWitnesses"]);
+  });
+
+  it("'Not sure' to everything doesn't hide a missing Social Security number", () => {
+    // A DMV record covers most of the path; the number is the one thing missing,
+    // whatever the yes/no answers turn out to be.
+    const person = { facts: { born: "us_state", age: 30 }, have: ["dmv_record"] };
+    expect(plan(rules, person)).toBeNull();
+    expect(noPathNotes(rules, person)).toEqual(["bornElsewhere", "allUnsure", "needSsn"]);
   });
 
   it("no paper with an address is what's blocking", () => {
