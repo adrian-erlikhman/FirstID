@@ -218,6 +218,14 @@ h1.display .bracketed .num { color: var(--on-c); background: var(--hl); padding:
 .pills-age { container-type: inline-size; }
 .pills-age > .pill { flex-basis: calc(50% - 4px); }
 @container (max-width: 13.4em) { .pills-age > .pill { flex-basis: 100%; } }
+/* Safari before 16 has no container queries, and the first iPhone SE (320px
+   wide) stopped at iOS 15. The same switch by screen width there: the group
+   is the screen less 76px, so 13.4em is reached at 337px with the larger
+   text and 372px with the largest (the default size never needs it). */
+@supports not (container-type: inline-size) {
+  @media (max-width: 337px) { [data-text-size="larger"] .pills-age > .pill { flex-basis: 100%; } }
+  @media (max-width: 372px) { [data-text-size="largest"] .pills-age > .pill { flex-basis: 100%; } }
+}
 /* Longer answers (where you were born) stack full width on a phone: one
    clean column of equal targets instead of four ragged rows. */
 @media (max-width: 639px) {
