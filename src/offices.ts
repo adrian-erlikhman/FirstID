@@ -62,9 +62,13 @@ export function groupHours(hours: Record<Day, string>): { from: Day; to: Day; va
 /** The day and minute of the day in Los Angeles, where the offices are,
  *  whatever time zone the phone is set to. */
 export function laNow(now: Date = new Date()): { day: Day; minutes: number } {
-  const parts = new Intl.DateTimeFormat("en-US", { timeZone: "America/Los_Angeles", weekday: "short", hour: "numeric", minute: "numeric", hourCycle: "h23" }).formatToParts(now);
-  const get = (type: string) => parts.find((p) => p.type === type)?.value ?? "";
-  return { day: get("weekday").slice(0, 3).toLowerCase() as Day, minutes: (Number(get("hour")) % 24) * 60 + Number(get("minute")) };
+  try {
+    const parts = new Intl.DateTimeFormat("en-US", { timeZone: "America/Los_Angeles", weekday: "short", hour: "numeric", minute: "numeric", hourCycle: "h23" }).formatToParts(now);
+    const get = (type: string) => parts.find((p) => p.type === type)?.value ?? "";
+    const day = get("weekday").slice(0, 3).toLowerCase() as Day;
+    if (DAYS.includes(day)) return { day, minutes: (Number(get("hour")) % 24) * 60 + Number(get("minute")) };
+  } catch { /* a browser without time zones: use the phone's own clock below */ }
+  return { day: DAYS[(now.getDay() + 6) % 7], minutes: now.getHours() * 60 + now.getMinutes() };
 }
 
 /** "8:00 am–5:00 pm" as minutes after midnight, or null for "closed" or anything else. */

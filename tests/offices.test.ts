@@ -108,3 +108,14 @@ describe("open now, in Los Angeles time", () => {
     }
   });
 });
+
+describe("open now without time zone support", () => {
+  it("falls back to the phone's own clock instead of failing", async () => {
+    const { vi } = await import("vitest");
+    vi.stubGlobal("Intl", { ...Intl, DateTimeFormat: function () { throw new Error("no time zones"); } });
+    try {
+      const now = new Date(2026, 10, 3, 10, 0); // a Tuesday, 10:00 local
+      expect(laNow(now)).toEqual({ day: "tue", minutes: 600 });
+    } finally { vi.unstubAllGlobals(); }
+  });
+});
