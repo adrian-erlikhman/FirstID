@@ -10,6 +10,7 @@ import { withImplied } from "./person";
 import { hasOffices } from "./offices";
 import { clearTicks } from "./progress";
 import { t, type Lang } from "./i18n";
+import { pageTitle } from "./title";
 import { go, parse, useRoute, type Route } from "./router";
 import { HaveScreen } from "./screens/HaveScreen";
 import { HomeScreen } from "./screens/HomeScreen";
@@ -124,7 +125,9 @@ export default function App() {
     requestAnimationFrame(() => document.querySelector<HTMLElement>("main h1")?.focus({ preventScroll: true }));
   }, [route.name, route.name === "step" ? route.n : 0]);
 
-  useEffect(() => { document.documentElement.lang = lang; document.title = s.appName; }, [lang, s.appName]);
+  useEffect(() => { document.documentElement.lang = lang; }, [lang]);
+  // Each screen names itself in the tab and the back button's history.
+  useEffect(() => { document.title = pageTitle(route, lang, result); }, [route, lang, result]);
 
   // In-app links (#/step/2) change the screen ourselves, so they work the same
   // inside frames and previews that would otherwise treat them as navigation.
