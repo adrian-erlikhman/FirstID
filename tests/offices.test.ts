@@ -124,7 +124,8 @@ describe("the office list's source note", () => {
   it("dates itself from the snapshot's newest check, in each language", async () => {
     const { t } = await import("../src/i18n");
     const newest = officeData.offices.map((o) => o.lastChecked).sort().at(-1)!;
-    expect(t.en.officesChecked(newest)).toBe(", checked Oct 25, 2026. Call ahead.");
+    expect(t.en.officesChecked("2026-10-25")).toBe(", checked Oct 25, 2026. Call ahead.");
+    expect(newest).toMatch(/^\d{4}-\d{2}-\d{2}$/);
     expect(t.en.officesChecked("2027-03-02")).toContain("Mar 2, 2027");
     expect(t.es.officesChecked("2027-03-02")).toMatch(/revisados el 2 mar\.? 2027/);
   });
