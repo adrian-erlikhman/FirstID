@@ -54,7 +54,7 @@ All seven screens now exist as an AI-drafted first build (logged in `AI-USE.md`)
 - [ ] Read every file in `src/screens/` plus `App.tsx`, `router.ts` and `components.tsx` until you can explain them. Change anything you'd do differently.
 - [x] **Fonts:** self-hosted in `src/fonts/` (Instrument Sans; licence in `src/fonts/OFL.txt`). The app makes no third-party requests.
 - [ ] **Photos (Adrian, Ryan, Michael):** take 3–4 of our own and drop them in `src/photos/` (names in `src/photos/README.md`). They show up on the home page in black and white.
-- [ ] **Packet QR code:** add a QR code on the printed page that opens the live site's How-we-know screen, so a clerk can check a rule on the spot.
+- [x] **Packet QR code:** add a QR code on the printed page that opens the live site's How-we-know screen, so a clerk can check a rule on the spot. (Done 3 Nov 2026 by Claude: `src/qr.ts`, in the packet's header; see AI-USE.md.)
 
 **Friday**
 - [ ] **User test at lunch:** 5–8 LACES students run Maria on their own phones without help. Write down how many finish and what confuses them, then fix the top three. Those fixes are yours, in your own commits.

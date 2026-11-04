@@ -273,6 +273,7 @@ const en = {
   printHint: "Prints on one Letter page. Works in black and white.",
   printPreview: "This is the page that prints. Printing works on the live site; this preview can't open the print dialog.",
   packetFoot: (url: string) => `Not legal advice. Rules change. Every rule and its sources: ${url}`,
+  packetQr: (url: string) => `QR code that opens ${url}`,
 
   // 7. How we know
   sourcesTitle: "Every step comes from a rule you can read.",
@@ -608,6 +609,7 @@ const es: Strings = {
   printHint: "Se imprime en una hoja tamaño carta. Funciona en blanco y negro.",
   printPreview: "Esta es la página que se imprime. La impresión funciona en el sitio; esta vista previa no puede abrir el diálogo de impresión.",
   packetFoot: (url) => `No es asesoría legal. Las reglas cambian. Cada regla y sus fuentes: ${url}`,
+  packetQr: (url) => `Código QR que abre ${url}`,
 
   sourcesTitle: "Cada paso viene de una regla que puedes leer.",
   sourcesIntro: "Redactamos estas reglas con ayuda de IA. Una regla solo cuenta como verificada cuando alguien de nuestro equipo la revisa con cada fuente que cita y copia la frase exacta que la respalda. Mientras tanto aparece como “llama antes”.",

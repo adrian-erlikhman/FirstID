@@ -14,7 +14,7 @@ import { renderToStaticMarkup } from "react-dom/server";
 import rulesJson from "../data/rules.json";
 import { plan } from "../src/engine/planner";
 import type { Mode, Person, Plan, RuleSet } from "../src/engine/types";
-import type { Lang } from "../src/i18n";
+import { t, type Lang } from "../src/i18n";
 import { PacketScreen } from "../src/screens/PacketScreen";
 import { BORN, PAPER_SETS, people } from "./grid";
 import { personas } from "./personas";
@@ -90,6 +90,31 @@ describe("packet: one Letter page (proxy)", () => {
     for (const lang of ["en", "es"] as Lang[]) {
       const html = renderToStaticMarkup(<PacketScreen rules={rules} lang={lang} result={p} />);
       expect(html).not.toMatch(/Maria|María/);
+    }
+  });
+});
+
+describe("packet: the QR code to How we know", () => {
+  const p = plan(rules, personas.maria)!;
+  const render = (lang: Lang) => renderToStaticMarkup(<PacketScreen rules={rules} lang={lang} result={p} />);
+
+  it("is on the sheet, labelled with the link it opens, in both languages", () => {
+    for (const lang of ["en", "es"] as Lang[]) {
+      const html = render(lang);
+      expect(html).toContain(`class="sheet-qr" viewBox=`);
+      expect(html).toContain(`role="img" aria-label="${t[lang].packetQr("https://first-id.vercel.app/#/sources")}"`);
+    }
+  });
+
+  it("a copy opened from a file (the one-file build) points to the live site, not a file path", () => {
+    vi.stubGlobal("location", { href: "file:///C:/Users/someone/Downloads/first-id.html#/packet" });
+    try {
+      const html = render("en");
+      expect(html).not.toContain("file:///");
+      expect(html).toContain(t.en.packetQr("https://first-id.vercel.app/#/sources"));
+      expect(html).toContain("https://first-id.vercel.app/#/sources");
+    } finally {
+      vi.stubGlobal("location", { href: "https://first-id.vercel.app/#/packet" });
     }
   });
 });
