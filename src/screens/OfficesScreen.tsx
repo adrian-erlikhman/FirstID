@@ -16,6 +16,7 @@ export function OfficesScreen({ lang, kind }: { lang: Lang; kind: string }) {
   const full = /^\d{5}$/.test(zip);
   const known = full && !!zipCentroids[zip];
   const rows = sortOffices(list, known ? zip : "");
+  const checked = list.map((o) => o.lastChecked).sort().at(-1) ?? "";
   // Los Angeles time, where the offices are, not the phone's time zone.
   const now = new Date();
   const today = DAYS.indexOf(laNow(now).day);
@@ -74,7 +75,7 @@ export function OfficesScreen({ lang, kind }: { lang: Lang; kind: string }) {
         ))}
       </ul>
 
-      <p className="office-note">{s.officesFrom[0]}<a href={src.page} target="_blank" rel="noopener noreferrer">{src.name}</a>{s.officesFrom[1]}</p>
+      <p className="office-note">{s.officesFrom}<a href={src.page} target="_blank" rel="noopener noreferrer">{src.name}</a>{s.officesChecked(checked)}</p>
     </section>
   );
 }

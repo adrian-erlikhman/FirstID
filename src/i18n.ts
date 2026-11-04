@@ -347,7 +347,9 @@ const en = {
   officesDirections: "Directions",
   officesTo: (name: string) => `to ${name} (opens maps)`,
   officesPage: "Office page",
-  officesFrom: ["Office details from ", ", checked Oct 25, 2026. Call ahead."] as [string, string],
+  // The date is the newest lastChecked in data/offices.json, so a refreshed snapshot dates itself.
+  officesFrom: "Office details from ",
+  officesChecked: (iso: string) => `, checked ${dateFmt(iso, "en")}. Call ahead.`,
   // Progress ticks and calendar reminders (src/progress.ts, PathScreen)
   progressDone: (n: number, total: number) => `${n} of ${total} done`,
   // With some steps ticked: the waits still ahead, as in the reminders (daysLeft).
@@ -692,7 +694,8 @@ const es: Strings = {
   officesDirections: "Cómo llegar",
   officesTo: (name) => `a ${name} (abre el mapa)`,
   officesPage: "Página de la oficina",
-  officesFrom: ["Datos de las oficinas tomados de ", ", revisados el 25 de octubre de 2026. Llama antes de ir."],
+  officesFrom: "Datos de las oficinas tomados de ",
+  officesChecked: (iso) => `, revisados el ${dateFmt(iso, "es")}. Llama antes de ir.`,
   // Progreso y recordatorios (src/progress.ts, PathScreen)
   progressDone: (n, total) => `${n} de ${total} pasos hechos`,
   progressLeft: (d) => (d === 0 ? "sin esperas pendientes" : d < 7 ? `unos ${d} ${plural(d, "día", "días")} hasta la tarjeta` : `unas ${weeksOf(d)} ${plural(weeksOf(d), "semana", "semanas")} hasta la tarjeta`),
