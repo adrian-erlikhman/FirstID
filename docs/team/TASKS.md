@@ -15,6 +15,7 @@ Open one GitHub issue per line and assign it.
 
 **Friday**
 - [ ] **Waiting in parallel.** Today, days just add up. A mailed birth certificate request shouldn't block steps that don't need it. Model the overlap and test it.
+  - Checked 3 Nov 2026 (Claude): with today's rules no path has two waits that could overlap. Across every answer set the screens allow and all three sorts there are 44 path shapes; 23 have two or more waits, and in every one the later wait needs the earlier one's document (the DMV visit needs the mailed birth certificate). Same-day steps no longer wait behind the mail (see "Step order"). So this changes no path until a rule adds a wait that doesn't depend on another, such as a Social Security card by mail.
 - [ ] **What-if.** `src/whatif.ts` already re-plans once per possible answer change and keeps only the ones that change the path. Review it, move it into `src/engine/` if you'd rather own it there, and add a property test (for example: every toggle it shows really changes the plan).
 - [ ] Draft the technical-difficulty answer, in your own words.
 
