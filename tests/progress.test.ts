@@ -3,7 +3,7 @@ import rulesJson from "../data/rules.json";
 import type { RuleSet } from "../src/engine/types";
 import { plan } from "../src/engine/planner";
 import {
-  PROGRESS_KEY, addDays, clearTicks, icsDate, icsFold, icsUnescape, loadTicks, parseIcs, reminderFor, reminderIcs, saveTicks, ticksInPlan, toggleTick,
+  PROGRESS_KEY, addDays, clearTicks, daysLeft, icsDate, icsFold, icsUnescape, loadTicks, parseIcs, reminderFor, reminderIcs, saveTicks, ticksInPlan, toggleTick,
 } from "../src/progress";
 import { personas } from "./personas";
 
@@ -102,6 +102,32 @@ describe("calendar reminders", () => {
     expect(reminderFor(rules, p.steps[i], i + 1, "en")).not.toBeNull();
     expect(reminderFor(rules, p.steps[i], i + 1, "en", true)).toBeNull();
     expect(reminderFor(rules, p.steps[i], i + 1, "es", true)).toBeNull();
+  });
+
+  it("with nothing ticked, the days left to each step are the planner's endDay", () => {
+    for (const person of Object.values(personas)) {
+      const p = plan(rules, person);
+      if (!p) continue;
+      for (const [i, st] of p.steps.entries()) expect(daysLeft(p.steps, i), st.action.id).toBe(st.endDay);
+    }
+  });
+
+  it("a wait ticked done no longer pushes back the reminders after it", () => {
+    const p = plan(rules, personas.maria)!;
+    const waits = p.steps.flatMap((st, i) => (st.action.days > 0 ? [i] : []));
+    expect(waits.length, "Maria's path has two steps that wait").toBeGreaterThanOrEqual(2);
+    const [first, later] = waits;
+    const st = p.steps[later];
+    // Nothing ticked: the later reminder counts both waits.
+    expect(reminderFor(rules, st, later + 1, "en", false, daysLeft(p.steps, later))!.days).toBe(st.endDay);
+    // The first wait is over: only the later step's own wait (and any other
+    // unticked wait before it) is left.
+    const done = new Set([p.steps[first].action.id]);
+    const left = daysLeft(p.steps, later, done);
+    expect(left).toBe(st.endDay - p.steps[first].action.days);
+    expect(reminderFor(rules, st, later + 1, "en", false, left)!.days).toBe(left);
+    // Ticking a step after it changes nothing for it.
+    expect(daysLeft(p.steps, first, new Set([st.action.id]))).toBe(p.steps[first].endDay);
   });
 
   it("writes a valid iCalendar file that parses back", () => {

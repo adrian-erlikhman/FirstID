@@ -179,13 +179,22 @@ export function icsUnescape(s: string): string {
 
 // ---------- the reminder for a step ----------
 
+/** Days from today until step `i` (0-based) should be done. The planner's
+ *  endDay adds up the waits of every step up to this one, counted from the day
+ *  the path starts; a step already ticked done has no wait left, so its days
+ *  drop out. With nothing ticked this is exactly endDay. */
+export function daysLeft(steps: Step[], i: number, done: ReadonlySet<string> = new Set()): number {
+  return steps.slice(0, i + 1).reduce((d, st) => d + (done.has(st.action.id) ? 0 : st.action.days), 0);
+}
+
 /** The reminder for step `n` (1-based), or null when the step has no wait or
- *  is already ticked done: there is nothing left to wait for in the mail. */
-export function reminderFor(rules: RuleSet, step: Step, n: number, lang: Lang, done = false): Reminder | null {
+ *  is already ticked done: there is nothing left to wait for in the mail.
+ *  `days` is when it should be done, from today: see daysLeft. */
+export function reminderFor(rules: RuleSet, step: Step, n: number, lang: Lang, done = false, days = step.endDay): Reminder | null {
   const a = step.action;
   if (done || !(a.days > 0)) return null;
   const s = t[lang];
   const doc = a.produces.find((d) => d === rules.goal) ?? a.produces[0];
   const what = (doc && s.remindWhat[doc]) || (doc && rules.docs[doc]?.label[lang]) || a.label[lang];
-  return { id: a.id, days: step.endDay, summary: s.remindSummary(what), description: s.remindDescription(n, a.label[lang], a.days) };
+  return { id: a.id, days, summary: s.remindSummary(what), description: s.remindDescription(n, a.label[lang], a.days) };
 }
