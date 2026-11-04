@@ -32,6 +32,8 @@ Every rule in `data/rules.json` starts as `"verified": false`, and the app shows
 6. Write down what changed in [`data/CHANGES.md`](data/CHANGES.md) and in the commit message.
 7. Run `npm run check`. If a persona's plan changes, work it out again by hand from the sources before updating `tests/personas.test.ts`.
 
+`npm run check:links` opens every source and office link and lists the ones that are gone (404), moved, or that refuse scripts and need opening by hand. It needs the network, so it isn't part of `npm run check`; run it before verifying rules and now and then after.
+
 ## Team notes
 
 Our build-week notes (repo setup and the day-by-day task list) are in [`docs/team/`](docs/team/).
