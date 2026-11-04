@@ -1201,6 +1201,7 @@ main h1:focus { box-shadow: none !important; } /* headings take focus on a new s
 @media (max-width: 639px) {
   .row-sub, .fine, .pill, .mode-hint, .step-when, .step-waiver, .notice, .help p, .source-quote,
   .rule-src, .honesty ul, .mini-in, .mini-steps .num, .progress-line, .progress-note, .progress-clear,
-  .tick, .remind-link, .paper figcaption, .paper figcaption strong { font-size: 1rem; }
+  .tick, .remind-link, .paper figcaption, .paper figcaption strong,
+  .tile-row .row-sub, .cant-sum { font-size: 1rem; }
 }
 /* ===== end phones ===== */
