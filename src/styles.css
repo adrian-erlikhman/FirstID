@@ -1211,9 +1211,12 @@ main h1:focus { box-shadow: none !important; } /* headings take focus on a new s
 .remind-link .icon { flex: none; margin-top: 2px; }
 .step-done .step-title { color: var(--text-2); }
 @media (min-width: 640px) { .step-track { padding: 0 18px 10px 56px; } }
+/* The same tick on a step's own screen, above Back and Next. */
+.step-tick-row { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 16px; margin-top: 28px; }
+.step-tick-row .progress-note { color: var(--text-2); }
 @media (prefers-reduced-motion: reduce) { .tick-box { transition: none; } }
 @media (forced-colors: active) { .tick-box { border: 1.5px solid CanvasText; } .tick input:checked + .tick-box { background: Highlight; color: HighlightText; } }
-@media print { .progress-line, .step-track { display: none !important; } }
+@media print { .progress-line, .step-track, .step-tick-row { display: none !important; } }
 /* ===== end Progress ticks + calendar reminders ===== */
 
 /* ===== Phones: nothing a person reads as a sentence is under 16px =====

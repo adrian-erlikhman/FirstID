@@ -1,10 +1,11 @@
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import { Block, FormPaper, Icon, Notice, SourceCard, WasPrice, formFor, money, placeOf, sayFor } from "../components";
 import { plan as planFor } from "../engine/planner";
 import type { Mode, Person, Plan, RuleSet } from "../engine/types";
 import { t, type Lang } from "../i18n";
 import { href } from "../router";
 import { withoutSteps } from "../whatif";
+import { loadTicks, saveTicks, toggleTick, type Ticks } from "../progress";
 import { OfficesLink } from "./OfficesScreen";
 import { SayTools } from "./SayTools";
 
@@ -19,6 +20,10 @@ export function StepScreen({ rules, lang, plan, n, person, mode, onSkip }: {
   // "Can't do this step?": the same search with this step taken out.
   const id = st?.action.id;
   const alt = useMemo(() => (id ? planFor(withoutSteps(rules, [id]), person, mode) : null), [rules, id, person, mode]);
+  // The same ticks as the path screen's list, so a step finished at the counter
+  // can be ticked off right here; the list reads them again when you go back.
+  const [ticks, setTicks] = useState<Ticks>(() => loadTicks());
+  const setDone = (on: boolean) => { if (id) setTicks((prev) => { const next = toggleTick(prev, id, on); saveTicks(next); return next; }); };
   if (!st) return null;
   const a = st.action;
   const place = placeOf(rules, st);
@@ -119,6 +124,15 @@ export function StepScreen({ rules, lang, plan, n, person, mode, onSkip }: {
               )}
             </div>
           </details>
+
+          <div className="step-tick-row">
+            <label className="tick">
+              <input type="checkbox" checked={ticks[a.id] === true} onChange={(e) => setDone(e.target.checked)} aria-label={s.markDone(n)} />
+              <span className="tick-box" aria-hidden="true"><Icon name="check" size={16} stroke={2.4} /></span>
+              <span className="tick-text" aria-hidden="true">{s.doneShort}</span>
+            </label>
+            <span className="progress-note">{s.progressNote}</span>
+          </div>
 
           <nav className="actions pair" aria-label={s.backToPath}>
             {n > 1

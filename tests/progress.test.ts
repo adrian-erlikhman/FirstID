@@ -186,3 +186,17 @@ describe("calendar reminders", () => {
     expect(icsFold("x".repeat(200)).split("\r\n ").map((l) => l.length)).toEqual([75, 74, 51]);
   });
 });
+
+describe("a step's own screen can tick it off", () => {
+  it("shows the same Done tick as the path list, named for its step, in both languages", async () => {
+    const { renderToStaticMarkup } = await import("react-dom/server");
+    const { createElement } = await import("react");
+    const { StepScreen } = await import("../src/screens/StepScreen");
+    const p = plan(rules, personas.maria)!;
+    for (const lang of ["en", "es"] as const)
+      for (const n of [1, p.steps.length]) {
+        const html = renderToStaticMarkup(createElement(StepScreen, { rules, lang, plan: p, n, person: personas.maria, mode: "cheapest", onSkip: () => {} }));
+        expect(html).toMatch(new RegExp(`<input type="checkbox" aria-label="${t[lang].markDone(n)}"`));
+      }
+  });
+});
