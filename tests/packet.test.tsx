@@ -118,3 +118,22 @@ describe("packet: the QR code to How we know", () => {
     }
   });
 });
+
+describe("packet: steps already done", () => {
+  it("a step ticked done in the app prints with its box checked and says Done to screen readers; the others stay empty", () => {
+    const p = plan(rules, personas.maria)!;
+    const done = p.steps[0].action.id;
+    vi.stubGlobal("localStorage", { getItem: () => JSON.stringify({ [done]: true }), setItem: () => {}, removeItem: () => {} });
+    try {
+      for (const lang of ["en", "es"] as Lang[]) {
+        const html = renderToStaticMarkup(<PacketScreen rules={rules} lang={lang} result={p} />);
+        expect((html.match(/class="box done"/g) ?? []).length).toBe(1);
+        expect((html.match(/class="box"/g) ?? []).length).toBe(p.steps.length - 1);
+        expect(html).toContain(`<span class="sr-only">${t[lang].doneShort}</span>`);
+      }
+    } finally {
+      vi.unstubAllGlobals();
+      vi.stubGlobal("location", { href: "https://first-id.vercel.app/#/packet" });
+    }
+  });
+});
