@@ -1,5 +1,5 @@
 import type { ReactNode } from "react";
-import { FormPaper, Mark, money, fullPrice } from "../components";
+import { Counted, FormPaper, Mark, money, fullPrice } from "../components";
 import type { Plan, RuleSet } from "../engine/types";
 import { t, type Lang } from "../i18n";
 import { useCountUp, useInView, useScrollProgress, useTilt } from "../motion";
@@ -69,16 +69,19 @@ export function Bento({ rules, lang, maria }: { rules: RuleSet; lang: Lang; mari
   const cited = rules.actions.flatMap((a) => [...a.sources, ...(a.waivers ?? []).flatMap((w) => w.sources)]);
   const nSources = new Set(cited.map((id) => rules.sources[id]?.url).filter(Boolean)).size;
   const dollars = useCountUp(maria?.total.dollars ?? 0, seen);
-  const scale: [number, string][] = [
-    [useCountUp(nWaivers, seen), s.statsWaivers],
-    [useCountUp(rules.actions.length, seen), s.statsRules],
-    [useCountUp(nSources, seen), s.statsSources],
+  // Each count is [what is on screen now, where it ends, label]. The counts
+  // only start once the grid scrolls into view, so a screen reader that gets
+  // there without scrolling would otherwise read "$0" and "0 rules".
+  const scale: [number, number, string][] = [
+    [useCountUp(nWaivers, seen), nWaivers, s.statsWaivers],
+    [useCountUp(rules.actions.length, seen), rules.actions.length, s.statsRules],
+    [useCountUp(nSources, seen), nSources, s.statsSources],
   ];
   return (
     <ul ref={ref} className={`bento${seen ? " seen" : ""}`}>
       {maria && (
         <Tile className="t-maria">
-          <span className="tile-big num">{money(dollars)}</span>
+          <span className="tile-big num"><Counted shown={money(dollars)} final={money(maria.total.dollars)} /></span>
           <span className="tile-sub">{s.statsMaria(fullPrice(maria))}</span>
           {/* The fee waivers that take her path down to this total. Her steps
               themselves are listed once, in Maria's path further down. */}
@@ -97,8 +100,8 @@ export function Bento({ rules, lang, maria }: { rules: RuleSet; lang: Lang; mari
       )}
       <Tile className="t-scale">
         <span className="scale-rows">
-          {scale.map(([n, label]) => (
-            <span key={label} className="scale-row"><span className="scale-n num">{n}</span><span className="scale-label">{label}</span></span>
+          {scale.map(([n, end, label]) => (
+            <span key={label} className="scale-row"><span className="scale-n num"><Counted shown={String(n)} final={String(end)} /></span><span className="scale-label">{label}</span></span>
           ))}
         </span>
         <span className="scale-foot">{s.statsReach}</span>

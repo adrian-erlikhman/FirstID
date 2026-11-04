@@ -109,9 +109,16 @@ export function WasPrice({ dollars, lang }: { dollars: number; lang: Lang }) {
   return <><s className="num" aria-hidden="true">{money(dollars)}</s><span className="sr-only"> {t[lang].insteadOf(dollars)}</span></>;
 }
 
-/** A number that counts to its new value. `format` turns it into text. */
+/** A number that counts to its new value. `format` turns it into text. The
+ *  moving number is hidden from screen readers, which get the final value at
+ *  once instead of whichever frame they happen to land on. */
 export function Tween({ value, format = String }: { value: number; format?: (n: number) => string }) {
-  return <>{format(Math.round(useTween(value)))}</>;
+  return <Counted shown={format(Math.round(useTween(value)))} final={format(value)} />;
+}
+
+/** An animated number, seen as `shown` and read as `final`. */
+export function Counted({ shown, final }: { shown: string; final: string }) {
+  return <><span aria-hidden="true">{shown}</span><span className="sr-only">{final}</span></>;
 }
 
 /** The path's totals: the cost after fee waivers, what it would have cost
