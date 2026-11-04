@@ -54,10 +54,15 @@ function StepList({ rules, lang, plan, done, onDone }: {
   const s = t[lang];
   // When the path changes (a new mode), steps that drop out slide shut where
   // they were and new ones slide open, keeping the wording they had.
-  const rows = useListPresence(plan.steps.map((st, i) => ({ st, i, when: whenLine(rules, plan.steps, i, lang, done) })), (x) => x.st.action.id);
+  // A row's reminder date is worked out with its wording, from the plan it
+  // belongs to: a row sliding out keeps its old index, which means nothing in
+  // the new plan.
+  const rows = useListPresence(plan.steps.map((st, i) => ({
+    st, i, when: whenLine(rules, plan.steps, i, lang, done), days: daysLeft(plan.steps, i, done),
+  })), (x) => x.st.action.id);
   return (
     <ol className="steps">
-      {rows.map(({ item: { st, i, when }, key, phase }) => {
+      {rows.map(({ item: { st, i, when, days }, key, phase }) => {
         const a = st.action;
         const was = st.dollars < a.dollars ? a.dollars : null;
         const isDone = done?.has(a.id) ?? false;
@@ -86,7 +91,7 @@ function StepList({ rules, lang, plan, done, onDone }: {
                   <span className="tick-box" aria-hidden="true"><Icon name="check" size={16} stroke={2.4} /></span>
                   <span className="tick-text" aria-hidden="true">{s.doneShort}</span>
                 </label>
-                <ReminderLink rules={rules} lang={lang} step={st} n={i + 1} done={isDone} days={daysLeft(plan.steps, i, done)} />
+                <ReminderLink rules={rules} lang={lang} step={st} n={i + 1} done={isDone} days={days} />
               </div>
             )}
             </div></div>
