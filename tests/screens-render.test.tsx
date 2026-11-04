@@ -3,7 +3,7 @@
 // office list. Plus the project rule that the DL 933 (and DL 937) is never
 // shown: the DMV asks that those forms not be shared online.
 import { afterEach, describe, expect, it, vi } from "vitest";
-import { readdirSync, statSync } from "node:fs";
+import { readFileSync, readdirSync, statSync } from "node:fs";
 import { join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { renderToStaticMarkup } from "react-dom/server";
@@ -111,5 +111,21 @@ describe("DMV office list", () => {
 
   it("an unknown kind of office renders nothing", () => {
     expect(renderToStaticMarkup(<OfficesScreen lang="en" kind="nowhere" />)).toBe("");
+  });
+});
+
+describe("pictures wait until they're near the screen", () => {
+  it("every picture in the app's screens loads lazily (nothing on the first screen needs one)", () => {
+    const root = fileURLToPath(new URL("../src/", import.meta.url));
+    const walk = (dir: string): string[] => readdirSync(dir).flatMap((f) => {
+      const p = join(dir, f);
+      return statSync(p).isDirectory() ? walk(p) : /\.tsx$/.test(f) ? [p] : [];
+    });
+    const eager: string[] = [];
+    for (const f of walk(root)) {
+      const src = readFileSync(f, "utf8");
+      for (const m of src.matchAll(/<img\b[^>]*>/g)) if (!/loading="lazy"/.test(m[0])) eager.push(`${f.replace(/^.*[\/]src[\/]/, "src/")}: ${m[0].slice(0, 80)}`);
+    }
+    expect(eager).toEqual([]);
   });
 });

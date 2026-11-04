@@ -32,11 +32,11 @@ export function LoopStory({ lang }: { lang: Lang }) {
           <div className="orbit">
             <svg className="orbit-ring" viewBox="0 0 200 200"><circle cx="100" cy="100" r="86" /></svg>
             <div className="orb orb-id">
-              <img className="orb-card" src={caIdImg} alt="" width={752} height={474} decoding="async" />
+              <img className="orb-card" src={caIdImg} alt="" width={752} height={474} loading="lazy" decoding="async" />
               <span className="orb-label">{s.storyId}</span>
             </div>
             <div className="orb orb-bc">
-              <img className="orb-sheet" src={birthCertImg} alt="" width={1105} height={1200} decoding="async" />
+              <img className="orb-sheet" src={birthCertImg} alt="" width={1105} height={1200} loading="lazy" decoding="async" />
               <span className="orb-label">{s.storyBc}</span>
             </div>
           </div>

@@ -41,7 +41,7 @@ function TrailStep({ st, i, rules, lang }: { st: Step; i: number; rules: RuleSet
       <div className="trail-desk">
         <div ref={tilt} className="trail-doc">
           {paper
-            ? <img src={paper.src} alt={paper.alt} width={paper.w} height={paper.h} decoding="async" />
+            ? <img src={paper.src} alt={paper.alt} width={paper.w} height={paper.h} loading="lazy" decoding="async" />
             : <span className="trail-hidden"><b>{dmvForm ?? gets[0]}</b>{dmvForm && <span>{s.trailHiddenShort}</span>}</span>}
         </div>
       </div>
