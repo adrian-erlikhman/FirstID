@@ -11,6 +11,7 @@ import { hasOffices } from "./offices";
 import { clearTicks } from "./progress";
 import { t, type Lang } from "./i18n";
 import { pageTitle } from "./title";
+import { readSaved, SAVE_KEY, type Saved } from "./saved";
 import { go, parse, useRoute, type Route } from "./router";
 import { HaveScreen } from "./screens/HaveScreen";
 import { HomeScreen } from "./screens/HomeScreen";
@@ -27,12 +28,9 @@ const rules = rulesJson as unknown as RuleSet;
 // Answers are kept in this tab's sessionStorage, so a phone that reloads the
 // page in the background doesn't wipe them. They never leave the phone, and
 // they are gone when the tab closes. If storage is blocked, the app still works.
-const SAVE_KEY = "first-id:v1";
-/** `example` is set while an example (Maria) is on screen; the person's own
- *  answers wait in `own` and come back when they tap "Find my path". */
-interface Saved extends Answers { mode: Mode; lang: Lang; example: boolean; own: Answers | null }
+// readSaved drops anything of the wrong shape, so a bad save can't stop the app.
 const saved: Partial<Saved> = (() => {
-  try { return JSON.parse(sessionStorage.getItem(SAVE_KEY) ?? "{}"); } catch { return {}; }
+  try { return readSaved(sessionStorage.getItem(SAVE_KEY), rules); } catch { return {}; }
 })();
 
 /**

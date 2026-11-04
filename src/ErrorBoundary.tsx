@@ -1,5 +1,6 @@
 import { Component, type ReactNode } from "react";
 import { t, type Lang } from "./i18n";
+import { clearSaved } from "./saved";
 
 // If a screen ever throws while drawing, React removes the whole app and the
 // person is left with a blank page: no words, no way back, no phone number.
@@ -22,7 +23,8 @@ export function CrashPage({ lang }: { lang: Lang }) {
         <p className="lede">{s.crashBody}</p>
         <div className="actions row">
           <button type="button" className="btn primary" onClick={() => location.reload()}>{s.crashRetry}</button>
-          <a className="btn ghost" href="./" onClick={() => { try { location.hash = "#/"; } catch { /* plain link still works */ } }}>{s.startOver}</a>
+          {/* Start over forgets the saved answers, in case they are what failed: the page reloads clean. */}
+          <a className="btn ghost" href="./" onClick={() => { clearSaved(); try { location.hash = "#/"; } catch { /* plain link still works */ } }}>{s.startOver}</a>
         </div>
         <p className="crash-help"><a href="tel:211"><strong>{s.help211}</strong></a> {s.help211Line}</p>
       </section>
