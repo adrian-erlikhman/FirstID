@@ -1205,3 +1205,28 @@ main h1:focus { box-shadow: none !important; } /* headings take focus on a new s
   .tile-row .row-sub, .cant-sum { font-size: 1rem; }
 }
 /* ===== end phones ===== */
+
+/* ===== Windows high contrast (forced colors) =====
+   Forced colors replaces backgrounds and drops box-shadows, which is how most
+   controls here draw their edges and show which option is picked. So in that
+   mode they get real borders, and the picked option takes the system highlight
+   colours, as the step ticks already do. Last in the file, so it wins over each
+   control's own rules. */
+@media (forced-colors: active) {
+  .btn, .pill, .ts-option, .lang button { border: 1px solid ButtonText; }
+  .btn.link, .btn.text { border: 0; }
+  /* forced-color-adjust: none, or the browser draws its text backplate over
+     the highlight and the label disappears; the colours are still the user's. */
+  .pill[aria-pressed="true"], .ts-option[aria-pressed="true"], .lang button[aria-checked="true"] {
+    forced-color-adjust: none; background: Highlight; color: HighlightText; border-color: Highlight;
+  }
+  .box { border: 1.5px solid CanvasText; }
+  .check-row[aria-checked="true"] .box { background: Highlight; color: HighlightText; border-color: Highlight; }
+  .switch { border: 1.5px solid CanvasText; }
+  .switch span { border: 1.5px solid CanvasText; top: 1px; left: 1px; }
+  .toggle-row[aria-checked="true"] .switch { background: Highlight; border-color: Highlight; }
+  .toggle-row[aria-checked="true"] .switch span { background: HighlightText; border-color: HighlightText; }
+  .toggle-row.changed { border-left: 6px solid Highlight; padding-left: 12px; }
+  .ts-menu { border: 1px solid CanvasText; }
+}
+/* ===== end Windows high contrast ===== */
