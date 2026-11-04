@@ -11,11 +11,14 @@ import { clearTicks as forgetTicks, daysLeft, loadTicks, reminderFor, reminderIc
 // The path: the total in the heading and the cost summary, then the steps.
 // Each step is one row that opens its own screen with the sources.
 
-function whenLine(rules: RuleSet, steps: Step[], i: number, lang: Lang): string {
+export function whenLine(rules: RuleSet, steps: Step[], i: number, lang: Lang, done?: ReadonlySet<string>): string {
   const s = t[lang];
   const st = steps[i];
   const place = placeOf(rules, st);
-  const start = st.startDay === 0 ? s.startsToday : s.startsAround(st.startDay);
+  // When it can start: the waits before it, less any already ticked done (the
+  // same count as its reminder). With nothing ticked this is the planner's startDay.
+  const startDay = daysLeft(steps, i - 1, done);
+  const start = startDay === 0 ? s.startsToday : s.startsAround(startDay);
   if (!place.inPerson) return `${start}, ${s.byMail}, ${s.readyIn(st.action.days)}`;
   const visit = !st.newTrip && i > 0 ? s.sameVisit(i) : s.oneVisit;
   return st.action.days === 0 ? `${start}, ${visit}` : `${start}, ${visit}, ${s.readyIn(st.action.days)}`;
@@ -51,7 +54,7 @@ function StepList({ rules, lang, plan, done, onDone }: {
   const s = t[lang];
   // When the path changes (a new mode), steps that drop out slide shut where
   // they were and new ones slide open, keeping the wording they had.
-  const rows = useListPresence(plan.steps.map((st, i) => ({ st, i, when: whenLine(rules, plan.steps, i, lang) })), (x) => x.st.action.id);
+  const rows = useListPresence(plan.steps.map((st, i) => ({ st, i, when: whenLine(rules, plan.steps, i, lang, done) })), (x) => x.st.action.id);
   return (
     <ol className="steps">
       {rows.map(({ item: { st, i, when }, key, phase }) => {

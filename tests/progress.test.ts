@@ -6,6 +6,8 @@ import {
   PROGRESS_KEY, addDays, clearTicks, daysLeft, icsDate, icsFold, icsUnescape, loadTicks, parseIcs, reminderFor, reminderIcs, saveTicks, ticksInPlan, toggleTick,
 } from "../src/progress";
 import { personas } from "./personas";
+import { t } from "../src/i18n";
+import { whenLine } from "../src/screens/PathScreen";
 
 const rules = rulesJson as unknown as RuleSet;
 
@@ -128,6 +130,21 @@ describe("calendar reminders", () => {
     expect(reminderFor(rules, st, later + 1, "en", false, left)!.days).toBe(left);
     // Ticking a step after it changes nothing for it.
     expect(daysLeft(p.steps, first, new Set([st.action.id]))).toBe(p.steps[first].endDay);
+  });
+
+  it("the path screen's start line also drops a wait ticked done, so it agrees with the reminder", () => {
+    const p = plan(rules, personas.maria)!;
+    const waits = p.steps.flatMap((st, i) => (st.action.days > 0 ? [i] : []));
+    const [first, later] = waits;
+    for (const lang of ["en", "es"] as const) {
+      const s = t[lang];
+      // Nothing ticked: the planner's own startDay.
+      expect(whenLine(rules, p.steps, later, lang)).toContain(s.startsAround(p.steps[later].startDay));
+      // The wait before it is over: it can start today.
+      const done = new Set([p.steps[first].action.id]);
+      expect(daysLeft(p.steps, later - 1, done)).toBe(0);
+      expect(whenLine(rules, p.steps, later, lang, done).startsWith(s.startsToday)).toBe(true);
+    }
   });
 
   it("writes a valid iCalendar file that parses back", () => {
