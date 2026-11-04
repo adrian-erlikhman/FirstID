@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import rulesJson from "../data/rules.json";
-import { DAYS, groupHours, officeData, sortOffices, zipCentroids } from "../src/offices";
+import { DAYS, groupHours, laNow, officeData, openNow, parseHours, sortOffices, zipCentroids } from "../src/offices";
 import { parse, href } from "../src/router";
 
 const places = Object.keys((rulesJson as unknown as { places: Record<string, unknown> }).places);
@@ -60,5 +60,51 @@ describe("office sorting", () => {
   it("the offices route round-trips, and parses without a step number", () => {
     expect(parse(href({ name: "offices", kind: "dmv", n: 3 }))).toEqual({ name: "offices", kind: "dmv", n: 3 });
     expect(parse("#/offices/dmv")).toEqual({ name: "offices", kind: "dmv" });
+  });
+});
+
+describe("open now, in Los Angeles time", () => {
+  // Arleta's listed hours: Wednesday opens an hour later.
+  const hours = { mon: "8:00 am–5:00 pm", tue: "8:00 am–5:00 pm", wed: "9:00 am–5:00 pm", thu: "8:00 am–5:00 pm", fri: "8:00 am–5:00 pm", sat: "closed", sun: "closed" } as const;
+  const at = (iso: string) => new Date(iso);
+
+  it("reads the time in Los Angeles, whatever the phone's time zone (PST in November, PDT in July)", () => {
+    expect(laNow(at("2026-11-03T18:00:00Z"))).toEqual({ day: "tue", minutes: 10 * 60 });
+    expect(laNow(at("2026-07-14T15:30:00Z"))).toEqual({ day: "tue", minutes: 8 * 60 + 30 });
+    expect(laNow(at("2026-11-04T07:59:00Z"))).toEqual({ day: "tue", minutes: 23 * 60 + 59 }); // Wednesday in UTC, still Tuesday in LA
+  });
+
+  it.each([
+    ["2026-11-03T15:59:00Z", "Tue 7:59 am", false],
+    ["2026-11-03T16:00:00Z", "Tue 8:00 am", true],
+    ["2026-11-03T18:00:00Z", "Tue 10:00 am", true],
+    ["2026-11-04T00:59:00Z", "Tue 4:59 pm", true],
+    ["2026-11-04T01:00:00Z", "Tue 5:00 pm", false],
+    ["2026-11-04T16:30:00Z", "Wed 8:30 am (opens at 9)", false],
+    ["2026-11-04T17:00:00Z", "Wed 9:00 am", true],
+    ["2026-11-07T19:00:00Z", "Sat 11:00 am", false],
+    ["2026-07-14T15:30:00Z", "Tue 8:30 am, summer time", true],
+  ] as const)("%s (%s): open %s", (iso, _, open) => {
+    const r = openNow(hours, at(iso));
+    expect(r?.open).toBe(open);
+    if (r?.open) expect(r.until).toBe("5:00 pm");
+  });
+
+  it("reads the hours the snapshot uses, and says nothing when it can't read them", () => {
+    expect(parseHours("8:00 am–5:00 pm")).toEqual({ open: 480, close: 1020 });
+    expect(parseHours("12:00 pm–1:00 pm")).toEqual({ open: 720, close: 780 });
+    expect(parseHours("10:30 AM - 4:15 PM")).toEqual({ open: 630, close: 975 });
+    expect(parseHours("closed")).toBeNull();
+    expect(parseHours("by appointment")).toBeNull();
+    expect(openNow({ ...hours, tue: "by appointment" }, at("2026-11-03T18:00:00Z"))).toBeNull();
+  });
+
+  it("every office's hours in the snapshot can be read", () => {
+    for (const o of officeData.offices) {
+      for (const d of DAYS) {
+        const v = o.hours?.[d];
+        if (v !== undefined && v.trim().toLowerCase() !== "closed") expect(parseHours(v), `${o.id} ${d}: ${v}`).not.toBeNull();
+      }
+    }
   });
 });

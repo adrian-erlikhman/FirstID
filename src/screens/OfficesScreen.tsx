@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Icon } from "../components";
 import { t, type Lang } from "../i18n";
-import { DAYS, type Day, directionsUrl, groupHours, hasOffices, officeData, officesFor, sortOffices, zipCentroids } from "../offices";
+import { DAYS, type Day, directionsUrl, groupHours, hasOffices, laNow, officeData, officesFor, openNow, sortOffices, zipCentroids } from "../offices";
 import { href } from "../router";
 
 // Offices for one kind of place (DMV for now), from the snapshot in
@@ -16,7 +16,9 @@ export function OfficesScreen({ lang, kind }: { lang: Lang; kind: string }) {
   const full = /^\d{5}$/.test(zip);
   const known = full && !!zipCentroids[zip];
   const rows = sortOffices(list, known ? zip : "");
-  const today = (new Date().getDay() + 6) % 7; // index into DAYS, Monday first
+  // Los Angeles time, where the offices are, not the phone's time zone.
+  const now = new Date();
+  const today = DAYS.indexOf(laNow(now).day);
   const isToday = (from: Day, to: Day) => DAYS.indexOf(from) <= today && today <= DAYS.indexOf(to);
 
   return (
@@ -42,6 +44,10 @@ export function OfficesScreen({ lang, kind }: { lang: Lang; kind: string }) {
         {rows.map(({ office: o, mi }) => (
           <li key={o.id} className="panel office">
             <h2 className="office-name">{o.name}{mi !== undefined && <span className="office-mi num"> · {s.officesMiles(mi)}</span>}</h2>
+            {(() => {
+              const st = o.hours ? openNow(o.hours, now) : null;
+              return st && <p className={`office-now${st.open ? " is-open" : ""}`}>{st.open ? s.officesOpenNow(st.until) : s.officesClosedNow}</p>;
+            })()}
             <p className="office-addr">{o.address}<br />{o.city}, CA {o.zip}</p>
             {o.hours && Object.values(o.hours).every((h) => h === "closed") ? (
               <p className="office-closed">{s.officesClosedAll}</p>

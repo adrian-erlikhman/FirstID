@@ -332,6 +332,9 @@ const en = {
   officesMiles: (mi: number) => `${mi < 10 ? mi.toFixed(1) : Math.round(mi)} mi`,
   officesHours: "Hours",
   officesToday: "today",
+  // Going by the listed hours, which don't know about holidays, so "usually".
+  officesOpenNow: (until: string) => `Usually open now, until ${until}`,
+  officesClosedNow: "Usually closed now",
   officesDay: { mon: "Mon", tue: "Tue", wed: "Wed", thu: "Thu", fri: "Fri", sat: "Sat", sun: "Sun" } as Record<string, string>,
   officesClosed: "Closed",
   officesClosedAll: "Closed every day when we checked. Check the office page before you go.",
@@ -668,6 +671,8 @@ const es: Strings = {
   officesMiles: (mi) => `${mi < 10 ? mi.toFixed(1) : Math.round(mi)} mi`,
   officesHours: "Horario",
   officesToday: "hoy",
+  officesOpenNow: (until) => `Normalmente abierta ahora, hasta las ${until}`,
+  officesClosedNow: "Normalmente cerrada ahora",
   officesDay: { mon: "lun", tue: "mar", wed: "mié", thu: "jue", fri: "vie", sat: "sáb", sun: "dom" },
   officesClosed: "Cerrado",
   officesClosedAll: "Cerrada todos los días cuando la revisamos. Revisa la página de la oficina antes de ir.",
