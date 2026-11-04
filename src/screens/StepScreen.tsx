@@ -69,7 +69,7 @@ export function StepScreen({ rules, lang, plan, n, person, mode, onSkip }: {
           {say && (
             <Block label={s.sayThis} className="say-block">
               <blockquote className="say">“{say[lang]}”</blockquote>
-              <SayTools lang={lang} name={a.label[lang]} where={place.label[lang]} bring={a.bring?.map((b) => b[lang]) ?? []} say={say[lang]} />
+              <SayTools lang={lang} name={a.label[lang]} where={place.label[lang]} bring={a.bring?.map((b) => b[lang]) ?? []} say={say} />
             </Block>
           )}
 

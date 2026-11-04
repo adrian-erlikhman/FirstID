@@ -1054,14 +1054,22 @@ main h1:focus { box-shadow: none !important; } /* headings take focus on a new s
 @media (min-width: 640px) {
   .clerk { padding: max(24px, env(safe-area-inset-top)) max(48px, env(safe-area-inset-right)) max(40px, env(safe-area-inset-bottom)) max(48px, env(safe-area-inset-left)); }
 }
-.clerk-bar { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex: none; }
-.clerk-title { margin: 0; font-size: 16px; font-weight: 600; color: #000; min-width: 0; }
+.clerk-bar { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px 12px; flex: none; }
+/* Where the two buttons leave it less than ~10em, the title takes its own line above them. */
+.clerk-title { flex: 1 1 10em; margin: 0; font-size: 16px; font-weight: 600; color: #000; min-width: 0; }
 .clerk-close {
   display: inline-flex; align-items: center; gap: 6px; flex: none;
   min-height: 52px; padding: 10px 20px; border-radius: 980px; border: 2px solid #000;
   background: #000; color: #fff; font-size: 18px; font-weight: 600;
 }
 .clerk-close:focus-visible { outline: 2px solid #000; outline-offset: 2px; } /* the app's black ring in its yellow halo, not a third colour */
+.clerk-actions { display: flex; gap: 8px; flex: none; margin-left: auto; }
+/* Shows the line in the other language: outlined, so Close stays the obvious way out. */
+.clerk-lang {
+  display: inline-flex; align-items: center; min-height: 52px; padding: 10px 18px; border-radius: 980px;
+  border: 2px solid #000; background: #fff; color: #000; font-size: 18px; font-weight: 600;
+}
+.clerk-lang:focus-visible { outline: 2px solid #000; outline-offset: 2px; }
 .clerk-box { flex: 1; min-height: 0; overflow: auto; display: flex; align-items: center; margin-top: 12px; }
 .clerk-say {
   margin: auto 0; width: 100%; font-size: 32px; font-weight: 700; line-height: 1.18; letter-spacing: -0.02em;

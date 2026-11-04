@@ -4,7 +4,9 @@ import { t, type Lang } from "../i18n";
 
 // Two helpers for the "Say this" line on a step:
 // "Show the clerk" puts the line full screen in huge type, for holding the
-// phone up at a counter, and "Read aloud" speaks the step with the phone's own
+// phone up at a counter (in the app's language, with a button to show it in
+// the other one: the person and the clerk may not read the same language),
+// and "Read aloud" speaks the step with the phone's own
 // voice (speechSynthesis runs on the device; nothing is sent anywhere).
 
 type Props = {
@@ -13,8 +15,12 @@ type Props = {
   name: string;
   where: string;
   bring: string[];
-  say: string;
+  /** The say line in both languages: the clerk view can switch between them. */
+  say: Record<Lang, string>;
 };
+
+/** Each language by its own name, for the clerk view's switch. */
+const LANG_NAME: Record<Lang, string> = { en: "English", es: "Español" };
 
 export function SayTools({ lang, name, where, bring, say }: Props) {
   const s = t[lang];
@@ -26,7 +32,7 @@ export function SayTools({ lang, name, where, bring, say }: Props) {
     name,
     `${s.where}: ${where}`,
     ...(bring.length ? [`${s.bring}: ${bring.map((b) => (/[.!?]$/.test(b.trim()) ? b.trim() : `${b.trim()}.`)).join(" ")}`] : []),
-    `${s.sayThis}: ${say}`,
+    `${s.sayThis}: ${say[lang]}`,
   ];
   const close = useCallback(() => setOpen(false), []);
 
@@ -56,14 +62,17 @@ export function SayTools({ lang, name, where, bring, say }: Props) {
 
 /* ---------- Show the clerk ---------- */
 
-function ClerkView({ lang, say, onClose, returnTo }: { lang: Lang; say: string; onClose: () => void; returnTo: RefObject<HTMLButtonElement> }) {
+function ClerkView({ lang, say, onClose, returnTo }: { lang: Lang; say: Record<Lang, string>; onClose: () => void; returnTo: RefObject<HTMLButtonElement> }) {
   const s = t[lang];
+  // The language the line is shown in. Close stays in the app's language.
+  const [shown, setShown] = useState<Lang>(lang);
+  const other: Lang = shown === "en" ? "es" : "en";
   const dialog = useRef<HTMLDivElement>(null);
   const closeBtn = useRef<HTMLButtonElement>(null);
   const box = useRef<HTMLDivElement>(null);
   const text = useRef<HTMLParagraphElement>(null);
 
-  useFitText(box, text, say);
+  useFitText(box, text, say[shown]);
   useWakeLock();
 
   // Focus the Close button, lock the page behind, and give focus back on close.
@@ -98,15 +107,18 @@ function ClerkView({ lang, say, onClose, returnTo }: { lang: Lang; say: string; 
   };
 
   return createPortal(
-    <div ref={dialog} className="clerk" role="dialog" aria-modal="true" aria-labelledby="clerk-title" aria-describedby="clerk-say" lang={lang} onKeyDown={trap}>
+    <div ref={dialog} className="clerk" role="dialog" aria-modal="true" aria-labelledby="clerk-title" aria-describedby="clerk-say" lang={shown} onKeyDown={trap}>
       <div className="clerk-bar">
-        <h2 id="clerk-title" className="clerk-title">{s.showClerkTitle}</h2>
-        <button ref={closeBtn} type="button" className="clerk-close" onClick={onClose}>
-          <CloseIcon /> {s.close}
-        </button>
+        <h2 id="clerk-title" className="clerk-title">{t[shown].showClerkTitle}</h2>
+        <div className="clerk-actions">
+          <button type="button" className="clerk-lang" lang={other} onClick={() => setShown(other)}>{LANG_NAME[other]}</button>
+          <button ref={closeBtn} type="button" className="clerk-close" lang={lang} onClick={onClose}>
+            <CloseIcon /> {s.close}
+          </button>
+        </div>
       </div>
       <div ref={box} className="clerk-box">
-        <p ref={text} id="clerk-say" className="clerk-say">{say}</p>
+        <p ref={text} id="clerk-say" className="clerk-say">{say[shown]}</p>
       </div>
     </div>,
     document.body,
