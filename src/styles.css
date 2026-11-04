@@ -1257,6 +1257,16 @@ main h1:focus { box-shadow: none !important; } /* headings take focus on a new s
 }
 /* ===== end phones ===== */
 
+/* ===== Rendering: the home page is ~9,700px tall on a phone =====
+   Sections below the story are skipped by layout and paint until they near the
+   screen; the browser keeps each one's real size once drawn ("auto"). The
+   before/after numbers are in AI-USE.md. The story keeps its sticky,
+   scroll-driven panel and is left as it is. */
+.home-sec, .home-cta { content-visibility: auto; contain-intrinsic-size: auto 900px; }
+.home-sec.forms-band { contain-intrinsic-size: auto 1500px; }
+@media print { .home-sec, .home-cta { content-visibility: visible; } }
+/* ===== end Rendering ===== */
+
 /* ===== Windows high contrast (forced colors) =====
    Forced colors replaces backgrounds and drops box-shadows, which is how most
    controls here draw their edges and show which option is picked. So in that
