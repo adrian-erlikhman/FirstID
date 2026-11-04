@@ -778,6 +778,10 @@ h2.display.h2 { font-size: 34px; margin: 0 0 16px; text-wrap: balance; }
 /* Wider screens: an open rule's explanation and sources start under its name,
    not under its number, and long quotes get a shorter line. */
 @media (min-width: 640px) { .rule-body { padding: 2px 48px 22px 60px; } }
+/* A fee waiver and its own sources, under the step's. */
+.rule-waiver { display: grid; gap: 10px; margin-top: 8px; }
+.rule-waiver-head { margin: 0; font-size: 1rem; font-weight: 600; line-height: 1.35; color: var(--ink); }
+@media (max-width: 639px) { .rule-waiver-head { padding: 0 6px; } }
 .how > li > span:last-child { line-height: 1.5; }
 .honesty { display: grid; gap: 12px; margin-top: 32px; }
 .honesty .panel { padding: 16px 18px 18px; }

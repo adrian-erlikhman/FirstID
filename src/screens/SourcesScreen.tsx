@@ -1,11 +1,17 @@
-import { useState } from "react";
+import { Fragment, useState } from "react";
 import { Block, Icon, SourceCard } from "../components";
-import type { RuleSet } from "../engine/types";
+import type { Action, RuleSet, Waiver } from "../engine/types";
 import { t, type Lang } from "../i18n";
 
-// "How we know": every rule with its sources and when we checked them, which
+// "How we know": every rule with its sources (and its fee waivers' sources) and when we checked them, which
 // rules we couldn't confirm, and what in the app is real and what's made up.
 const REPO_ISSUES = "https://github.com/adrian-erlikhman/FirstID/issues/new?template=wrong-rule.yml";
+
+/** What an open rule lists, in order: the step's own sources, then each fee
+ *  waiver with the sources it cites (the step's don't cover them). */
+export function ruleSources(a: Action): { waiver: Waiver | null; ids: string[] }[] {
+  return [{ waiver: null, ids: a.sources }, ...(a.waivers ?? []).map((w) => ({ waiver: w, ids: w.sources }))];
+}
 
 export function SourcesScreen({ rules, lang }: { rules: RuleSet; lang: Lang }) {
   const s = t[lang];
@@ -36,7 +42,15 @@ export function SourcesScreen({ rules, lang }: { rules: RuleSet; lang: Lang }) {
                   {isOpen && (
                     <div className="rule-body sources">
                       {a.why && <p className="row-sub">{a.why[lang]}</p>}
-                      {a.sources.map((id) => <SourceCard key={id} src={rules.sources[id]} lang={lang} verified={a.verified} />)}
+                      {ruleSources(a).map(({ waiver: w, ids }) => {
+                        const cards = ids.map((id) => <SourceCard key={id} src={rules.sources[id]} lang={lang} verified={a.verified} />);
+                        return w ? (
+                          <div key={w.label.en} className="rule-waiver">
+                            <p className="rule-waiver-head">{s.feeWaiver(w.label[lang])}</p>
+                            {cards}
+                          </div>
+                        ) : <Fragment key="step">{cards}</Fragment>;
+                      })}
                     </div>
                   )}
                 </li>
