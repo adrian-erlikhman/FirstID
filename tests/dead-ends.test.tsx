@@ -36,7 +36,7 @@ const DEAD_ENDS: [string, Person, NoPathNote[]][] = [
   ["Luis without his old ID (born in Texas, no witnesses)", luisNoOldId, ["bornElsewhere"]],
   ["born abroad, no papers but a Social Security number", { facts: { born: "abroad", age: 30, unhoused: true, hasWitnesses: true }, have: ["ssn_known"] }, ["bornAbroad"]],
   ["born elsewhere in California", { facts: { born: "california", age: 30, unhoused: true, hasWitnesses: true }, have: ["ssn_known"] }, ["bornCA"]],
-  ["every yes/no answer 'Not sure'", { facts: { born: "la_county", age: 30 }, have: ["ssn_known"] }, ["allUnsure"]],
+  ["every yes/no answer 'Not sure'", { facts: { born: "la_county", age: 30 }, have: ["ssn_known"] }, ["allUnsure", "needAddress", "needWitnesses"]],
   ["housed, no paper with an address", { facts: { born: "la_county", age: 30, unhoused: false, hasWitnesses: true }, have: ["ssn_known"] }, ["needAddress"]],
   ["no two people with ID", { facts: { born: "la_county", age: 30, unhoused: true, hasWitnesses: false }, have: ["ssn_known"] }, ["needWitnesses"]],
   ["no Social Security number", { facts: { born: "la_county", age: 30, unhoused: true, hasWitnesses: true }, have: ["birth_cert_ca"] }, ["needSsn"]],

@@ -97,7 +97,11 @@ export function noPathNotes(rules: RuleSet, person: Person, mode: Mode = "cheape
   if (facts.born === "california") notes.push("bornCA");
   if (facts.born === "us_state") notes.push("bornElsewhere");
   if (facts.born === "abroad") notes.push("bornAbroad");
-  if (FLIPPABLE_FACTS.every((f) => facts[f] === undefined)) { notes.push("allUnsure"); return notes; }
+  // "Not sure" to every yes/no question gets its own note, but it does not end
+  // the search: a missing paper or Social Security number still blocks the path
+  // whatever the answers turn out to be, and saying only "you weren't sure"
+  // would hide it.
+  if (FLIPPABLE_FACTS.every((f) => facts[f] === undefined)) notes.push("allUnsure");
   // What's blocking: ask the planner whether one missing piece would open a path.
   type Fix = [NoPathNote, boolean, (p: Person) => Person];
   const missing = ([
