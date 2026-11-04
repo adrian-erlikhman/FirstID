@@ -6,6 +6,8 @@ import { describe, expect, it } from "vitest";
 import { readFileSync, readdirSync, statSync } from "node:fs";
 import { join } from "node:path";
 import { fileURLToPath } from "node:url";
+import { t } from "../src/i18n";
+import { sentences } from "../src/screens/HomeScreen";
 
 const NEWER: [RegExp, string][] = [
   [/\.at\(\s*-?\d/, "Array/String .at() (Safari 15.4): use [length - 1]"],
@@ -14,6 +16,9 @@ const NEWER: [RegExp, string][] = [
   [/\bstructuredClone\(/, "structuredClone (Safari 15.4)"],
   [/\.(toSorted|toReversed|toSpliced)\(|\.with\(\s*\d/, "change-array-by-copy (Safari 16)"],
   [/\b(Object|Map)\.groupBy\(/, "groupBy (Safari 17.4)"],
+  // The build turns a lookbehind into new RegExp("..."), which throws where it
+  // runs: on the home page's headline that was a blank page on iOS 15.
+  [/\(\?<[=!]/, "regex lookbehind (?<= (?<! (Safari 16.4)"],
 ];
 
 describe("nothing newer than the build target", () => {
@@ -60,5 +65,29 @@ describe("the stylesheet works on older iPhones", () => {
       });
     }
     expect(missing).toEqual([]);
+  });
+});
+
+describe("the headline's sentence splitter", () => {
+  // Node has lookbehind, so the old one-liner is the reference here.
+  const old = (text: string) => text.split(/(?<=[.!?])\s+/);
+
+  it("splits every string in the app exactly as the lookbehind did", () => {
+    const strings: string[] = [];
+    const walk = (v: unknown) => {
+      if (typeof v === "string") strings.push(v);
+      else if (v && typeof v === "object") Object.values(v).forEach(walk);
+    };
+    walk(t);
+    expect(strings.length).toBeGreaterThan(200);
+    for (const s of strings) expect(sentences(s), s).toEqual(old(s));
+    expect(sentences(t.en.heroA)).toEqual(old(t.en.heroA));
+    expect(sentences(t.es.heroA).length).toBeGreaterThan(1);
+  });
+
+  it("and the awkward cases: no stop, a stop at the end, runs of spaces, ¿ and ¡", () => {
+    for (const s of ["No ID", "No ID.", "One.  Two!\nThree? Four", "¿Sin ID?  ¡Hay salida! Sí.", " Lead. ", "a.b. c"]) {
+      expect(sentences(s), JSON.stringify(s)).toEqual(old(s));
+    }
   });
 });
