@@ -89,6 +89,7 @@ describe("no-path screen: who can help today", () => {
   // LAUSD Homeless Education Office serves students and is shown only to
   // people under 22. Unskip once an adult option whose own site says it
   // helps with ID or documents is added.
+  // Candidates, each with its own page's words: docs/research/adult-id-help.md.
   it.skip.each(LANGS)("%s: at least one option for adults besides 211", (lang) => {
     const rows = helpRows(render(luisNoOldId, lang)).filter((r) => r.tel !== "211" && !/LAUSD|student|estudiant/i.test(r.text));
     expect(rows.length).toBeGreaterThan(0);
