@@ -4,8 +4,9 @@ import type { Plan, RuleSet } from "../engine/types";
 import { t, type Lang } from "../i18n";
 import { useCountUp, useInView, useScrollProgress, useTilt } from "../motion";
 // The state's own sample documents (sources in src/docs/README.md).
-import caIdImg from "../docs/ca-id-sample.jpg";
-import birthCertImg from "../docs/birth-certificate-sample.png";
+// Drawn 116px and 84px wide in the orbit: small copies, 3x that and more.
+import caIdImg from "../docs/ca-id-sample-small.jpg";
+import birthCertImg from "../docs/birth-certificate-sample-small.png";
 
 // Parts of the home page: the scroll story that pins while it plays, the
 // tiles whose numbers count up, and the real forms that lie flat as you reach

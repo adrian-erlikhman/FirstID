@@ -3,9 +3,11 @@ import type { Plan, RuleSet, Step } from "../engine/types";
 import { t, type Lang, type Strings } from "../i18n";
 import { useInView, useTilt } from "../motion";
 // LA County's form, and the state's own sample documents (sources in src/docs/README.md).
-import coiImg from "../forms/certificate-of-identity.jpg";
-import birthCertImg from "../docs/birth-certificate-sample.png";
-import affidavitImg from "../docs/homeless-affidavit.png";
+// The forms are drawn under 175px wide here, so these are 540px copies (3x);
+// the ID card is drawn up to 320px and keeps its full 752px scan.
+import coiImg from "../forms/certificate-of-identity-small.jpg";
+import birthCertImg from "../docs/birth-certificate-sample-small.png";
+import affidavitImg from "../docs/homeless-affidavit-small.png";
 import caIdImg from "../docs/ca-id-sample.jpg";
 
 // Maria, a made-up person, start to finish: her computed path, each step
