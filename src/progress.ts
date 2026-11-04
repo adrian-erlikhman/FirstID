@@ -170,6 +170,13 @@ export function remindersIcs(rs: Reminder[], now: Date = new Date(), uid: string
       `SUMMARY:${icsEscape(r.summary)}`,
       `DESCRIPTION:${icsEscape(r.description)}`,
       "TRANSP:TRANSPARENT",
+      // An alert, so the reminder reminds: 9 am on the day, as the phone's
+      // calendar sets its own all-day alerts (an all-day day starts at midnight).
+      "BEGIN:VALARM",
+      "ACTION:DISPLAY",
+      `DESCRIPTION:${icsEscape(r.summary)}`,
+      "TRIGGER:PT9H",
+      "END:VALARM",
       "END:VEVENT",
     ];
   };

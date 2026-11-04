@@ -172,6 +172,13 @@ describe("calendar reminders", () => {
       expect(icsUnescape(ev.props.SUMMARY.value)).toBe(r.summary);
       expect(icsUnescape(ev.props.DESCRIPTION.value)).toBe(r.description);
       expect(icsUnescape(ev.props.DESCRIPTION.value)).toContain(p.steps[i].action.label[lang]);
+      // It alerts: 9 am on that day, with the step's own words.
+      const alarm = comps.find((c) => c.name === "VALARM")!;
+      expect(alarm.props.ACTION.value).toBe("DISPLAY");
+      expect(alarm.props.TRIGGER.value).toBe("PT9H");
+      expect(icsUnescape(alarm.props.DESCRIPTION.value)).toBe(r.summary);
+      expect(text.indexOf("BEGIN:VALARM")).toBeGreaterThan(text.indexOf("BEGIN:VEVENT"));
+      expect(text.indexOf("END:VALARM")).toBeLessThan(text.indexOf("END:VEVENT"));
       // Only one event, and no deadline beyond the step's own wait.
       expect(comps.filter((c) => c.name === "VEVENT")).toHaveLength(1);
       expect(text).not.toMatch(/90/);
@@ -227,6 +234,7 @@ describe("every reminder in one calendar file", () => {
       const events = comps.filter((c) => c.name === "VEVENT");
       expect(comps.filter((c) => c.name === "VCALENDAR")).toHaveLength(1);
       expect(events).toHaveLength(rs.length);
+      expect(comps.filter((c) => c.name === "VALARM")).toHaveLength(rs.length); // each one alerts
       expect(new Set(events.map((e) => e.props.UID.value)).size).toBe(rs.length);
       events.forEach((e, i) => {
         expect(e.props.DTSTART.value).toBe(icsDate(addDays(now, rs[i].days)));
