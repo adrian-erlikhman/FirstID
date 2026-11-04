@@ -23,17 +23,17 @@ function whenLine(rules: RuleSet, steps: Step[], i: number, lang: Lang): string 
 
 /** A download link for a step's calendar reminder. The .ics file is a Blob made
  *  here in the browser; nothing is fetched or sent. */
-function ReminderLink({ rules, lang, step, n }: { rules: RuleSet; lang: Lang; step: Step; n: number }) {
+function ReminderLink({ rules, lang, step, n, done }: { rules: RuleSet; lang: Lang; step: Step; n: number; done: boolean }) {
   const s = t[lang];
   // Made and revoked in one effect, so a remount never leaves a dead link.
   const [url, setUrl] = useState<string | null>(null);
   useEffect(() => {
-    const r = reminderFor(rules, step, n, lang);
+    const r = reminderFor(rules, step, n, lang, done);
     let u: string | null = null;
     try { if (r) u = URL.createObjectURL(new Blob([reminderIcs(r)], { type: "text/calendar;charset=utf-8" })); } catch { u = null; }
     setUrl(u);
     return () => { if (u) URL.revokeObjectURL(u); };
-  }, [rules, step, n, lang]);
+  }, [rules, step, n, lang, done]);
   if (!url) return null;
   return (
     <a className="remind-link" href={url} download={`first-id-step-${n}-reminder.ics`}>
@@ -83,7 +83,7 @@ function StepList({ rules, lang, plan, done, onDone }: {
                   <span className="tick-box" aria-hidden="true"><Icon name="check" size={16} stroke={2.4} /></span>
                   <span className="tick-text" aria-hidden="true">{s.doneShort}</span>
                 </label>
-                <ReminderLink rules={rules} lang={lang} step={st} n={i + 1} />
+                <ReminderLink rules={rules} lang={lang} step={st} n={i + 1} done={isDone} />
               </div>
             )}
             </div></div>

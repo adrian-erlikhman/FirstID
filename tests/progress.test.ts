@@ -96,6 +96,14 @@ describe("calendar reminders", () => {
     expect(reminderFor(rules, p.steps[i], i + 1, "es")!.summary).toMatch(/acta de nacimiento/);
   });
 
+  it("offers no reminder for a step already ticked done", () => {
+    const p = plan(rules, personas.maria)!;
+    const i = p.steps.findIndex((st) => st.action.days > 0);
+    expect(reminderFor(rules, p.steps[i], i + 1, "en")).not.toBeNull();
+    expect(reminderFor(rules, p.steps[i], i + 1, "en", true)).toBeNull();
+    expect(reminderFor(rules, p.steps[i], i + 1, "es", true)).toBeNull();
+  });
+
   it("writes a valid iCalendar file that parses back", () => {
     const p = plan(rules, personas.maria)!;
     const i = p.steps.findIndex((st) => st.action.id === "rrcc_mail");

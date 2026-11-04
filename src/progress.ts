@@ -179,10 +179,11 @@ export function icsUnescape(s: string): string {
 
 // ---------- the reminder for a step ----------
 
-/** The reminder for step `n` (1-based), or null when the step has no wait. */
-export function reminderFor(rules: RuleSet, step: Step, n: number, lang: Lang): Reminder | null {
+/** The reminder for step `n` (1-based), or null when the step has no wait or
+ *  is already ticked done: there is nothing left to wait for in the mail. */
+export function reminderFor(rules: RuleSet, step: Step, n: number, lang: Lang, done = false): Reminder | null {
   const a = step.action;
-  if (!(a.days > 0)) return null;
+  if (done || !(a.days > 0)) return null;
   const s = t[lang];
   const doc = a.produces.find((d) => d === rules.goal) ?? a.produces[0];
   const what = (doc && s.remindWhat[doc]) || (doc && rules.docs[doc]?.label[lang]) || a.label[lang];
