@@ -4,6 +4,11 @@
 
 **Live: https://first-id.vercel.app/** (mirror: https://adrian-erlikhman.github.io/FirstID/)
 
+<p>
+  <img src="docs/screenshots/home.webp" width="49%" alt="First ID home page: No ID. No birth certificate. There's a legal way out. Maria's example path costs $15 instead of $89 with two fee waivers.">
+  <img src="docs/screenshots/path.webp" width="49%" alt="Maria's path screen: total cost $15, five steps, three trips, about seven weeks, with each step's place, cost and a Call ahead tag.">
+</p>
+
 For people in LA County who need an ID and don't have the documents to get one: people without housing, people who lost their papers in the January 2025 fires, young people in or leaving foster care, people leaving jail (on the general rules, since none is specific to reentry yet), and the caseworkers who help them.
 
 Tick the documents you still have and answer seven questions. First ID works out the cheapest legal order of steps: where to go, what to bring, what it costs after fee waivers, what to say at the counter, and the source that allows it. A step's "say this" line can be shown full screen to a clerk or read aloud, DMV steps list nearby offices, the whole path prints on one page, and you can tick steps off and add calendar reminders as you go.
